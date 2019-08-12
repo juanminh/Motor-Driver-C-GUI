@@ -107,7 +107,7 @@ namespace SuperButton.ViewModels
             #region Operations
             StarterOperationFlag = true;
             StarterCount = 0;
-            
+            OscilloscopeViewModel.GetInstance.ChComboEn = false;
             Rs232Interface.GetInstance.SendToParser(new PacketFields
             {
                 Data2Send = "",

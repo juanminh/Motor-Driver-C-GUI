@@ -5,7 +5,7 @@ using System.Windows.Forms;
 using Abt.Controls.SciChart.Rendering.Common;
 using Abt.Controls.SciChart.Rendering.HighSpeedRasterizer;
 using Abt.Controls.SciChart.Visuals;
-using Abt.Controls.SciChart3D.Context.D3D10;
+//using Abt.Controls.SciChart3D.Context.D3D10;
 using Application = System.Windows.Application;
 using UserControl = System.Windows.Controls.UserControl;
 

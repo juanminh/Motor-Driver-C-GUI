@@ -105,6 +105,7 @@ namespace SuperButton.Views
                 }
                 i++;
              }
+            OscilloscopeViewModel.GetInstance.ChComboEn = true;
         }
         public static void InitList()
         {

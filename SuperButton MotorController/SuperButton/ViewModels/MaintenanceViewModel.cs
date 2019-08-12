@@ -619,7 +619,10 @@ namespace SuperButton.ViewModels
                     while(PbarValueFromFile != 100 && timeout < 100)
                     {
                         if(tempPbarVal != PbarValueFromFile)
+                        {
                             tempPbarVal = PbarValueFromFile;
+                            timeout = 0;
+                        }
                         else
                             timeout++;
                         Thread.Sleep(5);

@@ -634,11 +634,11 @@ namespace SuperButton.CommandsDB
             {
                 CommandName = "Current [A]",
                 CommandId = "3",
-                CommandSubId = "1",
+                CommandSubId = "0",
                 CommandValue = "",
                 IsFloat = true,
             };
-            DataViewCommandsList.Add(new Tuple<int, int>(3, 1), data);
+            DataViewCommandsList.Add(new Tuple<int, int>(3, 0), data);
             DataCommandsListbySubGroup["MotionCommand List"].Add(data);
 
             data = new DataViewModel

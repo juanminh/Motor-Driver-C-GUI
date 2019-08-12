@@ -109,15 +109,19 @@ namespace SuperButton.ViewModels
         {
             if(SetData != "" && ID != "" && Index != "")
             {
-                var tmp = new PacketFields
+                try
                 {
-                    Data2Send = Convert.ToInt32(SetData),
-                    ID = Convert.ToInt16(ID),
-                    SubID = Convert.ToInt16(Index),
-                    IsSet = true,
-                    IsFloat = !this.IntFloat,
-                };
-                Task.Factory.StartNew(action: () => { Rs232Interface.GetInstance.SendToParser(tmp); });
+                    var tmp = new PacketFields
+                    {
+                        Data2Send = SetData,
+                        ID = Convert.ToInt16(ID),
+                        SubID = Convert.ToInt16(Index),
+                        IsSet = true,
+                        IsFloat = !this.IntFloat,
+                    };
+                    Task.Factory.StartNew(action: () => { Rs232Interface.GetInstance.SendToParser(tmp); });
+                }
+                catch { }
             }
         }
     }

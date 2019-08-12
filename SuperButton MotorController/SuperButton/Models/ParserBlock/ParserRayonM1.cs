@@ -250,11 +250,11 @@ namespace SuperButton.Models.ParserBlock
 #endif
 
             //TODO add try catch here
-            if(Id == 81 && SubId == 1 && IsSet == true)
-            {
+            //if(Id == 81 && SubId == 1 && IsSet == true)
+            //{
                 //   Data2Send = (float)5.22;
                 //int i = 0;
-            }
+            //}
             byte[] temp = new byte[11] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             char tempChar = (char)0;
 
@@ -571,7 +571,7 @@ namespace SuperButton.Models.ParserBlock
                     }
                     else if(commandSubId == 13)
                     {
-                        MaintenanceViewModel.GetInstance.DataToList(Convert.ToUInt32(transit));
+                        MaintenanceViewModel.GetInstance.DataToList(Convert.ToUInt32((uint)transit));
                     }
                     else if(commandSubId == 2 && getSet == 0)
                     {
@@ -598,7 +598,7 @@ namespace SuperButton.Models.ParserBlock
                         {
                             Rs232Interface.GetInstance.SendToParser(new PacketFields
                             {
-                                Data2Send = MaintenanceViewModel.FileToParams.ElementAt(0),
+                                Data2Send = (int)(MaintenanceViewModel.FileToParams.ElementAt(0)),
                                 ID = 67,
                                 SubID = Convert.ToInt16(3),
                                 IsSet = true,
@@ -611,7 +611,7 @@ namespace SuperButton.Models.ParserBlock
                         {
                             Rs232Interface.GetInstance.SendToParser(new PacketFields
                             {
-                                Data2Send = MaintenanceViewModel.FileToParams.ElementAt(0),
+                                Data2Send = (int)(MaintenanceViewModel.FileToParams.ElementAt(0)),
                                 ID = 67,
                                 SubID = Convert.ToInt16(4),
                                 IsSet = true,

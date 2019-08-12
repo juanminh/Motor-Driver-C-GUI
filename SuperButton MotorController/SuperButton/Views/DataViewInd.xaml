@@ -74,8 +74,8 @@
                              Foreground="White"
                              FontSize="11.5" 
                              Text="{Binding CommandValue,UpdateSourceTrigger=PropertyChanged}"
-                             TextWrapping="NoWrap"
-                        IsHitTestVisible="False"
+                             TextWrapping="Wrap"
+                             IsHitTestVisible="False"
                         IsReadOnly="True">
                     </TextBox>
                 </Border>
