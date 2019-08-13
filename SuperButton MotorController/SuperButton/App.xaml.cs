@@ -24,15 +24,15 @@ namespace SuperButton
         // OUTSIDE Of Visual Studio (no debugger attached). Trial watermarks should be removed. 
         public App()
         {
-            //SciChartSurface.SetRuntimeLicenseKey(@"<LicenseContract>
-            //<Customer>Redler technologies</Customer>
-            //<OrderId>ABT141014-5754-30127</OrderId>
-            //<LicenseCount>1</LicenseCount>
-            //<IsTrialLicense>false</IsTrialLicense>
-            //<SupportExpires>01/12/2015 00:00:00</SupportExpires>
-            //<ProductCode>SC-WPF-BSC</ProductCode>
-            //<KeyCode>lwAAAAEAAAAYTULLhErUAXAAQ3VzdG9tZXI9UmVkbGVyIHRlY2hub2xvZ2llcztPcmRlcklkPUFCVDE0MTAxNC01NzU0LTMwMTI3O1N1YnNjcmlwdGlvblZhbGlkVG89MTItSmFuLTIwMTU7UHJvZHVjdENvZGU9U0MtV1BGLUJTQyu69TgpwVx+uxEH2B+6rKOQ/5YDD2Oh+vDxAZ3OzX+X05jc9xhuF7mPcAXFaqyfWA==</KeyCode>
-            //</LicenseContract>");
+            SciChartSurface.SetRuntimeLicenseKey(@"<LicenseContract>
+            <Customer>Redler technologies</Customer>
+            <OrderId>ABT141014-5754-30127</OrderId>
+            <LicenseCount>1</LicenseCount>
+            <IsTrialLicense>false</IsTrialLicense>
+            <SupportExpires>01/12/2015 00:00:00</SupportExpires>
+            <ProductCode>SC-WPF-BSC</ProductCode>
+            <KeyCode>lwAAAAEAAAAYTULLhErUAXAAQ3VzdG9tZXI9UmVkbGVyIHRlY2hub2xvZ2llcztPcmRlcklkPUFCVDE0MTAxNC01NzU0LTMwMTI3O1N1YnNjcmlwdGlvblZhbGlkVG89MTItSmFuLTIwMTU7UHJvZHVjdENvZGU9U0MtV1BGLUJTQyu69TgpwVx+uxEH2B+6rKOQ/5YDD2Oh+vDxAZ3OzX+X05jc9xhuF7mPcAXFaqyfWA==</KeyCode>
+            </LicenseContract>");
         }
         protected override void OnStartup(StartupEventArgs e)
         {
