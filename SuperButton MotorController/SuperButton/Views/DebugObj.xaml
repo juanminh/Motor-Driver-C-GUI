@@ -6,17 +6,17 @@
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
       xmlns:models="clr-namespace:SuperButton.Models"
       mc:Ignorable="d" 
-      d:DesignHeight="30" d:DesignWidth="460">
-
+      d:DesignHeight="30" d:DesignWidth="560">
+    <!---->
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="10*"/>
+            <ColumnDefinition Width="15*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="30*"/>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="30*"/>
         </Grid.ColumnDefinitions>
         <!--ID-->
         <Border BorderBrush="White" BorderThickness="1,1,0,1" CornerRadius="4,0,0,4" Grid.Column="0">
@@ -25,7 +25,8 @@
                             Width="50" 
                            Text="{Binding ID}" 
                            Foreground="White" FontSize="12"
-                           VerticalContentAlignment="Center">
+                           VerticalContentAlignment="Center"
+                            IsReadOnly="True">
                     <i:Interaction.Behaviors>
                         <models:AllowableCharactersTextBoxBehavior/>
                     </i:Interaction.Behaviors>
@@ -38,7 +39,8 @@
                 <TextBox   Width="50"
                            Text="{Binding Index}" 
                            Foreground="White" FontSize="12"
-                           VerticalContentAlignment="Center">
+                           VerticalContentAlignment="Center"
+                           IsReadOnly="True">
                     <i:Interaction.Behaviors>
                         <models:AllowableCharactersTextBoxBehavior/>
                     </i:Interaction.Behaviors>
@@ -56,7 +58,7 @@
                     Style="{StaticResource CheckBoxStyle3}"
                               VerticalAlignment="Center"
                               IsChecked="{Binding IntFloat}"
-                              >
+                              IsEnabled="False">
                 </CheckBox>
                 <Separator Grid.Column="1" Width="10" Background="Transparent" Visibility="Hidden"/>
             </Grid>
@@ -84,7 +86,8 @@
                            Text="{Binding GetData, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                            Foreground="White" FontSize="12"
                            VerticalContentAlignment="Center"
-                           IsEnabled="True"/>
+                           IsEnabled="True"
+                           IsReadOnly="True"/>
                 <Separator Grid.Column="2" Width="10" Background="Transparent" Visibility="Hidden"/>
             </Grid>
         </Border>

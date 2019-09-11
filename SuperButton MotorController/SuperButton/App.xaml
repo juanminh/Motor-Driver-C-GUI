@@ -60,7 +60,7 @@
             <DataTemplate x:Key="BoolViewIndModel">
                 <views:BoolViewInd></views:BoolViewInd>
             </DataTemplate>
-            <DataTemplate x:Key="DebugObjViewModel">
+            <DataTemplate x:Key="DebugObjModel">
                 <views:DebugObj></views:DebugObj>
             </DataTemplate>
             <!--<DataTemplate x:Key="LeftPanelViewModel">

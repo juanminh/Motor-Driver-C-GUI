@@ -389,7 +389,7 @@ namespace SuperButton.Models.DriverBlock
 
         public void SendToParser(PacketFields messege)
         {
-            RxtoParser?.Invoke(this, new Rs232InterfaceEventArgs(messege));
+            RxtoParser?.Invoke(this, new Rs232InterfaceEventArgs(messege)); // then go to "void parseOutdata(object sender, Rs232InterfaceEventArgs e)"
             //Debug.WriteLine("{0} {1}[{2}]={3} {4}.", messege.IsSet ? "Set" : "Get", messege.ID, messege.SubID, messege.Data2Send, messege.IsFloat ? "F" : "I");
         }
 
@@ -415,8 +415,15 @@ namespace SuperButton.Models.DriverBlock
             if(port != null)
             {
                 byte[] buffer = new byte[port.BytesToRead];
-                port.Read(buffer, 0, buffer.Length);
+                try
+                {
+                    port.Read(buffer, 0, buffer.Length);
+                }
+                catch(Exception er)
+                {
+                    Debug.WriteLine(er.Message);
 
+                }
                 if(Rx2Packetizer != null && buffer.Length > 0)
                 {
                     Rx2Packetizer(this, new Rs232InterfaceEventArgs(buffer)); // Go to Packetizer -> MakePacketsBuff function

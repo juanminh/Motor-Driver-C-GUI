@@ -1,4 +1,5 @@
-﻿using System;
+﻿//#define RELEASE_MODE
+using System;
 using System.Data;
 using System.Data.OleDb;
 using System.Diagnostics;
@@ -121,10 +122,10 @@ namespace SuperButton.ViewModels
             do
             {
                 Thread.Sleep(1500);
-                Debug.WriteLine("Round");
                 timeOutPlot++;
             } while(OscilloscopeParameters.plotCount_temp != 0 && timeOutPlot <= 10);
 
+            Debug.WriteLine("TimeOutPlot: " + timeOutPlot);
             if(OscilloscopeParameters.plotCount_temp == 0)
                 EventRiser.Instance.RiseEevent(string.Format($"Success"));
             else
@@ -163,8 +164,7 @@ namespace SuperButton.ViewModels
                 IsSet = false,
                 IsFloat = false
             });
-            Thread.Sleep(20);
-
+            Thread.Sleep(5);
             Rs232Interface.GetInstance.SendToParser(new PacketFields
             {
                 Data2Send = "",
@@ -173,7 +173,7 @@ namespace SuperButton.ViewModels
                 IsSet = false,
                 IsFloat = false
             });
-            Thread.Sleep(20);
+            Thread.Sleep(10);
             Rs232Interface.GetInstance.SendToParser(new PacketFields
             {
                 Data2Send = "",
@@ -182,7 +182,7 @@ namespace SuperButton.ViewModels
                 IsSet = false,
                 IsFloat = false
             });
-            Thread.Sleep(20);
+            Thread.Sleep(10);
             Rs232Interface.GetInstance.SendToParser(new PacketFields
             {
                 Data2Send = "",
@@ -191,11 +191,18 @@ namespace SuperButton.ViewModels
                 IsSet = false,
                 IsFloat = false
             });
-            Thread.Sleep(20);
+
+            timeOutPlot = 0;
+            do
+            {
+                Thread.Sleep(200);
+                timeOutPlot++;
+            } while(StarterCount != 4 && timeOutPlot <= 10);
+            Debug.WriteLine("Param Count: " + timeOutPlot);
 
             for(int i = 1; i < 4; i++)
             {
-                Thread.Sleep(20);
+                Thread.Sleep(1);
                 Rs232Interface.GetInstance.SendToParser(new PacketFields
                 {
                     Data2Send = "",
@@ -206,54 +213,33 @@ namespace SuperButton.ViewModels
                 });
             }
 
-            //Thread.Sleep(20);
-            //Rs232Interface.GetInstance.SendToParser(new PacketFields
-            //{
-            //    Data2Send = "",
-            //    ID = Convert.ToInt16(60),
-            //    SubID = Convert.ToInt16(9), // Get Units Name
-            //    IsSet = false,
-            //    IsFloat = false
-            //});
-            //Thread.Sleep(20);
-            //Rs232Interface.GetInstance.SendToParser(new PacketFields
-            //{
-            //    Data2Send = "",
-            //    ID = Convert.ToInt16(60),
-            //    SubID = Convert.ToInt16(10), // Get Units Name
-            //    IsSet = false,
-            //    IsFloat = false
-            //});
-            Thread.Sleep(200);
+            timeOutPlot = 0;
+            do
+            {
+                Thread.Sleep(200);
+                timeOutPlot++;
+            } while(StarterCount != 7 && timeOutPlot <= 10);
+
+            Debug.WriteLine("Param Count: " + timeOutPlot);
+
+            Thread.Sleep(250);
             #endregion  Operations
             if(StarterCount == 7)
-            {
                 EventRiser.Instance.RiseEevent(string.Format($"Success"));
-            }
             else
                 EventRiser.Instance.RiseEevent(string.Format($"Failed"));
 
+            Debug.WriteLine("StarterCount: " + StarterCount);
+
             LeftPanelViewModel.flag = true;
             StarterOperationFlag = false;
-#if !DEBUG
+#if !DEBUG || RELEASE_MODE
             Thread Connection = new Thread(RefreshManger.GetInstance.VerifyConnection);
             Connection.Start();
             //RefreshManger.GetInstance.VerifyConnection();
 #endif
             if(DebugViewModel.GetInstance.EnRefresh)
-            {
-                //Thread bkgnd = new Thread(BackGroundFunc);
-                //bkgnd.IsBackground = true;
-                //bkgnd.Start();
-                //Thread t1 = new Thread(() =>
-                //{
                 BackGroundFunc();
-                //});
-                //t1.IsBackground = true;
-                //t1.Start();
-            }
-
-
         }
         private String _connectTextBoxContent;
         public String ConnectTextBoxContent
@@ -777,16 +763,16 @@ namespace SuperButton.ViewModels
         }
         public void BackGroundFunc()//object state)
         {
-            //Thread Refresh = new Thread(RefreshManger.GetInstance.StartRefresh);
-            //int count = 0;
-            while(flag && DebugViewModel.GetInstance.EnRefresh)// && count != 1
+            Thread refreshParams = new Thread(() =>
             {
-                RefreshManger.GetInstance.StartRefresh();
-                //Refresh.Start();
-                Thread.Sleep(1000);
-                //await Task.Delay(1000);
-                //count++;
-            }
+                while((flag && DebugViewModel.GetInstance.EnRefresh) || (flag && DebugViewModel.GetInstance.DebugRefresh))
+                {
+                    RefreshManger.GetInstance.StartRefresh();
+                    Thread.Sleep(500);
+                }
+            });
+            refreshParams.IsBackground = true;
+            refreshParams.Start();
         }
 
         private string _driverStat;

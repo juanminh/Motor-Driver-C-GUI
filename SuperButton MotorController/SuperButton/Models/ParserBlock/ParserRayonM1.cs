@@ -99,9 +99,10 @@ namespace SuperButton.Models.ParserBlock
                 { // perform Get after "set" function
                     if(LeftPanelViewModel.flag == true && DebugViewModel.GetInstance.EnRefresh == false && e.PacketRx.IsSet != false)
                     {
+                        Thread.Sleep(1);
                         if(e.PacketRx.ID != 63 && e.PacketRx.ID != 67)
                         {
-                            ParseOutputData(e.PacketRx.Data2Send, e.PacketRx.ID, e.PacketRx.SubID, false,
+                            ParseOutputData(/*e.PacketRx.Data2Send*/"", e.PacketRx.ID, e.PacketRx.SubID, false,
                             e.PacketRx.IsFloat);
                         }
                     }
@@ -447,10 +448,10 @@ namespace SuperButton.Models.ParserBlock
                 ParseInputPacket(dataList[i]);
             }
         }
-
+        public static byte[] DebugData = { }; 
         public bool ParseInputPacket(byte[] data)
         {
-
+            DebugData = data;
             var crclsb = data[7];
             var crcmsb = data[8];
 
@@ -483,7 +484,7 @@ namespace SuperButton.Models.ParserBlock
                 transit |= data[4];
                 transit <<= 8;
                 transit |= data[3];
-                if(!exceptionID.Contains(commandId))
+                if(!exceptionID.Contains(commandId) || (exceptionID.Contains(commandId) && !LeftPanelViewModel.GetInstance.StarterOperationFlag))
                 {
                     if(isInt)
                     {
@@ -629,6 +630,8 @@ namespace SuperButton.Models.ParserBlock
                         else
                         {
                             EventRiser.Instance.RiseEevent(string.Format($"Load Parameters Failed"));
+                            MaintenanceViewModel.GetInstance.SaveToFile = false;
+                            MaintenanceViewModel.GetInstance.LoadFromFile= false;
                             MaintenanceViewModel.GetInstance.PostRedoState(MaintenanceViewModel._redoState);
                         }
                         MaintenanceViewModel.GetInstance.LoadFromFile = false;
@@ -643,7 +646,7 @@ namespace SuperButton.Models.ParserBlock
                         });
                     }
                 }
-                else if(commandId == 34)
+                else if(commandId == 34 && LeftPanelViewModel.GetInstance.StarterOperationFlag)
                 {
                     EventRiser.Instance.RiseEevent(string.Format($"Reading plots..."));
                     OscilloscopeParameters.plotCount_temp = transit;
@@ -652,11 +655,11 @@ namespace SuperButton.Models.ParserBlock
                     if(transit > 0)
                         OscilloscopeParameters.fillPlotList();
                 }
-                else if(commandId == 35)
+                else if(commandId == 35 && LeftPanelViewModel.GetInstance.StarterOperationFlag)
                 {
                     OscilloscopeParameters.plotGeneral.Add(transit);
                 }
-                else if(commandId == 36)
+                else if(commandId == 36 && LeftPanelViewModel.GetInstance.StarterOperationFlag)
                 {
                     var dataAray = new byte[4];
                     for(int i = 0; i < 4; i++)

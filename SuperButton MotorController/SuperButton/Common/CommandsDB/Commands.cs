@@ -45,7 +45,7 @@ namespace SuperButton.CommandsDB
         public Dictionary<Tuple<int, int>, DataViewModel> DataViewCommandsListLP = new Dictionary<Tuple<int, int>, DataViewModel>();
         public Dictionary<Tuple<int, int>, EnumViewModel> EnumViewCommandsList = new Dictionary<Tuple<int, int>, EnumViewModel>();
         public Dictionary<Tuple<int, int>, CalibrationButtonModel> CalibartionCommandsList = new Dictionary<Tuple<int, int>, CalibrationButtonModel>();
-        public Dictionary<Tuple<int, int>, DebugObjViewModel> DebugCommandsList = new Dictionary<Tuple<int, int>, DebugObjViewModel>();
+        public Dictionary<Tuple<int, int>, DebugObjModel> DebugCommandsList = new Dictionary<Tuple<int, int>, DebugObjModel>();
 
 
         public Dictionary<string, List<string>> Enums = new Dictionary<string, List<string>>();
@@ -1091,6 +1091,7 @@ namespace SuperButton.CommandsDB
                 IsFloat = false,
             };
             DataViewCommandsListLP.Add(new Tuple<int, int>(62, 3), data);
+            DataViewCommandsList.Add(new Tuple<int, int>(62, 3), data);
             DataCommandsListbySubGroup["LPCommands List"].Add(data);
             #endregion Commands1
 
@@ -1284,40 +1285,40 @@ namespace SuperButton.CommandsDB
         private void BuildErrorList()
         {
             // Com. Error: 
-            ErrorList.Add(2, "BAD_COMMAND");
-            ErrorList.Add(3, "BAD_INDEX");
-            ErrorList.Add(5, "NO_INTERPRETER_MEANING");
-            ErrorList.Add(6, "PROGRAM_NOT_RUNNING");
-            ErrorList.Add(7, "MODE_NOT_STARTED");
-            ErrorList.Add(11, "CANNOT_WRITE_TO_FLASH");
-            ErrorList.Add(12, "COMMAND_NOT_AVAILABLE");
-            ErrorList.Add(13, "UART_BUSY");
-            ErrorList.Add(18, "EMPTY_ASSIGN");
-            ErrorList.Add(19, "BAD_COMMAND_FORMAT");
-            ErrorList.Add(21, "OPERAND_OUT_OF_RANGE");
-            ErrorList.Add(22, "ZERO_DIVISION");
-            ErrorList.Add(23, "COMMAND_NOT_ASSIGNED");
-            ErrorList.Add(24, "BAD_OPERAND");
-            ErrorList.Add(25, "COMMAND_NOT_VALID");
-            ErrorList.Add(26, "MOTION_MODE_NOT_VALID");
-            ErrorList.Add(28, "OUT_OF_LIMIT_RANGE");
-            ErrorList.Add(30, "NO_PROGRAM_TO_CONTINUE");
-            ErrorList.Add(32, "COMMUNICATION_ERROR");
-            ErrorList.Add(37, "HALL_DEFINED_SAME_LOCATION");
-            ErrorList.Add(38, "HALL_READING_ERROR");
-            ErrorList.Add(39, "MOTION_START_PAST");
-            ErrorList.Add(41, "COMMAND_NOT_SUPPORTED");
-            ErrorList.Add(42, "NO_SUCH_LABEL");
-            ErrorList.Add(57, "MOTOR_MUST_BE_OFF");
-            ErrorList.Add(58, "MOTOR_MUST_BE_ON");
-            ErrorList.Add(60, "BAD_UNIT_MODE");
-            ErrorList.Add(66, "DRIVE_NOT_READY");
-            ErrorList.Add(71, "HOMING_BUSY");
-            ErrorList.Add(72, "MODULO_MUST_EVEN");
-            ErrorList.Add(73, "SET_POSITION");
-            ErrorList.Add(127, "MODULO_RANGE_MUST_POSITIVE");
-            ErrorList.Add(166, "OUT_OF_MODULO_RANGE");
-            ErrorList.Add(200, "Reset_Driver_occured");
+            ErrorList.Add(2, "BAD COMMAND");
+            ErrorList.Add(3, "BAD INDEX");
+            ErrorList.Add(5, "NO INTERPRETER MEANING");
+            ErrorList.Add(6, "PROGRAM NOT RUNNING");
+            ErrorList.Add(7, "MODE NOT STARTED");
+            ErrorList.Add(11, "CANNOT WRITE TO FLASH");
+            ErrorList.Add(12, "COMMAND NOT AVAILABLE");
+            ErrorList.Add(13, "UART BUSY");
+            ErrorList.Add(18, "EMPTY ASSIGN");
+            ErrorList.Add(19, "BAD COMMAND FORMAT");
+            ErrorList.Add(21, "OPERAND OUT OF RANGE");
+            ErrorList.Add(22, "ZERO DIVISION");
+            ErrorList.Add(23, "COMMAND NOT ASSIGNED");
+            ErrorList.Add(24, "BAD OPERAND");
+            ErrorList.Add(25, "COMMAND NOT VALID");
+            ErrorList.Add(26, "MOTION MODE NOT VALID");
+            ErrorList.Add(28, "OUT OF LIMIT RANGE");
+            ErrorList.Add(30, "NO PROGRAM TO CONTINUE");
+            ErrorList.Add(32, "COMMUNICATION ERROR");
+            ErrorList.Add(37, "HALL DEFINED SAME LOCATION");
+            ErrorList.Add(38, "HALL READING ERROR");
+            ErrorList.Add(39, "MOTION START PAST");
+            ErrorList.Add(41, "COMMAND NOT SUPPORTED");
+            ErrorList.Add(42, "NO SUCH LABEL");
+            ErrorList.Add(57, "MOTOR MUST BE OFF");
+            ErrorList.Add(58, "MOTOR MUST BE ON");
+            ErrorList.Add(60, "BAD UNIT MODE");
+            ErrorList.Add(66, "DRIVE NOT READY");
+            ErrorList.Add(71, "HOMING BUSY");
+            ErrorList.Add(72, "MODULO MUST EVEN");
+            ErrorList.Add(73, "SET POSITION");
+            ErrorList.Add(127, "MODULO RANGE MUST POSITIVE");
+            ErrorList.Add(166, "OUT OF MODULO RANGE");
+            ErrorList.Add(200, "Reset Driver occured");
         }
 
         private void GenerateGain()
@@ -1349,16 +1350,16 @@ namespace SuperButton.CommandsDB
         {
             DebugCommandsListbySubGroup.Add("Debug List", new ObservableCollection<object>());
 
-            var data = new DebugObjViewModel
-            {
-                ID = "62",
-                Index = "3",
-                IntFloat = true,
-                GetData = "",
-                SetData = "",
-            };
-            DebugCommandsList.Add(new Tuple<int, int>(62, 3), data);
-            DebugCommandsListbySubGroup["Debug List"].Add(data);
+            //var data = new DebugObjViewModel
+            //{
+            //    ID = "63",
+            //    Index = "1",
+            //    IntFloat = true,
+            //    GetData = "",
+            //    SetData = "",
+            //};
+            //DebugCommandsList.Add(new Tuple<int, int>(62, 3), data);
+            //DebugCommandsListbySubGroup["Debug List"].Add(data);
 
             DataCommandsListbySubGroup.Add("InternalParam List", new ObservableCollection<object>());
             #region Operation

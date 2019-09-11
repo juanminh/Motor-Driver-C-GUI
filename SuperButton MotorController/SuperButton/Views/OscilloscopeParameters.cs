@@ -7,15 +7,15 @@ namespace SuperButton.Views
 {
     public static class OscilloscopeParameters
     {
-        public static List<Tuple<float, float>> ScaleAndGainList= new List<Tuple<float, float>>();
+        public static List<Tuple<float, float>> ScaleAndGainList = new List<Tuple<float, float>>();
         public static List<Int32> plotGeneral = new List<Int32>();
         public static List<float> plotFullScale = new List<float>();
-        public static float SingleChanelFreqC = (float) 6666.666667;
-        public static float ChanelFreq = SingleChanelFreqC;     
+        public static float SingleChanelFreqC = (float)6666.666667;
+        public static float ChanelFreq = SingleChanelFreqC;
         public static float Step = 1 / SingleChanelFreqC;
 
-        public static float IfullScale = (float) 192.0; // old 576.0
-        public static float VfullScale = (float) 68.0;
+        public static float IfullScale = (float)192.0; // old 576.0
+        public static float VfullScale = (float)68.0;
 
         public static float FullScale;
         public static float Gain;
@@ -28,21 +28,84 @@ namespace SuperButton.Views
         public static int plotCount_temp = 0;
 
         static string[] plotName = new[] {
-        "None",
-        "Iq feedback", "I Phase A", "I Phase B", "I Phase c", "IRms",
-        "Filtered Irms", "I PSU", "BEMF Phase A", "BEMF Phase B", "BEMF Phase C",
-        "VDC Motor", "VDC 12v", "VDC 5v", "VDC 3v", "VDC Ref",
-        "Analog Command", "Sin Analog Enc", "Cos Analog Enc", "Hal mechanical angle", "Qep1 mechanical angle",
-        "Qep2 mechanical angle", "SSI mechanical angle", "Sin Cos  mechanical angle", "Com mechanical angle", "Commutation angle",
-        "HALL speed", "HALL Elect Angle", "HALL position", "Enc1 speed", "Enc1 Elect angle",
-        "Enc1 position", "Enc2 speed", "Enc2 Elect angle", "Enc2 position", "Sensorless speed",
-        "Sensorless Elect angle", "Sin Cos Angle", "Delta Hall Enc", "Current Cmd", "Speed Cmd",
-        "Position Cmd", "Iq Ref", "Id Ref", "Speed Fdb", "Speed Ref",
-        "Speed Fdb Filt", "Position Fdb", "Position Ref", "Digital In 1", "Digital In 2",
-        "Digital In 3", "Digital In 4", "Digital In 5", "Digital In 6", "Digital In 7",
-        "Digital In 8", "Digital Out 1", "Digital Out 2", "Digital Out 3", "Digital Out 4",
-        "Digital Out 5", "Digital Out 6", "Digital Out 7", "Digital Out 8", "Cla Debug 1",
-        "Cla Debug 2", "Test Signal 1", "Test Signal2", "Test Signal3", "Test Signal4"
+            "None",
+            "Current feedback",
+            "I Phase A",
+            "I Phase B",
+            "I Phase C",
+            "IRms",
+            "Filtered Irms",
+            "I PSU",
+            "BEMF Phase A",
+            "BEMF Phase B",
+            "BEMF Phase C",
+            "VDC motor",
+            "VDC 12v",
+            "VDC 5v",
+            "VDC 3v",
+            "VDC Ref",
+            "Analog Command",
+            "Sin Analog Enc",
+            "Cos Analog Enc",
+            "Hall Mech Angle",
+            "Qep1 Mech Angle",
+            "Qep2 Mech Angle",
+            "SSI Mech Angle",
+            "Sin Cos Mech Angle",
+            "Com Mech Angle",
+            "Commutation Angle",
+            "HALL Speed",
+            "HALL Elect Angle",
+            "HALL Position",
+            "Enc1 Speed",
+            "Enc1 Elect Angle",
+            "Enc1 Position",
+            "Enc2 Speed",
+            "Enc2 Elect Angle",
+            "Enc2 Position",
+            "Sensorless Speed",
+            "Sensorless Elect Angle",
+            "SinCosAngle",
+            "delta Hall Enc",
+            "Current Cmd",
+            "Speed Cmd",
+            "Position Cmd",
+            "Current Iq Fdb",
+            "Current Iq Ref",
+            "Current Iq Err",
+            "Current Id Fdb",
+            "Current Id Ref",
+            "Current Id Err",
+            "Speed Fdb",
+            "Speed Ref",
+            "Speed Fdb LPF",
+            "Speed Err",
+            "Position Fdb",
+            "Position Ref",
+            "Position Err",
+            "Digital In1",
+            "Digital In2",
+            "Digital In3",
+            "Digital In4",
+            "Digital In5",
+            "Digital In6",
+            "Digital In7",
+            "Digital In8",
+            "Digital Out1",
+            "Digital Out2",
+            "Digital Out3",
+            "Digital Out4",
+            "Digital Out5",
+            "Digital Out6",
+            "Digital Out7",
+            "Digital Out8",
+            "cla Debug1",
+            "cla Debug2",
+            "Test Signal1",
+            "Test Signal2",
+            "Test Signal3",
+            "Test Signal4"
+
         };
         static List<string> plotName_ls = new List<string>();
 
@@ -104,12 +167,12 @@ namespace SuperButton.Views
                     ScaleAndGainList.Add(new Tuple<float, float>(1, plotFullScale[i]));
                 }
                 i++;
-             }
+            }
             OscilloscopeViewModel.GetInstance.ChComboEn = true;
         }
         public static void InitList()
         {
-            
+
             //Init list
             ScaleAndGainList.Add(new Tuple<float, float>((float)1.0, (float)1.0)); //Pause            
             ScaleAndGainList.Add(new Tuple<float, float>((float)1.0, IfullScale));//IqFeedback       
@@ -148,7 +211,7 @@ namespace SuperButton.Views
             ScaleAndGainList.Add(new Tuple<float, float>(1, IfullScale)); // CurrentRefPI
 
             OscilloscopeViewModel.GetInstance.FillDictionary();
-
+            OscilloscopeViewModel.GetInstance.ChComboEn = true;
         }
     }
 

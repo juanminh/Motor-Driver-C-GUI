@@ -69,9 +69,12 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Abt.Controls.SciChart.Wpf, Version=3.61.0.7847, Culture=neutral, PublicKeyToken=b55dd9efe817e823, processorArchitecture=MSIL">
+    <Reference Include="Abt.Controls.SciChart.Wpf, Version=3.21.0.5511, Culture=neutral, PublicKeyToken=b55dd9efe817e823, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Lib\net40\Abt.Controls.SciChart.Wpf.dll</HintPath>
+      <HintPath>..\..\net40\Abt.Controls.SciChart.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="Abt.Controls.SciChart3D.Wpf">
+      <HintPath>..\..\net40\Abt.Controls.SciChart3D.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="MathNet.Numerics">
       <HintPath>..\packages\MathNet.Numerics.dll</HintPath>
@@ -151,9 +154,9 @@
     <Compile Include="ViewModels\BoolViewIndModel.cs" />
     <Compile Include="ViewModels\BottomPanelViewModel.cs" />
     <Compile Include="ViewModels\CalibrationButtonModel.cs" />
-    <Compile Include="ViewModels\DebugObjViewModel.cs" />
+    <Compile Include="ViewModels\DebugObjModel.cs" />
     <Compile Include="ViewModels\DebugViewModel.cs" />
-    <Compile Include="Models\DebugObjModel.cs" />
+    <Compile Include="Models\DebugModel.cs" />
     <Compile Include="ViewModels\CalibrationViewModel.cs" />
     <Compile Include="ViewModels\ComboBox.cs" />
     <Compile Include="ViewModels\LoadParamsViewModel.cs" />
@@ -406,7 +409,7 @@
       <Visible>false</Visible>
     </None>
     <None Include="ClassDiagram1.cd" />
-    <None Include="HomeBackground.jpg">
+    <None Include="Images\HomeBackground.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

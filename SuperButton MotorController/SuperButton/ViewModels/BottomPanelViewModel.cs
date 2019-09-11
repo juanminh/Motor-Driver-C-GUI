@@ -199,7 +199,7 @@ namespace SuperButton.ViewModels
                 ID = Convert.ToInt16(1),
                 SubID = Convert.ToInt16(1),
                 IsSet = true,
-                IsFloat = true
+                IsFloat = false
             });
 
         }

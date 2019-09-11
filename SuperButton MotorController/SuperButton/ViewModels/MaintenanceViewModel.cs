@@ -606,6 +606,8 @@ namespace SuperButton.ViewModels
                             SaveToFile = false;
                             PbarValueToFile = 0;
                             EventRiser.Instance.RiseEevent(string.Format($"Load Parameters Failed"));
+                            MaintenanceViewModel.GetInstance.SaveToFile = false;
+                            MaintenanceViewModel.GetInstance.LoadFromFile = false;
                             MaintenanceViewModel.GetInstance.PostRedoState(MaintenanceViewModel._redoState);
                         }
                     }
@@ -633,6 +635,8 @@ namespace SuperButton.ViewModels
                             SaveToFile = false;
                             PbarValueFromFile = 0;
                             EventRiser.Instance.RiseEevent(string.Format($"Load Parameters Failed"));
+                            MaintenanceViewModel.GetInstance.SaveToFile = false;
+                            MaintenanceViewModel.GetInstance.LoadFromFile = false;
                             MaintenanceViewModel.GetInstance.PostRedoState(MaintenanceViewModel._redoState);
                         }
                     }

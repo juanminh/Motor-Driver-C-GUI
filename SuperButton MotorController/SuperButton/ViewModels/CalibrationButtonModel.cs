@@ -32,16 +32,6 @@ namespace SuperButton.ViewModels
                 if(value == "Run")
                 {
                     ButtonCheck = false;
-                    //CalibrationProcessing = false;
-                    //if(EnRefChg)
-                    //{
-                    //    LeftPanelViewModel.GetInstance.EnRefresh = true;
-                    //    EnRefChg = false;
-                    //}
-                    //if(OscilloscopeParameters.ChanTotalCounter > 0 && OscilloscopeViewModel.GetInstance.IsFreeze == true)
-                    //{
-                    //    OscilloscopeViewModel.GetInstance.IsFreeze = false;
-                    //}
                 }
                 if(value != _buttonContent)
                 { _buttonContent = value; OnPropertyChanged("ButtonContent"); }

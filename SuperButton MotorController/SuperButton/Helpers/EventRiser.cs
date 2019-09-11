@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,7 +30,7 @@ namespace SuperButton.Helpers
         {
 
             LoggerEvent(null, new CustomEventArgs() { Msg = DateTime.Now.ToString("mm:ss - ") + msg }); // DateTime.Now.ToString("mm:ss - ") + 
-
+            //Debug.WriteLine("Event catch");
         }
         public void RiseEventLedTx(int led)
         {
