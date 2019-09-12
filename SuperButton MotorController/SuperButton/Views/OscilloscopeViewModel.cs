@@ -1080,7 +1080,7 @@ namespace SuperButton.Views
                     maxval = (float)0.5;
                 }
                 //YLimit = new DoubleRange(-OscilloscopeParameters.FullScale, OscilloscopeParameters.FullScale);
-                YLimit = new DoubleRange(1.1 * minval, 1.1 * maxval);
+                YLimit = new DoubleRange(0.5 * minval, 1.1 * maxval);
                 _yzoom = OscilloscopeParameters.FullScale;
                 XVisibleRange = XLimit;
                 YVisibleRange = YLimit;
@@ -1307,6 +1307,37 @@ namespace SuperButton.Views
         public static List<float> Ytemp = new List<float>();
 
         float step_temp = 0; bool performX_data = false;
+        private float iqFactor = (float)Math.Pow(2.0, -15);
+        private int IntegerFactor = 1;
+        float calcFactor(float dataSample, int ChNo)
+        {
+            string plotType = "";
+            if(OscilloscopeParameters.plotType_ls.Count != 0)
+            {
+                switch(ChNo)
+                {
+                    case 1:
+                        plotType = OscilloscopeParameters.plotType_ls.ElementAt(OscilloscopeViewModel.GetInstance.Ch1SelectedIndex);
+                        break;
+                    case 2:
+                        plotType = OscilloscopeParameters.plotType_ls.ElementAt(OscilloscopeViewModel.GetInstance.Ch2SelectedIndex);
+                        break;
+                }
+                switch(plotType)
+                {
+                    case "Integer":
+                        return dataSample * IntegerFactor;
+                    case "Float":
+                    case "Iq24":
+                    case "Iq15":
+                    default:
+                        return dataSample * iqFactor;
+                }
+            }
+            else
+                return dataSample;
+        }
+
         private void OnTick(object sender, EventArgs e)
         {
             try
@@ -1357,9 +1388,9 @@ namespace SuperButton.Views
                                 while(ParserRayonM1.GetInstanceofParser.FifoplotList.TryDequeue(out item))
                                 {
                                     if(ch1 != 0)
-                                        Ytemp.Add(item * OscilloscopeParameters.Gain * OscilloscopeParameters.FullScale * SubGain1);
+                                        Ytemp.Add(calcFactor((item * OscilloscopeParameters.Gain * OscilloscopeParameters.FullScale * SubGain1), 1));
                                     else
-                                        Ytemp.Add(item * OscilloscopeParameters.Gain2 * OscilloscopeParameters.FullScale2 * SubGain2);
+                                        Ytemp.Add(calcFactor((item * OscilloscopeParameters.Gain2 * OscilloscopeParameters.FullScale2 * SubGain2), 2));
                                     //Record
                                     if(RecFlag)
                                     {
@@ -1642,9 +1673,9 @@ namespace SuperButton.Views
 
                                     while(ParserRayonM1.GetInstanceofParser.FifoplotList.TryDequeue(out item))
                                     {
-                                        AllYData.Add(item * OscilloscopeParameters.Gain * OscilloscopeParameters.FullScale * SubGain1);
+                                        AllYData.Add(calcFactor((item * OscilloscopeParameters.Gain * OscilloscopeParameters.FullScale * SubGain1), 1));
                                         ParserRayonM1.GetInstanceofParser.FifoplotListCh2.TryDequeue(out item2);
-                                        AllYData2.Add(item2 * OscilloscopeParameters.Gain2 * OscilloscopeParameters.FullScale2 * SubGain2);
+                                        AllYData2.Add(calcFactor((item2 * OscilloscopeParameters.Gain2 * OscilloscopeParameters.FullScale2 * SubGain2), 2));
                                     }
                                 }
 

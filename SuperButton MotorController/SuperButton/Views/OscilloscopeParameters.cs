@@ -29,7 +29,7 @@ namespace SuperButton.Views
 
         static string[] plotName = new[] {
             "None",
-            "Current feedback",
+            "Motor Current",
             "I Phase A",
             "I Phase B",
             "I Phase C",
@@ -108,6 +108,7 @@ namespace SuperButton.Views
 
         };
         static List<string> plotName_ls = new List<string>();
+        public static List<string> plotType_ls = new List<string>();
 
         static string[] plotType = new[] { "Integer", "Float", "Iq24", "Iq15" };
         static string[] plotUnit = new[] { "Amper", "Volt", "", "", "", "Elec Angle", "mechanical Angle", "", "", "", "RPM Per Volt", "Count Per Sec", "Round Per Minute", "Counts" };
@@ -124,6 +125,7 @@ namespace SuperButton.Views
             {
                 plotGeneral.Clear();
                 plotFullScale.Clear();
+                plotType_ls.Clear();
                 OscilloscopeViewModel.GetInstance.Channel1SourceItems.Clear();
                 OscilloscopeViewModel.GetInstance.Channel2SourceItems.Clear();
                 OscilloscopeViewModel.GetInstance.ChannelYtitles.Clear();
@@ -158,16 +160,19 @@ namespace SuperButton.Views
             OscilloscopeViewModel.GetInstance.Channel1SourceItems.Add("Pause");
             OscilloscopeViewModel.GetInstance.ChannelYtitles.Add("Pause", "");
             ScaleAndGainList.Add(new Tuple<float, float>((float)1.0, (float)1.0)); //Pause
+            plotType_ls.Add(plotType[0]); //Pause
             foreach(var element in plotGeneral)
             {
                 if(element > 0)
                 {
                     OscilloscopeViewModel.GetInstance.Channel1SourceItems.Add(plotName_ls[element & 0xFFFF]);
                     OscilloscopeViewModel.GetInstance.ChannelYtitles.Add(plotName_ls[element & 0xFFFF], plotUnit[(element >> 24) & 0xFF]);
+                    plotType_ls.Add(plotType[(element >> 16) & 0xFF]);
                     ScaleAndGainList.Add(new Tuple<float, float>(1, plotFullScale[i]));
                 }
                 i++;
             }
+
             OscilloscopeViewModel.GetInstance.ChComboEn = true;
         }
         public static void InitList()

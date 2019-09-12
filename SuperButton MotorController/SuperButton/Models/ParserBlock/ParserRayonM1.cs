@@ -50,7 +50,7 @@ namespace SuperButton.Models.ParserBlock
         private DoubleSeries datasource1 = new DoubleSeries();
         public static ManualResetEvent mre = new ManualResetEvent(false);
         private float iqFactor = (float)Math.Pow(2.0, -15);
-
+        private int IntegerFactor = 1;
 
         public event Parser2SendHandler Parser2Send;
         public bool StopParser { get { return stop; } set { stop = value; } }
@@ -253,8 +253,8 @@ namespace SuperButton.Models.ParserBlock
             //TODO add try catch here
             //if(Id == 81 && SubId == 1 && IsSet == true)
             //{
-                //   Data2Send = (float)5.22;
-                //int i = 0;
+            //   Data2Send = (float)5.22;
+            //int i = 0;
             //}
             byte[] temp = new byte[11] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             char tempChar = (char)0;
@@ -448,7 +448,7 @@ namespace SuperButton.Models.ParserBlock
                 ParseInputPacket(dataList[i]);
             }
         }
-        public static byte[] DebugData = { }; 
+        public static byte[] DebugData = { };
         public bool ParseInputPacket(byte[] data)
         {
             DebugData = data;
@@ -484,7 +484,7 @@ namespace SuperButton.Models.ParserBlock
                 transit |= data[4];
                 transit <<= 8;
                 transit |= data[3];
-                if(!exceptionID.Contains(commandId) || (exceptionID.Contains(commandId) && !LeftPanelViewModel.GetInstance.StarterOperationFlag))
+                if(!exceptionID.Contains(commandId) || (exceptionID.Contains(commandId) && !LeftPanelViewModel.GetInstance.StarterOperationFlag && commandId != 100))
                 {
                     if(isInt)
                     {
@@ -631,7 +631,7 @@ namespace SuperButton.Models.ParserBlock
                         {
                             EventRiser.Instance.RiseEevent(string.Format($"Load Parameters Failed"));
                             MaintenanceViewModel.GetInstance.SaveToFile = false;
-                            MaintenanceViewModel.GetInstance.LoadFromFile= false;
+                            MaintenanceViewModel.GetInstance.LoadFromFile = false;
                             MaintenanceViewModel.GetInstance.PostRedoState(MaintenanceViewModel._redoState);
                         }
                         MaintenanceViewModel.GetInstance.LoadFromFile = false;
@@ -698,54 +698,100 @@ namespace SuperButton.Models.ParserBlock
                 }
             }
         }
+        //float calcFactor(short dataSample, int ChNo)
+        //{
+        //    string plotType = "";
+        //    if(OscilloscopeParameters.plotType_ls.Count != 0)
+        //    {
+        //        switch(ChNo)
+        //        {
+        //            case 1:
+        //                plotType = OscilloscopeParameters.plotType_ls.ElementAt(OscilloscopeViewModel.GetInstance.Ch1SelectedIndex);
+        //                break;
+        //            case 2:
+        //                plotType = OscilloscopeParameters.plotType_ls.ElementAt(OscilloscopeViewModel.GetInstance.Ch2SelectedIndex);
+        //                break;
+        //        }
+        //        switch(plotType)
+        //        {
+        //            case "Integer":
+        //                return dataSample * IntegerFactor;
+        //            case "Float":
+        //            case "Iq24":
+        //            case "Iq15":
+        //            default:
+        //                return dataSample * iqFactor;
+        //        }
+        //    }
+        //    else
+        //        return dataSample;
+        //}
         public void ParsePlot(List<byte[]> PlotList)
         {
-
+            
             int plotDataSampleLsb;
             int plotDataSampleMsb;
             short plotDataSample;
-
+            
             // In order to achive best performance using good old-fashioned for loop: twice faster! then "foreach (byte[] packet in PlotList)"
             //Debug.WriteLine("ParsePlot 1" + DateTime.Now.ToString("h:mm:ss.fff"));
-            if(!OscilloscopeViewModel.GetInstance.IsFreeze)
+            //if(!OscilloscopeViewModel.GetInstance.IsFreeze)
             {
                 for(var i = 0; i < PlotList.Count; i++)
                 {
                     lock(PlotListLock)
                     {
                         //First
-                        plotDataSampleLsb = PlotList[i][2];
-                        plotDataSampleMsb = PlotList[i][3];
-                        plotDataSample = (short)((plotDataSampleMsb << 8) | plotDataSampleLsb);
+                        //plotDataSampleLsb = PlotList[i][2];
+                        //plotDataSampleMsb = PlotList[i][3];
+                        //plotDataSample = (short)((plotDataSampleMsb << 8) | plotDataSampleLsb);
+                        //plotDataSample = (short)((PlotList[i][3] << 8) | PlotList[i][2]);
 
-                        FifoplotList.Enqueue(plotDataSample * iqFactor);
+                        FifoplotList.Enqueue((short)((PlotList[i][3] << 8) | PlotList[i][2]));
 
                         //Second
-                        plotDataSampleLsb = PlotList[i][4];
-                        plotDataSampleMsb = PlotList[i][5];
-                        plotDataSample = (short)((plotDataSampleMsb << 8) | plotDataSampleLsb);
+                        //plotDataSampleLsb = PlotList[i][4];
+                        //plotDataSampleMsb = PlotList[i][5];
+                        //plotDataSample = (short)((plotDataSampleMsb << 8) | plotDataSampleLsb);
 
                         if(OscilloscopeParameters.ChanTotalCounter == 1)
-                            FifoplotList.Enqueue(plotDataSample * iqFactor);
+                        {
+                            //FifoplotList.Enqueue(plotDataSample);
+                            FifoplotList.Enqueue((short)((PlotList[i][5] << 8) | PlotList[i][4]));
+
+                        }
+
                         else if(OscilloscopeParameters.ChanTotalCounter == 2)
-                            FifoplotListCh2.Enqueue(plotDataSample * iqFactor);
+                        {
+                            //FifoplotListCh2.Enqueue(plotDataSample);
+                            FifoplotListCh2.Enqueue((short)((PlotList[i][5] << 8) | PlotList[i][4]));
+                        }
 
                         //Third
-                        plotDataSampleLsb = PlotList[i][6];
-                        plotDataSampleMsb = PlotList[i][7];
-                        plotDataSample = (short)((plotDataSampleMsb << 8) | plotDataSampleLsb);
+                        //plotDataSampleLsb = PlotList[i][6];
+                        //plotDataSampleMsb = PlotList[i][7];
+                        //plotDataSample = (short)((plotDataSampleMsb << 8) | plotDataSampleLsb);
 
-                        FifoplotList.Enqueue(plotDataSample * iqFactor);
+                        //FifoplotList.Enqueue(plotDataSample);
+                        FifoplotList.Enqueue((short)((PlotList[i][7] << 8) | PlotList[i][6]));
 
                         //Fourth
-                        plotDataSampleLsb = PlotList[i][8];
-                        plotDataSampleMsb = PlotList[i][9];
-                        plotDataSample = (short)((plotDataSampleMsb << 8) | plotDataSampleLsb);
+                        //plotDataSampleLsb = PlotList[i][8];
+                        //plotDataSampleMsb = PlotList[i][9];
+                        //plotDataSample = (short)((plotDataSampleMsb << 8) | plotDataSampleLsb);
 
                         if(OscilloscopeParameters.ChanTotalCounter == 1)
-                            FifoplotList.Enqueue(plotDataSample * iqFactor);
+                        {
+                            //FifoplotList.Enqueue(plotDataSample);
+                            FifoplotList.Enqueue((short)((PlotList[i][9] << 8) | PlotList[i][8]));
+
+                        }
+
                         else if(OscilloscopeParameters.ChanTotalCounter == 2)
-                            FifoplotListCh2.Enqueue(plotDataSample * iqFactor);
+                        {
+                            //FifoplotListCh2.Enqueue(plotDataSample);
+                            FifoplotListCh2.Enqueue((short)((PlotList[i][9] << 8) | PlotList[i][8]));
+                        }
                         //FifoplotList.Enqueue(-100);
                     }
 
@@ -753,7 +799,6 @@ namespace SuperButton.Models.ParserBlock
                 PlotList.Clear();
                 //Debug.WriteLine("ParsePlot 2" + DateTime.Now.ToString("h:mm:ss.fff"));
             }
-
         }
 
     }//Class

@@ -273,8 +273,9 @@ namespace SuperButton.Models.DriverBlock
                 tab = Views.ParametarsWindow.ParametersWindowTabSelected;
                 if(ParametarsWindow.WindowsOpen == false)
                     tab = -1;
-
+#if REFRESH_MANAGER
                 Debug.WriteLine("StartRefresh: " + DateTime.Now.ToString("h:mm:ss.fff"));
+#endif
                 if(tab != TempTab || DebugViewModel.updateList)
                 {
                     BuildList = new Dictionary<Tuple<int, int>, DataViewModel>();
@@ -683,7 +684,7 @@ namespace SuperButton.Models.DriverBlock
                         if(commandidentifier.Item1 == 62 && commandidentifier.Item2 < 3)
                             Commands.GetInstance.DataViewCommandsListLP[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)].CommandValue = newPropertyValue;
                         else if(commandidentifier.Item1 == 62 && commandidentifier.Item2 == 10)
-                            Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)].CommandValue = "0x" + int.Parse(newPropertyValue).ToString("X");
+                            Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)].CommandValue = "0x" + int.Parse(newPropertyValue).ToString("X8");
                     }
                     else if(Commands.GetInstance.EnumViewCommandsList.ContainsKey(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)))
                     {
@@ -726,7 +727,7 @@ namespace SuperButton.Models.DriverBlock
                             Commands.GetInstance.DataViewCommandsListLP[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)].CommandValue = newPropertyValue;
                             break;
                         case 10:
-                            Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)].CommandValue = "0x" + int.Parse(newPropertyValue).ToString("X");
+                            Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)].CommandValue = "0x" + int.Parse(newPropertyValue).ToString("X8");
                             break;
                     }
                 }

@@ -535,11 +535,13 @@
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
                                     <TextBlock Grid.Row="0" Width="235" Text="Transmitted &#38; Received messages" Foreground="White" Background="Gray" HorizontalAlignment="Left" Margin="0,0,-1,0"/>
                                     <TextBox Grid.Row="1" Text="{Binding DebugTx, Mode=TwoWay}" Height="22" FontSize="12" IsReadOnly="True"/>
                                     <Grid Grid.Row="2" Height="2"/>
                                     <TextBox Grid.Row="3" Text="{Binding DebugRx, Mode=TwoWay}" Height="22" FontSize="12" IsReadOnly="True"/>
+                                    <TextBlock Grid.Row="4" Text= " Byte     b0   b1  b2  b3  b4  b5 b6  b7  b8  b9 b10" FontSize="10"/>
                                 </Grid>
                             </Border>
                         </Grid>

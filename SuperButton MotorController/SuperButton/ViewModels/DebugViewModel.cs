@@ -345,7 +345,7 @@ namespace SuperButton.ViewModels
 
             StringBuilder hex = new StringBuilder(temp.Length * 2);
             foreach(byte b in temp)
-                hex.AppendFormat("{0:X2}", b);
+                hex.AppendFormat("{0:X2} ", b);
 
             string operation = "Tx: 0x";
             operation += hex.ToString();
@@ -356,7 +356,7 @@ namespace SuperButton.ViewModels
         {
             StringBuilder hex = new StringBuilder(data.Length * 2);
             foreach(byte b in data)
-                hex.AppendFormat("{0:X2}", b);
+                hex.AppendFormat("{0:X2} ", b);
 
             string operation = "Rx: 0x";
             operation += hex.ToString();
