@@ -10,6 +10,16 @@ namespace SuperButton.ViewModels
 {
     internal class ParametarsWindowViewModel : ViewModelBase
     {
+        public const int MOTOR = 0;
+        public const int FEED_BACKS = 1;
+        public const int PID = 2;
+        public const int DEVICE = 3;
+        public const int CALIBRATION = 4;
+        public const int MOTION = 5;
+        public const int MAINTENANCE = 6;
+        public const int I_O = 7;
+        public const int DEBUG = 8;
+
         private OperationViewModel _operationViewModel;
         private CalibrationViewModel _calibrationViewModel;
         private MotionViewModel _motionViewModel;

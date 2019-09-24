@@ -532,15 +532,41 @@ namespace SuperButton.Models.DriverBlock
                     {
                         case 1:
                             LeftPanelViewModel.GetInstance.StarterCount += 1;
-                            break;
-                        case 66:
-                            LeftPanelViewModel.GetInstance.StarterCount += 1;
+                            EventRiser.Instance.RiseEevent(string.Format($"Read motor status"));
                             break;
                         case 60:
-                            LeftPanelViewModel.GetInstance.StarterCount += 1;
+                            switch(commandidentifier.Item2)
+                            {
+                                case 1:
+                                    LeftPanelViewModel.GetInstance.StarterCount += 1;
+                                    EventRiser.Instance.RiseEevent(string.Format($"Read Ch2"));
+                                    break;
+                                case 2:
+                                    LeftPanelViewModel.GetInstance.StarterCount += 1;
+                                    EventRiser.Instance.RiseEevent(string.Format($"Read Ch1"));
+                                    break;
+                            }
                             break;
                         case 62:
-                            LeftPanelViewModel.GetInstance.StarterCount += 1;
+                            switch(commandidentifier.Item2)
+                            {
+                                case 1:
+                                    LeftPanelViewModel.GetInstance.StarterCount += 1;
+                                    EventRiser.Instance.RiseEevent(string.Format($"Read SN"));
+                                    break;
+                                case 2:
+                                    LeftPanelViewModel.GetInstance.StarterCount += 1;
+                                    EventRiser.Instance.RiseEevent(string.Format($"Read HW Rev"));
+                                    break;
+                                case 3:
+                                    LeftPanelViewModel.GetInstance.StarterCount += 1;
+                                    EventRiser.Instance.RiseEevent(string.Format($"Read FW Rev"));
+                                    break;
+                                case 10:
+                                    LeftPanelViewModel.GetInstance.StarterCount += 1;
+                                    EventRiser.Instance.RiseEevent(string.Format($"Read Checksum"));
+                                    break;
+                            }
                             break;
                         default:
                             break;

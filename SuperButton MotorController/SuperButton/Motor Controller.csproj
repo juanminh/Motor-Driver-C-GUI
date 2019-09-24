@@ -120,17 +120,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Behaviors\BindableSelectedItemBehavior.cs" />
-    <Compile Include="Behaviors\ExampleAutocompleteBehavior.cs" />
-    <Compile Include="Behaviors\HyperlinkButtonBehavior.cs" />
     <Compile Include="Behaviors\InputBindingsManager.cs" />
     <Compile Include="Behaviors\ListBoxMouseWheelScrollingBehavior.cs" />
-    <Compile Include="Behaviors\RtbSyntaxHighlightingBehavior.cs" />
-    <Compile Include="Behaviors\TreeViewScrollbarVisibilityBehavior.cs" />
-    <Compile Include="Behaviors\TreeViewSelectOnExpandedBehavior.cs" />
     <Compile Include="Common\Configuration.cs" />
     <Compile Include="Common\Consts.cs" />
-    <Compile Include="Common\MessageBoxWrapper.cs" />
+    <Compile Include="Common\IsModifierTypeConverter.cs" />
     <Compile Include="Example.cs" />
     <Compile Include="ExampleGroupViewModel.cs" />
     <Compile Include="ExampleItemViewControl.xaml.cs">
@@ -140,8 +134,6 @@
     <Compile Include="Helpers\ActualSizePropertyProxy.cs" />
     <Compile Include="Helpers\AttachableInteractionClasses.cs" />
     <Compile Include="Helpers\EventRiser.cs" />
-    <Compile Include="Helpers\Logger.cs" />
-    <Compile Include="Helpers\NavigationBase.cs" />
     <Compile Include="Helpers\RecLed.cs" />
     <Compile Include="Helpers\RoundBoolLed.cs" />
     <Compile Include="Helpers\TransitioningFrame.cs" />
@@ -201,18 +193,7 @@
     <Compile Include="Common\BaseViewModel.cs" />
     <Compile Include="Common\CollapsableGridSplitter.cs" />
     <Compile Include="Common\Enums.cs" />
-    <Compile Include="Common\Instrument.cs" />
-    <Compile Include="Common\IsModifierTypeConverter.cs" />
-    <Compile Include="Common\NewsEvent.cs" />
-    <Compile Include="Common\StrongTyped.cs" />
-    <Compile Include="Common\TimeFrame.cs" />
-    <Compile Include="Common\Trade.cs" />
-    <Compile Include="Common\VisibleIfTypeConverter.cs" />
-    <Compile Include="Data\DataManager.cs" />
     <Compile Include="Data\DoubleSeries.cs" />
-    <Compile Include="Data\IDataManager.cs" />
-    <Compile Include="Data\MovingAverage.cs" />
-    <Compile Include="Data\PriceBar.cs" />
     <Compile Include="Data\XYPoint.cs" />
     <Compile Include="EnumPattern.xaml.cs">
       <DependentUpon>EnumPattern.xaml</DependentUpon>
@@ -268,7 +249,6 @@
     </Compile>
     <Compile Include="Views\OscilloscopeParameters.cs" />
     <Compile Include="Views\OscilloscopeViewModel.cs" />
-    <Compile Include="Data\PriceSeries.cs" />
     <Compile Include="Views\OscilloscopeView.xaml.cs">
       <DependentUpon>OscilloscopeView.xaml</DependentUpon>
     </Compile>

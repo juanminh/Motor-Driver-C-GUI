@@ -133,29 +133,44 @@ namespace SuperButton.ViewModels
                 EventRiser.Instance.RiseEevent(string.Format($"Failed"));
                 OscilloscopeParameters.InitList();
             }
-            //Thread.Sleep(1000);
+
+            short[] ID =    {1, 60, 60, 62, 62, 62, 62 };
+            short[] subID = {0, 1, 2, 10, 1, 2, 3 };
+            string[] param = { "Read motor status", "Read Ch1", "Read Ch2", "Read Checksum", "Read SN", "Read HW Rev", "Read FW Rev" };
+            int timeout = 200;
+            int timetoutLoop = 20;
+            EventRiser.Instance.RiseEevent(string.Format($"Reading param..."));
+            for(int i = 0; i < param.Length; i++)
+            {
+                //EventRiser.Instance.RiseEevent(string.Format(param[i]));
+                Rs232Interface.GetInstance.SendToParser(new PacketFields
+                {
+                    Data2Send = "",
+                    ID = ID[i],
+                    SubID = subID[i],
+                    IsSet = false,
+                    IsFloat = false
+                });
+                Thread.Sleep(350);
+
+                /*
+                timeOutPlot = 0;
+                do
+                {
+                    Thread.Sleep(timeout);
+                    timeOutPlot++;
+                } while(StarterCount != (i  + 1) && timeOutPlot <= timetoutLoop);
+                */
+            }
+
             /*
-            Rs232Interface.GetInstance.SendToParser(new PacketFields
-            {
-                Data2Send = "",
-                ID = Convert.ToInt16(66), // IfullScale
-                SubID = Convert.ToInt16(0),
-                IsSet = false,
-                IsFloat = true
-            });
-            Thread.Sleep(20);
-            Rs232Interface.GetInstance.SendToParser(new PacketFields
-            {
-                Data2Send = "",
-                ID = Convert.ToInt16(66), // VfullScale
-                SubID = Convert.ToInt16(1),
-                IsSet = false,
-                IsFloat = true
-            });
+            if(StarterCount == 7)
+                EventRiser.Instance.RiseEevent(string.Format($"success"));
+            else
+                EventRiser.Instance.RiseEevent(string.Format($"failed"));
             */
-
-            EventRiser.Instance.RiseEevent(string.Format($"Reading parameters..."));
-
+            /*
+            EventRiser.Instance.RiseEevent(string.Format($"Read motor status"));
             Rs232Interface.GetInstance.SendToParser(new PacketFields
             {
                 Data2Send = "",
@@ -164,7 +179,17 @@ namespace SuperButton.ViewModels
                 IsSet = false,
                 IsFloat = false
             });
-            Thread.Sleep(5);
+            
+            timeOutPlot = 0;
+            do
+            {
+                Thread.Sleep(timeout);
+                timeOutPlot++;
+            } while(StarterCount != 1 && timeOutPlot <= 10);
+            if(timeOutPlot > 10)
+                EventRiser.Instance.RiseEevent(string.Format($"Failed"));
+
+            EventRiser.Instance.RiseEevent(string.Format($"Read Ch1"));
             Rs232Interface.GetInstance.SendToParser(new PacketFields
             {
                 Data2Send = "",
@@ -173,7 +198,14 @@ namespace SuperButton.ViewModels
                 IsSet = false,
                 IsFloat = false
             });
-            Thread.Sleep(10);
+            timeOutPlot = 0;
+            do
+            {
+                Thread.Sleep(timeout);
+                timeOutPlot++;
+            } while(StarterCount != 2 && timeOutPlot <= 10);
+
+            EventRiser.Instance.RiseEevent(string.Format($"Read Ch2"));
             Rs232Interface.GetInstance.SendToParser(new PacketFields
             {
                 Data2Send = "",
@@ -182,7 +214,14 @@ namespace SuperButton.ViewModels
                 IsSet = false,
                 IsFloat = false
             });
-            Thread.Sleep(10);
+            timeOutPlot = 0;
+            do
+            {
+                Thread.Sleep(timeout);
+                timeOutPlot++;
+            } while(StarterCount != 3 && timeOutPlot <= 10);
+
+            EventRiser.Instance.RiseEevent(string.Format($"Read Checksum"));
             Rs232Interface.GetInstance.SendToParser(new PacketFields
             {
                 Data2Send = "",
@@ -191,17 +230,18 @@ namespace SuperButton.ViewModels
                 IsSet = false,
                 IsFloat = false
             });
-
             timeOutPlot = 0;
             do
             {
-                Thread.Sleep(200);
+                Thread.Sleep(timeout);
                 timeOutPlot++;
             } while(StarterCount != 4 && timeOutPlot <= 10);
+
             Debug.WriteLine("Param Count: " + timeOutPlot);
 
             for(int i = 1; i < 4; i++)
             {
+                EventRiser.Instance.RiseEevent(string.Format($"Read unit param."));
                 Thread.Sleep(1);
                 Rs232Interface.GetInstance.SendToParser(new PacketFields
                 {
@@ -211,26 +251,34 @@ namespace SuperButton.ViewModels
                     IsSet = false,
                     IsFloat = false
                 });
+                timeOutPlot = 0;
+                do
+                {
+                    Thread.Sleep(timeout);
+                    timeOutPlot++;
+                } while(StarterCount != (4 + i) && timeOutPlot <= 10);
+
             }
 
             timeOutPlot = 0;
             do
             {
-                Thread.Sleep(200);
+                Thread.Sleep(timeout);
                 timeOutPlot++;
             } while(StarterCount != 7 && timeOutPlot <= 10);
 
             Debug.WriteLine("Param Count: " + timeOutPlot);
 
             Thread.Sleep(250);
-            #endregion  Operations
-            if(StarterCount == 7)
-                EventRiser.Instance.RiseEevent(string.Format($"Success"));
-            else
-                EventRiser.Instance.RiseEevent(string.Format($"Failed"));
+            
+            //if(StarterCount == 7)
+            //    EventRiser.Instance.RiseEevent(string.Format($"Success"));
+            //else
+            //    EventRiser.Instance.RiseEevent(string.Format($"Failed"));
 
             Debug.WriteLine("StarterCount: " + StarterCount);
-
+            */
+            #endregion  Operations
             LeftPanelViewModel.flag = true;
             StarterOperationFlag = false;
 #if !DEBUG || RELEASE_MODE

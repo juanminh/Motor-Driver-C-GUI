@@ -484,7 +484,7 @@ namespace SuperButton.Models.ParserBlock
                 transit |= data[4];
                 transit <<= 8;
                 transit |= data[3];
-                if(!exceptionID.Contains(commandId) || (exceptionID.Contains(commandId) && !LeftPanelViewModel.GetInstance.StarterOperationFlag && commandId != 100))
+                if(ParametarsWindow.ParametersWindowTabSelected == ParametarsWindowViewModel.DEBUG && !LeftPanelViewModel.GetInstance.StarterOperationFlag || !exceptionID.Contains(commandId))
                 {
                     if(isInt)
                     {
@@ -727,12 +727,7 @@ namespace SuperButton.Models.ParserBlock
         //        return dataSample;
         //}
         public void ParsePlot(List<byte[]> PlotList)
-        {
-            
-            int plotDataSampleLsb;
-            int plotDataSampleMsb;
-            short plotDataSample;
-            
+        {            
             // In order to achive best performance using good old-fashioned for loop: twice faster! then "foreach (byte[] packet in PlotList)"
             //Debug.WriteLine("ParsePlot 1" + DateTime.Now.ToString("h:mm:ss.fff"));
             //if(!OscilloscopeViewModel.GetInstance.IsFreeze)
@@ -742,57 +737,22 @@ namespace SuperButton.Models.ParserBlock
                     lock(PlotListLock)
                     {
                         //First
-                        //plotDataSampleLsb = PlotList[i][2];
-                        //plotDataSampleMsb = PlotList[i][3];
-                        //plotDataSample = (short)((plotDataSampleMsb << 8) | plotDataSampleLsb);
-                        //plotDataSample = (short)((PlotList[i][3] << 8) | PlotList[i][2]);
-
                         FifoplotList.Enqueue((short)((PlotList[i][3] << 8) | PlotList[i][2]));
 
                         //Second
-                        //plotDataSampleLsb = PlotList[i][4];
-                        //plotDataSampleMsb = PlotList[i][5];
-                        //plotDataSample = (short)((plotDataSampleMsb << 8) | plotDataSampleLsb);
-
                         if(OscilloscopeParameters.ChanTotalCounter == 1)
-                        {
-                            //FifoplotList.Enqueue(plotDataSample);
                             FifoplotList.Enqueue((short)((PlotList[i][5] << 8) | PlotList[i][4]));
-
-                        }
-
                         else if(OscilloscopeParameters.ChanTotalCounter == 2)
-                        {
-                            //FifoplotListCh2.Enqueue(plotDataSample);
                             FifoplotListCh2.Enqueue((short)((PlotList[i][5] << 8) | PlotList[i][4]));
-                        }
 
                         //Third
-                        //plotDataSampleLsb = PlotList[i][6];
-                        //plotDataSampleMsb = PlotList[i][7];
-                        //plotDataSample = (short)((plotDataSampleMsb << 8) | plotDataSampleLsb);
-
-                        //FifoplotList.Enqueue(plotDataSample);
                         FifoplotList.Enqueue((short)((PlotList[i][7] << 8) | PlotList[i][6]));
 
                         //Fourth
-                        //plotDataSampleLsb = PlotList[i][8];
-                        //plotDataSampleMsb = PlotList[i][9];
-                        //plotDataSample = (short)((plotDataSampleMsb << 8) | plotDataSampleLsb);
-
                         if(OscilloscopeParameters.ChanTotalCounter == 1)
-                        {
-                            //FifoplotList.Enqueue(plotDataSample);
                             FifoplotList.Enqueue((short)((PlotList[i][9] << 8) | PlotList[i][8]));
-
-                        }
-
                         else if(OscilloscopeParameters.ChanTotalCounter == 2)
-                        {
-                            //FifoplotListCh2.Enqueue(plotDataSample);
                             FifoplotListCh2.Enqueue((short)((PlotList[i][9] << 8) | PlotList[i][8]));
-                        }
-                        //FifoplotList.Enqueue(-100);
                     }
 
                 }

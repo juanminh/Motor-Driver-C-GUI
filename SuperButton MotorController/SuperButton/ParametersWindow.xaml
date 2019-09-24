@@ -57,29 +57,36 @@
             <TabItem Name="Motor" Header="Motor" TabIndex="1" Background="Black" Foreground="White">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="330"/>
-                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="50*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="40*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0" >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="87"/>
-                            <RowDefinition Height="130"/>
+                            <RowDefinition Height="185"/>
                         </Grid.RowDefinitions>
                         <GroupBox  Header="Control" Grid.Row="0">
                             <ItemsControl ItemsSource="{Binding ControlList}" 
-                                          ItemTemplate="{StaticResource EnumViewModel}"
-                                          Margin="0,4,0,-4"/>
+                                          ItemTemplate="{StaticResource EnumViewModel}"/>
                         </GroupBox>
                         <GroupBox Header="Motor" Grid.Row="1" Margin="0,10,0,0" 
                             FocusManager.IsFocusScope="True">
                             <ItemsControl ItemsSource="{Binding MotorlList}" 
-                                          ItemTemplate="{StaticResource DataViewModel}" 
-                                          Margin="0,4,0,-4"
+                                          ItemTemplate="{StaticResource DataViewModel}"
                                           MouseLeftButtonDown="ItemsControl_MouseLeftButtonDown"/>
                         </GroupBox>
-                        <GroupBox Header="Motor Limit"  Grid.Row="2" Margin="0,10,0,0">
-                            <ItemsControl ItemsSource="{Binding MotorLimitlList}" ItemTemplate="{StaticResource DataViewModel}" Margin="0,4,0,-4"/>
+                    </Grid>
+                    <Grid Grid.Column="2" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <GroupBox Header="Motor Limit"  Grid.Row="0">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                <ItemsControl ItemsSource="{Binding MotorLimitlList}" ItemTemplate="{StaticResource DataViewModel}" Margin="0,1,0,0"/>
+                            </ScrollViewer>
                         </GroupBox>
                     </Grid>
                 </Grid>

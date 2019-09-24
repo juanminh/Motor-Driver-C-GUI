@@ -8,13 +8,13 @@
     xmlns:wpfSpark="clr-namespace:WPFSpark;assembly=WPFSpark"
     xmlns:ToggleSwitch="clr-namespace:ToggleSwitch;assembly=ToggleSwitch" 
 	xmlns:views="clr-namespace:SuperButton.Views"
-	xmlns:behaviors="clr-namespace:SuperButton.Behaviors"
+	
     xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
 	mc:Ignorable="d"
 	x:Class="SuperButton.BottomPanel"
 	x:Name="UserControl"
 	d:DesignWidth="1200">
-
+<!--xmlns:behaviors="clr-namespace:SuperButton.Behaviors"-->
     <UserControl.Resources>
 
         <!--  Vertical GridSplitter Handle  -->

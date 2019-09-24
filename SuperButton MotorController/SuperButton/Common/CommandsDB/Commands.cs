@@ -9,6 +9,9 @@ namespace SuperButton.CommandsDB
 {
     class Commands
     {
+        const bool INT = false;
+        const bool FLOAT = true;
+
         private Commands()
         {
             GenerateMotionCommands();
@@ -579,50 +582,24 @@ namespace SuperButton.CommandsDB
             DataViewCommandsList.Add(new Tuple<int, int>(51, 2), data2);
             DataCommandsListbySubGroup["Motor"].Add(data2);
 
-            var data3 = new DataViewModel
-            {
-                CommandName = "Max speed [CPS]",
-                CommandId = "53",
-                CommandSubId = "1",
-                CommandValue = "",
-                IsFloat = false
-            };
-            DataViewCommandsList.Add(new Tuple<int, int>(53, 1), data3);
-            DataCommandsListbySubGroup.Add("Motion Limit", new ObservableCollection<object> { data3 });
+            string [] commandName = { "Max speed [CPS]", "Min Speed [CPS]", "Max position [C]", "Min position [C]", "Enable Position Limit", "Motor stuck current", "Motor stuck speed", "Motor stuck Duration" };
+            bool [] Type = { INT, INT, INT, INT, INT, FLOAT, INT, FLOAT };
 
-            var data4 = new DataViewModel
-            {
-                CommandName = "Min Speed [CPS]",
-                CommandId = "53",
-                CommandSubId = "2",
-                CommandValue = "",
-                IsFloat = false
-            };
+            DataCommandsListbySubGroup.Add("Motion Limit", new ObservableCollection<object>());
 
-            DataViewCommandsList.Add(new Tuple<int, int>(53, 2), data4);
-            DataCommandsListbySubGroup["Motion Limit"].Add(data4);
-
-            var data5 = new DataViewModel
+            for(int i = 0; i < commandName.Length; i++)
             {
-                CommandName = "Max position [C]",
-                CommandId = "53",// "205",
-                CommandSubId = "3",
-                CommandValue = "",
-                IsFloat = false,
-            };
-            DataViewCommandsList.Add(new Tuple<int, int>(53, 3), data5);
-            DataCommandsListbySubGroup["Motion Limit"].Add(data5);
-
-            var data6 = new DataViewModel
-            {
-                CommandName = "Min position [C]",
-                CommandId = "53",
-                CommandSubId = "4",
-                CommandValue = "",
-                IsFloat = false,
-            };
-            DataViewCommandsList.Add(new Tuple<int, int>(53, 4), data6);
-            DataCommandsListbySubGroup["Motion Limit"].Add(data6);
+                var data = new DataViewModel
+                {
+                    CommandName = commandName[i],
+                    CommandId = "53",
+                    CommandSubId = (i + 1).ToString(),
+                    CommandValue = "",
+                    IsFloat = Type[i]
+                };
+                DataViewCommandsList.Add(new Tuple<int, int>(53, (i + 1)), data);
+                DataCommandsListbySubGroup["Motion Limit"].Add(data);
+            }
         }
         public void GenerateBPCommands()
         {
