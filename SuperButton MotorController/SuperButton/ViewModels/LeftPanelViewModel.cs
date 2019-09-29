@@ -137,8 +137,8 @@ namespace SuperButton.ViewModels
             short[] ID =    {1, 60, 60, 62, 62, 62, 62 };
             short[] subID = {0, 1, 2, 10, 1, 2, 3 };
             string[] param = { "Read motor status", "Read Ch1", "Read Ch2", "Read Checksum", "Read SN", "Read HW Rev", "Read FW Rev" };
-            int timeout = 200;
-            int timetoutLoop = 20;
+            //int timeout = 200;
+            //int timetoutLoop = 20;
             EventRiser.Instance.RiseEevent(string.Format($"Reading param..."));
             for(int i = 0; i < param.Length; i++)
             {

@@ -80,13 +80,7 @@ namespace SuperButton.Models.ParserBlock
 
                     length = e.DataChunk.Length;
                     data = e.DataChunk;
-                    //Parallel.For(0, length, i =>
-                    //{
-                    //    FiilsPlotPackets(data[i]); //Plot packets
-                    //    FiilsStandartPackets(data[i]);//Standart Packets                
-                    //    FiilsStandartPacketsNew(data[i]);//Standart Pavkets New Updeted
-                    //    i++;
-                    //});
+
                     for(int i = 0; i < length; i++)
                     {
                         FiilsPlotPackets(data[i]); //Plot packets
@@ -158,10 +152,6 @@ namespace SuperButton.Models.ParserBlock
                     break;
                 case (10):
                     readypacket[standpacketIndexCounter] = ch;
-                    //RefreshManger.GetInstance.arr4.Add(139);
-                    //RefreshManger.GetInstance.arr4.Add(60);
-                    //foreach(var b in readypacket)
-                    //    RefreshManger.GetInstance.arr4.Add(b);
                     StandartPacketsListNew.Add(readypacket);
                     ParserRayonM1.GetInstanceofParser.ParseInputPacket(readypacket);
                     standpacketStateNew = standpacketIndexCounter = 0;
@@ -171,7 +161,6 @@ namespace SuperButton.Models.ParserBlock
                     break;
             }
         }
-
         private void AproveSynchronization(byte ch)
         {
             switch(_synchAproveState)
@@ -207,7 +196,6 @@ namespace SuperButton.Models.ParserBlock
                     break;
             }
         }
-
         private void FiilsStandartPackets(byte ch)
         {
 
@@ -277,7 +265,6 @@ namespace SuperButton.Models.ParserBlock
                     break;
             }
         }
-
         private void FiilsPlotPackets(byte ch)
         {
 
@@ -289,14 +276,11 @@ namespace SuperButton.Models.ParserBlock
                 case (0):   //First magic
                     if(ch == 0xbb)
                     {
-
                         pack[plotpacketState] = ch;
                         plotpacketState++;
-
                     }
                     break;
-                case (1)://Second magic
-
+                case (1):   //Second magic
                     if(ch == 0xcc)
                     {
                         pack[plotpacketState] = ch;
@@ -321,25 +305,20 @@ namespace SuperButton.Models.ParserBlock
                 case (5):
                     pack[plotpacketState] = ch;
                     plotpacketState++;
-
                     break;
                 case (6):
-
                     pack[plotpacketState] = ch;
                     plotpacketState++;
                     break;
                 case (7):
-
                     pack[plotpacketState] = ch;
                     plotpacketState++;
                     break;
                 case (8):
-
                     pack[plotpacketState] = ch;
                     plotpacketState++;
                     break;
                 case (9):
-
                     pack[plotpacketState] = ch;
                     plotpacketState++;
                     break;
@@ -361,8 +340,10 @@ namespace SuperButton.Models.ParserBlock
                         pack[plotpacketState] = ch;
                         readypacket = new byte[11];
                         Array.Copy(pack, 0, readypacket, 0, 11);
+
                         PlotPacketsList.Add(readypacket);
                         //ParserRayonM1.GetInstanceofParser.ParsePlot(PlotPacketsList);
+
                     }
                     else
                     {

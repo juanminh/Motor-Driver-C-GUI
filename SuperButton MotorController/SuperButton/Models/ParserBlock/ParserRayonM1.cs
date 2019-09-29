@@ -1,4 +1,6 @@
-﻿//#define DEBUG_OPERATION
+﻿#define DEBUG_OPERATION
+#define DEBUG_SET
+//#define DEBUG_GET
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -50,7 +52,7 @@ namespace SuperButton.Models.ParserBlock
         private DoubleSeries datasource1 = new DoubleSeries();
         public static ManualResetEvent mre = new ManualResetEvent(false);
         private float iqFactor = (float)Math.Pow(2.0, -15);
-        private int IntegerFactor = 1;
+        //private int IntegerFactor = 1;
 
         public event Parser2SendHandler Parser2Send;
         public bool StopParser { get { return stop; } set { stop = value; } }
@@ -247,7 +249,13 @@ namespace SuperButton.Models.ParserBlock
         public void ParseOutputData(object Data2Send, Int16 Id, Int16 SubId, bool IsSet, bool IsFloat)
         {
 #if(DEBUG && DEBUG_OPERATION)
+#if DEBUG_SET
+            if(IsSet)
+                Debug.WriteLine("{0} {1}[{2}]={3} {4}.", IsSet ? "Set" : "Get", Id, SubId, Data2Send, IsFloat ? "F" : "I");
+#endif
+#if DEBUG_GET
             Debug.WriteLine("{0} {1}[{2}]={3} {4}.", IsSet ? "Set" : "Get", Id, SubId, Data2Send, IsFloat ? "F" : "I");
+#endif
 #endif
 
             //TODO add try catch here
@@ -491,7 +499,14 @@ namespace SuperButton.Models.ParserBlock
                         if(getSet == 1)
                             RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), transit.ToString());
 #if(DEBUG && DEBUG_OPERATION)
-                        Debug.WriteLine("{0} {1}[{2}]={3} {4} {5}.", "Drv", commandId, commandSubId, transit, "I", getSet == 0 ? "Set" : "Get");
+#if DEBUG_SET
+                        if(getSet == 0)
+                            Debug.WriteLine("{0} {1}[{2}]={3} {4} {5}.", "Drv", commandId, commandSubId, transit, "I", getSet == 0 ? "Set" : "Get");
+#endif
+#if DEBUG_GET
+                        if(getSet == 1)
+                            Debug.WriteLine("{0} {1}[{2}]={3} {4} {5}.", "Drv", commandId, commandSubId, transit, "I", getSet == 0 ? "Set" : "Get");
+#endif
 #endif
                     }
                     else
@@ -507,7 +522,14 @@ namespace SuperButton.Models.ParserBlock
                             RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), newPropertyValuef.ToString());
                         }
 #if(DEBUG && DEBUG_OPERATION)
-                        Debug.WriteLine("{0} {1}[{2}]={3} {4} {5}.", "Drv", commandId, commandSubId, newPropertyValuef, "F", getSet == 0 ? "Set" : "Get");
+#if DEBUG_SET
+                        if(getSet == 0)
+                            Debug.WriteLine("{0} {1}[{2}]={3} {4} {5}.", "Drv", commandId, commandSubId, newPropertyValuef, "F", getSet == 0 ? "Set" : "Get");
+#endif
+#if DEBUG_GET
+                        if(getSet == 1)
+                            Debug.WriteLine("{0} {1}[{2}]={3} {4} {5}.", "Drv", commandId, commandSubId, newPropertyValuef, "F", getSet == 0 ? "Set" : "Get");
+#endif
 #endif
                     }
                 }
@@ -672,7 +694,7 @@ namespace SuperButton.Models.ParserBlock
                         OscilloscopeParameters.fillPlotList();
                 }
                 else
-                {
+                {   // Error ID 100
                     string result;
                     if(Commands.GetInstance.ErrorList.TryGetValue(transit, out result))
                     {
@@ -727,7 +749,7 @@ namespace SuperButton.Models.ParserBlock
         //        return dataSample;
         //}
         public void ParsePlot(List<byte[]> PlotList)
-        {            
+        {
             // In order to achive best performance using good old-fashioned for loop: twice faster! then "foreach (byte[] packet in PlotList)"
             //Debug.WriteLine("ParsePlot 1" + DateTime.Now.ToString("h:mm:ss.fff"));
             //if(!OscilloscopeViewModel.GetInstance.IsFreeze)

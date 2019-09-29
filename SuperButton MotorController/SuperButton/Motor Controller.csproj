@@ -85,7 +85,6 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="SharpDX.DXGI, Version=2.6.2.0, Culture=neutral, PublicKeyToken=b4dcf0f35e5521f1, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Runtime.Serialization" />
@@ -127,9 +126,6 @@
     <Compile Include="Common\IsModifierTypeConverter.cs" />
     <Compile Include="Example.cs" />
     <Compile Include="ExampleGroupViewModel.cs" />
-    <Compile Include="ExampleItemViewControl.xaml.cs">
-      <DependentUpon>ExampleItemViewControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="GroupedExamplesViewModel.cs" />
     <Compile Include="Helpers\ActualSizePropertyProxy.cs" />
     <Compile Include="Helpers\AttachableInteractionClasses.cs" />
@@ -138,9 +134,6 @@
     <Compile Include="Helpers\RoundBoolLed.cs" />
     <Compile Include="Helpers\TransitioningFrame.cs" />
     <Compile Include="Helpers\TreeViewExtension.cs" />
-    <Compile Include="HomeControl.xaml.cs">
-      <DependentUpon>HomeControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="StatusGroup\StatusesModule.cs" />
     <Compile Include="StatusGroup\StatusGrous.cs" />
     <Compile Include="ViewModels\BoolViewIndModel.cs" />
@@ -259,14 +252,6 @@
     <Compile Include="ParametersWindow.xaml.cs">
       <DependentUpon>ParametersWindow.xaml</DependentUpon>
     </Compile>
-    <Page Include="ExampleItemViewControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="HomeControl.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\DebugObj.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -397,9 +382,6 @@
     <None Include="Views\HomeBackground.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\UserControls\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Licenses.licx" />
@@ -579,11 +561,6 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="settings_icon.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
@@ -598,11 +575,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\SelectFile.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="MotorController.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WPFSpark_v1.1\WPFSpark\WPFSpark\WPFSpark.csproj">
@@ -626,6 +598,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Themes\MotorController.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\serialPorgrammer.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath32)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

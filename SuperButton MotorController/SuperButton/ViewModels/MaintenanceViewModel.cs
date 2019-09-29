@@ -643,5 +643,13 @@ namespace SuperButton.ViewModels
                 });
             }
         }
+        public ActionCommand OpenSerialProgrammer
+        {
+            get { return new ActionCommand(SerialProgrammer); }
+        }
+        private void SerialProgrammer()
+        {
+            Process.Start(@"SerialProgrammer\Serial Programmer.exe");
+        }
     }
 }

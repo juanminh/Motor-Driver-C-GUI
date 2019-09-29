@@ -850,6 +850,10 @@ namespace SuperButton.Views
             {
                 //if(!_is_freeze)
                 {
+                    // Get call stack
+                    StackTrace stackTrace = new StackTrace();
+                    if(stackTrace.GetFrame(1).GetMethod().Name != "Send_Plot2")
+                        return;
                     _selectedCh2DataSource = value;
 
                     lock(ParserRayonM1.PlotListLock)
@@ -1059,28 +1063,13 @@ namespace SuperButton.Views
             {
                 float maxval = 0, minval = 0;
                 XLimit = new DoubleRange(0, _duration);
-                if(OscilloscopeParameters.ChanTotalCounter == 1 && Ytemp.Count > 0)
-                {
-                    maxval = Ytemp.Max();
-                    minval = Ytemp.Min();
-                }
-                else if(OscilloscopeParameters.ChanTotalCounter == 2 && AllYData.Count > 0 && AllYData2.Count > 0)
-                {
-                    maxval = AllYData.Max() >= AllYData2.Max() ? AllYData.Max() : AllYData2.Max();
-                    minval = AllYData.Min() <= AllYData2.Min() ? AllYData.Min() : AllYData2.Min();
-                }
-                else
-                {
-                    minval = -OscilloscopeParameters.FullScale;
-                    maxval = OscilloscopeParameters.FullScale;
-                }
-                if(minval <= 0.1 && maxval <= 0.1)
-                {
-                    minval = (float)-0.5;
-                    maxval = (float)0.5;
-                }
-                //YLimit = new DoubleRange(-OscilloscopeParameters.FullScale, OscilloscopeParameters.FullScale);
-                YLimit = new DoubleRange(0.5 * minval, 1.1 * maxval);
+
+                minval = ((float)ChartData.YMin > (float)ChartData1.YMin) ? (float)ChartData1.YMin : (float)ChartData.YMin;
+                maxval = ((float)ChartData.YMax > (float)ChartData1.YMax) ? (float)ChartData.YMax : (float)ChartData1.YMax;
+
+                minval *= (minval > 0 ? (float)0.5 : (float)1.1);
+
+                YLimit = new DoubleRange(minval, 1.1 * maxval);
                 _yzoom = OscilloscopeParameters.FullScale;
                 XVisibleRange = XLimit;
                 YVisibleRange = YLimit;
