@@ -130,6 +130,7 @@
     <Compile Include="Helpers\ActualSizePropertyProxy.cs" />
     <Compile Include="Helpers\AttachableInteractionClasses.cs" />
     <Compile Include="Helpers\EventRiser.cs" />
+    <Compile Include="Helpers\iniFile.cs" />
     <Compile Include="Helpers\RecLed.cs" />
     <Compile Include="Helpers\RoundBoolLed.cs" />
     <Compile Include="Helpers\TransitioningFrame.cs" />

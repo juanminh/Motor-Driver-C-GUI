@@ -15,7 +15,7 @@ using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using Abt.Controls.SciChart;
-
+using MotorController.Helpers;
 
 namespace SuperButton.ViewModels
 {
@@ -108,7 +108,7 @@ namespace SuperButton.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         private bool _reset;
         public bool Reset
         {
@@ -399,7 +399,7 @@ namespace SuperButton.ViewModels
                             SubID = Convert.ToInt16(1),
                             IsSet = false,
                             IsFloat = false
-                        } );
+                        });
                         CheckPBar("FromFile");
                     }
                 }
@@ -569,7 +569,8 @@ namespace SuperButton.ViewModels
         }
 
         private long _pbarValueFromFile = 0;
-        public long PbarValueFromFile {
+        public long PbarValueFromFile
+        {
             get { return _pbarValueFromFile; }
             set { _pbarValueFromFile = value; OnPropertyChanged("PbarValueFromFile"); }
         }
@@ -649,7 +650,15 @@ namespace SuperButton.ViewModels
         }
         private void SerialProgrammer()
         {
-            Process.Start(@"SerialProgrammer\Serial Programmer.exe");
+            string iniPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+
+            // section, key, value, _iniFile
+            iniFile.WritePrivateProfileString("Programmer", "CmdBaud", Rs232Interface.GetInstance.BaudRate, iniPath + "\\SerialProgrammer\\data\\SerialProgrammer.ini");
+            iniFile.WritePrivateProfileString("Programmer", "COM", Rs232Interface.GetInstance.ComPortStr, iniPath + "\\SerialProgrammer\\data\\SerialProgrammer.ini");
+
+            Task.Run((Action)Rs232Interface.GetInstance.Disconnect);
+            
+            Process.Start(iniPath + "\\SerialProgrammer\\Serial Programmer.exe");
         }
     }
 }

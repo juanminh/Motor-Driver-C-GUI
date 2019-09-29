@@ -171,6 +171,18 @@ namespace SuperButton.Models.DriverBlock
         //
         //********************************************************
         //string msg = "";
+
+        private string _baudRate = "";
+        private string _comPortStr = "";
+
+        public string BaudRate {
+            get { return _baudRate; }
+            set { if(_baudRate == value) return; _baudRate = value; } }
+        public string ComPortStr {
+            get { return _comPortStr; }
+            set { if(_comPortStr == value) return; _comPortStr = value; } }
+
+
         public override void AutoConnect()
         {
             if(_isSynced == false && LeftPanelViewModel.GetInstance.ConnectButtonContent == "Connect") //Driver is not synchronized
@@ -217,6 +229,8 @@ namespace SuperButton.Models.DriverBlock
                                     _comPort.DiscardInBuffer();        //Reset internal rx buffer
                                     EventRiser.Instance.RiseEevent(string.Format($"Success"));
                                     EventRiser.Instance.RiseEevent(string.Format($"Baudrate: {_comPort.BaudRate}"));
+                                    _baudRate = _comPort.BaudRate.ToString();
+                                    _comPortStr = Configuration.SelectedCom;
                                     LeftPanelViewModel.busy = false;
                                     return;
 
