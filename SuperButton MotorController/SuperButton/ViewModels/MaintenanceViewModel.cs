@@ -656,9 +656,36 @@ namespace SuperButton.ViewModels
             iniFile.WritePrivateProfileString("Programmer", "CmdBaud", Rs232Interface.GetInstance.BaudRate, iniPath + "\\SerialProgrammer\\data\\SerialProgrammer.ini");
             iniFile.WritePrivateProfileString("Programmer", "COM", Rs232Interface.GetInstance.ComPortStr, iniPath + "\\SerialProgrammer\\data\\SerialProgrammer.ini");
 
-            Task.Run((Action)Rs232Interface.GetInstance.Disconnect);
-            
+            if(LeftPanelViewModel.GetInstance.ConnectTextBoxContent != "Not Connected")
+                Task.Run((Action)Rs232Interface.GetInstance.Disconnect);
+
+            int countDisconnection = 0;
+            while(LeftPanelViewModel.GetInstance.ConnectTextBoxContent != "Not Connected")
+            {
+                Thread.Sleep(500);
+                Debug.WriteLine("wait end connection");
+                countDisconnection++;
+                if(countDisconnection == 3)
+                    Task.Run((Action)Rs232Interface.GetInstance.Disconnect);
+            }
+
             Process.Start(iniPath + "\\SerialProgrammer\\Serial Programmer.exe");
+
+            Thread SerialProgrammer = new Thread(SerialProgrammerApp);
+            SerialProgrammer.Start();
+        }
+
+        private void SerialProgrammerApp()
+        {
+            Process[] Proc = Process.GetProcessesByName("Serial Programmer");
+            while(Proc.Length != 0)
+            {
+                Proc = Process.GetProcessesByName("Serial Programmer");
+                Thread.Sleep(500);
+                Debug.WriteLine("app");
+            }
+            Debug.WriteLine("app closed");
+            LeftPanelViewModel.GetInstance.AutoConnectCommand();
         }
     }
 }

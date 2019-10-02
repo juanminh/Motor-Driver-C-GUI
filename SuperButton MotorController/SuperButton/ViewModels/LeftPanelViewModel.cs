@@ -103,7 +103,7 @@ namespace SuperButton.ViewModels
         }
         public bool StarterOperationFlag = false;
         public int StarterCount = 0;
-        private void StarterOperation()
+        public void StarterOperation()
         {
             #region Operations
             StarterOperationFlag = true;

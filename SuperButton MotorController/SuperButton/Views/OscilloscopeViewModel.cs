@@ -852,7 +852,7 @@ namespace SuperButton.Views
                 {
                     // Get call stack
                     StackTrace stackTrace = new StackTrace();
-                    if(stackTrace.GetFrame(1).GetMethod().Name != "Send_Plot2")
+                    if(stackTrace.GetFrame(1).GetMethod().Name != "Send_Plot2" && _selectedCh2DataSource != null)
                         return;
                     _selectedCh2DataSource = value;
 

@@ -39,6 +39,8 @@ namespace SuperButton.Models.DriverBlock
         public event Rs232RxHandler Driver2Mainmodel;
 
         public event Rs232RxHandler Rx2Packetizer;
+        public event Parser2SendHandler AutoBaudEcho;
+
         // public  Task TsakRec;
         // public Task Child;
 
@@ -175,12 +177,16 @@ namespace SuperButton.Models.DriverBlock
         private string _baudRate = "";
         private string _comPortStr = "";
 
-        public string BaudRate {
+        public string BaudRate
+        {
             get { return _baudRate; }
-            set { if(_baudRate == value) return; _baudRate = value; } }
-        public string ComPortStr {
+            set { if(_baudRate == value) return; _baudRate = value; }
+        }
+        public string ComPortStr
+        {
             get { return _comPortStr; }
-            set { if(_comPortStr == value) return; _comPortStr = value; } }
+            set { if(_comPortStr == value) return; _comPortStr = value; }
+        }
 
 
         public override void AutoConnect()
@@ -215,7 +221,6 @@ namespace SuperButton.Models.DriverBlock
 
                             foreach(var baudRate in BaudRates) //Iterate though baud rates
                             {
-
                                 if(_isSynced)
                                 {
                                     if(Driver2Mainmodel != null)
@@ -258,6 +263,43 @@ namespace SuperButton.Models.DriverBlock
                                 }
                             }
                             EventRiser.Instance.RiseEevent(string.Format($"Failed"));
+
+                            //foreach(var baudRate in BaudRates) //Iterate though baud rates
+
+                            {
+                                EventRiser.Instance.RiseEevent(string.Format($"Testing loader mode"));
+                                // Autobaud A A A Echo operation detect
+                                tmpcom.BaudRate = BaudRates[5];
+
+                                tmpcom.DataReceived -= DataReceived;
+                                tmpcom.DataReceived += DataReceived;
+
+                                AutoBaudEcho -= SendDataHendler;
+                                AutoBaudEcho += SendDataHendler;
+                                _comPort = tmpcom;
+
+                                //Init synchronization packet, and rises event for parser
+
+                                byte[] A = new byte[1] { 65 };
+                                for(int i = 0; i < 5; i++)
+                                {
+                                    if(AutoBaudEcho != null)
+                                    {
+                                        AutoBaudEcho(this, new Parser2SendEventArgs(A));
+                                        Thread.Sleep(2000);
+                                    }
+                                    else
+                                        break;
+                                }
+                                if(AutoBaudEcho != null)
+                                {
+                                    EventRiser.Instance.RiseEevent(string.Format($"Failed to communicate with unit"));
+                                }
+                                Thread.Sleep(100);// while with timeout of 1 second
+                                var Cleaner = tmpcom.ReadExisting();
+                            }
+                            _baudRate = _comPort.BaudRate.ToString();
+                            _comPortStr = Configuration.SelectedCom;
                             tmpcom.Close();
                             LeftPanelViewModel.busy = false;
                             return;

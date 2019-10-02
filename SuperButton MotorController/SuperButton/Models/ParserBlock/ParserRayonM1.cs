@@ -699,6 +699,37 @@ namespace SuperButton.Models.ParserBlock
                     if(Commands.GetInstance.ErrorList.TryGetValue(transit, out result))
                     {
                         EventRiser.Instance.RiseEevent(string.Format($"Com. Error: " + result));
+                        if(transit == 200)
+                        {
+                            //Task.Run((Action)LeftPanelViewModel.GetInstance.StarterOperation);
+                            short[] ID = { 1, 60, 60, 62, 62, 62, 62 };
+                            short[] subID = { 0, 1, 2, 10, 1, 2, 3 };
+                            string[] param = { "Read motor status", "Read Ch1", "Read Ch2", "Read Checksum", "Read SN", "Read HW Rev", "Read FW Rev" };
+                            //int timeout = 200;
+                            //int timetoutLoop = 20;
+                            EventRiser.Instance.RiseEevent(string.Format($"Reading param..."));
+                            for(int i = 0; i < param.Length; i++)
+                            {
+                                Rs232Interface.GetInstance.SendToParser(new PacketFields
+                                {
+                                    Data2Send = "",
+                                    ID = ID[i],
+                                    SubID = subID[i],
+                                    IsSet = false,
+                                    IsFloat = false
+                                });
+                                Thread.Sleep(350);
+                            }
+                            Rs232Interface.GetInstance.SendToParser(new PacketFields
+                            {
+                                Data2Send = "1",
+                                ID = 64,
+                                SubID = 0,
+                                IsSet = true,
+                                IsFloat = false
+                            });
+                            OscilloscopeViewModel.GetInstance.ChComboEn = true;
+                        }
                     }
                     else
                         EventRiser.Instance.RiseEevent(string.Format($"Error: " + transit.ToString()));

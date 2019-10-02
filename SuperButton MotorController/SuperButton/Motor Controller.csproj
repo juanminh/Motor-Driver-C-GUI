@@ -374,6 +374,10 @@
     <None Include="Application.ico">
       <Visible>false</Visible>
     </None>
+    <None Include="bin\Debug\Motor Controller.exe.config" />
+    <None Include="bin\Release\SerialProgrammer\data\SerialProgrammer.ini" />
+    <None Include="bin\Release\SerialProgrammer\Serial Programmer.aliases" />
+    <None Include="bin\Release\SerialProgrammer\Serial Programmer.ini" />
     <None Include="ClassDiagram1.cd" />
     <None Include="Images\HomeBackground.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -603,6 +607,14 @@
   <ItemGroup>
     <Resource Include="Images\serialPorgrammer.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="bin\Debug\Motor Controller.exe" />
+    <Content Include="bin\Debug\Motor Controller.pdb" />
+    <Content Include="bin\Release\SerialProgrammer\data\Crc16DLL.dll" />
+    <Resource Include="bin\Release\SerialProgrammer\data\Rayon70_020219.out.txt" />
+    <Content Include="bin\Release\SerialProgrammer\Serial Programmer.exe" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath32)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
 	     Other similar extension points exist, see Microsoft.Common.targets.
