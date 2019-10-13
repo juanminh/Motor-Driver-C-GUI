@@ -557,11 +557,42 @@
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
+                                    <!--Tx: 0x49 5D 3C 40 10 F0 00 00 00 00 00   -->
                                     <TextBlock Grid.Row="0" Width="235" Text="Transmitted &#38; Received messages" Foreground="White" Background="Gray" HorizontalAlignment="Left" Margin="0,0,-1,0"/>
                                     <TextBox Grid.Row="1" Text="{Binding DebugTx, Mode=TwoWay}" Height="22" FontSize="12" IsReadOnly="True"/>
+                                    <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="47,0,0,0"/>
+                                    <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="66,0,0,0"/>
+                                    <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="83,0,0,0"/>
+                                    <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="100,0,0,0"/>
+                                    <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="115,0,0,0"/>
+                                    <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="131,0,0,0"/>
+                                    <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="147,0,0,0"/>
+                                    <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="163,0,0,0"/>
+                                    <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="179,0,0,0"/>
+                                    <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="196,0,0,0"/>
                                     <Grid Grid.Row="2" Height="2"/>
                                     <TextBox Grid.Row="3" Text="{Binding DebugRx, Mode=TwoWay}" Height="22" FontSize="12" IsReadOnly="True"/>
-                                    <TextBlock Grid.Row="4" Text= " Byte     b0   b1  b2  b3  b4  b5 b6  b7  b8  b9 b10" FontSize="10"/>
+                                    <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="47,0,0,0"/>
+                                    <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="66,0,0,0"/>
+                                    <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="83,0,0,0"/>
+                                    <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="100,0,0,0"/>
+                                    <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="115,0,0,0"/>
+                                    <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="131,0,0,0"/>
+                                    <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="147,0,0,0"/>
+                                    <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="163,0,0,0"/>
+                                    <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="179,0,0,0"/>
+                                    <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="196,0,0,0"/>
+                                    <TextBlock Grid.Row="4" Text= " Byte    b0   b1  b2  b3  b4 b5  b6  b7 b8  b9  b10" FontSize="10"/>
+                                    <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="47,0,0,0"/>
+                                    <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="66,0,0,0"/>
+                                    <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="83,0,0,0"/>
+                                    <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="100,0,0,0"/>
+                                    <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="115,0,0,0"/>
+                                    <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="131,0,0,0"/>
+                                    <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="147,0,0,0"/>
+                                    <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="163,0,0,0"/>
+                                    <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="179,0,0,0"/>
+                                    <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="196,0,0,0"/>
                                 </Grid>
                             </Border>
                         </Grid>
