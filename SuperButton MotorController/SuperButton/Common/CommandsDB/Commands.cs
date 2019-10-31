@@ -251,7 +251,7 @@ namespace SuperButton.CommandsDB
             #region Hall
             var names = new[]
             {
-                "Enable", "Roll UP", "Sample Period",
+                "Enable", "Roll UP", "Roll Low",
                 "Direction", "Counts Per Rev", "Speed LPF Cut-Off"
             };
 
@@ -303,14 +303,24 @@ namespace SuperButton.CommandsDB
                 DataCommandsListbySubGroup["Hall"].Add(data);
             }
 
+            var data2 = new DataViewModel
+            {
+                CommandName = "Sample Period",
+                CommandId = "70",
+                CommandSubId = "15",
+                CommandValue = "",
+                IsFloat = false
+            };
+            DataViewCommandsList.Add(new Tuple<int, int>(70, 15), data2);
+            DataCommandsListbySubGroup["Hall"].Add(data2);
             #endregion Hall
             #region SSI
 
             names = new[]
             {
-                "Enable", "Sample Period", "Direction", "Counts Per Rev", "Speed LPF Cut-Off"
+                "Enable", "Roll Low", "Direction", "Counts Per Rev", "Speed LPF Cut-Off", "Baud Rate", "Bit Length", "Clk Phase", "Data Shift", "Packet Relay", "Calibrate Angle", "Sample Period"
             };
-            var SubId = new[] { "1", "3", "4", "5", "6" };
+            var SubId = new[] { "1", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "15" };
             // "Roll High", "Roll Low", "Index Mode", "Index Value", "Encoder Resolution"
             for(int i = 0; i < names.Length; i++)
             {
@@ -582,8 +592,8 @@ namespace SuperButton.CommandsDB
             DataViewCommandsList.Add(new Tuple<int, int>(51, 2), data2);
             DataCommandsListbySubGroup["Motor"].Add(data2);
 
-            string [] commandName = { "Max speed [CPS]", "Min Speed [CPS]", "Max position [C]", "Min position [C]", "Enable Position Limit", "Motor stuck current", "Motor stuck speed", "Motor stuck Duration" };
-            bool [] Type = { INT, INT, INT, INT, INT, FLOAT, INT, FLOAT };
+            string[] commandName = { "Max speed [CPS]", "Min Speed [CPS]", "Max position [C]", "Min position [C]", "Enable Position Limit", "Motor stuck current", "Motor stuck speed", "Motor stuck Duration" };
+            bool[] Type = { INT, INT, INT, INT, INT, FLOAT, INT, FLOAT };
 
             DataCommandsListbySubGroup.Add("Motion Limit", new ObservableCollection<object>());
 

@@ -120,8 +120,8 @@
                     <Grid Grid.Column="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="20"/>
-                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="160"/>
                         </Grid.RowDefinitions>
                         <GroupBox Grid.Row="0" Header="Qep1">
                             <Grid>
@@ -145,10 +145,22 @@
                                 <!--</ScrollViewer>-->
                             </Grid>
                         </GroupBox>
-                        <GroupBox Grid.Row="2" Header="SSI Feedback"  Background="Transparent">
-                            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                <!--<CheckBox Grid.Row="0" Style="{StaticResource CheckBoxStyle1}" IsChecked="{Binding IsSsiFeedbackEnabled}"/>-->
-                                <ItemsControl ItemsSource="{Binding SsiFeedbackFeedBackList}" ItemTemplate="{StaticResource DataViewModel}" Grid.ColumnSpan="2" />
+                        <GroupBox Grid.Row="2" Header="Qep2"  Background="Transparent">
+                            <ScrollViewer VerticalScrollBarVisibility="Visible">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                        <RowDefinition Height="Auto"></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                <!--<ScrollViewer Grid.Row="0" Background="Transparent" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">-->
+
+
+                                    <ItemsControl Grid.Row="0" ItemsSource="{Binding Qep2FeedBackList}" ItemTemplate="{StaticResource DataViewModel}"/>
+                                   
+                                <!--</ScrollViewer>-->
+                                <ItemsControl Grid.Row="1" ItemsSource="{Binding Qep2FdBckList}" ItemTemplate="{StaticResource EnumViewModel}"/>
+
+                            </Grid>
                             </ScrollViewer>
                         </GroupBox>
                     </Grid>
@@ -158,26 +170,11 @@
                             <RowDefinition Height="20"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <GroupBox Grid.Row="0" Header="Qep2">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <!--<RowDefinition Height="30"></RowDefinition>-->
-                                </Grid.RowDefinitions>
-                                <!--<CheckBox Grid.Row="0" Style="{StaticResource CheckBoxStyle1}"  IsChecked="{Binding IsQep1FeedBackEnabled}" />-->
-                                <!--<ScrollViewer Grid.Row="1" Background="Transparent" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">-->
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                    </Grid.RowDefinitions>
-                                    <ItemsControl Grid.Row="0" ItemsSource="{Binding Qep2FeedBackList}" ItemTemplate="{StaticResource DataViewModel}"/>
-                                    <ItemsControl Grid.Row="1" ItemsSource="{Binding Qep2FdBckList}" 
-                                          ItemTemplate="{StaticResource EnumViewModel}"/>
-                                </Grid>
-                                <!--</ScrollViewer>-->
-                            </Grid>
+                        <GroupBox Grid.Row="0" Header="SSI Feedback">
+                            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                <!--<CheckBox Grid.Row="0" Style="{StaticResource CheckBoxStyle1}" IsChecked="{Binding IsSsiFeedbackEnabled}"/>  Grid.ColumnSpan="2"  -->
+                                <ItemsControl ItemsSource="{Binding SsiFeedbackFeedBackList}" ItemTemplate="{StaticResource DataViewModel}"/>
+                            </ScrollViewer>
                         </GroupBox>
                         <!--<GroupBox Grid.Row="0" Header="Digital"  Background="Transparent" >
                             <Grid>
