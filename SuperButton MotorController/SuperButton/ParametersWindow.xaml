@@ -152,15 +152,15 @@
                                         <RowDefinition Height="Auto"></RowDefinition>
                                         <RowDefinition Height="Auto"></RowDefinition>
                                     </Grid.RowDefinitions>
-                                <!--<ScrollViewer Grid.Row="0" Background="Transparent" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">-->
+                                    <!--<ScrollViewer Grid.Row="0" Background="Transparent" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">-->
 
 
                                     <ItemsControl Grid.Row="0" ItemsSource="{Binding Qep2FeedBackList}" ItemTemplate="{StaticResource DataViewModel}"/>
-                                   
-                                <!--</ScrollViewer>-->
-                                <ItemsControl Grid.Row="1" ItemsSource="{Binding Qep2FdBckList}" ItemTemplate="{StaticResource EnumViewModel}"/>
 
-                            </Grid>
+                                    <!--</ScrollViewer>-->
+                                    <ItemsControl Grid.Row="1" ItemsSource="{Binding Qep2FdBckList}" ItemTemplate="{StaticResource EnumViewModel}"/>
+
+                                </Grid>
                             </ScrollViewer>
                         </GroupBox>
                     </Grid>
@@ -171,10 +171,18 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <GroupBox Grid.Row="0" Header="SSI Feedback">
-                            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                <!--<CheckBox Grid.Row="0" Style="{StaticResource CheckBoxStyle1}" IsChecked="{Binding IsSsiFeedbackEnabled}"/>  Grid.ColumnSpan="2"  -->
-                                <ItemsControl ItemsSource="{Binding SsiFeedbackFeedBackList}" ItemTemplate="{StaticResource DataViewModel}"/>
-                            </ScrollViewer>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <ItemsControl Grid.Row="0" ItemsSource="{Binding SSI_BaudrateList}" ItemTemplate="{StaticResource EnumViewModel}"> </ItemsControl>
+                                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                                    <!--<CheckBox Grid.Row="0" Style="{StaticResource CheckBoxStyle1}" IsChecked="{Binding IsSsiFeedbackEnabled}"/>  Grid.ColumnSpan="2"  -->
+                                    <ItemsControl ItemsSource="{Binding SsiFeedbackFeedBackList}" ItemTemplate="{StaticResource DataViewModel}"/>
+                                </ScrollViewer>
+                            </Grid>
                         </GroupBox>
                         <!--<GroupBox Grid.Row="0" Header="Digital"  Background="Transparent" >
                             <Grid>

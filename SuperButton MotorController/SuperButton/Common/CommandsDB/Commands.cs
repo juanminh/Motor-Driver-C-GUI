@@ -318,10 +318,11 @@ namespace SuperButton.CommandsDB
 
             names = new[]
             {
-                "Enable", "Roll Low", "Direction", "Counts Per Rev", "Speed LPF Cut-Off", "Baud Rate", "Bit Length", "Clk Phase", "Data Shift", "Packet Relay", "Calibrate Angle", "Sample Period"
+                "Enable", "Roll Low", "Direction", "Counts Per Rev", "Speed LPF Cut-Off", "Bit Length", "Clk Phase", "Clk Polarity", "Data Shift", "Packet Relay", "Calibrate Angle", "Sample Period"
             };
-            var SubId = new[] { "1", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "15" };
-            // "Roll High", "Roll Low", "Index Mode", "Index Value", "Encoder Resolution"
+            var SubId = new[] { "1", "3", "4", "5", "6", "8", "9", "10", "11", "12", "13", "15" };
+            var type = new[] { false, false, false, false, true, false, false, false, false, false, true, false };
+
             for(int i = 0; i < names.Length; i++)
             {
                 var data = new DataViewModel
@@ -336,6 +337,32 @@ namespace SuperButton.CommandsDB
                 DataViewCommandsList.Add(new Tuple<int, int>(73, Convert.ToInt16(SubId[i])), data);
                 DataCommandsListbySubGroup["SSI_Feedback"].Add(data);
             }
+
+            var BR = new List<string>
+              {
+                  "4800",
+                  "9600",
+                  "19200",
+                  "38400",
+                  "57600",
+                  "115200",
+                  "230400",
+                  "460800",
+                  "921600"
+              };
+            Enums.Add("BaudRate", BR);
+
+            var BR_Enum = new EnumViewModel
+            {
+                CommandName = "BaudRate",
+                CommandId = "73",
+                CommandSubId = "7",
+                CommandList = Enums["BaudRate"],
+                CommandValue = "0",//first enum in list
+            };
+
+            EnumViewCommandsList.Add(new Tuple<int, int>(73, 7), BR_Enum);
+            EnumCommandsListbySubGroup.Add("SSI_BaudrateList", new ObservableCollection<object> { BR_Enum });
             #endregion SSI
             #region Qep1Qep2
             names = new[]
