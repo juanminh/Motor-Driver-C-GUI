@@ -431,6 +431,7 @@ namespace SuperButton.Models.DriverBlock
                         LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
                         RefreshManger.GetInstance.DisconnectedFlag = true;
                         Task.Run((Action)Rs232Interface.GetInstance.Disconnect);
+                        LeftPanelViewModel.GetInstance.BackGround_connection(LeftPanelViewModel.STOP);
                     }
                 }
                 else
@@ -439,6 +440,7 @@ namespace SuperButton.Models.DriverBlock
                     LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
                     RefreshManger.GetInstance.DisconnectedFlag = true;
                     Task.Run((Action)Rs232Interface.GetInstance.Disconnect);
+                    LeftPanelViewModel.GetInstance.BackGround_connection(LeftPanelViewModel.STOP);
                 }
             }
         }

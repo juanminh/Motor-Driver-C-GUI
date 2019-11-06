@@ -266,9 +266,10 @@ namespace SuperButton.Models.DriverBlock
         //public List<byte> arr2 = new List<byte>();
         //public List<byte> arr3 = new List<byte>();
         //public List<byte> arr4 = new List<byte>();
+        private int _iteratorRefresh = 0;
         public void StartRefresh()
         {
-            if(true)//!RefreshManger.DataPressed LeftPanelViewModel.GetInstance.EnRefresh && 
+            if(true)
             {
                 tab = Views.ParametarsWindow.ParametersWindowTabSelected;
                 if(ParametarsWindow.WindowsOpen == false)
@@ -316,24 +317,27 @@ namespace SuperButton.Models.DriverBlock
                     return;
                 }
                 //Debug.WriteLine("2: " + DateTime.Now.ToString("h:mm:ss.fff"));
-                foreach(var command in BuildList)
+                if(_iteratorRefresh <= 0)
+                    _iteratorRefresh = BuildList.Count - 1;
+
+                //foreach(var command in BuildList)
                 {
-                    if(!command.Value.IsSelected)
+                    int element = _iteratorRefresh--;
+                    if(element < BuildList.Count && element >= 0)
                     {
-                        Rs232Interface.GetInstance.SendToParser(new PacketFields
+                        if(!BuildList.ElementAt(element).Value.IsSelected)
                         {
-                            Data2Send = command.Value.CommandValue,
-                            ID = Convert.ToInt16(command.Value.CommandId),
-                            SubID = Convert.ToInt16(command.Value.CommandSubId),
-                            IsSet = false,
-                            IsFloat = command.Value.IsFloat
-                        });
+                            Rs232Interface.GetInstance.SendToParser(new PacketFields
+                            {
+                                Data2Send = BuildList.ElementAt(element).Value.CommandValue,
+                                ID = Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId),
+                                SubID = Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId),
+                                IsSet = false,
+                                IsFloat = BuildList.ElementAt(element).Value.IsFloat
+                            });
+                        }
                     }
-                    else
-                    {
-                    }
-                    Thread.Sleep(1);
-                    //Thread.SpinWait(1000);
+                    //Thread.Sleep(1);
                 }
 
 #if REFRESH_MANAGER
@@ -343,9 +347,10 @@ namespace SuperButton.Models.DriverBlock
         }
         static int ConnectionCount = 0;
         //public bool _oneSelected = false;
-        public void VerifyConnection()
+        public void VerifyConnection(object sender, EventArgs e)
         {
-            while(true && Rs232Interface._comPort.IsOpen)
+            /*while(true && */
+            if(Rs232Interface._comPort.IsOpen)
             {
                 Rs232Interface.GetInstance.SendToParser(new PacketFields
                 {
@@ -355,19 +360,26 @@ namespace SuperButton.Models.DriverBlock
                     IsSet = false,
                     IsFloat = false
                 });
-                Thread.Sleep(500);
+                //Thread.Sleep(500);
                 ConnectionCount++;
+                Debug.WriteLine("ConnectionCount: " + ConnectionCount + " --- " + DateTime.Now.ToString("h:mm:ss.fff"));
                 if(ConnectionCount == 5)
                 {
+                    Debug.WriteLine("ConnectionCount: " + ConnectionCount + " --- " + DateTime.Now.ToString("h:mm:ss.fff"));
+
                     EventRiser.Instance.RiseEevent(string.Format($"Connection Lost"));
                     LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
                     DisconnectedFlag = true;
                 }
             }
-            EventRiser.Instance.RiseEevent(string.Format($"Connection Lost"));
-            LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
-            RefreshManger.GetInstance.DisconnectedFlag = true;
-            Task.Run((Action)Rs232Interface.GetInstance.Disconnect);
+            else
+            {
+                EventRiser.Instance.RiseEevent(string.Format($"Connection Lost"));
+                LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
+                RefreshManger.GetInstance.DisconnectedFlag = true;
+                Task.Run((Action)Rs232Interface.GetInstance.Disconnect);
+                LeftPanelViewModel.GetInstance.BackGround_connection(LeftPanelViewModel.STOP);
+            }
         }
         //private void MouseLeaveCommandFunc()
         //{
@@ -657,47 +669,7 @@ namespace SuperButton.Models.DriverBlock
                     }
                     else if(commandidentifier.Item1 == 1 && commandidentifier.Item2 == 0) // MotorStatus
                     {
-                        if(LeftPanelViewModel.GetInstance.ConnectTextBoxContent == "Connected")
-                        {
-                            if(newPropertyValue == "1" || newPropertyValue == "0")
-                            {
-                                ConnectionCount = 0;
-                                LeftPanelViewModel.GetInstance.LedMotorStatus = Convert.ToInt16(newPropertyValue);
-                                Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)].CommandValue = newPropertyValue;
-                            }
-                        }
-                        else if(LeftPanelViewModel.GetInstance.ConnectTextBoxContent == "Not Connected")
-                        {
-                            LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Connected";
-                            if(DisconnectedFlag)
-                            {
-                                Rs232Interface.GetInstance.SendToParser(new PacketFields
-                                {
-                                    Data2Send = "",
-                                    ID = Convert.ToInt16(60),
-                                    SubID = Convert.ToInt16(1), // SelectedCh1DataSource
-                                    IsSet = false,
-                                    IsFloat = false
-                                });
-                                Thread.Sleep(2);
-                                Rs232Interface.GetInstance.SendToParser(new PacketFields
-                                {
-                                    Data2Send = "",
-                                    ID = Convert.ToInt16(60),
-                                    SubID = Convert.ToInt16(2), // SelectedCh2DataSource
-                                    IsSet = false,
-                                    IsFloat = false
-                                });
-                                Rs232Interface.GetInstance.SendToParser(new PacketFields
-                                {
-                                    Data2Send = "1",
-                                    ID = Convert.ToInt16(64),
-                                    SubID = Convert.ToInt16(0), // AutoBaud (Synch)
-                                    IsSet = true,
-                                    IsFloat = false
-                                });
-                            }
-                        }
+                        updateConnectionStatus(commandidentifier, newPropertyValue);
                     }
                     //else if(commandidentifier.Item1 == 65 && commandidentifier.Item2 == 0) // EnableLoader
                     //{
@@ -735,6 +707,11 @@ namespace SuperButton.Models.DriverBlock
                     }
                     #endregion DigitalInput
                 }
+                else if(commandidentifier.Item1 == 1 && commandidentifier.Item2 == 0) // MotorStatus
+                {
+                    updateConnectionStatus(commandidentifier, newPropertyValue);
+                }
+                /*
                 #region StartUpAPP
                 else if(commandidentifier.Item1 == 62)
                 {
@@ -758,6 +735,7 @@ namespace SuperButton.Models.DriverBlock
                     }
                 }
                 #endregion StartUpAPP
+                */
                 //}
                 #region DebugTab
                 //if(DebugViewModel.GetInstance.DebugRefresh)
@@ -775,6 +753,51 @@ namespace SuperButton.Models.DriverBlock
             catch(Exception error)
             {
                 Debug.WriteLine(error.Message);
+            }
+        }
+
+        public void updateConnectionStatus(Tuple<int, int> commandidentifier, string newPropertyValue)
+        {
+            if(LeftPanelViewModel.GetInstance.ConnectTextBoxContent == "Connected")
+            {
+                if(newPropertyValue == "1" || newPropertyValue == "0")
+                {
+                    ConnectionCount = 0;
+                    LeftPanelViewModel.GetInstance.LedMotorStatus = Convert.ToInt16(newPropertyValue);
+                    Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)].CommandValue = newPropertyValue;
+                }
+            }
+            else if(LeftPanelViewModel.GetInstance.ConnectTextBoxContent == "Not Connected")
+            {
+                LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Connected";
+                if(DisconnectedFlag)
+                {
+                    Rs232Interface.GetInstance.SendToParser(new PacketFields
+                    {
+                        Data2Send = "",
+                        ID = Convert.ToInt16(60),
+                        SubID = Convert.ToInt16(1), // SelectedCh1DataSource
+                        IsSet = false,
+                        IsFloat = false
+                    });
+                    Thread.Sleep(2);
+                    Rs232Interface.GetInstance.SendToParser(new PacketFields
+                    {
+                        Data2Send = "",
+                        ID = Convert.ToInt16(60),
+                        SubID = Convert.ToInt16(2), // SelectedCh2DataSource
+                        IsSet = false,
+                        IsFloat = false
+                    });
+                    Rs232Interface.GetInstance.SendToParser(new PacketFields
+                    {
+                        Data2Send = "1",
+                        ID = Convert.ToInt16(64),
+                        SubID = Convert.ToInt16(0), // AutoBaud (Synch)
+                        IsSet = true,
+                        IsFloat = false
+                    });
+                }
             }
         }
     }

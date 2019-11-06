@@ -1,4 +1,5 @@
-﻿//#define RELEASE_MODE
+﻿#define RELEASE_MODE
+
 using System;
 using System.Data;
 using System.Data.OleDb;
@@ -13,6 +14,7 @@ using SuperButton.Views;
 using SuperButton.Helpers;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
+using Timer = System.Timers.Timer;
 
 namespace SuperButton.ViewModels
 {
@@ -134,8 +136,8 @@ namespace SuperButton.ViewModels
                 OscilloscopeParameters.InitList();
             }
 
-            short[] ID =    {1, 60, 60, 62, 62, 62, 62 };
-            short[] subID = {0, 1, 2, 10, 1, 2, 3 };
+            short[] ID = { 1, 60, 60, 62, 62, 62, 62 };
+            short[] subID = { 0, 1, 2, 10, 1, 2, 3 };
             string[] param = { "Read motor status", "Read Ch1", "Read Ch2", "Read Checksum", "Read SN", "Read HW Rev", "Read FW Rev" };
             //int timeout = 200;
             //int timetoutLoop = 20;
@@ -282,12 +284,17 @@ namespace SuperButton.ViewModels
             LeftPanelViewModel.flag = true;
             StarterOperationFlag = false;
 #if !DEBUG || RELEASE_MODE
-            Thread Connection = new Thread(RefreshManger.GetInstance.VerifyConnection);
-            Connection.Start();
+            BackGround_connection(START);
+            ///Thread Connection = new Thread(RefreshManger.GetInstance.VerifyConnection);
+            ///Connection.Start();
             //RefreshManger.GetInstance.VerifyConnection();
+
 #endif
             if(DebugViewModel.GetInstance.EnRefresh)
-                BackGroundFunc();
+                ///BackGroundFunc();
+                backGroundFunction(START);
+
+
         }
         private String _connectTextBoxContent;
         public String ConnectTextBoxContent
@@ -809,20 +816,95 @@ namespace SuperButton.ViewModels
         {
             LogText = "";
         }
-        public void BackGroundFunc()//object state)
+
+        private Timer _refreshTimer;
+        const double _refreshInterval = 5;
+        public const int START = 1;
+        public const int STOP = 0;
+        public void backGroundFunction(int _mode)
         {
-            Thread refreshParams = new Thread(() =>
+            switch(_mode)
             {
-                while((flag && DebugViewModel.GetInstance.EnRefresh) || (flag && DebugViewModel.GetInstance.DebugRefresh))
-                {
-                    RefreshManger.GetInstance.StartRefresh();
-                    Thread.Sleep(500);
-                }
-            });
-            refreshParams.IsBackground = true;
-            refreshParams.Start();
+                case STOP:
+                    lock(this)
+                    {
+                        if(_refreshTimer != null)
+                        {
+                            lock(_refreshTimer)
+                            {
+                                _refreshTimer.Stop();
+                                _refreshTimer.Elapsed -= BackGroundFunc;
+                                _refreshTimer = null;
+                                Thread.Sleep(10);
+                            }
+                        }
+                    }
+                    break;
+                case START:
+                    if(_refreshTimer == null)
+                    {
+                        Task.Factory.StartNew(action: () =>
+                        {
+                            Thread.Sleep(100);
+                            _refreshTimer = new Timer(_refreshInterval) { AutoReset = true };
+                            _refreshTimer.Elapsed += BackGroundFunc;
+                            _refreshTimer.Start();
+                        });
+                    }
+                    break;
+            }
         }
 
+        public void BackGroundFunc(object sender, EventArgs e)
+        {
+            /// Thread refreshParams = new Thread(() =>
+            ///{
+            /// while
+            if((flag && DebugViewModel.GetInstance.EnRefresh) || (flag && DebugViewModel.GetInstance.DebugRefresh))
+            {
+                RefreshManger.GetInstance.StartRefresh();
+                ///Thread.Sleep(500);
+            }
+            ///});
+            ///refreshParams.IsBackground = true;
+            ///refreshParams.Start();
+        }
+
+        private Timer _connectionTimer;
+        const double _connectionInterval = 500;
+        public void BackGround_connection(int _mode)
+        {
+            switch(_mode)
+            {
+                case STOP:
+                    lock(this)
+                    {
+                        if(_connectionTimer != null)
+                        {
+                            lock(_connectionTimer)
+                            {
+                                _connectionTimer.Stop();
+                                _connectionTimer.Elapsed -= RefreshManger.GetInstance.VerifyConnection;
+                                _connectionTimer = null;
+                                Thread.Sleep(10);
+                            }
+                        }
+                    }
+                    break;
+                case START:
+                    if(_connectionTimer == null)
+                    {
+                        Task.Factory.StartNew(action: () =>
+                        {
+                            Thread.Sleep(100);
+                            _connectionTimer = new Timer(_connectionInterval) { AutoReset = true };
+                            _connectionTimer.Elapsed += RefreshManger.GetInstance.VerifyConnection;
+                            _connectionTimer.Start();
+                        });
+                    }
+                    break;
+            }
+        }
         private string _driverStat;
         public string DriverStat
         {

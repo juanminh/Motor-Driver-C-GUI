@@ -106,8 +106,10 @@ namespace SuperButton.ViewModels
                 {
                     if(!DebugRefresh)
                     {
-                        Thread bkgnd = new Thread(LeftPanelViewModel.GetInstance.BackGroundFunc);
-                        bkgnd.Start();
+                        ///Thread bkgnd = new Thread(LeftPanelViewModel.GetInstance.BackGroundFunc);
+                        ///bkgnd.Start();
+
+                        LeftPanelViewModel.GetInstance.backGroundFunction(LeftPanelViewModel.START);
                     }
                     else
                         updateList = true;
@@ -130,6 +132,8 @@ namespace SuperButton.ViewModels
                     }
                     if(DebugRefresh)
                         updateList = true;
+                    else
+                        LeftPanelViewModel.GetInstance.backGroundFunction(LeftPanelViewModel.STOP);
                 }
             }
         }
@@ -147,8 +151,11 @@ namespace SuperButton.ViewModels
                 {
                     if(!EnRefresh)
                     {
-                        Thread bkgnd = new Thread(LeftPanelViewModel.GetInstance.BackGroundFunc);
-                        bkgnd.Start();
+                        ///Thread bkgnd = new Thread(LeftPanelViewModel.GetInstance.BackGroundFunc);
+                        ///bkgnd.Start();
+
+                        LeftPanelViewModel.GetInstance.backGroundFunction(LeftPanelViewModel.START);
+
                     }
                     else
                         updateList = true;
@@ -156,6 +163,9 @@ namespace SuperButton.ViewModels
                 else if(!value)
                     if(EnRefresh)
                         updateList = true;
+                    else
+                        LeftPanelViewModel.GetInstance.backGroundFunction(LeftPanelViewModel.STOP);
+
             }
         }
         public static bool updateList = false;

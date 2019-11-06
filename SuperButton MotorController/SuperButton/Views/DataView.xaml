@@ -62,15 +62,12 @@
     </UserControl.Triggers>
     <Grid >
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="60*"/>
-            <ColumnDefinition Width="40*"/>
+            <ColumnDefinition Width="13*"/>
+            <ColumnDefinition Width="7*"/>
         </Grid.ColumnDefinitions>
-        <Border BorderBrush="White" BorderThickness="1" CornerRadius="4,0,0,4">
+        <Border BorderBrush="White" BorderThickness="1" CornerRadius="4,0,0,4" Grid.Column="0">
             <Border BorderThickness="1" CornerRadius="4,0,0,4" Background="#7F000000">
-                <Grid Margin="0,-1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
+                <Grid>
                     <Border x:Name="Glow" BorderThickness="1" CornerRadius="4,0,0,4" Opacity="0">
                         <Border.Background>
                             <RadialGradientBrush RadiusX="1.397" Center="1.012,0.5" GradientOrigin="1.012,0.5" RadiusY="0.68">
@@ -79,7 +76,7 @@
                             </RadialGradientBrush>
                         </Border.Background>
                     </Border>
-                    <Border x:Name="Shine" BorderThickness="1" CornerRadius="4,0,0,4" Opacity="0" Width="auto">
+                    <Border x:Name="Shine" BorderThickness="1" CornerRadius="4,0,0,4" Opacity="0">
                         <Border.Background>
                             <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="-0.026,1.005">
                                 <GradientStop Color="#99F7F5F6" Offset="0.998"/>
@@ -98,17 +95,8 @@
             </Border>
         </Border>
         <Border BorderBrush="White" BorderThickness="1" CornerRadius="0,4,4,0" Grid.Column="1">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
-                <Border BorderBrush="#FF686464" BorderThickness="0.8,0.8,0,0.8" Grid.Row="1" Background="White">
-                    <TextBox x:Name="SetValTB"
+            <Border BorderBrush="#FF686464" BorderThickness="1" Background="White" CornerRadius="0,4,4,0">
+                <TextBox x:Name="SetValTB"
                              BorderBrush="{x:Null}" MaxLines="1"
                              HorizontalContentAlignment="Center"
                              VerticalContentAlignment="Center"
@@ -117,35 +105,23 @@
                              Text="{Binding CommandValue,UpdateSourceTrigger=PropertyChanged}" 
                              Background="{Binding BackgroundStd}"
                              MouseDoubleClick="SetValTB_MouseDoubleClick">
-                        <i:Interaction.Behaviors>
-                            <models:AllowableCharactersTextBoxBehavior/>
-                        </i:Interaction.Behaviors>
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown" >
-                                <i:InvokeCommandAction Command="{Binding MouseLeftClickCommand}" />
-                            </i:EventTrigger>
-                            <i:EventTrigger EventName="GotFocus" >
-                                <i:InvokeCommandAction Command="{Binding MouseLeftClickCommand}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                        <!--<i:EventTrigger EventName="MouseLeave" >
-                                <i:InvokeCommandAction Command="{Binding MouseLeaveCommand}" />
-                            </i:EventTrigger>-->
-                        <TextBox.InputBindings>
-                            <KeyBinding Key="Enter" Command="{Binding SendData}"></KeyBinding>
-                            <KeyBinding Key="Esc"  Command="{Binding ResetValue}"></KeyBinding>
-                        </TextBox.InputBindings>
-                    </TextBox>
-                </Border>
-
-                <Border BorderThickness="1" Grid.Column="1" CornerRadius="0,4,0,0" Background="#7F000000" Grid.RowSpan="2"><!--Content="{Binding Path=LabelIntUnit}"-->
-                    <Label 
-                           Foreground="White" 
-                           HorizontalContentAlignment="Center" 
-                           VerticalContentAlignment="Center" 
-                           Padding="0" Margin="2,0"/>
-                </Border>
-            </Grid>
+                    <i:Interaction.Behaviors>
+                        <models:AllowableCharactersTextBoxBehavior/>
+                    </i:Interaction.Behaviors>
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftClickCommand}" />
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="GotFocus" >
+                            <i:InvokeCommandAction Command="{Binding MouseLeftClickCommand}" />
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                    <TextBox.InputBindings>
+                        <KeyBinding Key="Enter" Command="{Binding SendData}"></KeyBinding>
+                        <KeyBinding Key="Esc"  Command="{Binding ResetValue}"></KeyBinding>
+                    </TextBox.InputBindings>
+                </TextBox>
+            </Border>
         </Border>
     </Grid>
 </UserControl>

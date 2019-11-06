@@ -862,28 +862,31 @@
                     <Helpers:RoundBoolLed Width="10" Height="10" CurrStatus="{Binding LedStatusRx}" VerticalAlignment="Bottom" Margin="70,0,81,2"/>
                     <TextBlock HorizontalAlignment="Center" Text="Rx" VerticalAlignment="Bottom" FontSize="10" Margin="80,0,70,1" Foreground="White"></TextBlock>
                 </Grid>
-                <ScrollViewer Grid.Row="5" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Margin="0,0,0,0">
+                <!--<ScrollViewer Grid.Row="5" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" >-->
                     <!--<Grid>-->
-                    <Grid>
-                        <Grid.RowDefinitions>
+                    <Grid Grid.Row="5">
+                        <!--<Grid.RowDefinitions>
                             <RowDefinition Height="Auto"></RowDefinition>
                             <RowDefinition Height="Auto"></RowDefinition>
-                        </Grid.RowDefinitions>
+                        </Grid.RowDefinitions>-->
                         <!--<ItemsControl HorizontalContentAlignment="Left" Margin="0,10,0,0"
                               Grid.Row="0" 
                               Width="160" 
                               HorizontalAlignment="Left" 
                               ItemsSource="{Binding DriverTypeList}" 
-                              ItemTemplate="{StaticResource EnumViewSmallFontInd}"/>-->
-                        <ItemsControl HorizontalContentAlignment="Left"
-                              Grid.Row="1" 
+                              ItemTemplate="{StaticResource EnumViewSmallFontInd}"/>
+                        
+                        HorizontalContentAlignment="Left"
+                               
                               Width="160" 
                               HorizontalAlignment="Left"
+                        -->
+                        <ItemsControl 
                               ItemsSource="{Binding LPCommandsList}" 
                               ItemTemplate="{StaticResource DataViewSmallFontInd}"/>
                     </Grid>
                     <!--</Grid>-->
-                </ScrollViewer>
+                <!--</ScrollViewer>-->
                 <Grid Grid.Row="6">
                     <Separator Width="65" Margin="0,0,0,20"></Separator>
                     <Border BorderBrush="Transparent"  BorderThickness="1" CornerRadius="3" Width="110" Height="20" VerticalAlignment="Center" Margin="5,0,0,0">
