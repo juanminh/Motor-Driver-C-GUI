@@ -1,5 +1,5 @@
-﻿#define DEBUG_OPERATION
-#define DEBUG_SET
+﻿//#define DEBUG_OPERATION
+//#define DEBUG_SET
 //#define DEBUG_GET
 using System;
 using System.Collections.Concurrent;
@@ -88,18 +88,29 @@ namespace SuperButton.Models.ParserBlock
 
         //TODO here will switch between parsers depends on sender object
 
+        int CurrentCmdCounterTx = 0;
+        
         void parseOutdata(object sender, Rs232InterfaceEventArgs e)
         {
-
+            
+            if(e.PacketRx.ID == 54 && e.PacketRx.SubID == 2 && e.PacketRx.IsSet == true)
+            {
+                CurrentCmdCounterTx++;
+                Debug.WriteLine("CurrentCmdCounterTx: " + CurrentCmdCounterTx + " Value: " + e.PacketRx.Data2Send);
+            }
             if(sender is Rs232Interface)//RayonM3 Parser
             {
                 ParseOutputData(e.PacketRx.Data2Send, e.PacketRx.ID, e.PacketRx.SubID, e.PacketRx.IsSet,
                     e.PacketRx.IsFloat);
                 //Debug.WriteLine("{0} {1}[{2}]={3} {4}.", e.PacketRx.IsSet ? "Set" : "Get", e.PacketRx.ID, e.PacketRx.SubID, e.PacketRx.Data2Send, e.PacketRx.IsFloat ? "F" : "I");
-
+                if(e.PacketRx.ID == 54 && e.PacketRx.SubID == 2 && e.PacketRx.IsSet == true)
+                {
+                    CurrentCmdCounterTx++;
+                    Debug.WriteLine(" Value sent: " + e.PacketRx.Data2Send);
+                }
                 if(LeftPanelViewModel.GetInstance != null)
                 { // perform Get after "set" function
-                    if(LeftPanelViewModel.flag == true && DebugViewModel.GetInstance.EnRefresh == false && e.PacketRx.IsSet != false)
+                    if(LeftPanelViewModel._app_running == true && DebugViewModel.GetInstance.EnRefresh == false && e.PacketRx.IsSet != false)
                     {
                         Thread.Sleep(1);
                         if(e.PacketRx.ID != 63 && e.PacketRx.ID != 67)
@@ -386,7 +397,10 @@ namespace SuperButton.Models.ParserBlock
 
             //Rise another event that sends out to target
 
-
+            if(Id == 54 && SubId == 2 && IsSet == true)
+            {
+                Debug.WriteLine("Parser2Send data: " + Data2Send);
+            }
 
             if(Parser2Send != null)
             {
@@ -457,6 +471,7 @@ namespace SuperButton.Models.ParserBlock
             }
         }
         public static byte[] DebugData = { };
+        int CurrentCmdCounterRx = 0;
         public bool ParseInputPacket(byte[] data)
         {
             DebugData = data;
@@ -492,7 +507,9 @@ namespace SuperButton.Models.ParserBlock
                 transit |= data[4];
                 transit <<= 8;
                 transit |= data[3];
-                if(ParametarsWindow.ParametersWindowTabSelected == ParametarsWindowViewModel.DEBUG && !LeftPanelViewModel.GetInstance.StarterOperationFlag || !exceptionID.Contains(commandId))
+                if(commandId == 3 && commandSubId == 0)
+                    CurrentCmdCounterRx++;
+                if(ParametarsWindow.ParametersWindowTabSelected == ParametarsWindowViewModel.DEBUG && !LeftPanelViewModel.GetInstance.StarterOperationFlag && !exceptionID.Contains(commandId) || !exceptionID.Contains(commandId))
                 {
                     if(isInt)
                     {

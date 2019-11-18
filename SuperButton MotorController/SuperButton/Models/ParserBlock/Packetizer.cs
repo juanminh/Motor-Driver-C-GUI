@@ -70,7 +70,7 @@ namespace SuperButton.Models.ParserBlock
 
         public void MakePacketsBuff(object sender, Rs232InterfaceEventArgs e)
         {
-            if(e.DataChunk[0] == 65 && e.DataChunk.Length < 2)
+            if(e.DataChunk[0] == 65 && e.DataChunk.Length < 2 && LeftPanelViewModel.GetInstance.ConnectTextBoxContent == "Not Connected")
             {
                 EventRiser.Instance.RiseEevent(string.Format($"Unit is at loader mode"));
                 EventRiser.Instance.RiseEevent(string.Format($"Ready for FW update"));

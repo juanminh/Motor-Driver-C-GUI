@@ -102,14 +102,14 @@ namespace SuperButton.ViewModels
             {
                 _enRefresh = value;
                 OnPropertyChanged("EnRefresh");
-                if(value && LeftPanelViewModel.flag)
+                if(value && LeftPanelViewModel._app_running)
                 {
                     if(!DebugRefresh)
                     {
                         ///Thread bkgnd = new Thread(LeftPanelViewModel.GetInstance.BackGroundFunc);
                         ///bkgnd.Start();
 
-                        LeftPanelViewModel.GetInstance.backGroundFunction(LeftPanelViewModel.START);
+                        LeftPanelViewModel.GetInstance.RefreshParamsTick(LeftPanelViewModel.START);
                     }
                     else
                         updateList = true;
@@ -133,7 +133,7 @@ namespace SuperButton.ViewModels
                     if(DebugRefresh)
                         updateList = true;
                     else
-                        LeftPanelViewModel.GetInstance.backGroundFunction(LeftPanelViewModel.STOP);
+                        LeftPanelViewModel.GetInstance.RefreshParamsTick(LeftPanelViewModel.STOP);
                 }
             }
         }
@@ -147,14 +147,14 @@ namespace SuperButton.ViewModels
             {
                 _debugRefresh = value;
                 OnPropertyChanged("DebugRefresh");
-                if(value && LeftPanelViewModel.flag)
+                if(value && LeftPanelViewModel._app_running)
                 {
                     if(!EnRefresh)
                     {
                         ///Thread bkgnd = new Thread(LeftPanelViewModel.GetInstance.BackGroundFunc);
                         ///bkgnd.Start();
 
-                        LeftPanelViewModel.GetInstance.backGroundFunction(LeftPanelViewModel.START);
+                        LeftPanelViewModel.GetInstance.RefreshParamsTick(LeftPanelViewModel.START);
 
                     }
                     else
@@ -164,7 +164,7 @@ namespace SuperButton.ViewModels
                     if(EnRefresh)
                         updateList = true;
                     else
-                        LeftPanelViewModel.GetInstance.backGroundFunction(LeftPanelViewModel.STOP);
+                        LeftPanelViewModel.GetInstance.RefreshParamsTick(LeftPanelViewModel.STOP);
 
             }
         }

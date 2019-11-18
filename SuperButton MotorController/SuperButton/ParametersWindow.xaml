@@ -13,7 +13,8 @@
         Title="Driver Parameters" Height="500" Width="700"
         Closing="Window_Closing"
         Icon="./Themes/MotorController.png"
-        WindowStartupLocation="CenterOwner">
+        WindowStartupLocation="CenterOwner"
+        Name="ParametersWindow">
 
     <Window.Background>
         <ImageBrush ImageSource="pack://siteoforigin:,,,/Views/HomeBackground.jpg"/>
@@ -176,8 +177,7 @@
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                <ItemsControl Grid.Row="0" ItemsSource="{Binding SSI_BaudrateList}" ItemTemplate="{StaticResource EnumViewModel}"> </ItemsControl>
-                                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                                <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
                                     <!--<CheckBox Grid.Row="0" Style="{StaticResource CheckBoxStyle1}" IsChecked="{Binding IsSsiFeedbackEnabled}"/>  Grid.ColumnSpan="2"  -->
                                     <ItemsControl ItemsSource="{Binding SsiFeedbackFeedBackList}" ItemTemplate="{StaticResource DataViewModel}"/>
                                 </ScrollViewer>

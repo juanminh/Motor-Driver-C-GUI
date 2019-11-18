@@ -124,21 +124,5 @@ namespace SuperButton.ViewModels
             }
 
         }
-
-        private ObservableCollection<object> _SSI_baudrateList;
-        public ObservableCollection<object> SSI_BaudrateList
-        {
-
-            get
-            {
-                return Commands.GetInstance.EnumCommandsListbySubGroup["SSI_BaudrateList"];
-            }
-            set
-            {
-                _SSI_baudrateList = value;
-                OnPropertyChanged();
-            }
-
-        }
     }
 }

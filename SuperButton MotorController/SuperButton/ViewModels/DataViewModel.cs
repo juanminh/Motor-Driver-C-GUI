@@ -71,14 +71,19 @@ namespace SuperButton.ViewModels
             return true;
         }
 
+
         private void BuildPacketTosend()
         {
 
             if(LeftPanelViewModel.GetInstance.ConnectButtonContent == "Disconnect")
             {
 
-                Debug.WriteLine("Enter to Send");
+                //Debug.WriteLine("Enter to Send");
 
+                if(CommandId == "54" && CommandSubId == "2")
+                {
+                    Trace.WriteLine("CommandValue: " + CommandValue);
+                }
                 RefreshManger.DataPressed = false;
                 if(Commands.GetInstance.DataViewCommandsList.ContainsKey(new Tuple<int, int>(Convert.ToInt16(CommandId), Convert.ToInt16(CommandSubId))))
                 {
@@ -135,6 +140,7 @@ namespace SuperButton.ViewModels
             if(LeftPanelViewModel.GetInstance.ConnectButtonContent == "Disconnect")
             {
                 RefreshManger.DataPressed = true;
+
                 foreach(var list in Commands.GetInstance.DataViewCommandsList)
                 {
                     try
@@ -156,6 +162,7 @@ namespace SuperButton.ViewModels
                     this.ReadOnly = false;
                     this.EnableTextBox = true;
                 }
+
             }
             #region Not_Enabled
             //int i = 0;

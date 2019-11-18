@@ -524,7 +524,7 @@
                                 <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
                             <Border Grid.Row="0" Grid.Column="0" BorderBrush="Transparent"  BorderThickness="1" CornerRadius="3" Width="110" Height="20" VerticalAlignment="Center" Margin="5,0,0,0">
-                                <TextBlock Height="17" Text="Motion Commands" HorizontalAlignment="Center" Foreground="White"></TextBlock>
+                                <TextBlock MaxHeight="17" Text="Motion Commands" HorizontalAlignment="Center" Foreground="White"></TextBlock>
                             </Border>
                             <Grid Grid.Row="1">
                                 <Grid.ColumnDefinitions>

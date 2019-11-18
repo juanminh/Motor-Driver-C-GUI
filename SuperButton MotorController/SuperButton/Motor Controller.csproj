@@ -599,7 +599,9 @@
     </COMReference>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="MotorControllerMain.ico" />
+    <Resource Include="MotorControllerMain.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Themes\MotorController.png" />

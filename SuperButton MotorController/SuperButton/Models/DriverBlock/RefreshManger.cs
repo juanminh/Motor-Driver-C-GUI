@@ -349,9 +349,9 @@ namespace SuperButton.Models.DriverBlock
         //public bool _oneSelected = false;
         public void VerifyConnection(object sender, EventArgs e)
         {
-            /*while(true && */
             if(Rs232Interface._comPort.IsOpen)
             {
+                
                 Rs232Interface.GetInstance.SendToParser(new PacketFields
                 {
                     Data2Send = "",
@@ -360,13 +360,11 @@ namespace SuperButton.Models.DriverBlock
                     IsSet = false,
                     IsFloat = false
                 });
-                //Thread.Sleep(500);
                 ConnectionCount++;
-                Debug.WriteLine("ConnectionCount: " + ConnectionCount + " --- " + DateTime.Now.ToString("h:mm:ss.fff"));
+                //if(ConnectionCount > 0)
+                //    Debug.WriteLine("ConnectionCount: " + ConnectionCount + " " + DateTime.Now.ToString("h:mm:ss.fff"));
                 if(ConnectionCount == 5)
                 {
-                    Debug.WriteLine("ConnectionCount: " + ConnectionCount + " --- " + DateTime.Now.ToString("h:mm:ss.fff"));
-
                     EventRiser.Instance.RiseEevent(string.Format($"Connection Lost"));
                     LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
                     DisconnectedFlag = true;
@@ -374,11 +372,13 @@ namespace SuperButton.Models.DriverBlock
             }
             else
             {
+                
                 EventRiser.Instance.RiseEevent(string.Format($"Connection Lost"));
                 LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
                 RefreshManger.GetInstance.DisconnectedFlag = true;
                 Task.Run((Action)Rs232Interface.GetInstance.Disconnect);
-                LeftPanelViewModel.GetInstance.BackGround_connection(LeftPanelViewModel.STOP);
+                LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.STOP);
+                
             }
         }
         //private void MouseLeaveCommandFunc()
@@ -765,6 +765,8 @@ namespace SuperButton.Models.DriverBlock
                     ConnectionCount = 0;
                     LeftPanelViewModel.GetInstance.LedMotorStatus = Convert.ToInt16(newPropertyValue);
                     Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)].CommandValue = newPropertyValue;
+                    //Debug.WriteLine("ConnectionCount: " + ConnectionCount + " " + DateTime.Now.ToString("h:mm:ss.fff"));
+
                 }
             }
             else if(LeftPanelViewModel.GetInstance.ConnectTextBoxContent == "Not Connected")

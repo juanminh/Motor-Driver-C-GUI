@@ -12,7 +12,7 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         x:Class="SuperButton.MainWindow"
         mc:Ignorable="d"
-	x:Name="Window" 
+	x:Name="MainAppWindow" 
 	Title="Motor Controller"
 	Width="1000" Height="600" MinWidth="300" MinHeight="300" IsTabStop="False" ShowInTaskbar="True" WindowState="Maximized"
     Closing="Window_Closing" 

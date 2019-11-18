@@ -38,10 +38,10 @@ namespace SuperButton.Models.DriverBlock
         
         public Rs232InterfaceEventArgs(byte[] dataChunk)
         {
-            //foreach(var b in dataChunk)
-            //    RefreshManger.GetInstance.arr.Add(b);
-            LeftPanelViewModel.GetInstance.LedStatusRx = RoundBoolLed.PASSED;
+            //LeftPanelViewModel.GetInstance.LedStatusRx = RoundBoolLed.PASSED;
+            LeftPanelViewModel.GetInstance.led = LeftPanelViewModel.RX_LED;
             DataChunk = dataChunk;      //Receive packet
+            //LeftPanelViewModel.GetInstance.led = -1;
         }
 
         public Rs232InterfaceEventArgs(string connecteButtonLabel)
@@ -54,13 +54,15 @@ namespace SuperButton.Models.DriverBlock
 
         public Rs232InterfaceEventArgs(PacketFields packetRx)
         {
-            LeftPanelViewModel.GetInstance.LedStatusTx = RoundBoolLed.PASSED;
+            //LeftPanelViewModel.GetInstance.LedStatusTx = RoundBoolLed.PASSED;
+            LeftPanelViewModel.GetInstance.led = LeftPanelViewModel.TX_LED;
             PacketRx = packetRx;     // Send Packet
+            //LeftPanelViewModel.GetInstance.led = -1;
             //Debug.WriteLine(PacketRx.IsSet);
         }
 
 
-     
+
 
         //public Rs232InterfaceEventArgs(DoubleSeries xyChannelOnep)
         //{

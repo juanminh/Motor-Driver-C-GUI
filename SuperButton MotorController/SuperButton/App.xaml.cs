@@ -1,4 +1,5 @@
 ﻿using Abt.Controls.SciChart.Visuals;
+using SuperButton.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -41,6 +42,7 @@ namespace SuperButton
             // raise selection change event even when there's no change in index
             EventManager.RegisterClassHandler(typeof(ComboBoxItem), UIElement.PreviewMouseLeftButtonDownEvent,
                                               new MouseButtonEventHandler(ComboBoxSelfSelection), true);
+            EventManager.RegisterClassHandler(typeof(Window), Window.PreviewMouseDownEvent, new MouseButtonEventHandler(OnPreviewMouseDown));
 
             base.OnStartup(e);
         }
@@ -53,7 +55,7 @@ namespace SuperButton
                 return;
 
             // find the combobox where the item resides
-            var comboBox = ItemsControl.ItemsControlFromItemContainer(item) as ComboBox;
+            var comboBox = ItemsControl.ItemsControlFromItemContainer(item) as System.Windows.Controls.ComboBox;
 
             if(comboBox == null)
                 return;
@@ -65,6 +67,24 @@ namespace SuperButton
                 comboBox.RaiseEvent(new SelectionChangedEventArgs(Selector.SelectionChangedEvent, new List<object>(), new List<object>()));
             }
         }
-
+        static void OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            /*
+            Trace.WriteLine("Clicked!!");
+            if(LeftPanelViewModel.win != null)
+            {
+                if((LeftPanelViewModel.win.WindowState == WindowState.Normal || LeftPanelViewModel.win.WindowState == WindowState.Maximized) &&
+                    (App.Current.MainWindow.WindowState == WindowState.Normal || App.Current.MainWindow.WindowState == WindowState.Maximized)
+                    )
+                {
+                    var temp = sender as Window;
+                    if(temp.Name == "MainAppWindow")
+                    {
+                        //LeftPanelViewModel.win.WindowState = WindowState.Minimized;
+                    }
+                }
+            }
+            */
+        }
     }
 }

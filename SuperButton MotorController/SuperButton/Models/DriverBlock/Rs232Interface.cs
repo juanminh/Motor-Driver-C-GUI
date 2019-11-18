@@ -258,7 +258,7 @@ namespace SuperButton.Models.DriverBlock
                                         Commands.AssemblePacket(out RxPacket, Int16.Parse(temp.CommandId), Int16.Parse(temp.CommandSubId), true, false, 1);
                                         RxtoParser(this, new Rs232InterfaceEventArgs(RxPacket));
                                     }
-                                    Thread.Sleep(100);// while with timeout of 1 second
+                                    Thread.Sleep(10);// while with timeout of 1 second
                                     var Cleaner = tmpcom.ReadExisting();
                                 }
                             }
@@ -423,6 +423,29 @@ namespace SuperButton.Models.DriverBlock
                     try
                     {
                         serialPort.Write(packetToSend, 0, packetToSend.Length); // Send through RS232 cable
+                        if(packetToSend.Length == 11)
+                        {
+                            var cmdlIdLsb = packetToSend[2];
+                            var cmdIdlMsb = packetToSend[3] & 0x3F;
+                            var subIdLsb = (packetToSend[3] >> 6) & 0x03;
+                            var subIdMsb = packetToSend[4] & 0x07;
+                            var getSet = (packetToSend[4] >> 4) & 0x01;
+                            int commandId = Convert.ToInt16(cmdlIdLsb);
+                            commandId = commandId + Convert.ToInt16(cmdIdlMsb << 8);
+                            int commandSubId = Convert.ToInt16(subIdLsb);
+                            commandSubId = commandSubId + Convert.ToInt16(subIdMsb << 2);
+                            Int32 transit = packetToSend[8];
+                            transit <<= 8;
+                            transit |= packetToSend[7];
+                            transit <<= 8;
+                            transit |= packetToSend[6];
+                            transit <<= 8;
+                            transit |= packetToSend[5];
+                            if(commandId == 54 && commandSubId == 2 && getSet == 0)
+                            {
+                                Debug.WriteLine("SendData data: " + transit);
+                            }
+                        }
                         serialPort.DiscardOutBuffer();
                     }
                     catch
@@ -431,7 +454,7 @@ namespace SuperButton.Models.DriverBlock
                         LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
                         RefreshManger.GetInstance.DisconnectedFlag = true;
                         Task.Run((Action)Rs232Interface.GetInstance.Disconnect);
-                        LeftPanelViewModel.GetInstance.BackGround_connection(LeftPanelViewModel.STOP);
+                        LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.STOP);
                     }
                 }
                 else
@@ -440,7 +463,7 @@ namespace SuperButton.Models.DriverBlock
                     LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
                     RefreshManger.GetInstance.DisconnectedFlag = true;
                     Task.Run((Action)Rs232Interface.GetInstance.Disconnect);
-                    LeftPanelViewModel.GetInstance.BackGround_connection(LeftPanelViewModel.STOP);
+                    LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.STOP);
                 }
             }
         }

@@ -92,7 +92,7 @@ namespace SuperButton.ViewModels
                 }
                 else
                 {
-                    LeftPanelViewModel.flag = false;
+                    LeftPanelViewModel._app_running = false;
                     ConnectTextBoxContent = "Not Connected";
                 }
                 if(_connetButtonContent == value)
@@ -139,8 +139,7 @@ namespace SuperButton.ViewModels
             short[] ID = { 1, 60, 60, 62, 62, 62, 62 };
             short[] subID = { 0, 1, 2, 10, 1, 2, 3 };
             string[] param = { "Read motor status", "Read Ch1", "Read Ch2", "Read Checksum", "Read SN", "Read HW Rev", "Read FW Rev" };
-            //int timeout = 200;
-            //int timetoutLoop = 20;
+
             EventRiser.Instance.RiseEevent(string.Format($"Reading param..."));
             for(int i = 0; i < param.Length; i++)
             {
@@ -153,148 +152,18 @@ namespace SuperButton.ViewModels
                     IsSet = false,
                     IsFloat = false
                 });
-                Thread.Sleep(350);
-
-                /*
-                timeOutPlot = 0;
-                do
-                {
-                    Thread.Sleep(timeout);
-                    timeOutPlot++;
-                } while(StarterCount != (i  + 1) && timeOutPlot <= timetoutLoop);
-                */
+                Thread.Sleep(50);
             }
-
-            /*
-            if(StarterCount == 7)
-                EventRiser.Instance.RiseEevent(string.Format($"success"));
-            else
-                EventRiser.Instance.RiseEevent(string.Format($"failed"));
-            */
-            /*
-            EventRiser.Instance.RiseEevent(string.Format($"Read motor status"));
-            Rs232Interface.GetInstance.SendToParser(new PacketFields
-            {
-                Data2Send = "",
-                ID = Convert.ToInt16(1),
-                SubID = Convert.ToInt16(0),
-                IsSet = false,
-                IsFloat = false
-            });
-            
-            timeOutPlot = 0;
-            do
-            {
-                Thread.Sleep(timeout);
-                timeOutPlot++;
-            } while(StarterCount != 1 && timeOutPlot <= 10);
-            if(timeOutPlot > 10)
-                EventRiser.Instance.RiseEevent(string.Format($"Failed"));
-
-            EventRiser.Instance.RiseEevent(string.Format($"Read Ch1"));
-            Rs232Interface.GetInstance.SendToParser(new PacketFields
-            {
-                Data2Send = "",
-                ID = Convert.ToInt16(60),
-                SubID = Convert.ToInt16(1), // SelectedCh1DataSource
-                IsSet = false,
-                IsFloat = false
-            });
-            timeOutPlot = 0;
-            do
-            {
-                Thread.Sleep(timeout);
-                timeOutPlot++;
-            } while(StarterCount != 2 && timeOutPlot <= 10);
-
-            EventRiser.Instance.RiseEevent(string.Format($"Read Ch2"));
-            Rs232Interface.GetInstance.SendToParser(new PacketFields
-            {
-                Data2Send = "",
-                ID = Convert.ToInt16(60),
-                SubID = Convert.ToInt16(2), // SelectedCh2DataSource
-                IsSet = false,
-                IsFloat = false
-            });
-            timeOutPlot = 0;
-            do
-            {
-                Thread.Sleep(timeout);
-                timeOutPlot++;
-            } while(StarterCount != 3 && timeOutPlot <= 10);
-
-            EventRiser.Instance.RiseEevent(string.Format($"Read Checksum"));
-            Rs232Interface.GetInstance.SendToParser(new PacketFields
-            {
-                Data2Send = "",
-                ID = Convert.ToInt16(62),
-                SubID = Convert.ToInt16(10), // Checksum
-                IsSet = false,
-                IsFloat = false
-            });
-            timeOutPlot = 0;
-            do
-            {
-                Thread.Sleep(timeout);
-                timeOutPlot++;
-            } while(StarterCount != 4 && timeOutPlot <= 10);
-
-            Debug.WriteLine("Param Count: " + timeOutPlot);
-
-            for(int i = 1; i < 4; i++)
-            {
-                EventRiser.Instance.RiseEevent(string.Format($"Read unit param."));
-                Thread.Sleep(1);
-                Rs232Interface.GetInstance.SendToParser(new PacketFields
-                {
-                    Data2Send = "",
-                    ID = Convert.ToInt16(62),
-                    SubID = Convert.ToInt16(i),
-                    IsSet = false,
-                    IsFloat = false
-                });
-                timeOutPlot = 0;
-                do
-                {
-                    Thread.Sleep(timeout);
-                    timeOutPlot++;
-                } while(StarterCount != (4 + i) && timeOutPlot <= 10);
-
-            }
-
-            timeOutPlot = 0;
-            do
-            {
-                Thread.Sleep(timeout);
-                timeOutPlot++;
-            } while(StarterCount != 7 && timeOutPlot <= 10);
-
-            Debug.WriteLine("Param Count: " + timeOutPlot);
-
-            Thread.Sleep(250);
-            
-            //if(StarterCount == 7)
-            //    EventRiser.Instance.RiseEevent(string.Format($"Success"));
-            //else
-            //    EventRiser.Instance.RiseEevent(string.Format($"Failed"));
-
-            Debug.WriteLine("StarterCount: " + StarterCount);
-            */
             #endregion  Operations
-            LeftPanelViewModel.flag = true;
+            LeftPanelViewModel._app_running = true;
             StarterOperationFlag = false;
-#if !DEBUG || RELEASE_MODE
-            BackGround_connection(START);
-            ///Thread Connection = new Thread(RefreshManger.GetInstance.VerifyConnection);
-            ///Connection.Start();
-            //RefreshManger.GetInstance.VerifyConnection();
 
+            BlinkLedsTicks(START);
+#if !DEBUG || RELEASE_MODE
+            VerifyConnectionTicks(START);
 #endif
             if(DebugViewModel.GetInstance.EnRefresh)
-                ///BackGroundFunc();
-                backGroundFunction(START);
-
-
+                RefreshParamsTick(START);
         }
         private String _connectTextBoxContent;
         public String ConnectTextBoxContent
@@ -488,20 +357,7 @@ namespace SuperButton.ViewModels
             {
                 _led_statusTx = value;
                 RaisePropertyChanged("LedStatusTx");
-                //Debug.WriteLine("Tx1: " + DateTime.Now.ToString("h:mm:ss.fff"));
-                //Thread.SpinWait(10000);
-                Thread.Sleep(1);
-                //Debug.WriteLine("Tx2: " + DateTime.Now.ToString("h:mm:ss.fff"));
-                if(value == 1)
-                {
-                    _led_statusTx = 0;
-                    RaisePropertyChanged("LedStatusTx");
-                }
             }
-        }
-        public void Instance_BlinkLedTx(object sender, EventArgs e)
-        {
-            //LedStatusTx = ((CustomEventArgs)e).LedTx;
         }
 
         private int _led_statusRx;
@@ -516,15 +372,6 @@ namespace SuperButton.ViewModels
             {
                 _led_statusRx = value;
                 RaisePropertyChanged("LedStatusRx");
-                //Debug.WriteLine("Rx1: " + DateTime.Now.ToString("h:mm:ss.fff"));
-                //Thread.SpinWait(10000);
-                Thread.Sleep(1);
-                //Debug.WriteLine("Rx2: " + DateTime.Now.ToString("h:mm:ss.fff"));
-                if(value == 1)
-                {
-                    _led_statusRx = 0;
-                    RaisePropertyChanged("LedStatusRx");
-                }
             }
         }
         #endregion TXRXLed
@@ -777,33 +624,30 @@ namespace SuperButton.ViewModels
                 _xlThread.Abort();
             }
         }
-        public static bool flag = false; // Indicate the application is running and connected to a driver
+        public static bool _app_running = false; // Indicate the application is running and connected to a driver
 
         public static ParametarsWindow win;
         private void ShowParametersWindow()
         {
-            //if (_connetButtonContent == "Disconnect")
+            if(ParametarsWindow.WindowsOpen != true)
             {
-                if(ParametarsWindow.WindowsOpen != true)
-                {
 
-                    win = ParametarsWindow.GetInstance; // new ParametarsWindow();
-                    if(win.ActualHeight != 0)
-                    {
-                        win.Activate();
-                    }
-                    else
-                    {
-                        win.Show();
-                    }
-
-                    //flag = true;
-                    //Task task = Task.Run((Action)BackGroundFunc);
-                }
-                else
+                win = ParametarsWindow.GetInstance; // new ParametarsWindow();
+                if(win.ActualHeight != 0)
                 {
                     win.Activate();
                 }
+                else
+                {
+                    win.Show();
+                }
+            }
+            else if (win.WindowState == System.Windows.WindowState.Minimized)
+            {
+                win.WindowState = System.Windows.WindowState.Normal;
+
+                //App.Current.MainWindow.Topmost = true; /* Main window object */
+                //win.Activate();
             }
 
         }
@@ -817,94 +661,140 @@ namespace SuperButton.ViewModels
             LogText = "";
         }
 
-        private Timer _refreshTimer;
-        const double _refreshInterval = 5;
+        private Timer _RefreshParamsTickTimer;
+        const double _RefreshParamsTickInterval = 5;
         public const int START = 1;
         public const int STOP = 0;
-        public void backGroundFunction(int _mode)
+        public const int TX_LED = 1;
+        public const int RX_LED = 0;
+        public void RefreshParamsTick(int _mode)
         {
             switch(_mode)
             {
                 case STOP:
                     lock(this)
                     {
-                        if(_refreshTimer != null)
+                        if(_RefreshParamsTickTimer != null)
                         {
-                            lock(_refreshTimer)
+                            lock(_RefreshParamsTickTimer)
                             {
-                                _refreshTimer.Stop();
-                                _refreshTimer.Elapsed -= BackGroundFunc;
-                                _refreshTimer = null;
+                                _RefreshParamsTickTimer.Stop();
+                                _RefreshParamsTickTimer.Elapsed -= RefreshParams;
+                                _RefreshParamsTickTimer = null;
                                 Thread.Sleep(10);
                             }
                         }
                     }
                     break;
                 case START:
-                    if(_refreshTimer == null)
+                    if(_RefreshParamsTickTimer == null)
                     {
                         Task.Factory.StartNew(action: () =>
                         {
                             Thread.Sleep(100);
-                            _refreshTimer = new Timer(_refreshInterval) { AutoReset = true };
-                            _refreshTimer.Elapsed += BackGroundFunc;
-                            _refreshTimer.Start();
+                            _RefreshParamsTickTimer = new Timer(_RefreshParamsTickInterval) { AutoReset = true };
+                            _RefreshParamsTickTimer.Elapsed += RefreshParams;
+                            _RefreshParamsTickTimer.Start();
                         });
                     }
                     break;
             }
         }
-
-        public void BackGroundFunc(object sender, EventArgs e)
+        public void RefreshParams(object sender, EventArgs e)
         {
-            /// Thread refreshParams = new Thread(() =>
-            ///{
-            /// while
-            if((flag && DebugViewModel.GetInstance.EnRefresh) || (flag && DebugViewModel.GetInstance.DebugRefresh))
+            if((_app_running && DebugViewModel.GetInstance.EnRefresh) || (_app_running && DebugViewModel.GetInstance.DebugRefresh))
             {
                 RefreshManger.GetInstance.StartRefresh();
-                ///Thread.Sleep(500);
             }
-            ///});
-            ///refreshParams.IsBackground = true;
-            ///refreshParams.Start();
         }
 
-        private Timer _connectionTimer;
-        const double _connectionInterval = 500;
-        public void BackGround_connection(int _mode)
+        private Timer _VerifyConnectionTimer;
+        const double _VerifyConnectionInterval = 500;
+        public void VerifyConnectionTicks(int _mode)
         {
             switch(_mode)
             {
                 case STOP:
                     lock(this)
                     {
-                        if(_connectionTimer != null)
+                        if(_VerifyConnectionTimer != null)
                         {
-                            lock(_connectionTimer)
+                            lock(_VerifyConnectionTimer)
                             {
-                                _connectionTimer.Stop();
-                                _connectionTimer.Elapsed -= RefreshManger.GetInstance.VerifyConnection;
-                                _connectionTimer = null;
+                                _VerifyConnectionTimer.Stop();
+                                _VerifyConnectionTimer.Elapsed -= RefreshManger.GetInstance.VerifyConnection;
+                                _VerifyConnectionTimer = null;
                                 Thread.Sleep(10);
                             }
                         }
                     }
                     break;
                 case START:
-                    if(_connectionTimer == null)
+                    if(_VerifyConnectionTimer == null)
                     {
                         Task.Factory.StartNew(action: () =>
                         {
                             Thread.Sleep(100);
-                            _connectionTimer = new Timer(_connectionInterval) { AutoReset = true };
-                            _connectionTimer.Elapsed += RefreshManger.GetInstance.VerifyConnection;
-                            _connectionTimer.Start();
+                            _VerifyConnectionTimer = new Timer(_VerifyConnectionInterval) { AutoReset = true };
+                            _VerifyConnectionTimer.Elapsed += RefreshManger.GetInstance.VerifyConnection;
+                            _VerifyConnectionTimer.Start();
                         });
                     }
                     break;
             }
         }
+
+        private Timer _BlinkLedsTimer;
+        const double _BlinkLedsInterval = 1;
+        public void BlinkLedsTicks(int _mode)
+        {
+            switch(_mode)
+            {
+                case STOP:
+                    lock(this)
+                    {
+                        if(_BlinkLedsTimer != null)
+                        {
+                            lock(_BlinkLedsTimer)
+                            {
+                                _BlinkLedsTimer.Stop();
+                                _BlinkLedsTimer.Elapsed -= BlinkLeds;
+                                _BlinkLedsTimer = null;
+                                Thread.Sleep(10);
+                            }
+                        }
+                    }
+                    break;
+                case START:
+                    if(_BlinkLedsTimer == null)
+                    {
+                        Task.Factory.StartNew(action: () =>
+                        {
+                            Thread.Sleep(10);
+                            _BlinkLedsTimer = new Timer(_BlinkLedsInterval) { AutoReset = true };
+                            _BlinkLedsTimer.Elapsed += BlinkLeds;
+                            _BlinkLedsTimer.Start();
+                        });
+                    }
+                    break;
+            }
+        }
+        public int led = -1;
+        public void BlinkLeds(object sender, EventArgs e)
+        {
+            if(_app_running)
+            {
+                if(led == TX_LED)
+                        LedStatusTx = 1;
+                if(led == RX_LED)
+                        LedStatusRx = 1;
+                
+                Thread.Sleep(1);
+                LedStatusTx = 0;
+                LedStatusRx = 0;
+            }
+        }
+
         private string _driverStat;
         public string DriverStat
         {

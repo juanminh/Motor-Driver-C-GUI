@@ -52,6 +52,7 @@
 			<Item Name="BuildSunCheckSum (SubVI).vi" Type="VI" URL="../Functions/BuildSunCheckSum (SubVI).vi"/>
 			<Item Name="Connect COM Port &amp; AutoBaud (SubVI).vi" Type="VI" URL="../Functions/Connect COM Port &amp; AutoBaud (SubVI).vi"/>
 			<Item Name="ConvertDataFrom File (SubVI).vi" Type="VI" URL="../Functions/ConvertDataFrom File (SubVI).vi"/>
+			<Item Name="CRC16_Calc.vi" Type="VI" URL="../Functions/CRC16_Calc.vi"/>
 			<Item Name="Crc16DLL.dll" Type="Document" URL="../data/Crc16DLL.dll"/>
 			<Item Name="CRC_compare.vi" Type="VI" URL="../Functions/CRC_compare.vi"/>
 			<Item Name="Data_Convert.vi" Type="VI" URL="../C280xxx_Flash_programmer_with_cmd_example/Data_Convert.vi"/>
