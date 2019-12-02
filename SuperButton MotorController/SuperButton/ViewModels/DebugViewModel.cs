@@ -117,7 +117,6 @@ namespace SuperButton.ViewModels
                 }
                 else if(!value)
                 {
-                    RefreshManger.DataPressed = false;
                     foreach(var list in Commands.GetInstance.DataViewCommandsList)
                     {
                         try

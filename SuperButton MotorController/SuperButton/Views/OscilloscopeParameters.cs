@@ -1,6 +1,7 @@
 ﻿using SuperButton.Models.DriverBlock;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 using System.Windows.Media.Animation;
 
 namespace SuperButton.Views
@@ -140,6 +141,7 @@ namespace SuperButton.Views
                 IsSet = false,
                 IsFloat = false
             });
+            Thread.Sleep(5);
             Rs232Interface.GetInstance.SendToParser(new PacketFields
             {
                 Data2Send = "",
@@ -148,6 +150,8 @@ namespace SuperButton.Views
                 IsSet = false,
                 IsFloat = false
             });
+            Thread.Sleep(5);
+
             plotCount_temp--;
             if(plotCount_temp == 0)
             {
@@ -172,8 +176,6 @@ namespace SuperButton.Views
                 }
                 i++;
             }
-
-            OscilloscopeViewModel.GetInstance.ChComboEn = true;
         }
         public static void InitList()
         {
@@ -216,7 +218,6 @@ namespace SuperButton.Views
             ScaleAndGainList.Add(new Tuple<float, float>(1, IfullScale)); // CurrentRefPI
 
             OscilloscopeViewModel.GetInstance.FillDictionary();
-            OscilloscopeViewModel.GetInstance.ChComboEn = true;
         }
     }
 

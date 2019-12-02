@@ -48,7 +48,7 @@ namespace SuperButton.Models.DriverBlock
         }
 
         public abstract void AutoConnect(); //Virtual bstract Base function
-        public abstract void Disconnect(); //Virtual bstract Base function
+        public abstract void Disconnect(int mode); //Virtual bstract Base function
         //send 
         //recieve
         //Manual connect

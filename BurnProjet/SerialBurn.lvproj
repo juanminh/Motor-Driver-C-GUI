@@ -86,7 +86,7 @@
 				<Property Name="Bld_localDestDirType" Type="Str">relativeToCommon</Property>
 				<Property Name="Bld_modifyLibraryFile" Type="Bool">true</Property>
 				<Property Name="Bld_previewCacheID" Type="Str">{4655D5B0-E7E0-4AA9-B222-089A3AE77F5C}</Property>
-				<Property Name="Bld_version.build" Type="Int">7</Property>
+				<Property Name="Bld_version.build" Type="Int">8</Property>
 				<Property Name="Bld_version.major" Type="Int">1</Property>
 				<Property Name="Destination[0].destName" Type="Str">Serial Programmer.exe</Property>
 				<Property Name="Destination[0].path" Type="Path">../SuperButton MotorController/SuperButton/bin/Debug/SerialProgrammer/Serial Programmer.exe</Property>
@@ -96,7 +96,7 @@
 				<Property Name="Destination[1].path" Type="Path">../SuperButton MotorController/SuperButton/bin/Debug/SerialProgrammer/data</Property>
 				<Property Name="DestinationCount" Type="Int">2</Property>
 				<Property Name="Exe_iconItemID" Type="Ref">/My Computer/seriaporgrammer_X5P_icon.ico</Property>
-				<Property Name="Source[0].itemID" Type="Str">{0A83DFFB-34CE-4D9E-A724-224226FC86A7}</Property>
+				<Property Name="Source[0].itemID" Type="Str">{79E2F7D0-2F73-4190-8A41-30C5CB0EA23A}</Property>
 				<Property Name="Source[0].type" Type="Str">Container</Property>
 				<Property Name="Source[1].destinationIndex" Type="Int">0</Property>
 				<Property Name="Source[1].itemID" Type="Ref">/My Computer/Programmer.vi</Property>

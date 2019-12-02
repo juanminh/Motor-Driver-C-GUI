@@ -657,7 +657,7 @@ namespace SuperButton.ViewModels
             iniFile.WritePrivateProfileString("Programmer", "COM", Rs232Interface.GetInstance.ComPortStr, iniPath + "\\SerialProgrammer\\data\\SerialProgrammer.ini");
 
             if(LeftPanelViewModel.GetInstance.ConnectTextBoxContent != "Not Connected")
-                Task.Run((Action)Rs232Interface.GetInstance.Disconnect);
+                Rs232Interface.GetInstance.Disconnect();
 
             int countDisconnection = 0;
             while(LeftPanelViewModel.GetInstance.ConnectTextBoxContent != "Not Connected")
@@ -666,7 +666,7 @@ namespace SuperButton.ViewModels
                 Debug.WriteLine("wait end connection");
                 countDisconnection++;
                 if(countDisconnection == 3)
-                    Task.Run((Action)Rs232Interface.GetInstance.Disconnect);
+                    Rs232Interface.GetInstance.Disconnect();
             }
 
             Process.Start(iniPath + "\\SerialProgrammer\\Serial Programmer.exe");

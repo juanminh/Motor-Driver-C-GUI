@@ -76,10 +76,7 @@ namespace SuperButton.ViewModels
         }
         #region Connect_Button
         private String _connetButtonContent;
-
-        //Task Background;
-        //Task Connection;
-        Task StarterTask;
+        
         public String ConnectButtonContent
         {
             get { return _connetButtonContent; }
@@ -108,8 +105,10 @@ namespace SuperButton.ViewModels
         {
             #region Operations
             StarterOperationFlag = true;
+            RefreshManger.GetInstance.DisconnectedFlag = false;
             StarterCount = 0;
             OscilloscopeViewModel.GetInstance.ChComboEn = false;
+            Thread.Sleep(10);
             Rs232Interface.GetInstance.SendToParser(new PacketFields
             {
                 Data2Send = "",
@@ -122,9 +121,9 @@ namespace SuperButton.ViewModels
             int timeOutPlot = 0;
             do
             {
-                Thread.Sleep(1500);
+                Thread.Sleep(150);
                 timeOutPlot++;
-            } while(OscilloscopeParameters.plotCount_temp != 0 && timeOutPlot <= 10);
+            } while(OscilloscopeParameters.plotCount_temp != 0 && timeOutPlot <= 100);
 
             Debug.WriteLine("TimeOutPlot: " + timeOutPlot);
             if(OscilloscopeParameters.plotCount_temp == 0)
@@ -135,9 +134,11 @@ namespace SuperButton.ViewModels
                 OscilloscopeParameters.InitList();
             }
 
-            short[] ID = { 1, 60, 60, 62, 62, 62, 62 };
-            short[] subID = { 0, 1, 2, 10, 1, 2, 3 };
-            string[] param = { "Read motor status", "Read Ch1", "Read Ch2", "Read Checksum", "Read SN", "Read HW Rev", "Read FW Rev" };
+            OscilloscopeViewModel.GetInstance.ChComboEn = true;
+
+            short[] ID = {60, 60, 62, 62, 62, 62, 1 };
+            short[] subID = {1, 2, 10, 1, 2, 3, 0 };
+            string[] param = { "Read Ch1", "Read Ch2", "Read Checksum", "Read SN", "Read HW Rev", "Read FW Rev", "Read motor status"};
 
             EventRiser.Instance.RiseEevent(string.Format($"Reading param..."));
             for(int i = 0; i < param.Length; i++)
@@ -154,9 +155,11 @@ namespace SuperButton.ViewModels
                 Thread.Sleep(50);
             }
             #endregion  Operations
-            LeftPanelViewModel._app_running = true;
-            StarterOperationFlag = false;
 
+            do
+            {
+                Thread.Sleep(100);
+            } while(StarterOperationFlag);
             BlinkLedsTicks(STOP);
             BlinkLedsTicks(START);
 #if !DEBUG || RELEASE_MODE
@@ -166,6 +169,8 @@ namespace SuperButton.ViewModels
             RefreshParamsTick(STOP);
             if(DebugViewModel.GetInstance.EnRefresh)
                 RefreshParamsTick(START);
+
+            LeftPanelViewModel._app_running = true;
         }
         private String _connectTextBoxContent;
         public String ConnectTextBoxContent
@@ -578,7 +583,7 @@ namespace SuperButton.ViewModels
                 busy = true;
                 lock(ConnectLock)
                 {
-                    Task.Run((Action)Rs232Interface.GetInstance.Disconnect);
+                    Rs232Interface.GetInstance.Disconnect();
                 }
             }
         }

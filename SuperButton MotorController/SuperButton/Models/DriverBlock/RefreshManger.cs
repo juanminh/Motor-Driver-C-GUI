@@ -29,8 +29,6 @@ namespace SuperButton.Models.DriverBlock
         public static Dictionary<string, ObservableCollection<object>> BuildGroup = new Dictionary<string, ObservableCollection<object>>();
         public static Dictionary<Tuple<int, int>, DataViewModel> BuildList = new Dictionary<Tuple<int, int>, DataViewModel>();
         public static int TempTab = 0;
-        private static bool _dataPressed = false;
-        public static bool DataPressed { get { return _dataPressed; } set { _dataPressed = value; } }
         public static RefreshManger GetInstance
         {
             get
@@ -269,7 +267,7 @@ namespace SuperButton.Models.DriverBlock
         private int _iteratorRefresh = 0;
         public void StartRefresh()
         {
-            if(true)
+            if(true && !DisconnectedFlag && Rs232Interface._comPort.IsOpen)
             {
                 tab = Views.ParametarsWindow.ParametersWindowTabSelected;
                 if(ParametarsWindow.WindowsOpen == false)
@@ -366,20 +364,14 @@ namespace SuperButton.Models.DriverBlock
                 //    Debug.WriteLine("ConnectionCount: " + ConnectionCount + " " + DateTime.Now.ToString("h:mm:ss.fff"));
                 if(ConnectionCount > 5 && ConnectionCount < 7)
                 {
-                    EventRiser.Instance.RiseEevent(string.Format($"Connection Lost"));
-                    LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
-                    DisconnectedFlag = true;
+                    EventRiser.Instance.RiseEevent(string.Format($"No communication with Driver"));
+                    Rs232Interface.GetInstance.Disconnect(1);
                 }
             }
-            else
+            else if(Rs232Interface.GetInstance.IsSynced && !DisconnectedFlag)
             {
-
-                EventRiser.Instance.RiseEevent(string.Format($"Connection Lost"));
-                LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
-                RefreshManger.GetInstance.DisconnectedFlag = true;
-                Task.Run((Action)Rs232Interface.GetInstance.Disconnect);
-                LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.STOP);
-
+                EventRiser.Instance.RiseEevent(string.Format($"Serial cable disconnected from PC"));
+                Rs232Interface.GetInstance.Disconnect(0);
             }
         }
         //private void MouseLeaveCommandFunc()
@@ -546,7 +538,9 @@ namespace SuperButton.Models.DriverBlock
                         case 1:
                             LeftPanelViewModel.GetInstance.StarterCount += 1;
                             EventRiser.Instance.RiseEevent(string.Format($"Read motor status"));
-                            break;
+                            LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Connected";
+                            LeftPanelViewModel.GetInstance.StarterOperationFlag = false;
+                            return;
                         case 60:
                             switch(commandidentifier.Item2)
                             {
@@ -582,7 +576,7 @@ namespace SuperButton.Models.DriverBlock
                             }
                             break;
                         default:
-                            break;
+                            return;
                     }
                 }
                 LeftPanelViewModel.GetInstance.ValueChange = false;
@@ -625,7 +619,7 @@ namespace SuperButton.Models.DriverBlock
                                         OscilloscopeViewModel.GetInstance.Ch2SelectedIndex = Sel;
                                         OscilloscopeViewModel.GetInstance.SelectedCh2DataSource = OscilloscopeViewModel.GetInstance.Channel2SourceItems.ElementAt(Sel);
                                         YAxisLegend(Sel, commandidentifier.Item2);
-                                        DisconnectedFlag = false;
+                                        //DisconnectedFlag = false;
                                     }
                                 }
                             }
@@ -646,14 +640,6 @@ namespace SuperButton.Models.DriverBlock
                             }
                         }
                     }
-                    /*else if(commandidentifier.Item1 == 66)
-                    {
-                        if(commandidentifier.Item2 == 0)
-                            OscilloscopeParameters.IfullScale = float.Parse(newPropertyValue);
-                        else if(commandidentifier.Item2 == 1)
-                            OscilloscopeParameters.VfullScale = float.Parse(newPropertyValue);
-                        OscilloscopeParameters.InitList();
-                    }*/
                     #endregion Plot_Channels
                     #region DataView_EnumView
                     else if(commandidentifier.Item1 == 33)
@@ -672,10 +658,6 @@ namespace SuperButton.Models.DriverBlock
                     {
                         updateConnectionStatus(commandidentifier, newPropertyValue);
                     }
-                    //else if(commandidentifier.Item1 == 65 && commandidentifier.Item2 == 0) // EnableLoader
-                    //{
-                    //    MaintenanceViewModel.GetInstance.EnableLoder = (newPropertyValue == 0.ToString()) ? false : true;
-                    //}
                     else if(Commands.GetInstance.DataViewCommandsList.ContainsKey(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2))
                         && Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)].IsSelected == false)
                     {
@@ -770,9 +752,16 @@ namespace SuperButton.Models.DriverBlock
 
                 }
             }
-            else if(LeftPanelViewModel.GetInstance.ConnectTextBoxContent == "Not Connected")
+            else if(LeftPanelViewModel.GetInstance.ConnectTextBoxContent == "Not Connected" && !LeftPanelViewModel.GetInstance.StarterOperationFlag)
             {
                 LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Connected";
+                LeftPanelViewModel.GetInstance.BlinkLedsTicks(LeftPanelViewModel.STOP);
+                LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.STOP);
+                LeftPanelViewModel.GetInstance.RefreshParamsTick(LeftPanelViewModel.STOP);
+                LeftPanelViewModel.GetInstance.StarterOperation(LeftPanelViewModel.STOP);
+                LeftPanelViewModel.GetInstance.StarterOperation(LeftPanelViewModel.START);
+
+                /*
                 if(DisconnectedFlag)
                 {
                     Rs232Interface.GetInstance.SendToParser(new PacketFields
@@ -801,6 +790,7 @@ namespace SuperButton.Models.DriverBlock
                         IsFloat = false
                     });
                 }
+                */
             }
         }
     }

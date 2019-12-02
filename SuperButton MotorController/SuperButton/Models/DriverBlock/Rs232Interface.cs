@@ -1,4 +1,5 @@
-﻿using System;
+﻿#define TEST_LOADER_MODE
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -40,46 +41,19 @@ namespace SuperButton.Models.DriverBlock
 
         public event Rs232RxHandler Rx2Packetizer;
         public event Parser2SendHandler AutoBaudEcho;
-
-        // public  Task TsakRec;
-        // public Task Child;
-
         public PacketFields RxPacket;
         public static SerialPort _comPort;         //Serial Port
 
         //Once created , could not be changed (READ ONLY)
-        private static readonly object Synlock = new object(); //Single tone variable
-        private static readonly object ConnectLock = new object(); //Single tone variable
-        private static readonly object DisonnectLock = new object(); //Single tone variable
-        private static Rs232Interface _instance;               //Single tone variable
-
-
-        private static bool _isSynced = false;                    //Sincronization flag
-        private static readonly object Sendlock = new object();   //Semapophor
+        private static readonly object Synlock = new object();          //Single tone variable
+        private static readonly object ConnectLock = new object();      //Single tone variable
+        private static readonly object DisonnectLock = new object();    //Single tone variable
+        private static Rs232Interface _instance;                        //Single tone variable
+        private static bool _isSynced = false;                          //Sincronization flag
+        private static readonly object Sendlock = new object();         //Semaphore
         private static List<ConnectionBase.ComDevice> _comDevicesList = new List<ComDevice>();
 
-
-        //private int _bytes2Read;
-        //private DoubleSeries datasource1 = new DoubleSeries();
-        // XYPoint[] xyPointBuff = new XYPoint[200];
-        //private UInt16 Counter;
-        // private byte[] buffer = new byte[8192];  
-
-
-
-        //TODO make this property abstract
         #region Properties
-        //public int Bytes2Read
-        //{
-        //    get
-        //    {
-        //        return _bytes2Read;
-        //    }
-        //    set
-        //    {
-        //        _bytes2Read = value;
-        //    }
-        //}
 
         public bool IsSynced
         {
@@ -92,11 +66,7 @@ namespace SuperButton.Models.DriverBlock
                 _isSynced = value;
             }
         }
-
         #endregion
-
-
-
         public delegate void DataRecived(byte[] dataBytes);
         //Defining event based on the above delegate
         //public event DataRecived DataRecivedEvent;
@@ -118,62 +88,79 @@ namespace SuperButton.Models.DriverBlock
 
             //ParserRayonM1.GetInstanceofParser.Parser2Send += SendDataHendler;
         }
-        public override void Disconnect()
+        public override void Disconnect(int mode = 0)
         {
-            if(_comPort.IsOpen)
+            switch(mode)
             {
-                if(RxtoParser != null)
-                {
-                    _isSynced = false;
-                    Thread.Sleep(100);
-                    DataViewModel temp = (DataViewModel)Commands.GetInstance.DataCommandsListbySubGroup["DeviceSynchCommand"][0];
-                    Commands.AssemblePacket(out RxPacket, Int16.Parse(temp.CommandId), Int16.Parse(temp.CommandSubId), true, false, 0);
-                    RxtoParser(this, new Rs232InterfaceEventArgs(RxPacket));
-
-                    ParserRayonM1.mre.WaitOne(1000);
-
-                    if(Rs232Interface.GetInstance.IsSynced == false)
+                case 0:
+                    EventRiser.Instance.RiseEevent(string.Format($"Disconnecting..."));
+                    RefreshManger.GetInstance.DisconnectedFlag = true;
+                    LeftPanelViewModel.GetInstance.BlinkLedsTicks(LeftPanelViewModel.STOP);
+                    LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.STOP);
+                    LeftPanelViewModel.GetInstance.RefreshParamsTick(LeftPanelViewModel.STOP);
+                    LeftPanelViewModel.GetInstance.led = -1;
+                    if(_comPort.IsOpen)
                     {
-
-                        _comPort.DataReceived -= DataReceived;
-                        _comPort.Close();
-                        _comPort.Dispose();
-
-                        if(Driver2Mainmodel != null)
+                        if(RxtoParser != null)
                         {
-                            Driver2Mainmodel(this, new Rs232InterfaceEventArgs("Connect"));
-                        }
-                        else
-                        {
-                            throw new NullReferenceException("No Listeners to this event");
+                            _isSynced = false;
+                            Thread.Sleep(100);
+                            DataViewModel temp = (DataViewModel)Commands.GetInstance.DataCommandsListbySubGroup["DeviceSynchCommand"][0];
+                            Commands.AssemblePacket(out RxPacket, Int16.Parse(temp.CommandId), Int16.Parse(temp.CommandSubId), true, false, 0);
+                            RxtoParser(this, new Rs232InterfaceEventArgs(RxPacket));
+
+                            ParserRayonM1.mre.WaitOne(1000);
+
+                            if(Rs232Interface.GetInstance.IsSynced == false)
+                            {
+
+                                _comPort.DataReceived -= DataReceived;
+                                _comPort.Close();
+                                _comPort.Dispose();
+
+                                if(Driver2Mainmodel != null)
+                                {
+                                    Driver2Mainmodel(this, new Rs232InterfaceEventArgs("Connect"));
+                                }
+                                else
+                                {
+                                    throw new NullReferenceException("No Listeners to this event");
+                                }
+                                LeftPanelViewModel.busy = false;
+                            }
+                            LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
+
+                            LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.STOP);
+                            EventRiser.Instance.RiseEevent(string.Format($"Disconnected"));
                         }
                         LeftPanelViewModel.busy = false;
                     }
-                }
-                LeftPanelViewModel.busy = false;
+                    else
+                    {
+                        LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
+                        EventRiser.Instance.RiseEevent(string.Format($"Disconnected"));
+
+                        _isSynced = false;
+                        _comPort.DataReceived -= DataReceived;
+                        _comPort.Close();
+                        _comPort.Dispose();
+                        Driver2Mainmodel(this, new Rs232InterfaceEventArgs("Connect"));
+                        LeftPanelViewModel.busy = false;
+                    }
+                    break;
+                case 1:
+                    LeftPanelViewModel.GetInstance.RefreshParamsTick(LeftPanelViewModel.STOP);
+                    RefreshManger.GetInstance.DisconnectedFlag = true;
+                    LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
+                    break;
             }
-            else
-            {
-                _isSynced = false;
-                _comPort.DataReceived -= DataReceived;
-                _comPort.Close();
-                _comPort.Dispose();
-                Driver2Mainmodel(this, new Rs232InterfaceEventArgs("Connect"));
-                LeftPanelViewModel.busy = false;
-            }
+
         }
 
         #region Auto_Connect
 
         //This method auto detects baud rate, and open connection
-        //
-        //
-        //
-        //
-        //
-        //********************************************************
-        //string msg = "";
-
+        //*******************************************************
         private string _baudRate = "";
         private string _comPortStr = "";
 
@@ -187,10 +174,9 @@ namespace SuperButton.Models.DriverBlock
             get { return _comPortStr; }
             set { if(_comPortStr == value) return; _comPortStr = value; }
         }
-
-
         public override void AutoConnect()
         {
+            RefreshManger.GetInstance.DisconnectedFlag = false;
             if(_isSynced == false && LeftPanelViewModel.GetInstance.ConnectButtonContent == "Connect") //Driver is not synchronized
             {
                 //Gets aviable ports list and initates them
@@ -202,26 +188,32 @@ namespace SuperButton.Models.DriverBlock
                 {
                     // Add text to logger panel
                     EventRiser.Instance.RiseEevent(string.Format($"Connecting at {Configuration.SelectedCom}"));
-                    var tmpcom = new SerialPort
+                    var ComPort = new SerialPort
                     {
                         PortName = Configuration.SelectedCom,
+                        Parity = Parity.None,
                         DataBits = 0x00000008,
-                        StopBits = System.IO.Ports.StopBits.One,
-                        ReadBufferSize = 8192,
-                        ReadTimeout = 10
+                        StopBits = StopBits.One,
+                        Handshake = Handshake.None,
+
+                        ReadTimeout = 500,
+                        WriteTimeout = 500,
+
+                        ReadBufferSize = 8192
                     };
                     try
                     {
-                        tmpcom.Open(); //Try to open
+                        var Cleaner = "";
+                        ComPort.Open(); //Try to open
 
-                        if(tmpcom.IsOpen)
+                        if(ComPort.IsOpen)
                         {
                             EventRiser.Instance.RiseEevent(string.Format($"Success"));
                             EventRiser.Instance.RiseEevent(string.Format($"Autobaud process..."));
 
                             foreach(var baudRate in BaudRates) //Iterate though baud rates
                             {
-                                if(_isSynced)
+                                if(_isSynced) // Baudrate found
                                 {
                                     if(Driver2Mainmodel != null)
                                     {
@@ -240,18 +232,18 @@ namespace SuperButton.Models.DriverBlock
                                     LeftPanelViewModel.GetInstance.StarterOperation(LeftPanelViewModel.STOP);
                                     LeftPanelViewModel.GetInstance.StarterOperation(LeftPanelViewModel.START);
                                     return;
-
                                 }
-                                else if(_isSynced == false)  //open task
+                                else if(_isSynced == false)  // Looking for Baudrate
                                 {
-                                    tmpcom.BaudRate = baudRate;
+                                    ComPort.BaudRate = baudRate;
 
-                                    tmpcom.DataReceived -= DataReceived;
-                                    tmpcom.DataReceived += DataReceived;
+                                    ComPort.DataReceived -= DataReceived;
+                                    ComPort.DataReceived += DataReceived;
 
                                     ParserRayonM1.GetInstanceofParser.Parser2Send -= SendDataHendler;
                                     ParserRayonM1.GetInstanceofParser.Parser2Send += SendDataHendler;
-                                    _comPort = tmpcom;
+
+                                    _comPort = ComPort;
 
                                     //Init synchronization packet, and rises event for parser
                                     if(RxtoParser != null)
@@ -260,64 +252,61 @@ namespace SuperButton.Models.DriverBlock
                                         Commands.AssemblePacket(out RxPacket, Int16.Parse(temp.CommandId), Int16.Parse(temp.CommandSubId), true, false, 1);
                                         RxtoParser(this, new Rs232InterfaceEventArgs(RxPacket));
                                     }
-                                    Thread.Sleep(10);// while with timeout of 1 second
-                                    var Cleaner = tmpcom.ReadExisting();
+                                    Thread.Sleep(100);// while with timeout of 1 second
+                                    Cleaner = ComPort.ReadExisting();
                                 }
                             }
                             EventRiser.Instance.RiseEevent(string.Format($"Failed"));
+#if TEST_LOADER_MODE
+                            EventRiser.Instance.RiseEevent(string.Format($"Testing loader mode"));
+                            // Autobaud A A A Echo operation detect
+                            ComPort.BaudRate = BaudRates[5];
 
-                            //foreach(var baudRate in BaudRates) //Iterate though baud rates
+                            ComPort.DataReceived -= DataReceived;
+                            ComPort.DataReceived += DataReceived;
 
+                            AutoBaudEcho -= SendDataHendler;
+                            AutoBaudEcho += SendDataHendler;
+                            _comPort = ComPort;
+
+                            //Init synchronization packet, and rises event for parser
+
+                            byte[] A = new byte[1] { 65 };
+                            for(int i = 0; i < 5; i++)
                             {
-                                EventRiser.Instance.RiseEevent(string.Format($"Testing loader mode"));
-                                // Autobaud A A A Echo operation detect
-                                tmpcom.BaudRate = BaudRates[5];
-
-                                tmpcom.DataReceived -= DataReceived;
-                                tmpcom.DataReceived += DataReceived;
-
-                                AutoBaudEcho -= SendDataHendler;
-                                AutoBaudEcho += SendDataHendler;
-                                _comPort = tmpcom;
-
-                                //Init synchronization packet, and rises event for parser
-
-                                byte[] A = new byte[1] { 65 };
-                                for(int i = 0; i < 5; i++)
-                                {
-                                    if(AutoBaudEcho != null)
-                                    {
-                                        AutoBaudEcho(this, new Parser2SendEventArgs(A));
-                                        Thread.Sleep(2000);
-                                    }
-                                    else
-                                        break;
-                                }
                                 if(AutoBaudEcho != null)
                                 {
-                                    EventRiser.Instance.RiseEevent(string.Format($"Failed to communicate with unit"));
+                                    AutoBaudEcho(this, new Parser2SendEventArgs(A));
+                                    Thread.Sleep(2000);
                                 }
-                                Thread.Sleep(100);// while with timeout of 1 second
-                                var Cleaner = tmpcom.ReadExisting();
+                                else
+                                    break;
                             }
+                            if(AutoBaudEcho != null)
+                            {
+                                EventRiser.Instance.RiseEevent(string.Format($"Failed to communicate with unit"));
+                            }
+                            Thread.Sleep(100);// while with timeout of 1 second
+                            Cleaner = ComPort.ReadExisting();
+#endif
                             _baudRate = _comPort.BaudRate.ToString();
                             _comPortStr = Configuration.SelectedCom;
-                            tmpcom.Close();
+                            ComPort.Close();
                             LeftPanelViewModel.busy = false;
                             return;
                         }
                         EventRiser.Instance.RiseEevent(string.Format($"Failed"));
-                        tmpcom.Close();
+                        ComPort.Close();
                         LeftPanelViewModel.busy = false;
                         return;
                     }
                     catch(Exception)
                     {
                         EventRiser.Instance.RiseEevent(string.Format($"Failed"));
-                        tmpcom.Close();
-                        tmpcom.Dispose();
+                        ComPort.Close();
+                        ComPort.Dispose();
                         LeftPanelViewModel.busy = false;
-                        return;// false;
+                        return;
                     }
                 }
                 else
@@ -452,21 +441,30 @@ namespace SuperButton.Models.DriverBlock
                     }
                     catch
                     {
-                        EventRiser.Instance.RiseEevent(string.Format($"Connection Lost"));
+                        /*
+                        EventRiser.Instance.RiseEevent(string.Format($"Connection Lost3"));
                         LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
                         RefreshManger.GetInstance.DisconnectedFlag = true;
-                        Task.Run((Action)Rs232Interface.GetInstance.Disconnect);
+                        Rs232Interface.GetInstance.Disconnect(0);
                         LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.STOP);
+                        */
                     }
                 }
-                else
+                /*
+                else if(!_isSynced && !RefreshManger.GetInstance.DisconnectedFlag)
                 {
-                    EventRiser.Instance.RiseEevent(string.Format($"Connection Lost"));
+                    EventRiser.Instance.RiseEevent(string.Format($"Connection Lost4"));
+                    LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
+                }
+                else if(!RefreshManger.GetInstance.DisconnectedFlag)
+                {
+                    EventRiser.Instance.RiseEevent(string.Format($"Connection Lost5"));
                     LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
                     RefreshManger.GetInstance.DisconnectedFlag = true;
-                    Task.Run((Action)Rs232Interface.GetInstance.Disconnect);
+                    Rs232Interface.GetInstance.Disconnect(0);
                     LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.STOP);
                 }
+                */
             }
         }
 

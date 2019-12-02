@@ -554,8 +554,8 @@ namespace SuperButton.Views
             _yFloats = new float[0];
             _yFloats2 = new float[0];
 
-            Thread.Sleep(100);
-            ResetZoom();
+            Thread.Sleep(1);
+            //ResetZoom();
         }
         public void FillDictionary()
         {
