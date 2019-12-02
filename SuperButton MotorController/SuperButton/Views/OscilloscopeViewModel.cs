@@ -1326,7 +1326,8 @@ namespace SuperButton.Views
             else
                 return dataSample;
         }
-
+        float SubGain1 = 1;
+        float SubGain2 = 1;
         private void OnTick(object sender, EventArgs e)
         {
             try
@@ -1657,8 +1658,14 @@ namespace SuperButton.Views
                                 #endregion RecordAray
                                 else
                                 {
-                                    float SubGain1 = Convert.ToSingle(Commands.GetInstance.Gain["Ch1 Gain"].CommandValue);
-                                    float SubGain2 = Convert.ToSingle(Commands.GetInstance.Gain["Ch2 Gain"].CommandValue);
+                                    try
+                                    {
+                                        SubGain1 = Convert.ToSingle(Commands.GetInstance.Gain["Ch1 Gain"].CommandValue);
+                                        SubGain2 = Convert.ToSingle(Commands.GetInstance.Gain["Ch2 Gain"].CommandValue);
+                                    }
+                                    catch(Exception)
+                                    {
+                                    }
 
                                     while(ParserRayonM1.GetInstanceofParser.FifoplotList.TryDequeue(out item))
                                     {

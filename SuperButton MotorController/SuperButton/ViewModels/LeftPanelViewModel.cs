@@ -88,7 +88,6 @@ namespace SuperButton.ViewModels
                 if(value == "Disconnect")
                 {
                     //Connection = Task.Run((Action)LeftPanelViewModel.VerifyDriverCom);
-                    StarterTask = Task.Run((Action)StarterOperation);
                 }
                 else
                 {
@@ -105,7 +104,7 @@ namespace SuperButton.ViewModels
         }
         public bool StarterOperationFlag = false;
         public int StarterCount = 0;
-        public void StarterOperation()
+        private void StarterOperationTicks(object sender, EventArgs e)
         {
             #region Operations
             StarterOperationFlag = true;
@@ -158,10 +157,13 @@ namespace SuperButton.ViewModels
             LeftPanelViewModel._app_running = true;
             StarterOperationFlag = false;
 
+            BlinkLedsTicks(STOP);
             BlinkLedsTicks(START);
 #if !DEBUG || RELEASE_MODE
+            VerifyConnectionTicks(STOP);
             VerifyConnectionTicks(START);
 #endif
+            RefreshParamsTick(STOP);
             if(DebugViewModel.GetInstance.EnRefresh)
                 RefreshParamsTick(START);
         }
@@ -792,6 +794,42 @@ namespace SuperButton.ViewModels
                 Thread.Sleep(1);
                 LedStatusTx = 0;
                 LedStatusRx = 0;
+            }
+        }
+
+        private Timer _StarterOperationTimer = null;
+        const double _StarterOperationInterval = 1;
+        public void StarterOperation(int _mode)
+        {
+            switch(_mode)
+            {
+                case STOP:
+                    lock(this)
+                    {
+                        if(_StarterOperationTimer != null)
+                        {
+                            lock(_StarterOperationTimer)
+                            {
+                                _StarterOperationTimer.Stop();
+                                _StarterOperationTimer.Elapsed -= StarterOperationTicks;
+                                _StarterOperationTimer = null;
+                                Thread.Sleep(10);
+                            }
+                        }
+                    }
+                    break;
+                case START:
+                    if(_StarterOperationTimer == null)
+                    {
+                        Task.Factory.StartNew(action: () =>
+                        {
+                            Thread.Sleep(10);
+                            _StarterOperationTimer = new Timer(_StarterOperationInterval) { AutoReset = false };
+                            _StarterOperationTimer.Elapsed += StarterOperationTicks;
+                            _StarterOperationTimer.Start();
+                        });
+                    }
+                    break;
             }
         }
 

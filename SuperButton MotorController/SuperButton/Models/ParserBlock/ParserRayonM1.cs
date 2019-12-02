@@ -89,10 +89,10 @@ namespace SuperButton.Models.ParserBlock
         //TODO here will switch between parsers depends on sender object
 
         int CurrentCmdCounterTx = 0;
-        
+
         void parseOutdata(object sender, Rs232InterfaceEventArgs e)
         {
-            
+
             if(e.PacketRx.ID == 54 && e.PacketRx.SubID == 2 && e.PacketRx.IsSet == true)
             {
                 CurrentCmdCounterTx++;
@@ -509,7 +509,9 @@ namespace SuperButton.Models.ParserBlock
                 transit |= data[3];
                 if(commandId == 3 && commandSubId == 0)
                     CurrentCmdCounterRx++;
-                if(ParametarsWindow.ParametersWindowTabSelected == ParametarsWindowViewModel.DEBUG && !LeftPanelViewModel.GetInstance.StarterOperationFlag && !exceptionID.Contains(commandId) || !exceptionID.Contains(commandId))
+                if(ParametarsWindow.ParametersWindowTabSelected == ParametarsWindowViewModel.DEBUG &&
+                    !LeftPanelViewModel.GetInstance.StarterOperationFlag &&
+                    !exceptionID.Contains(commandId) || !exceptionID.Contains(commandId))
                 {
                     if(isInt)
                     {
@@ -718,6 +720,8 @@ namespace SuperButton.Models.ParserBlock
                         EventRiser.Instance.RiseEevent(string.Format($"Com. Error: " + result));
                         if(transit == 200)
                         {
+                            /**
+                            LeftPanelViewModel.GetInstance.StarterOperationFlag = true;
                             //Task.Run((Action)LeftPanelViewModel.GetInstance.StarterOperation);
                             short[] ID = { 1, 60, 60, 62, 62, 62, 62 };
                             short[] subID = { 0, 1, 2, 10, 1, 2, 3 };
@@ -735,7 +739,7 @@ namespace SuperButton.Models.ParserBlock
                                     IsSet = false,
                                     IsFloat = false
                                 });
-                                Thread.Sleep(350);
+                                Thread.Sleep(50);
                             }
                             Rs232Interface.GetInstance.SendToParser(new PacketFields
                             {
@@ -746,6 +750,10 @@ namespace SuperButton.Models.ParserBlock
                                 IsFloat = false
                             });
                             OscilloscopeViewModel.GetInstance.ChComboEn = true;
+                            LeftPanelViewModel.GetInstance.StarterOperationFlag = false;
+
+                            **/
+                            LeftPanelViewModel.GetInstance.StarterOperation(LeftPanelViewModel.START);
                         }
                     }
                     else

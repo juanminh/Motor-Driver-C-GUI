@@ -316,14 +316,15 @@ namespace SuperButton.Models.DriverBlock
                     TempTab = -1;
                     return;
                 }
-                //Debug.WriteLine("2: " + DateTime.Now.ToString("h:mm:ss.fff"));
-                if(_iteratorRefresh <= 0)
+
+                if(_iteratorRefresh < 0)
                     _iteratorRefresh = BuildList.Count - 1;
 
                 //foreach(var command in BuildList)
                 {
                     int element = _iteratorRefresh--;
-                    if(element < BuildList.Count && element >= 0)
+                    //Debug.WriteLine("2: " + element);
+                    if(element < BuildList.Count && element >= -1)
                     {
                         if(!BuildList.ElementAt(element).Value.IsSelected)
                         {
@@ -351,7 +352,7 @@ namespace SuperButton.Models.DriverBlock
         {
             if(Rs232Interface._comPort.IsOpen)
             {
-                
+
                 Rs232Interface.GetInstance.SendToParser(new PacketFields
                 {
                     Data2Send = "",
@@ -363,7 +364,7 @@ namespace SuperButton.Models.DriverBlock
                 ConnectionCount++;
                 //if(ConnectionCount > 0)
                 //    Debug.WriteLine("ConnectionCount: " + ConnectionCount + " " + DateTime.Now.ToString("h:mm:ss.fff"));
-                if(ConnectionCount == 5)
+                if(ConnectionCount > 5 && ConnectionCount < 7)
                 {
                     EventRiser.Instance.RiseEevent(string.Format($"Connection Lost"));
                     LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
@@ -372,13 +373,13 @@ namespace SuperButton.Models.DriverBlock
             }
             else
             {
-                
+
                 EventRiser.Instance.RiseEevent(string.Format($"Connection Lost"));
                 LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
                 RefreshManger.GetInstance.DisconnectedFlag = true;
                 Task.Run((Action)Rs232Interface.GetInstance.Disconnect);
                 LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.STOP);
-                
+
             }
         }
         //private void MouseLeaveCommandFunc()

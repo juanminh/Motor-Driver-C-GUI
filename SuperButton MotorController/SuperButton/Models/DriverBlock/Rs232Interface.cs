@@ -237,6 +237,8 @@ namespace SuperButton.Models.DriverBlock
                                     _baudRate = _comPort.BaudRate.ToString();
                                     _comPortStr = Configuration.SelectedCom;
                                     LeftPanelViewModel.busy = false;
+                                    LeftPanelViewModel.GetInstance.StarterOperation(LeftPanelViewModel.STOP);
+                                    LeftPanelViewModel.GetInstance.StarterOperation(LeftPanelViewModel.START);
                                     return;
 
                                 }
