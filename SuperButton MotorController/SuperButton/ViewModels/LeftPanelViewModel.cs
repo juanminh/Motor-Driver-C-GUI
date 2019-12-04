@@ -76,7 +76,6 @@ namespace SuperButton.ViewModels
         }
         #region Connect_Button
         private String _connetButtonContent;
-        
         public String ConnectButtonContent
         {
             get { return _connetButtonContent; }
@@ -99,6 +98,18 @@ namespace SuperButton.ViewModels
             }
 
         }
+        private bool _connectButtonEnable = true;
+        public bool ConnectButtonEnable
+        {
+            get { return _connectButtonEnable; }
+            set
+            {
+                if(_connectButtonEnable == value)
+                    return;
+                _connectButtonEnable = value;
+                OnPropertyChanged("ConnectButtonEnable");
+            }
+        }
         public bool StarterOperationFlag = false;
         public int StarterCount = 0;
         private void StarterOperationTicks(object sender, EventArgs e)
@@ -109,6 +120,7 @@ namespace SuperButton.ViewModels
             StarterCount = 0;
             OscilloscopeViewModel.GetInstance.ChComboEn = false;
             Thread.Sleep(10);
+            
             Rs232Interface.GetInstance.SendToParser(new PacketFields
             {
                 Data2Send = "",
@@ -133,7 +145,7 @@ namespace SuperButton.ViewModels
                 EventRiser.Instance.RiseEevent(string.Format($"Failed"));
                 OscilloscopeParameters.InitList();
             }
-
+            
             OscilloscopeViewModel.GetInstance.ChComboEn = true;
 
             short[] ID = {60, 60, 62, 62, 62, 62, 1 };
@@ -198,14 +210,6 @@ namespace SuperButton.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        //public ObservableCollection<object> DriverTypeList
-        //{
-        //    get
-        //    {
-        //        return Commands.GetInstance.EnumCommandsListbySubGroup["Driver Type"];
-        //    }
-        //}
         #endregion
 
         private float _setCurrentPid;
@@ -558,6 +562,7 @@ namespace SuperButton.ViewModels
         public static bool busy = false;
         public void AutoConnectCommand()
         {
+            ConnectButtonEnable = false;
             if(Rs232Interface.GetInstance.IsSynced == false && busy == false)
             {
                 busy = true;

@@ -559,6 +559,7 @@ namespace SuperButton.Views
         }
         public void FillDictionary()
         {
+            Channel1SourceItems.Clear();
 
             _channel1SourceItems.Add("Pause");
             _channel1SourceItems.Add("IqFeedback");
@@ -595,7 +596,7 @@ namespace SuperButton.Views
             _channel1SourceItems.Add("SpeedFdb");
             _channel1SourceItems.Add("CurrentRefPI");
 
-
+            ChannelYtitles.Clear();
             ChannelYtitles.Add("Pause", "");
             ChannelYtitles.Add("IqFeedback", "Current [A]");
             ChannelYtitles.Add("I_PhaseA", "Current [A]");

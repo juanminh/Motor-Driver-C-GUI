@@ -84,7 +84,19 @@ namespace SuperButton.ViewModels
             get { return _debugIndex; }
             set { _debugIndex = value; OnPropertyChanged("DebugIndex"); }
         }
-
+        private bool _debugIntFloat = true;
+        public bool DebugIntFloat
+        {
+            get
+            {
+                return _debugIntFloat;
+            }
+            set
+            {
+                _debugIntFloat = value;
+                OnPropertyChanged("DebugIntFloat");
+            }
+        }
 #if !DEBUG || RELEASE_MODE
         private bool _enRefresh = true;
         private bool _debugRefresh = true;
@@ -173,7 +185,7 @@ namespace SuperButton.ViewModels
         {
             if(DebugID != "" && DebugIndex != "")
             {
-                if(!Commands.GetInstance.DebugCommandsList.ContainsKey(new Tuple<int, int>(Convert.ToInt16(DebugID), Convert.ToInt16(DebugIndex))))
+                if(!Commands.GetInstance.DebugCommandsList.ContainsKey(new Tuple<int, int, bool>(Convert.ToInt16(DebugID), Convert.ToInt16(DebugIndex), DebugIntFloat)))
                 {
                     var data = new DebugObjModel
                     {
@@ -183,7 +195,7 @@ namespace SuperButton.ViewModels
                         GetData = "",
                         SetData = "",
                     };
-                    Commands.GetInstance.DebugCommandsList.Add(new Tuple<int, int>(Convert.ToInt16(data.ID), Convert.ToInt16(data.Index)), data);
+                    Commands.GetInstance.DebugCommandsList.Add(new Tuple<int, int, bool>(Convert.ToInt16(data.ID), Convert.ToInt16(data.Index), DebugIntFloat), data);
                     Commands.GetInstance.DebugCommandsListbySubGroup["Debug List"].Add(data);
                     RefreshManger.buildGroup();
                 }
@@ -201,14 +213,14 @@ namespace SuperButton.ViewModels
         {
             if(DebugID != "" && DebugIndex != "")
             {
-                if(Commands.GetInstance.DebugCommandsList.ContainsKey(new Tuple<int, int>(Convert.ToInt16(DebugID), Convert.ToInt16(DebugIndex))))
+                if(Commands.GetInstance.DebugCommandsList.ContainsKey(new Tuple<int, int, bool>(Convert.ToInt16(DebugID), Convert.ToInt16(DebugIndex), DebugIntFloat)))
                 {
-                    Commands.GetInstance.DebugCommandsList.Remove(new Tuple<int, int>(Convert.ToInt16(DebugID), Convert.ToInt16(DebugIndex)));
+                    Commands.GetInstance.DebugCommandsList.Remove(new Tuple<int, int, bool>(Convert.ToInt16(DebugID), Convert.ToInt16(DebugIndex), DebugIntFloat));
                     var data1 = new DebugObjModel
                     {
                         ID = DebugID,
                         Index = DebugIndex,
-                        IntFloat = true,
+                        IntFloat = DebugIntFloat,
                         GetData = "",
                         SetData = "",
                     };
@@ -237,20 +249,6 @@ namespace SuperButton.ViewModels
             });
 
         }
-        private bool _debugIntFloat = true;
-        public bool DebugIntFloat
-        {
-            get
-            {
-                return _debugIntFloat;
-            }
-            set
-            {
-                _debugIntFloat = value;
-                OnPropertyChanged("DebugIntFloat");
-            }
-        }
-
         public ActionCommand ClearDebugOp { get { return new ActionCommand(ClearDebugOpCmd); } }
         private void ClearDebugOpCmd()
         {

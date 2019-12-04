@@ -68,9 +68,11 @@ namespace SuperButton.ViewModels
 
         public ActionCommand Get { get { return new ActionCommand(GetCmd); } }
         public ActionCommand Set { get { return new ActionCommand(SetCmd); } }
+        public static bool DebugOperationPending = false;
 
         private void GetCmd()
         {
+            DebugOperationPending = true;
             DebugViewModel.GetInstance.TxBuildOperation("", Convert.ToInt16(ID), Convert.ToInt16(Index), false, !this.IntFloat);
             try
             {
@@ -92,6 +94,7 @@ namespace SuperButton.ViewModels
         {
             if(SetData != "" && ID != "" && Index != "")
             {
+                DebugOperationPending = true;
                 DebugViewModel.GetInstance.TxBuildOperation(SetData, Convert.ToInt16(ID), Convert.ToInt16(Index), true, !this.IntFloat);
                 try
                 {

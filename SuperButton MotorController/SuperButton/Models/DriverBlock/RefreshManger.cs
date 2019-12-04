@@ -322,7 +322,7 @@ namespace SuperButton.Models.DriverBlock
                 {
                     int element = _iteratorRefresh--;
                     //Debug.WriteLine("2: " + element);
-                    if(element < BuildList.Count && element >= -1)
+                    if(element < BuildList.Count && element > -1)
                     {
                         if(!BuildList.ElementAt(element).Value.IsSelected)
                         {
@@ -525,7 +525,7 @@ namespace SuperButton.Models.DriverBlock
             else if(Sel <= OscilloscopeViewModel.GetInstance.ChannelYtitles.Count)
                 OscilloscopeViewModel.GetInstance.YAxisUnits = "CH" + identifier.ToString() + ": " + OscilloscopeViewModel.GetInstance.ChannelYtitles.ElementAt(Sel).Value;
         }
-        internal void UpdateModel(Tuple<int, int> commandidentifier, string newPropertyValue)
+        internal void UpdateModel(Tuple<int, int> commandidentifier, string newPropertyValue, bool IntFloat = false)
         {
             try
             {
@@ -721,15 +721,18 @@ namespace SuperButton.Models.DriverBlock
                 */
                 //}
                 #region DebugTab
-                //if(DebugViewModel.GetInstance.DebugRefresh)
-                if(Commands.GetInstance.DebugCommandsList.ContainsKey(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2))) // Debug Panel
+                if(DebugViewModel.GetInstance.DebugRefresh || DebugObjModel.DebugOperationPending)
                 {
-                    try
+                    if(Commands.GetInstance.DebugCommandsList.ContainsKey(new Tuple<int, int, bool>(commandidentifier.Item1, commandidentifier.Item2, IntFloat))) // Debug Panel
                     {
-                        Commands.GetInstance.DebugCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)].GetData = newPropertyValue;
-                        DebugViewModel.GetInstance.RxBuildOperation(ParserRayonM1.DebugData);
+                        try
+                        {
+                            Commands.GetInstance.DebugCommandsList[new Tuple<int, int, bool>(commandidentifier.Item1, commandidentifier.Item2, IntFloat)].GetData = newPropertyValue;
+                            DebugViewModel.GetInstance.RxBuildOperation(ParserRayonM1.DebugData);
+                            DebugObjModel.DebugOperationPending = false;
+                        }
+                        catch { }
                     }
-                    catch { }
                 }
                 #endregion DebugTab
             }

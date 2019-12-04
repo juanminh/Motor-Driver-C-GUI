@@ -154,7 +154,7 @@ namespace SuperButton.Models.DriverBlock
                     LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
                     break;
             }
-
+            LeftPanelViewModel.GetInstance.ConnectButtonEnable = true;
         }
 
         #region Auto_Connect
@@ -231,6 +231,7 @@ namespace SuperButton.Models.DriverBlock
                                     LeftPanelViewModel.busy = false;
                                     LeftPanelViewModel.GetInstance.StarterOperation(LeftPanelViewModel.STOP);
                                     LeftPanelViewModel.GetInstance.StarterOperation(LeftPanelViewModel.START);
+                                    LeftPanelViewModel.GetInstance.ConnectButtonEnable = true;
                                     return;
                                 }
                                 else if(_isSynced == false)  // Looking for Baudrate
@@ -277,7 +278,7 @@ namespace SuperButton.Models.DriverBlock
                                 if(AutoBaudEcho != null)
                                 {
                                     AutoBaudEcho(this, new Parser2SendEventArgs(A));
-                                    Thread.Sleep(2000);
+                                    Thread.Sleep(500);
                                 }
                                 else
                                     break;
@@ -293,11 +294,13 @@ namespace SuperButton.Models.DriverBlock
                             _comPortStr = Configuration.SelectedCom;
                             ComPort.Close();
                             LeftPanelViewModel.busy = false;
+                            LeftPanelViewModel.GetInstance.ConnectButtonEnable = true;
                             return;
                         }
                         EventRiser.Instance.RiseEevent(string.Format($"Failed"));
                         ComPort.Close();
                         LeftPanelViewModel.busy = false;
+                        LeftPanelViewModel.GetInstance.ConnectButtonEnable = true;
                         return;
                     }
                     catch(Exception)
@@ -306,6 +309,7 @@ namespace SuperButton.Models.DriverBlock
                         ComPort.Close();
                         ComPort.Dispose();
                         LeftPanelViewModel.busy = false;
+                        LeftPanelViewModel.GetInstance.ConnectButtonEnable = true;
                         return;
                     }
                 }
@@ -315,10 +319,12 @@ namespace SuperButton.Models.DriverBlock
             else if(_isSynced == true)
             {
                 LeftPanelViewModel.busy = false;
+                LeftPanelViewModel.GetInstance.ConnectButtonEnable = true;
                 return;
             }
 
             LeftPanelViewModel.busy = false;
+            LeftPanelViewModel.GetInstance.ConnectButtonEnable = true;
             return;
         }
 

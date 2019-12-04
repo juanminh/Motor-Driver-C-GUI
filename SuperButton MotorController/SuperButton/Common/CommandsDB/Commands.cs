@@ -48,7 +48,7 @@ namespace SuperButton.CommandsDB
         public Dictionary<Tuple<int, int>, DataViewModel> DataViewCommandsListLP = new Dictionary<Tuple<int, int>, DataViewModel>();
         public Dictionary<Tuple<int, int>, EnumViewModel> EnumViewCommandsList = new Dictionary<Tuple<int, int>, EnumViewModel>();
         public Dictionary<Tuple<int, int>, CalibrationButtonModel> CalibartionCommandsList = new Dictionary<Tuple<int, int>, CalibrationButtonModel>();
-        public Dictionary<Tuple<int, int>, DebugObjModel> DebugCommandsList = new Dictionary<Tuple<int, int>, DebugObjModel>();
+        public Dictionary<Tuple<int, int, bool>, DebugObjModel> DebugCommandsList = new Dictionary<Tuple<int, int, bool>, DebugObjModel>();
 
 
         public Dictionary<string, List<string>> Enums = new Dictionary<string, List<string>>();

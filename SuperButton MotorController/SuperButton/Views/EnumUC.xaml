@@ -8,7 +8,7 @@
 	xmlns:system="clr-namespace:System;assembly=mscorlib"
 	x:Class="SuperButton.Views.EnumUC"
     x:Name="parent"
-	d:DesignWidth="640" d:DesignHeight="480">
+	d:DesignWidth="160" d:DesignHeight="40">
 
     <UserControl.Resources>
         <!--<local:EnumUCModel x:Key="EnumUCModelDataSource" />-->
@@ -129,6 +129,7 @@
                       ItemsSource="{Binding Path=Value}" 
                       SelectedIndex="0"
                       HorizontalContentAlignment="Center"
+                      
                      > 
             </ComboBox>
             <!--<ComboBox MinWidth="100"   DropDownOpened="{Binding Path=Value}"

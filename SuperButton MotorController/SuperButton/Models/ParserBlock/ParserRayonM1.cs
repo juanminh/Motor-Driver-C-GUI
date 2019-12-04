@@ -516,7 +516,7 @@ namespace SuperButton.Models.ParserBlock
                     if(isInt)
                     {
                         if(getSet == 1)
-                            RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), transit.ToString());
+                            RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), transit.ToString(), true);
 #if(DEBUG && DEBUG_OPERATION)
 #if DEBUG_SET
                         if(getSet == 0)
@@ -538,7 +538,7 @@ namespace SuperButton.Models.ParserBlock
                         newPropertyValuef = System.BitConverter.ToSingle(dataAray, 0);
                         if(getSet == 1)
                         {
-                            RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), newPropertyValuef.ToString());
+                            RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), newPropertyValuef.ToString(), false);
                         }
 #if(DEBUG && DEBUG_OPERATION)
 #if DEBUG_SET

@@ -16,7 +16,7 @@
              DataContext="{Binding LeftPanelViewModel}"
              d:DesignHeight="800"
              d:DesignWidth="1380"
-             mc:Ignorable="d" Height="569" MaxWidth="180" Focusable="True"
+             mc:Ignorable="d" Height="700" MaxWidth="180" Focusable="True"
              >
     <UserControl.Resources>
 
@@ -771,7 +771,7 @@
                     <RowDefinition Height="15"></RowDefinition>
                     <RowDefinition Height="20"></RowDefinition>
                     <RowDefinition Height="10"></RowDefinition>
-                    <RowDefinition Height="30"></RowDefinition>
+                    <RowDefinition Height="*"></RowDefinition>
                 </Grid.RowDefinitions>
                 <Grid Grid.Row="0">
                     <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="MOTOR" VerticalAlignment="Top" Width="70" Height="22" FontWeight="Bold" FontSize="15" Foreground="White" Margin="0,5,0,0"/>
@@ -824,7 +824,8 @@
                 Height="30" 
 				FontFamily="Bell MT" 
 				FontSize="12" Width="70" 
-                HorizontalAlignment="Left" Margin="0,2,0,0" VerticalAlignment="Top">
+                HorizontalAlignment="Left" Margin="0,2,0,0" VerticalAlignment="Top"
+                        IsEnabled="{Binding ConnectButtonEnable}">
                         <Button.Style>
                             <Style TargetType="Button">
                                 <Style.Triggers>
@@ -990,6 +991,9 @@
                         </ToggleSwitch:HorizontalToggleSwitch.ThumbBrush>
                     </ToggleSwitch:HorizontalToggleSwitch>-->
                     <Helpers:RoundBoolLed Grid.Column="3" Width="16" Height="16" CurrStatus="{Binding LedMotorStatus}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Grid>
+                <Grid Grid.Row="16">
+                    <RichTextBox Width="160" Height="80"></RichTextBox>
                 </Grid>
             </Grid>
         </ScrollViewer>
