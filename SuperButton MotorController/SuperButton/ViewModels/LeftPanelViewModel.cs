@@ -1,4 +1,4 @@
-﻿#define RELEASE_MODE
+﻿//#define RELEASE_MODE
 
 using System;
 using System.Data;
@@ -15,6 +15,7 @@ using SuperButton.Helpers;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
 using Timer = System.Timers.Timer;
+using System.Collections.Generic;
 
 namespace SuperButton.ViewModels
 {
@@ -67,7 +68,6 @@ namespace SuperButton.ViewModels
 
             EventRiser.Instance.LoggerEvent += Instance_LoggerEvent;
             ComboBoxCOM = ComboBox.GetInstance;
-            //Task task = Task.Run((Action)_comboBox.UpdateComList);
         }
         public ComboBox ComboBoxCOM
         {
@@ -83,10 +83,11 @@ namespace SuperButton.ViewModels
             {
                 if(value == "Disconnect")
                 {
-                    //Connection = Task.Run((Action)LeftPanelViewModel.VerifyDriverCom);
+                    ComboBox.GetInstance.ComPortComboboxEn = false;
                 }
                 else
                 {
+                    ComboBox.GetInstance.ComPortComboboxEn = true;
                     LeftPanelViewModel._app_running = false;
                     ConnectTextBoxContent = "Not Connected";
                 }
@@ -116,11 +117,32 @@ namespace SuperButton.ViewModels
         {
             #region Operations
             StarterOperationFlag = true;
-            RefreshManger.GetInstance.DisconnectedFlag = false;
             StarterCount = 0;
+            RefreshManger.ConnectionCount = 0;
             OscilloscopeViewModel.GetInstance.ChComboEn = false;
             Thread.Sleep(10);
-            
+            if(RefreshManger.GetInstance.DisconnectedFlag)
+            {
+                Rs232Interface.GetInstance.SendToParser(new PacketFields
+                {
+                    Data2Send = "0",
+                    ID = Convert.ToInt16(60),
+                    SubID = Convert.ToInt16(1),
+                    IsSet = true,
+                    IsFloat = false
+                });
+                Thread.Sleep(10);
+
+                Rs232Interface.GetInstance.SendToParser(new PacketFields
+                {
+                    Data2Send = "0",
+                    ID = Convert.ToInt16(60),
+                    SubID = Convert.ToInt16(2),
+                    IsSet = true,
+                    IsFloat = false
+                });
+                Thread.Sleep(10);
+            }
             Rs232Interface.GetInstance.SendToParser(new PacketFields
             {
                 Data2Send = "",
@@ -133,9 +155,9 @@ namespace SuperButton.ViewModels
             int timeOutPlot = 0;
             do
             {
-                Thread.Sleep(150);
+                Thread.Sleep(100);
                 timeOutPlot++;
-            } while(OscilloscopeParameters.plotCount_temp != 0 && timeOutPlot <= 100);
+            } while(OscilloscopeParameters.plotCount_temp != 0 && timeOutPlot <= 20);
 
             Debug.WriteLine("TimeOutPlot: " + timeOutPlot);
             if(OscilloscopeParameters.plotCount_temp == 0)
@@ -145,12 +167,12 @@ namespace SuperButton.ViewModels
                 EventRiser.Instance.RiseEevent(string.Format($"Failed"));
                 OscilloscopeParameters.InitList();
             }
-            
+
             OscilloscopeViewModel.GetInstance.ChComboEn = true;
 
-            short[] ID = {60, 60, 62, 62, 62, 62, 1 };
-            short[] subID = {1, 2, 10, 1, 2, 3, 0 };
-            string[] param = { "Read Ch1", "Read Ch2", "Read Checksum", "Read SN", "Read HW Rev", "Read FW Rev", "Read motor status"};
+            short[] ID = { 60, 60, 62, 62, 62, 62, 1 };
+            short[] subID = { 1, 2, 10, 1, 2, 3, 0 };
+            string[] param = { "Read Ch1", "Read Ch2", "Read Checksum", "Read SN", "Read HW Rev", "Read FW Rev", "Read motor status" };
 
             EventRiser.Instance.RiseEevent(string.Format($"Reading param..."));
             for(int i = 0; i < param.Length; i++)
@@ -168,21 +190,65 @@ namespace SuperButton.ViewModels
             }
             #endregion  Operations
 
-            do
-            {
-                Thread.Sleep(100);
-            } while(StarterOperationFlag);
-            BlinkLedsTicks(STOP);
-            BlinkLedsTicks(START);
 #if !DEBUG || RELEASE_MODE
             VerifyConnectionTicks(STOP);
             VerifyConnectionTicks(START);
 #endif
+            int timeOutReadParam = 0;
+            do
+            {
+                Thread.Sleep(100);
+                timeOutReadParam++;
+            } while(StarterOperationFlag && timeOutReadParam <= 20);
+
+            if(StarterCount == 7)
+                EventRiser.Instance.RiseEevent(string.Format($"Connected successfully with unit"));
+            else
+                EventRiser.Instance.RiseEevent(string.Format($"Failed reading params"));
+
+            if(RefreshManger.GetInstance.DisconnectedFlag)
+            {
+                Thread.Sleep(10);
+                Rs232Interface.GetInstance.SendToParser(new PacketFields
+                {
+                    Data2Send = RefreshManger.GetInstance.ch1.ToString(),
+                    ID = Convert.ToInt16(60),
+                    SubID = Convert.ToInt16(1),
+                    IsSet = true,
+                    IsFloat = false
+                });
+                Thread.Sleep(10);
+
+                Rs232Interface.GetInstance.SendToParser(new PacketFields
+                {
+                    Data2Send = RefreshManger.GetInstance.ch2.ToString(),
+                    ID = Convert.ToInt16(60),
+                    SubID = Convert.ToInt16(2),
+                    IsSet = true,
+                    IsFloat = false
+                });
+                Thread.Sleep(10);
+                Rs232Interface.GetInstance.SendToParser(new PacketFields
+                {
+                    Data2Send = "1",
+                    ID = Convert.ToInt16(64),
+                    SubID = Convert.ToInt16(0),
+                    IsSet = true,
+                    IsFloat = false
+                });
+            }
+            Thread.Sleep(10);
+            RefreshManger.GetInstance.DisconnectedFlag = false;
+
+            BlinkLedsTicks(STOP);
+            BlinkLedsTicks(START);
+
             RefreshParamsTick(STOP);
             if(DebugViewModel.GetInstance.EnRefresh)
                 RefreshParamsTick(START);
 
             LeftPanelViewModel._app_running = true;
+            StarterOperation(STOP);
         }
         private String _connectTextBoxContent;
         public String ConnectTextBoxContent
@@ -654,7 +720,7 @@ namespace SuperButton.ViewModels
                     win.Show();
                 }
             }
-            else if (win.WindowState == System.Windows.WindowState.Minimized)
+            else if(win.WindowState == System.Windows.WindowState.Minimized)
             {
                 win.WindowState = System.Windows.WindowState.Normal;
 
@@ -796,14 +862,18 @@ namespace SuperButton.ViewModels
         {
             if(_app_running)
             {
-                if(led == TX_LED)
+                lock(Synlock)
+                {
+                    if(led == TX_LED)
                         LedStatusTx = 1;
-                if(led == RX_LED)
+                    if(led == RX_LED)
                         LedStatusRx = 1;
-                
-                Thread.Sleep(1);
-                LedStatusTx = 0;
-                LedStatusRx = 0;
+
+                    Thread.Sleep(1);
+                    LedStatusTx = 0;
+                    LedStatusRx = 0;
+                    led = -1;
+                }
             }
         }
 

@@ -267,7 +267,7 @@ namespace SuperButton.Models.DriverBlock
         private int _iteratorRefresh = 0;
         public void StartRefresh()
         {
-            if(true && !DisconnectedFlag && Rs232Interface._comPort.IsOpen)
+            if(Rs232Interface._comPort.IsOpen)
             {
                 tab = Views.ParametarsWindow.ParametersWindowTabSelected;
                 if(ParametarsWindow.WindowsOpen == false)
@@ -344,7 +344,7 @@ namespace SuperButton.Models.DriverBlock
 #endif
             }
         }
-        static int ConnectionCount = 0;
+        public static int ConnectionCount = 0;
         //public bool _oneSelected = false;
         public void VerifyConnection(object sender, EventArgs e)
         {
@@ -367,8 +367,10 @@ namespace SuperButton.Models.DriverBlock
                     EventRiser.Instance.RiseEevent(string.Format($"No communication with Driver"));
                     Rs232Interface.GetInstance.Disconnect(1);
                 }
+                else if(ConnectionCount > 7)
+                    Rs232Interface.GetInstance.Disconnect(1);
             }
-            else if(Rs232Interface.GetInstance.IsSynced && !DisconnectedFlag)
+            else if(Rs232Interface.GetInstance.IsSynced)
             {
                 EventRiser.Instance.RiseEevent(string.Format($"Serial cable disconnected from PC"));
                 Rs232Interface.GetInstance.Disconnect(0);
@@ -508,7 +510,7 @@ namespace SuperButton.Models.DriverBlock
         public bool DisconnectedFlag = false;
         public void YAxisLegend(int Sel, int identifier)
         {
-            if(LeftPanelViewModel.GetInstance.StarterOperationFlag || DisconnectedFlag)
+            if(LeftPanelViewModel.GetInstance.StarterOperationFlag)
             {
                 if(Sel <= OscilloscopeViewModel.GetInstance.Channel1SourceItems.Count && Sel <= OscilloscopeViewModel.GetInstance.Channel2SourceItems.Count)
                 {
@@ -525,6 +527,7 @@ namespace SuperButton.Models.DriverBlock
             else if(Sel <= OscilloscopeViewModel.GetInstance.ChannelYtitles.Count)
                 OscilloscopeViewModel.GetInstance.YAxisUnits = "CH" + identifier.ToString() + ": " + OscilloscopeViewModel.GetInstance.ChannelYtitles.ElementAt(Sel).Value;
         }
+        public int ch1, ch2;
         internal void UpdateModel(Tuple<int, int> commandidentifier, string newPropertyValue, bool IntFloat = false)
         {
             try
@@ -604,9 +607,9 @@ namespace SuperButton.Models.DriverBlock
                         {
                             Sel = Int32.Parse(newPropertyValue);
 
-                            if((LeftPanelViewModel.GetInstance.StarterOperationFlag || DisconnectedFlag))
+                            if(LeftPanelViewModel.GetInstance.StarterOperationFlag && !DisconnectedFlag)
                             {
-                                if(Sel <= OscilloscopeViewModel.GetInstance.Channel1SourceItems.Count && Sel <= OscilloscopeViewModel.GetInstance.Channel2SourceItems.Count)
+                                if(Sel <= OscilloscopeViewModel.GetInstance.Channel1SourceItems.Count && Sel <= OscilloscopeViewModel.GetInstance.Channel2SourceItems.Count && Sel >= 0)
                                 {
                                     if(commandidentifier.Item2 == 1)
                                     {
@@ -619,21 +622,35 @@ namespace SuperButton.Models.DriverBlock
                                         OscilloscopeViewModel.GetInstance.Ch2SelectedIndex = Sel;
                                         OscilloscopeViewModel.GetInstance.SelectedCh2DataSource = OscilloscopeViewModel.GetInstance.Channel2SourceItems.ElementAt(Sel);
                                         YAxisLegend(Sel, commandidentifier.Item2);
-                                        //DisconnectedFlag = false;
                                     }
+                                }
+                            }
+                            else if(DisconnectedFlag)
+                            {
+                                if(commandidentifier.Item2 == 1)
+                                {
+                                    OscilloscopeViewModel.GetInstance.Ch1SelectedIndex = Sel;
+                                }
+                                else if(commandidentifier.Item2 == 2)
+                                {
+                                    OscilloscopeViewModel.GetInstance.Ch2SelectedIndex = Sel;
                                 }
                             }
                             else
                             {
-                                if(Sel <= OscilloscopeViewModel.GetInstance.ChannelYtitles.Count)
+                                if(Sel <= OscilloscopeViewModel.GetInstance.ChannelYtitles.Count && Sel >= 0)
                                 {
                                     if(commandidentifier.Item2 == 1)
                                     {
                                         OscilloscopeViewModel.GetInstance.Ch1SelectedIndex = Sel;
+                                        if(!LeftPanelViewModel.GetInstance.StarterOperationFlag)
+                                            ch1 = Sel;
                                     }
                                     else if(commandidentifier.Item2 == 2)
                                     {
                                         OscilloscopeViewModel.GetInstance.Ch2SelectedIndex = Sel;
+                                        if(!LeftPanelViewModel.GetInstance.StarterOperationFlag)
+                                            ch2 = Sel;
                                     }
                                     YAxisLegend(Sel, commandidentifier.Item2);
                                 }
@@ -763,37 +780,6 @@ namespace SuperButton.Models.DriverBlock
                 LeftPanelViewModel.GetInstance.RefreshParamsTick(LeftPanelViewModel.STOP);
                 LeftPanelViewModel.GetInstance.StarterOperation(LeftPanelViewModel.STOP);
                 LeftPanelViewModel.GetInstance.StarterOperation(LeftPanelViewModel.START);
-
-                /*
-                if(DisconnectedFlag)
-                {
-                    Rs232Interface.GetInstance.SendToParser(new PacketFields
-                    {
-                        Data2Send = "",
-                        ID = Convert.ToInt16(60),
-                        SubID = Convert.ToInt16(1), // SelectedCh1DataSource
-                        IsSet = false,
-                        IsFloat = false
-                    });
-                    Thread.Sleep(2);
-                    Rs232Interface.GetInstance.SendToParser(new PacketFields
-                    {
-                        Data2Send = "",
-                        ID = Convert.ToInt16(60),
-                        SubID = Convert.ToInt16(2), // SelectedCh2DataSource
-                        IsSet = false,
-                        IsFloat = false
-                    });
-                    Rs232Interface.GetInstance.SendToParser(new PacketFields
-                    {
-                        Data2Send = "1",
-                        ID = Convert.ToInt16(64),
-                        SubID = Convert.ToInt16(0), // AutoBaud (Synch)
-                        IsSet = true,
-                        IsFloat = false
-                    });
-                }
-                */
             }
         }
     }

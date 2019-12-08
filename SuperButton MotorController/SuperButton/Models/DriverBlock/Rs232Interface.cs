@@ -90,11 +90,11 @@ namespace SuperButton.Models.DriverBlock
         }
         public override void Disconnect(int mode = 0)
         {
+            RefreshManger.GetInstance.DisconnectedFlag = true;
             switch(mode)
             {
                 case 0:
                     EventRiser.Instance.RiseEevent(string.Format($"Disconnecting..."));
-                    RefreshManger.GetInstance.DisconnectedFlag = true;
                     LeftPanelViewModel.GetInstance.BlinkLedsTicks(LeftPanelViewModel.STOP);
                     LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.STOP);
                     LeftPanelViewModel.GetInstance.RefreshParamsTick(LeftPanelViewModel.STOP);
@@ -150,7 +150,6 @@ namespace SuperButton.Models.DriverBlock
                     break;
                 case 1:
                     LeftPanelViewModel.GetInstance.RefreshParamsTick(LeftPanelViewModel.STOP);
-                    RefreshManger.GetInstance.DisconnectedFlag = true;
                     LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
                     break;
             }
@@ -176,7 +175,6 @@ namespace SuperButton.Models.DriverBlock
         }
         public override void AutoConnect()
         {
-            RefreshManger.GetInstance.DisconnectedFlag = false;
             if(_isSynced == false && LeftPanelViewModel.GetInstance.ConnectButtonContent == "Connect") //Driver is not synchronized
             {
                 //Gets aviable ports list and initates them
@@ -420,6 +418,7 @@ namespace SuperButton.Models.DriverBlock
                     try
                     {
                         serialPort.Write(packetToSend, 0, packetToSend.Length); // Send through RS232 cable
+#if DEBUG
                         if(packetToSend.Length == 11)
                         {
                             var cmdlIdLsb = packetToSend[2];
@@ -438,39 +437,24 @@ namespace SuperButton.Models.DriverBlock
                             transit |= packetToSend[6];
                             transit <<= 8;
                             transit |= packetToSend[5];
+
                             if(commandId == 54 && commandSubId == 2 && getSet == 0)
                             {
                                 Debug.WriteLine("SendData data: " + transit);
                             }
+
                         }
+                        else
+                        {
+
+                        }
+#endif
                         serialPort.DiscardOutBuffer();
                     }
                     catch
                     {
-                        /*
-                        EventRiser.Instance.RiseEevent(string.Format($"Connection Lost3"));
-                        LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
-                        RefreshManger.GetInstance.DisconnectedFlag = true;
-                        Rs232Interface.GetInstance.Disconnect(0);
-                        LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.STOP);
-                        */
                     }
                 }
-                /*
-                else if(!_isSynced && !RefreshManger.GetInstance.DisconnectedFlag)
-                {
-                    EventRiser.Instance.RiseEevent(string.Format($"Connection Lost4"));
-                    LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
-                }
-                else if(!RefreshManger.GetInstance.DisconnectedFlag)
-                {
-                    EventRiser.Instance.RiseEevent(string.Format($"Connection Lost5"));
-                    LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
-                    RefreshManger.GetInstance.DisconnectedFlag = true;
-                    Rs232Interface.GetInstance.Disconnect(0);
-                    LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.STOP);
-                }
-                */
             }
         }
 

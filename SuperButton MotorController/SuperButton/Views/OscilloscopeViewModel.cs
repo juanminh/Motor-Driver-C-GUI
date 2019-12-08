@@ -23,6 +23,7 @@ using System.Collections.ObjectModel;
 using SuperButton.CommandsDB;
 using System.Windows.Input;
 using SuperButton.Models;
+using System.Windows.Data;
 
 //Cntl+M and Control+O for close regions
 namespace SuperButton.Views
@@ -43,24 +44,36 @@ namespace SuperButton.Views
         //CH1 ComboBox
         int ch1;
         private string _ch1Title;
-        public List<string> _channel1SourceItems = new List<string>();
-        public List<string> Channel1SourceItems
+        public ObservableCollection<string> _channel1SourceItems = new ObservableCollection<string>();
+        public ObservableCollection<string> Channel1SourceItems
         {
-            get { return _channel1SourceItems; }
+            get
+            {
+                if(_channel1SourceItems == null)
+                    _channel1SourceItems = new ObservableCollection<string>();
+                return _channel1SourceItems;
+            }
             set
             {
                 _channel1SourceItems = value;
                 OnPropertyChanged("Channel1SourceItems");
             }
         }
+        public object _lock = new object();          //Single tone variable
+        
         private string _selectedCh1DataSource;
 
         //CH2 ComboBox
         int ch2;
         private string _ch2Title;
-        public List<string> Channel2SourceItems
+        public ObservableCollection<string> Channel2SourceItems
         {
-            get { return _channel1SourceItems; }
+            get
+            {
+                if(_channel1SourceItems == null)
+                    _channel1SourceItems = new ObservableCollection<string>();
+                return _channel1SourceItems;
+            }
             set
             {
                 _channel1SourceItems = value;
@@ -554,6 +567,8 @@ namespace SuperButton.Views
             _yFloats = new float[0];
             _yFloats2 = new float[0];
 
+            BindingOperations.EnableCollectionSynchronization(_channel1SourceItems, _lock);
+
             Thread.Sleep(1);
             //ResetZoom();
         }
@@ -561,7 +576,7 @@ namespace SuperButton.Views
         {
             Channel1SourceItems.Clear();
 
-            _channel1SourceItems.Add("Pause");
+            Channel1SourceItems.Add("Pause");
             _channel1SourceItems.Add("IqFeedback");
             _channel1SourceItems.Add("I_PhaseA");
             _channel1SourceItems.Add("I_PhaseB");
@@ -762,12 +777,19 @@ namespace SuperButton.Views
         {
             get { return new RelayCommand(ComboDropDownOpenedFunc, IsEnabled); }
         }
+        public ICommand ComboDropDownClosed
+        {
+            get { return new RelayCommand(ComboDropDownClosedFunc, IsEnabled); }
+        }
         private static bool _isOpened = false;
         private void ComboDropDownOpenedFunc()
         {
             _isOpened = true;
         }
-
+        private void ComboDropDownClosedFunc()
+        {
+            _isOpened = false;
+        }
         private bool _chComboEn = false;
         public bool ChComboEn
         {
@@ -782,7 +804,10 @@ namespace SuperButton.Views
             {
                 if(_ch1Index == value)
                     return;
-                _ch1Index = value;
+                if(value >= 0)
+                    _ch1Index = value;
+                else
+                    _ch1Index = 0;
                 OnPropertyChanged("Ch1SelectedIndex");
             }
         }
@@ -791,9 +816,12 @@ namespace SuperButton.Views
             get { return _ch2Index; }
             set
             {
-                if(_ch2Index == value)
-                    return;
-                _ch2Index = value;
+                //if(_ch2Index == value)
+                //   return;
+                if(value >= 0)
+                    _ch2Index = value;
+                else
+                    _ch2Index = 0;
                 OnPropertyChanged("Ch2SelectedIndex");
             }
         }
@@ -808,7 +836,7 @@ namespace SuperButton.Views
 
                     lock(ParserRayonM1.PlotListLock)
                     {
-                        ch1 = _channel1SourceItems.FindIndex(x => x.Equals(_selectedCh1DataSource));
+                        ch1 = _channel1SourceItems.IndexOf(_selectedCh1DataSource);
                         ChannelsYaxeMerge(ch1, 1);
 
                         //y axle update
@@ -859,7 +887,7 @@ namespace SuperButton.Views
 
                     lock(ParserRayonM1.PlotListLock)
                     {
-                        ch2 = _channel1SourceItems.FindIndex(x => x.Equals(_selectedCh2DataSource));
+                        ch2 = _channel1SourceItems.IndexOf(_selectedCh2DataSource);
                         //y axle update
                         ChannelsYaxeMerge(ch2, 2);
 
@@ -892,6 +920,7 @@ namespace SuperButton.Views
                         //update tittle
                         YaxeTitle = _ch1Title == _ch2Title ? _ch1Title : "";
                     }
+                    OnPropertyChanged("SelectedCh2DataSource");
                 }
             }
         }
@@ -1302,15 +1331,15 @@ namespace SuperButton.Views
         float calcFactor(float dataSample, int ChNo)
         {
             string plotType = "";
-            if(OscilloscopeParameters.plotType_ls.Count != 0)
+            if(OscilloscopeParameters.plotType_ls.Count != 0 && Ch1SelectedIndex > 0 && Ch2SelectedIndex > 0)
             {
                 switch(ChNo)
                 {
                     case 1:
-                        plotType = OscilloscopeParameters.plotType_ls.ElementAt(OscilloscopeViewModel.GetInstance.Ch1SelectedIndex);
+                        plotType = OscilloscopeParameters.plotType_ls.ElementAt(Ch1SelectedIndex);
                         break;
                     case 2:
-                        plotType = OscilloscopeParameters.plotType_ls.ElementAt(OscilloscopeViewModel.GetInstance.Ch2SelectedIndex);
+                        plotType = OscilloscopeParameters.plotType_ls.ElementAt(Ch2SelectedIndex);
                         break;
                 }
                 switch(plotType)

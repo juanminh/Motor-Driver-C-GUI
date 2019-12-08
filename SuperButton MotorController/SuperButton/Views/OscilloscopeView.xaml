@@ -167,14 +167,23 @@
                     <TextBlock Foreground="#FFF" Text="CH1" Background="#82F7E31D" VerticalAlignment="Center"/>
                 </Border>
                 <Border Grid.Column="6" MinWidth="100" Height="22" VerticalAlignment="Center" BorderBrush="White" BorderThickness="0.7" CornerRadius="3" >
-                    <ComboBox SelectedItem="{Binding SelectedCh1DataSource, Mode=OneWay}" SelectedIndex="{Binding Ch1SelectedIndex}"
-            		ItemsSource="{Binding Channel1SourceItems}" Width="100" BorderBrush="#FFF9F9F9" Background="#FFF0EEEE" IsEnabled="{Binding ChComboEn}" FontSize="12">
+                    <ComboBox SelectedItem="{Binding SelectedCh1DataSource, Mode=OneWay}" 
+                              SelectedIndex="{Binding Ch1SelectedIndex}"
+            		          ItemsSource="{Binding Channel1SourceItems, Mode=TwoWay}" 
+                              Width="100" 
+                              BorderBrush="#FFF9F9F9" 
+                              Background="#FFF0EEEE" 
+                              IsEnabled="{Binding ChComboEn}" 
+                              FontSize="12" >
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectionChanged">
                                 <i:InvokeCommandAction Command="{Binding SelectedItemChanged_Plot1}"  />
                             </i:EventTrigger>
                             <i:EventTrigger EventName="DropDownOpened">
                                 <i:InvokeCommandAction Command="{Binding ComboDropDownOpened}"  />
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="DropDownClosed">
+                                <i:InvokeCommandAction Command="{Binding ComboDropDownClosed}"  />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </ComboBox>
@@ -185,14 +194,22 @@
                 </Border>
                 <Border Grid.Column="9" MinWidth="100" Height="22" VerticalAlignment="Center" BorderBrush="White" BorderThickness="0.7" CornerRadius="3">
                     <ComboBox
-            		SelectedItem="{Binding SelectedCh2DataSource, Mode=TwoWay}" SelectedIndex="{Binding Ch2SelectedIndex}"
-            		ItemsSource="{Binding Channel2SourceItems}" Width="100" BorderBrush="#FFF9F9F9" Background="#FFF0EEEE" IsEnabled="{Binding ChComboEn}">
+            		    SelectedItem="{Binding SelectedCh2DataSource, Mode=OneWay}" 
+                        SelectedIndex="{Binding Ch2SelectedIndex}"
+            		    ItemsSource="{Binding Channel2SourceItems, Mode=TwoWay}" 
+                        Width="100" 
+                        BorderBrush="#FFF9F9F9" 
+                        Background="#FFF0EEEE" 
+                        IsEnabled="{Binding ChComboEn}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="SelectionChanged">
                                 <i:InvokeCommandAction Command="{Binding SelectedItemChanged_Plot2}"  />
                             </i:EventTrigger>
                             <i:EventTrigger EventName="DropDownOpened">
                                 <i:InvokeCommandAction Command="{Binding ComboDropDownOpened}"  />
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="DropDownClosed">
+                                <i:InvokeCommandAction Command="{Binding ComboDropDownClosed}"  />
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </ComboBox>

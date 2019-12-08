@@ -20,6 +20,7 @@ using System.Windows.Controls;
 using SuperButton.ViewModels;
 using System.IO.Ports;
 using System.Linq;
+using System.Windows.Documents;
 
 namespace SuperButton.Views.mainWindowPanels
 {
@@ -29,13 +30,22 @@ namespace SuperButton.Views.mainWindowPanels
     /// 
     /// 
 
-    public partial class  LeftPanelView : UserControl
+    public partial class LeftPanelView : UserControl
     {
 
         public LeftPanelView()
         {
-          this.InitializeComponent();
+            this.InitializeComponent();
         }
+        //private void TextChangedEventHandler(object sender, TextChangedEventArgs e)
+        //{
+        //    if(TextInput.Document == null)
+        //        return;
 
+        //    TextRange documentRange = new TextRange(TextInput.Document.ContentStart, TextInput.Document.ContentEnd);
+        //    documentRange.ClearAllProperties();
+            
+
+        //}
     }
 }

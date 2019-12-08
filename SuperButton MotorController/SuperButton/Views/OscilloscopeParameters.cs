@@ -1,6 +1,7 @@
 ﻿using SuperButton.Models.DriverBlock;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Threading;
 using System.Windows.Media.Animation;
 
@@ -119,7 +120,6 @@ namespace SuperButton.Views
             for(int i = 0; i < plotName.Length; i++)
                 plotName_ls.Add(plotName[i]);
         }
-
         public static void fillPlotList()
         {
             if(plotCount == plotCount_temp)
@@ -127,8 +127,7 @@ namespace SuperButton.Views
                 plotGeneral.Clear();
                 plotFullScale.Clear();
                 plotType_ls.Clear();
-                OscilloscopeViewModel.GetInstance.Channel1SourceItems.Clear();
-                OscilloscopeViewModel.GetInstance.Channel2SourceItems.Clear();
+                OscilloscopeViewModel.GetInstance._channel1SourceItems.Clear();
                 OscilloscopeViewModel.GetInstance.ChannelYtitles.Clear();
                 ScaleAndGainList.Clear();
             }
@@ -161,25 +160,24 @@ namespace SuperButton.Views
         private static void buildPlotList()
         {
             int i = 0;
+            ScaleAndGainList.Add(new Tuple<float, float>((float)1.0, (float)1.0)); //Pause
             OscilloscopeViewModel.GetInstance.Channel1SourceItems.Add("Pause");
             OscilloscopeViewModel.GetInstance.ChannelYtitles.Add("Pause", "");
-            ScaleAndGainList.Add(new Tuple<float, float>((float)1.0, (float)1.0)); //Pause
             plotType_ls.Add(plotType[0]); //Pause
             foreach(var element in plotGeneral)
             {
                 if(element > 0)
                 {
-                    OscilloscopeViewModel.GetInstance.Channel1SourceItems.Add(plotName_ls[element & 0xFFFF]);
+                    ScaleAndGainList.Add(new Tuple<float, float>(1, plotFullScale[i]));
+                    OscilloscopeViewModel.GetInstance._channel1SourceItems.Add(plotName_ls[element & 0xFFFF]);
                     OscilloscopeViewModel.GetInstance.ChannelYtitles.Add(plotName_ls[element & 0xFFFF], plotUnit[(element >> 24) & 0xFF]);
                     plotType_ls.Add(plotType[(element >> 16) & 0xFF]);
-                    ScaleAndGainList.Add(new Tuple<float, float>(1, plotFullScale[i]));
                 }
                 i++;
             }
         }
         public static void InitList()
         {
-
             //Init list
             ScaleAndGainList.Add(new Tuple<float, float>((float)1.0, (float)1.0)); //Pause            
             ScaleAndGainList.Add(new Tuple<float, float>((float)1.0, IfullScale));//IqFeedback       

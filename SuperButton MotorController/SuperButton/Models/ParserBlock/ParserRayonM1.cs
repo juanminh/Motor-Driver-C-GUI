@@ -275,7 +275,12 @@ namespace SuperButton.Models.ParserBlock
             //   Data2Send = (float)5.22;
             //int i = 0;
             //}
-            byte[] temp = new byte[11] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            byte[] temp;
+            if(IsSet)
+                temp = new byte[11] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            else
+                temp = new byte[7] { 0, 0, 0, 0, 0, 0, 0 };
+
             char tempChar = (char)0;
 
             //Task<ushort> crcTask = new Task<ushort>(()=>CrcInputCalc(temp.Take(9), 2));

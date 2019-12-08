@@ -78,6 +78,19 @@ namespace SuperButton.ViewModels
             private set { _comList = value; }
         }
 
+        private bool _comPortComboboxEn = true;
+        public bool ComPortComboboxEn {
+            get
+            {
+                return _comPortComboboxEn;
+            }
+            set {
+                if(_comPortComboboxEn == value)
+                    return;
+                _comPortComboboxEn = value;
+                OnPropertyChanged("ComPortComboboxEn");
+            }
+        }
         #endregion End Properies
 
         #region Methods
