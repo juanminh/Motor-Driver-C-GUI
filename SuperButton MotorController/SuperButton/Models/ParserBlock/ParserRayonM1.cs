@@ -670,7 +670,7 @@ namespace SuperButton.Models.ParserBlock
                     {
                         if(transit == 1)
                         {
-                            EventRiser.Instance.RiseEevent(string.Format($"Load Parameters successed"));
+                            EventRiser.Instance.RiseEevent(string.Format($"Load Parameters succeed"));
                             MaintenanceViewModel.GetInstance.PostRedoState(MaintenanceViewModel._redoState);
                         }
                         else

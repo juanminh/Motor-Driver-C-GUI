@@ -524,7 +524,7 @@ namespace SuperButton.Models.DriverBlock
                     }
                 }
             }
-            else if(Sel <= OscilloscopeViewModel.GetInstance.ChannelYtitles.Count)
+            else if(Sel < OscilloscopeViewModel.GetInstance.ChannelYtitles.Count)
                 OscilloscopeViewModel.GetInstance.YAxisUnits = "CH" + identifier.ToString() + ": " + OscilloscopeViewModel.GetInstance.ChannelYtitles.ElementAt(Sel).Value;
         }
         public int ch1, ch2;

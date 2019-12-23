@@ -298,6 +298,7 @@ namespace SuperButton.ViewModels
 
         public string PreRedoState(int plot, bool refresh)
         {
+            LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.STOP);
             if(plot > 0 && refresh)
             {
                 Rs232Interface.GetInstance.SendToParser(new PacketFields
@@ -334,6 +335,7 @@ namespace SuperButton.ViewModels
         }
         public void PostRedoState(string state)
         {
+            LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.START);
             if(state == "both")
             {
                 Rs232Interface.GetInstance.SendToParser(new PacketFields
@@ -447,7 +449,7 @@ namespace SuperButton.ViewModels
                         IsSet = true,
                         IsFloat = false
                     });
-                    EventRiser.Instance.RiseEevent(string.Format($"Load Parameters successed"));
+                    EventRiser.Instance.RiseEevent(string.Format($"Load Parameters succeed"));
                     PostRedoState(_redoState);
 
                 }
@@ -470,6 +472,9 @@ namespace SuperButton.ViewModels
         //private string filePath;
         public void SaveToFileFunc(List<UInt32> ListToSave)
         {
+            //System.Windows.Forms.Form form = new System.Windows.Forms.Form();
+            //form.TopMost = true;
+
             string Date = Day(DateTime.Now.Day) + ' ' + MonthTrans(DateTime.Now.Month) + ' ' + DateTime.Now.Year.ToString();
             string path = "\\MotorController\\Parameters\\" + Date + ' ' + DateTime.Now.ToString("HH:mm:ss");
             path = (path.Replace('-', ' ')).Replace(':', '_');

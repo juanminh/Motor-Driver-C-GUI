@@ -1331,7 +1331,7 @@ namespace SuperButton.Views
         float calcFactor(float dataSample, int ChNo)
         {
             string plotType = "";
-            if(OscilloscopeParameters.plotType_ls.Count != 0 && Ch1SelectedIndex > 0 && Ch2SelectedIndex > 0)
+            if((OscilloscopeParameters.plotType_ls.Count != 0) && (Ch1SelectedIndex > 0 || Ch2SelectedIndex > 0))
             {
                 switch(ChNo)
                 {
@@ -1566,10 +1566,12 @@ namespace SuperButton.Views
                                             temp3 = AllYData.Take(POintstoPlot).ToArray();
                                             carry = temp3.Length;
                                             yDataTemp = new float[POintstoPlot];
-                                            Array.Copy(_yFloats, carry, yDataTemp, 0, _yFloats.Length - (carry)); //Shift Left
-                                            Array.Copy(temp3, 0, yDataTemp, _yFloats.Length - carry, carry); // Add range
-                                            Array.Copy(yDataTemp, 0, _yFloats, 0, POintstoPlot);
-
+                                            if(_yFloats.Length != 0)
+                                            {
+                                                Array.Copy(_yFloats, carry, yDataTemp, 0, _yFloats.Length - (carry)); //Shift Left
+                                                Array.Copy(temp3, 0, yDataTemp, _yFloats.Length - carry, carry); // Add range
+                                                Array.Copy(yDataTemp, 0, _yFloats, 0, POintstoPlot);
+                                            }
                                             //  var watch = Stopwatch.StartNew();                     
                                             //watch.Stop();
                                             //float elapsedMs = (float)watch.ElapsedMilliseconds;
@@ -1804,16 +1806,20 @@ namespace SuperButton.Views
                                         carry2 = temp4.Length;
                                         //1
                                         yDataTemp = new float[POintstoPlot];
-                                        Array.Copy(_yFloats, carry, yDataTemp, 0, _yFloats.Length - (carry)); //Shift Left - public static void Copy(Array sourceArray, int sourceIndex, Array destinationArray, int destinationIndex, int length);
-                                        Array.Copy(temp3, 0, yDataTemp, _yFloats.Length - carry, carry); // Add range
-                                        Array.Copy(yDataTemp, 0, _yFloats, 0, POintstoPlot);
-
+                                        if(_yFloats.Length != 0)
+                                        {
+                                            Array.Copy(_yFloats, carry, yDataTemp, 0, _yFloats.Length - (carry)); //Shift Left - public static void Copy(Array sourceArray, int sourceIndex, Array destinationArray, int destinationIndex, int length);
+                                            Array.Copy(temp3, 0, yDataTemp, _yFloats.Length - carry, carry); // Add range
+                                            Array.Copy(yDataTemp, 0, _yFloats, 0, POintstoPlot);
+                                        }
                                         //2
                                         yDataTemp2 = new float[POintstoPlot];
-                                        Array.Copy(_yFloats2, carry, yDataTemp2, 0, _yFloats2.Length - (carry2)); //Shift Left
-                                        Array.Copy(temp4, 0, yDataTemp2, _yFloats2.Length - carry2, carry2); // Add range
-                                        Array.Copy(yDataTemp2, 0, _yFloats2, 0, POintstoPlot);
-
+                                        if(_yFloats2.Length != 0)
+                                        {
+                                            Array.Copy(_yFloats2, carry, yDataTemp2, 0, _yFloats2.Length - (carry2)); //Shift Left
+                                            Array.Copy(temp4, 0, yDataTemp2, _yFloats2.Length - carry2, carry2); // Add range
+                                            Array.Copy(yDataTemp2, 0, _yFloats2, 0, POintstoPlot);
+                                        }
                                         //if(performX_data)
                                         //{
                                         for(int i = 0; i < POintstoPlot; i++)

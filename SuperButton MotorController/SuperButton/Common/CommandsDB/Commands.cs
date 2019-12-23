@@ -330,7 +330,7 @@ namespace SuperButton.CommandsDB
                     CommandId = "73",
                     CommandSubId = SubId[i],
                     CommandValue = "",
-                    IsFloat = names[i] == "Speed LPF Cut-Off"
+                    IsFloat = type[i]
                 };
 
                 DataViewCommandsList.Add(new Tuple<int, int>(73, Convert.ToInt16(SubId[i])), data);
@@ -1305,7 +1305,7 @@ namespace SuperButton.CommandsDB
             ErrorList.Add(73, "SET POSITION");
             ErrorList.Add(127, "MODULO RANGE MUST POSITIVE");
             ErrorList.Add(166, "OUT OF MODULO RANGE");
-            ErrorList.Add(200, "Reset Driver occured");
+            ErrorList.Add(200, "Reset Driver occurred");
         }
 
         private void GenerateGain()
