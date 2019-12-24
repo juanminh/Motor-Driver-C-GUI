@@ -1122,6 +1122,7 @@ namespace SuperButton.Views
                             pivot = 0;
                             _series0.Clear();
                             _series1.Clear();
+                            _isFull = false;
                         }
                     }
                 }
@@ -1865,19 +1866,21 @@ namespace SuperButton.Views
                                         }
                                     }
 #endif
-
-                                        using(this.ChartData.SuspendUpdates())
+                                        if(_yFloats.Length != 0 && _yFloats2.Length != 0)
                                         {
-                                            using(this.ChartData1.SuspendUpdates())
+                                            using(this.ChartData.SuspendUpdates())
                                             {
-                                                _series0.Clear();
-                                                _series1.Clear();
-                                                _series0.Append(xData, _yFloats);
-                                                _series1.Append(xData, _yFloats2);
+                                                using(this.ChartData1.SuspendUpdates())
+                                                {
+                                                    _series0.Clear();
+                                                    _series1.Clear();
+                                                    _series0.Append(xData, _yFloats);
+                                                    _series1.Append(xData, _yFloats2);
+                                                }
                                             }
+                                            AllYData.RemoveRange(0, (carry) - 1);
+                                            AllYData2.RemoveRange(0, (carry2) - 1);
                                         }
-                                        AllYData.RemoveRange(0, (carry) - 1);
-                                        AllYData2.RemoveRange(0, (carry2) - 1);
                                         break;
                                 }
                                 #endregion Switch

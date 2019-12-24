@@ -121,7 +121,7 @@
                              IsEnabled="{Binding EnableTextBox}"
                              MouseDoubleClick="SetValTB_MouseDoubleClick">
                         <i:Interaction.Behaviors>
-                            <models:AllowableCharactersTextBoxBehavior/>
+                            <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="20"/>
                         </i:Interaction.Behaviors>
                         <TextBox.InputBindings>
                             <KeyBinding Key="Enter" Command="{Binding SendData}"></KeyBinding>

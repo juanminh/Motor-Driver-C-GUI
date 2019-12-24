@@ -524,7 +524,7 @@
                                 <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
                             <Border Grid.Row="0" Grid.Column="0" BorderBrush="Transparent"  BorderThickness="1" CornerRadius="3" Width="110" Height="20" VerticalAlignment="Center" Margin="5,0,0,0">
-                                <TextBlock MaxHeight="17" Text="Motion Commands" HorizontalAlignment="Center" Foreground="White"></TextBlock>
+                                <TextBlock MaxHeight="17" Text="Motion Commands" HorizontalAlignment="Center" Foreground="White" FontSize="12"></TextBlock>
                             </Border>
                             <Grid Grid.Row="1">
                                 <Grid.ColumnDefinitions>
@@ -584,7 +584,7 @@
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
-                                                <TextBlock Width="180" Text="  Signal Generator" Foreground="White" Background="Gray" HorizontalAlignment="Center"/>
+                                                <TextBlock Width="180" Text="  Signal Generator" Foreground="White" Background="Gray" HorizontalAlignment="Center" FontSize="12"/>
                                                 <ItemsControl 
                                              HorizontalContentAlignment="Left"
                                              Grid.Row="1" 
@@ -609,7 +609,7 @@
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
-                                                <Button Grid.Row="0" Height="22" Width="80" Margin="0,0,0,0" Foreground="White" Template="{DynamicResource PressedButton}" Content="Stop Motor" Command="{Binding StopMotion}" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                                                <Button Grid.Row="0" Height="22" Width="80" Margin="0,0,0,0" Foreground="White" Template="{DynamicResource PressedButton}" Content="Stop Motor" Command="{Binding StopMotion}" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="12"/>
                                             </Grid>
                                         </Border>
                                         <Border Grid.Row="4" Width="180" Height="Auto" BorderBrush="Transparent" BorderThickness="1" CornerRadius="4">
@@ -617,7 +617,7 @@
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
-                                                <TextBlock Grid.Row="0" Text="  Power Out" Foreground="White"></TextBlock>
+                                                <TextBlock Grid.Row="0" Text="  Power Out" Foreground="White" FontSize="12"></TextBlock>
                                                 <wpfSpark:ToggleSwitch Grid.Row="0" Width="35" Height="15" HorizontalAlignment="Right" VerticalAlignment="Center" IsChecked="{Binding PowerOutputChecked, Mode=TwoWay}" FontSize="9" />
                                             </Grid>
                                         </Border>
@@ -633,7 +633,7 @@
                                 <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
                             <Border Grid.Row="0" Grid.Column="0" BorderBrush="Transparent"  BorderThickness="1" CornerRadius="3" Width="110" Height="20" VerticalAlignment="Center" Margin="5,0,0,0">
-                                <TextBlock Height="17" Text="Motion Status" HorizontalAlignment="Center" Foreground="White"></TextBlock>
+                                <TextBlock Height="17" Text="Motion Status" HorizontalAlignment="Center" Foreground="White" FontSize="12"></TextBlock>
                             </Border>
                             <Grid Grid.Row="1">
                                 <Grid.ColumnDefinitions>
@@ -660,7 +660,7 @@
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
-                                                <TextBlock Grid.Row="0" Width="142" Text="  Digital Input" Foreground="White" Background="Gray" HorizontalAlignment="Center"/>
+                                                <TextBlock Grid.Row="0" Width="142" Text="  Digital Input" Foreground="White" Background="Gray" HorizontalAlignment="Center" FontSize="12"/>
                                                 <ItemsControl Grid.Row="1" Width="142" ItemsSource="{Binding DigitalInputList}" ItemTemplate="{StaticResource BoolViewIndModel}"/>
                                             </Grid>
                                         </Border>
@@ -670,7 +670,7 @@
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
-                                                <TextBlock Grid.Row="0" Width="142" Text="  Position Counters" Foreground="White" Background="Gray" HorizontalAlignment="Center"/>
+                                                <TextBlock Grid.Row="0" Width="142" Text="  Position Counters" Foreground="White" Background="Gray" HorizontalAlignment="Center" FontSize="12"/>
                                                 <ItemsControl Grid.Row="1" Width="142" ItemsSource="{Binding PositionCountersList}" ItemTemplate="{StaticResource DataViewSmallFontInd}"/>
                                             </Grid>
                                         </Border>
@@ -688,7 +688,7 @@
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
-                                                <TextBlock Grid.Row="0" Width="229" Text="  Control" Foreground="White" Background="Gray" HorizontalAlignment="Center"/>
+                                                <TextBlock Grid.Row="0" Width="229" Text="  Control" Foreground="White" Background="Gray" HorizontalAlignment="Center" FontSize="12"/>
                                                 <ItemsControl Grid.Row="1" Width="229" ItemsSource="{Binding ControlList}" ItemTemplate="{StaticResource EnumViewSmallFontInd}"/>
                                             </Grid>
                                         </Border>
@@ -698,7 +698,7 @@
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
-                                                <TextBlock Grid.Row="0" Width="229" Text="  Motor" Foreground="White" Background="Gray" HorizontalAlignment="Center"/>
+                                                <TextBlock Grid.Row="0" Width="229" Text="  Motor" Foreground="White" Background="Gray" HorizontalAlignment="Center" FontSize="12"/>
                                                 <ItemsControl Grid.Row="1" Width="229" ItemsSource="{Binding MotorlList}" ItemTemplate="{StaticResource DataViewSmallFontInd}"/>
                                             </Grid>
                                         </Border>

@@ -116,7 +116,7 @@
                            Foreground="White" FontSize="12"
                            VerticalContentAlignment="Center">
                     <i:Interaction.Behaviors>
-                        <models:AllowableCharactersTextBoxBehavior/>
+                    <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="20"/>
                     </i:Interaction.Behaviors>
                 </TextBox>
             </Grid>

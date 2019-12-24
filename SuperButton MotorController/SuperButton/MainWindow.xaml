@@ -16,7 +16,8 @@
 	Title="Motor Controller"
 	Width="1000" Height="600" MinWidth="300" MinHeight="300" IsTabStop="False" ShowInTaskbar="True" WindowState="Maximized"
     Closing="Window_Closing" 
-    Icon="./Themes/MotorController.png">
+    Icon="./Themes/MotorController.png"
+    FontSize="12">
 
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="SizeChanged" >

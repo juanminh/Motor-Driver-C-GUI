@@ -4,6 +4,7 @@ using Abt.Controls.SciChart.Example.Data;
 using SuperButton.Data;
 using SuperButton.ViewModels;
 using SuperButton.Helpers;
+using System.Threading;
 
 namespace SuperButton.Models.DriverBlock
 {

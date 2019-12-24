@@ -1,4 +1,4 @@
-﻿//#define RELEASE_MODE
+﻿#define RELEASE_MODE
 
 using System;
 using System.Data;
@@ -661,6 +661,7 @@ namespace SuperButton.ViewModels
 
         private string _logText;
 
+        int logCounter = 0;
         private void Instance_LoggerEvent(object sender, EventArgs e)
         {
             string temp = ((CustomEventArgs)e).Msg + Environment.NewLine + LogText;
@@ -865,11 +866,16 @@ namespace SuperButton.ViewModels
                 lock(Synlock)
                 {
                     if(led == TX_LED)
+                    {
                         LedStatusTx = 1;
+                        Thread.Sleep(3);
+                    }
                     if(led == RX_LED)
+                    {
                         LedStatusRx = 1;
-
-                    Thread.Sleep(1);
+                        Thread.Sleep(1);
+                    }
+                    
                     LedStatusTx = 0;
                     LedStatusRx = 0;
                     led = -1;

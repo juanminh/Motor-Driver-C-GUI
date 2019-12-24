@@ -51,7 +51,7 @@
     </Window.Resources>
 
     <Grid >
-        <TabControl TabStripPlacement="Top" SelectionChanged="TabSelected" Margin="1,0,-1,0">
+        <TabControl TabStripPlacement="Top" SelectionChanged="TabSelected" Margin="1,0,-1,0" FontSize="12">
             <TabControl.Background>
                 <ImageBrush ImageSource="pack://siteoforigin:,,,/Views/HomeBackground.jpg"/>
             </TabControl.Background>

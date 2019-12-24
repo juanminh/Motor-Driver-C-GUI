@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Threading.Tasks;
 using System.Linq;
 using SuperButton.CommandsDB;
+using MotorController.ViewModels;
 
 namespace SuperButton.ViewModels
 {
@@ -78,7 +79,7 @@ namespace SuperButton.ViewModels
             if(LeftPanelViewModel.GetInstance.ConnectButtonContent == "Disconnect")
             {
                 //Debug.WriteLine("Enter to Send");
-                if(CommandId == "54" && CommandSubId == "2")
+                if(CommandId == DebugOutput.GetInstance.IDstr && CommandSubId == DebugOutput.GetInstance.subIDstr)
                     Trace.WriteLine("CommandValue: " + CommandValue);
                 if(CommandValue != "")
                 {

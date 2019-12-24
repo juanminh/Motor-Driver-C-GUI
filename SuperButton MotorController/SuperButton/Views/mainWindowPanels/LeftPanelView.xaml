@@ -777,11 +777,11 @@
                     <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="MOTOR" VerticalAlignment="Top" Width="70" Height="22" FontWeight="Bold" FontSize="15" Foreground="White" Margin="0,5,0,0"/>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <TextBlock HorizontalAlignment="Left" Text="Controller        Version 1.1.r" VerticalAlignment="Top" Height="17" Width="160" Foreground="#FF5499D3" FontSize="12"/>
+                    <TextBlock HorizontalAlignment="Left" Text="Controller        Version 1.1.s" VerticalAlignment="Top" Height="17" Width="160" Foreground="#FF5499D3" FontSize="12"/>
                 </Grid>
                 <Grid Grid.Row="2" Width="161" HorizontalAlignment="Left">
                     <Border BorderBrush="Transparent"  BorderThickness="1" CornerRadius="3" Width="110" Height="20" VerticalAlignment="Center" Margin="5,0,0,0">
-                        <TextBlock Height="17" Text="Communication" HorizontalAlignment="Center" Foreground="White"></TextBlock>
+                        <TextBlock Height="17" Text="Communication" HorizontalAlignment="Center" Foreground="White" FontSize="12"></TextBlock>
                     </Border>
                 </Grid>
                 <Grid Grid.Row="3">
@@ -806,6 +806,7 @@
                     Height="24" 
                     Width="Auto"
                     HorizontalContentAlignment="Center"
+                    FontSize="12"
                     IsEnabled="{Binding ComPortComboboxEn}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="DropDownOpened">
@@ -893,7 +894,7 @@
                 <Grid Grid.Row="6">
                     <Separator Width="65" Margin="0,0,0,20"></Separator>
                     <Border BorderBrush="Transparent"  BorderThickness="1" CornerRadius="3" Width="110" Height="20" VerticalAlignment="Center" Margin="5,0,0,0">
-                        <TextBlock Height="17" Text="Log" HorizontalAlignment="Center" Foreground="White"></TextBlock>
+                        <TextBlock Height="17" Text="Log" HorizontalAlignment="Center" Foreground="White" FontSize="12"></TextBlock>
                     </Border>
                 </Grid>
                 <Grid Grid.Row="7" Width="161" HorizontalAlignment="Left">

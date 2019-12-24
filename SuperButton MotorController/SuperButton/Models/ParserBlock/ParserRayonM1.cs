@@ -25,6 +25,8 @@ using SuperButton.Models.SataticClaass;
 using SuperButton.Views;
 using SuperButton.Helpers;
 using SuperButton.ViewModels;
+using MotorController.ViewModels;
+
 public struct PacketFields
 {
     public object Data2Send;
@@ -93,7 +95,7 @@ namespace SuperButton.Models.ParserBlock
         void parseOutdata(object sender, Rs232InterfaceEventArgs e)
         {
 
-            if(e.PacketRx.ID == 54 && e.PacketRx.SubID == 2 && e.PacketRx.IsSet == true)
+            if(e.PacketRx.ID == DebugOutput.GetInstance.ID && e.PacketRx.SubID == DebugOutput.GetInstance.subID && e.PacketRx.IsSet == true)
             {
                 CurrentCmdCounterTx++;
                 Debug.WriteLine("CurrentCmdCounterTx: " + CurrentCmdCounterTx + " Value: " + e.PacketRx.Data2Send);
@@ -103,9 +105,9 @@ namespace SuperButton.Models.ParserBlock
                 ParseOutputData(e.PacketRx.Data2Send, e.PacketRx.ID, e.PacketRx.SubID, e.PacketRx.IsSet,
                     e.PacketRx.IsFloat);
                 //Debug.WriteLine("{0} {1}[{2}]={3} {4}.", e.PacketRx.IsSet ? "Set" : "Get", e.PacketRx.ID, e.PacketRx.SubID, e.PacketRx.Data2Send, e.PacketRx.IsFloat ? "F" : "I");
-                if(e.PacketRx.ID == 54 && e.PacketRx.SubID == 2 && e.PacketRx.IsSet == true)
+                if(e.PacketRx.ID == DebugOutput.GetInstance.ID && e.PacketRx.SubID == DebugOutput.GetInstance.subID && e.PacketRx.IsSet == true)
                 {
-                    CurrentCmdCounterTx++;
+                    //CurrentCmdCounterTx++;
                     Debug.WriteLine(" Value sent: " + e.PacketRx.Data2Send);
                 }
                 if(LeftPanelViewModel.GetInstance != null)
@@ -353,15 +355,20 @@ namespace SuperButton.Models.ParserBlock
             //my fix
             if(IsFloat)                                           //Data float
             {
+                float value = 0;
+                float.TryParse((string)Data2Send, out value);
+                byte [] _value = BitConverter.GetBytes(value);
+                temp[5] = (byte)(_value[0]);
+                temp[6] = (byte)(_value[1]);
+                temp[7] = (byte)(_value[2]);
+                temp[8] = (byte)(_value[3]);
 
-                //float.Parse((string)Data2Send);
-
-                var datvaluevalue = BitConverter.GetBytes((float)(float.Parse((string)Data2Send)));
-                float newPropertyValuef = System.BitConverter.ToSingle(datvaluevalue, 0);
-                temp[5] = (byte)(datvaluevalue[0]);
-                temp[6] = (byte)(datvaluevalue[1]);
-                temp[7] = (byte)(datvaluevalue[2]);
-                temp[8] = (byte)(datvaluevalue[3]);
+                //var datvaluevalue = BitConverter.GetBytes((float)(float.Parse((string)Data2Send)));
+                //float newPropertyValuef = System.BitConverter.ToSingle(datvaluevalue, 0);
+                //temp[5] = (byte)(datvaluevalue[0]);
+                //temp[6] = (byte)(datvaluevalue[1]);
+                //temp[7] = (byte)(datvaluevalue[2]);
+                //temp[8] = (byte)(datvaluevalue[3]);
             }
             else // String Value
             {
@@ -373,7 +380,8 @@ namespace SuperButton.Models.ParserBlock
                     }
                     try
                     {
-                        var datvaluevalue = Int32.Parse(Data2Send.ToString());
+                        var datvaluevalue = 0;
+                        Int32.TryParse(Data2Send.ToString(), out datvaluevalue);
                         temp[5] = (byte)(((int)datvaluevalue & 0xFF));
                         temp[6] = (byte)(((int)datvaluevalue >> 8) & 0xFF);
                         temp[7] = (byte)(((int)datvaluevalue >> 16) & 0xFF);
@@ -381,7 +389,8 @@ namespace SuperButton.Models.ParserBlock
                     }
                     catch
                     {
-                        var datvaluevalue = UInt32.Parse(Data2Send.ToString());
+                        var datvaluevalue = 0;
+                        Int32.TryParse(Data2Send.ToString(), out datvaluevalue);
                         temp[5] = (byte)(((int)datvaluevalue & 0xFF));
                         temp[6] = (byte)(((int)datvaluevalue >> 8) & 0xFF);
                         temp[7] = (byte)(((int)datvaluevalue >> 16) & 0xFF);
@@ -402,7 +411,7 @@ namespace SuperButton.Models.ParserBlock
 
             //Rise another event that sends out to target
 
-            if(Id == 54 && SubId == 2 && IsSet == true)
+            if(Id == DebugOutput.GetInstance.ID && SubId == DebugOutput.GetInstance.subID && IsSet == true)
             {
                 Debug.WriteLine("Parser2Send data: " + Data2Send);
             }
@@ -477,6 +486,7 @@ namespace SuperButton.Models.ParserBlock
         }
         public static byte[] DebugData = { };
         int CurrentCmdCounterRx = 0;
+        int Counter100 = 0;
         public bool ParseInputPacket(byte[] data)
         {
             DebugData = data;

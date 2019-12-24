@@ -25,10 +25,9 @@ namespace SuperButton.Helpers
             }
 
         }
-
+        int logCounter = 0;
         public void RiseEevent(string msg)
         {
-
             LoggerEvent(null, new CustomEventArgs() { Msg = DateTime.Now.ToString("mm:ss - ") + msg }); // DateTime.Now.ToString("mm:ss - ") + 
             //Debug.WriteLine("Event catch");
         }

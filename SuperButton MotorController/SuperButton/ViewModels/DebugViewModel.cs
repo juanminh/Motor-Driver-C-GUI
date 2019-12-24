@@ -326,7 +326,8 @@ namespace SuperButton.ViewModels
                             Data2Send = Data2Send.ToString().Substring(0, Data2Send.ToString().IndexOf("."));
                         try
                         {
-                            var datvaluevalue = Int32.Parse(Data2Send.ToString());
+                            var datvaluevalue = 0;
+                            Int32.TryParse(Data2Send.ToString(), out datvaluevalue);
                             temp[5] = (byte)(((int)datvaluevalue & 0xFF));
                             temp[6] = (byte)(((int)datvaluevalue >> 8) & 0xFF);
                             temp[7] = (byte)(((int)datvaluevalue >> 16) & 0xFF);

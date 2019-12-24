@@ -183,6 +183,7 @@
     <Compile Include="ViewModels\BottomPanelViewModel.cs" />
     <Compile Include="ViewModels\CalibrationButtonModel.cs" />
     <Compile Include="ViewModels\DebugObjModel.cs" />
+    <Compile Include="ViewModels\DebugOutput.cs" />
     <Compile Include="ViewModels\DebugViewModel.cs" />
     <Compile Include="Models\DebugModel.cs" />
     <Compile Include="ViewModels\CalibrationViewModel.cs" />

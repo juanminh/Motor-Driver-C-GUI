@@ -24,6 +24,7 @@ using System.Windows;
 using SuperButton.Helpers;
 using System.ComponentModel;
 using SuperButton.Annotations;
+using MotorController.ViewModels;
 
 namespace SuperButton.Models.DriverBlock
 {
@@ -417,6 +418,8 @@ namespace SuperButton.Models.DriverBlock
                 {
                     try
                     {
+                        //Debug.WriteLine(DateTime.Now + "." + DateTime.Now.Millisecond);
+                        Thread.Sleep(5);
                         serialPort.Write(packetToSend, 0, packetToSend.Length); // Send through RS232 cable
 #if DEBUG
                         if(packetToSend.Length == 11)
@@ -438,7 +441,7 @@ namespace SuperButton.Models.DriverBlock
                             transit <<= 8;
                             transit |= packetToSend[5];
 
-                            if(commandId == 54 && commandSubId == 2 && getSet == 0)
+                            if(commandId == DebugOutput.GetInstance.ID && commandSubId == DebugOutput.GetInstance.subID && getSet == 0)
                             {
                                 Debug.WriteLine("SendData data: " + transit);
                             }
