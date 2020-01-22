@@ -148,6 +148,7 @@ namespace SuperButton.Models.DriverBlock
                         Driver2Mainmodel(this, new Rs232InterfaceEventArgs("Connect"));
                         LeftPanelViewModel.busy = false;
                     }
+                    OscilloscopeViewModel.GetInstance.ChComboEn = false;
                     break;
                 case 1:
                     LeftPanelViewModel.GetInstance.RefreshParamsTick(LeftPanelViewModel.STOP);

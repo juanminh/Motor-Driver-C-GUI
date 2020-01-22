@@ -525,7 +525,7 @@ namespace SuperButton.Models.ParserBlock
                 if(commandId == 3 && commandSubId == 0)
                     CurrentCmdCounterRx++;
                 if(ParametarsWindow.ParametersWindowTabSelected == ParametarsWindowViewModel.DEBUG &&
-                    !LeftPanelViewModel.GetInstance.StarterOperationFlag &&
+                    !LeftPanelViewModel.GetInstance.StarterOperationFlag && !LeftPanelViewModel.GetInstance.StarterPlotFlag &&
                     !exceptionID.Contains(commandId) || !exceptionID.Contains(commandId))
                 {
                     if(isInt)
@@ -702,7 +702,7 @@ namespace SuperButton.Models.ParserBlock
                         });
                     }
                 }
-                else if(commandId == 34 && LeftPanelViewModel.GetInstance.StarterOperationFlag)
+                else if(commandId == 34 && LeftPanelViewModel.GetInstance.StarterPlotFlag)
                 {
                     EventRiser.Instance.RiseEevent(string.Format($"Reading plots..."));
                     OscilloscopeParameters.plotCount_temp = transit;
@@ -711,11 +711,11 @@ namespace SuperButton.Models.ParserBlock
                     if(transit > 0)
                         OscilloscopeParameters.fillPlotList();
                 }
-                else if(commandId == 35 && LeftPanelViewModel.GetInstance.StarterOperationFlag)
+                else if(commandId == 35 && LeftPanelViewModel.GetInstance.StarterPlotFlag)
                 {
                     OscilloscopeParameters.plotGeneral.Add(transit);
                 }
-                else if(commandId == 36 && LeftPanelViewModel.GetInstance.StarterOperationFlag)
+                else if(commandId == 36 && LeftPanelViewModel.GetInstance.StarterPlotFlag)
                 {
                     var dataAray = new byte[4];
                     for(int i = 0; i < 4; i++)
@@ -726,6 +726,8 @@ namespace SuperButton.Models.ParserBlock
                     OscilloscopeParameters.plotFullScale.Add(newPropertyValuef);
                     if(OscilloscopeParameters.plotCount_temp > 0)
                         OscilloscopeParameters.fillPlotList();
+                    else
+                        LeftPanelViewModel.GetInstance.StarterPlotFlag = false;
                 }
                 else
                 {   // Error ID 100
@@ -733,7 +735,7 @@ namespace SuperButton.Models.ParserBlock
                     if(Commands.GetInstance.ErrorList.TryGetValue(transit, out result))
                         EventRiser.Instance.RiseEevent(string.Format($"Com. Error: " + result));
                     else
-                        EventRiser.Instance.RiseEevent(string.Format($"Error: " + transit.ToString()));
+                        EventRiser.Instance.RiseEevent(string.Format($"Error: " + commandId.ToString() + "[" + commandSubId.ToString() + "] = " + transit.ToString()));
                 }
                 return true;
             }

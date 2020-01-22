@@ -28,7 +28,6 @@ namespace SuperButton.CommandsDB
             UpperMainPannelList();
             CalibrationCmd();
             BuildErrorList();
-            GenerateGain();
             GenerateDebugListCommands();
             GenerateIOTabCommands();
         }
@@ -61,8 +60,6 @@ namespace SuperButton.CommandsDB
         public Dictionary<string, ObservableCollection<object>> DebugCommandsListbySubGroup = new Dictionary<string, ObservableCollection<object>>();
 
         public Dictionary<int, string> ErrorList = new Dictionary<int, string>();
-        public Dictionary<string, NumericTextboxModel> Gain = new Dictionary<string, NumericTextboxModel>();
-        public Dictionary<string, ObservableCollection<object>> GainList = new Dictionary<string, ObservableCollection<object>>();
         public Dictionary<Tuple<int, int>, BoolViewIndModel> DigitalInputList = new Dictionary<Tuple<int, int>, BoolViewIndModel>();
         public Dictionary<string, ObservableCollection<object>> DigitalInputListbySubGroup = new Dictionary<string, ObservableCollection<object>>();
 
@@ -317,7 +314,7 @@ namespace SuperButton.CommandsDB
 
             names = new[]
             {
-                "Enable", "Roll High", "Roll Low", "Direction", "Counts Per Rev", "Speed LPF Cut-Off", "BaudRate", "Bit Length", "Clk Phase", "Clk Polarity", "Data Shift", "Packet Relay", "Calibrate Angle", "Sample Period"
+                "Enable", "Roll High", "Roll Low", "Direction", "Counts Per Rev", "Speed LPF Cut-Off", "BaudRate", "Packet Length", "Clk Phase", "Clk Polarity", "Data Shift", "Packet Delay", "Calibrate Angle", "Sample Period"
             };
             var SubId = new[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "15" };
             var type = new[] { false, false, false, false, false, true, false, false, false, false, false, false, true, false };
@@ -1307,32 +1304,7 @@ namespace SuperButton.CommandsDB
             ErrorList.Add(166, "OUT OF MODULO RANGE");
             ErrorList.Add(200, "Reset Driver occurred");
         }
-
-        private void GenerateGain()
-        {
-            GainList.Add("Gain1 List", new ObservableCollection<object>());
-            var data = new NumericTextboxModel
-            {
-                Channel = "1",
-                Name = "Gain",
-                CommandValue = "1.0",
-                BackGround = (SolidColorBrush)(new BrushConverter().ConvertFrom("#82F7E31D")),
-            };
-            Gain.Add("Ch1 Gain", data);
-            GainList["Gain1 List"].Add(data);
-
-            GainList.Add("Gain2 List", new ObservableCollection<object>());
-            data = new NumericTextboxModel
-            {
-                Channel = "2",
-                Name = "Gain",
-                CommandValue = "1.0",
-                BackGround = (SolidColorBrush)(new BrushConverter().ConvertFrom("#7F1810D4")),
-            };
-            Gain.Add("Ch2 Gain", data);
-            GainList["Gain2 List"].Add(data);
-        }
-
+        
         private void GenerateDebugListCommands()
         {
             DebugCommandsListbySubGroup.Add("Debug List", new ObservableCollection<object>());

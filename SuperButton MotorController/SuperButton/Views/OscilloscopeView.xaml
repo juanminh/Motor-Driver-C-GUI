@@ -6,6 +6,7 @@
              xmlns:s="http://schemas.abtsoftware.co.uk/scichart"         
              xmlns:common="clr-namespace:SuperButton.Common"    
              xmlns:Helpers="clr-namespace:SuperButton.Helpers"
+             xmlns:models="clr-namespace:SuperButton.Models"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              d:DesignHeight="768"
              d:DesignWidth="1024"
@@ -144,6 +145,8 @@
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
                     <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
                 <Line Grid.Column="0" Margin="13,8,5,8" Stroke="Gray" Y2="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
                 <Line Grid.Column="1" Margin="5,0,6,0" Stroke="Gray" Y2="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
@@ -163,14 +166,14 @@
             			Source="pack://application:,,,/Images/plusZoom.png" Width="20" Height="20" Stretch="Fill" />
                     </StackPanel>
                 </Button>
-                <Border Grid.Column="5" BorderBrush="White" BorderThickness="0.5" Margin="10,0,0,0" Width="26" CornerRadius="0.5" VerticalAlignment="Center">
-                    <TextBlock Foreground="#FFF" Text="CH1" Background="#82F7E31D" VerticalAlignment="Center" FontSize="12"/>
+                <Border Grid.Column="5" BorderBrush="White" BorderThickness="1" Margin="10,0,0,0" Width="25" Height="22" CornerRadius="1,0,0,1">
+                    <TextBlock Height="22" Foreground="White" Text="CH1" Background="#82F7E31D" FontSize="12"/>
                 </Border>
-                <Border Grid.Column="6" MinWidth="100" Height="22" VerticalAlignment="Center" BorderBrush="White" BorderThickness="0.7" CornerRadius="3" >
+                <Border Grid.Column="6" MinWidth="100" Height="22" BorderBrush="White" BorderThickness="1" CornerRadius="0" Margin="-2,0,0,0">
                     <ComboBox SelectedItem="{Binding SelectedCh1DataSource, Mode=OneWay}" 
                               SelectedIndex="{Binding Ch1SelectedIndex}"
             		          ItemsSource="{Binding Channel1SourceItems, Mode=TwoWay}" 
-                              Width="100" 
+                              Width="100"
                               BorderBrush="#FFF9F9F9" 
                               Background="#FFF0EEEE" 
                               IsEnabled="{Binding ChComboEn}" 
@@ -188,11 +191,20 @@
                         </i:Interaction.Triggers>
                     </ComboBox>
                 </Border>
-                <ItemsControl Grid.Column="7" HorizontalAlignment="Center" VerticalAlignment="Center"  Margin="2,0" ItemTemplate="{StaticResource NumericTextboxModel}" ItemsSource="{Binding Ch1Gain}"/>
-                <Border Grid.Column="8" BorderBrush="White" BorderThickness="0.5" Margin="5,0,0,0" CornerRadius="0.5" Width="26" VerticalAlignment="Center">
-                    <TextBlock Foreground="#FFF" Background="#7F1810D4" VerticalAlignment="Center" Text="CH2" FontSize="12"/>
+                <Border Grid.Column="7" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="26" Height="22" CornerRadius="0">
+                    <TextBlock Height="22" Foreground="White" Text="Gain" Background="#82F7E31D" FontSize="12"/>
                 </Border>
-                <Border Grid.Column="9" MinWidth="100" Height="22" VerticalAlignment="Center" BorderBrush="White" BorderThickness="0.7" CornerRadius="3">
+                <Border Grid.Column="8" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="0,1,1,0">
+                    <TextBox Width="25" Text="{Binding Ch1Gain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="22" BorderThickness="0" >
+                        <i:Interaction.Behaviors>
+                            <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
+                        </i:Interaction.Behaviors>
+                    </TextBox>
+                </Border>
+                <Border Grid.Column="9" BorderBrush="White" BorderThickness="1" Margin="5,0,0,0" Width="25" Height="22" CornerRadius="1,0,0,1">
+                    <TextBlock Height="22" Foreground="White" Background="#7F1810D4" Text="CH2" FontSize="12"/>
+                </Border>
+                <Border Grid.Column="10" MinWidth="100" Height="22" BorderBrush="White" BorderThickness="1" CornerRadius="0" Margin="-2,0,0,0">
                     <ComboBox
             		    SelectedItem="{Binding SelectedCh2DataSource, Mode=OneWay}" 
                         SelectedIndex="{Binding Ch2SelectedIndex}"
@@ -215,9 +227,18 @@
                         </i:Interaction.Triggers>
                     </ComboBox>
                 </Border>
-                <ItemsControl Grid.Column="10" HorizontalAlignment="Center" VerticalAlignment="Center"  ItemTemplate="{StaticResource NumericTextboxModel}" ItemsSource="{Binding Ch2Gain}"/>
-                <Line Grid.Column="11" Margin="2,2" Stroke="#FFD6D5D5" Y2="16" VerticalAlignment="Center" Fill="#FFC1C1C1"/>
-                <ToggleButton Grid.Column="12" Style="{StaticResource ExampleToolbarToggleButtonStyle}" IsChecked="{Binding IsFreeze}" BorderThickness="0" 
+                <Border Grid.Column="11" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="26" Height="22" CornerRadius="0">
+                    <TextBlock Height="22" Foreground="White" Text="Gain" Background="#7F1810D4" FontSize="12"/>
+                </Border>
+                <Border Grid.Column="12" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="0,1,1,0">
+                    <TextBox Width="25" Text="{Binding Ch2Gain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="22" BorderThickness="0" >
+                        <i:Interaction.Behaviors>
+                            <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
+                        </i:Interaction.Behaviors>
+                    </TextBox>
+                </Border>
+                <Line Grid.Column="13" Margin="2,2" Stroke="#FFD6D5D5" Y2="16" VerticalAlignment="Center" Fill="#FFC1C1C1"/>
+                <ToggleButton Grid.Column="14" Style="{StaticResource ExampleToolbarToggleButtonStyle}" IsChecked="{Binding IsFreeze}" BorderThickness="0" 
                               BorderBrush="#FFF3F3F3" Margin="0,1" VerticalAlignment="Center" Height="24.0107">
                     <StackPanel Orientation="Horizontal">
                         <Helpers:RecLed Width="12" Recording="{Binding IsFreeze}"></Helpers:RecLed>
@@ -225,7 +246,7 @@
                         <Label FontSize="12">Freeze</Label>
                     </StackPanel>
                 </ToggleButton>
-                <ToggleButton Grid.Column="13" Style="{StaticResource ExampleToolbarToggleButtonStyle}" IsChecked="{Binding IsRecording}" BorderThickness="0" 
+                <ToggleButton Grid.Column="15" Style="{StaticResource ExampleToolbarToggleButtonStyle}" IsChecked="{Binding IsRecording}" BorderThickness="0" 
                               BorderBrush="#FFF3F3F3" Margin="1,0" VerticalAlignment="Center" Height="24.0107">
                     <StackPanel Orientation="Horizontal">
                         <Helpers:RecLed Width="12" Recording="{Binding IsRecording}"></Helpers:RecLed>
@@ -233,53 +254,20 @@
                         <Label FontSize="12">Rec</Label>
                     </StackPanel>
                 </ToggleButton>
-                <Line Grid.Column="14" Margin="2,2" Stroke="#FFD6D5D5" Y2="16" VerticalAlignment="Center" Fill="#FFC1C1C1"/>
-                <Button Grid.Column="15" Width="100"  Command="{Binding ResetZoomCommand}" Style="{StaticResource ExampleToolbarButtonStyle}" VerticalAlignment="Center" BorderThickness="0.5">
+                <Line Grid.Column="16" Margin="2,2" Stroke="#FFD6D5D5" Y2="16" VerticalAlignment="Center" Fill="#FFC1C1C1"/>
+                <Button Grid.Column="17" Width="100"  Command="{Binding ResetZoomCommand}" Style="{StaticResource ExampleToolbarButtonStyle}" VerticalAlignment="Center" BorderThickness="0.5">
                     <StackPanel Orientation="Horizontal">
                         <Image Margin="3"
                            Source="/Images/fit_to_size.png"
                            Stretch="None" />
                         <TextBlock Margin="3" Text="Zoom Extents" FontSize="12"/>
-                        
+
                     </StackPanel>
                 </Button>
-                <Button Grid.Column="16" Command="{Binding ClearGraphCommand}" Style="{StaticResource ExampleToolbarButtonStyle}" VerticalAlignment="Center" BorderThickness="0.5" Width="85" Height="25">
+                <Button Grid.Column="18" Command="{Binding ClearGraphCommand}" Style="{StaticResource ExampleToolbarButtonStyle}" VerticalAlignment="Center" BorderThickness="0.5" Width="85" Height="25">
                     <TextBlock Text="Clear Graph" FontSize="12" />
                 </Button>
-                <Line Grid.Column="17" Margin="2,0" Stroke="#FFD6D5D5" Y2="16" VerticalAlignment="Center" Fill="#FFC1C1C1" />
-                
-                <!--<ToggleButton Grid.Column="10" Command="{Binding SetZoomPanModifierCommand}"
-                          s:ToggleButtonExtensions.GroupName="Modifiers"
-                          Style="{StaticResource ExampleToolbarToggleButtonStyle}" BorderThickness="0.5" BorderBrush="#FFF3F3F3" Margin="2,0" VerticalAlignment="Center" Height="24.0107">
-            	<ToggleButton.Background>
-            		<LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
-            			<GradientStop Color="#FFF3F3F3" Offset="0"/>
-            			<GradientStop Color="#FFEBEBEB" Offset="0.5"/>
-            			<GradientStop Color="#FFDDDDDD" Offset="0.5"/>
-            			<GradientStop Color="#FFCFCFCF" Offset="1"/>
-            		</LinearGradientBrush>
-            	</ToggleButton.Background>
-                <StackPanel Orientation="Horizontal">
-                    <Image Margin="3,0"
-                           Source="/Images/cursor_drag_arrow_2.png"
-                           Stretch="None" />
-                    <TextBlock Margin="3" Text="Pan" VerticalAlignment="Center" />
-                </StackPanel>
-            </ToggleButton>-->
-                <!--<ToggleButton Grid.Column="11" Command="{Binding SetRubberBandZoomModifierCommand}"
-                          s:ToggleButtonExtensions.GroupName="Modifiers"
-                          IsEnabled="False"
-                          Style="{StaticResource ExampleToolbarToggleButtonStyle}" Margin="2,0" VerticalAlignment="Center" BorderThickness="0.5" BorderBrush="#FFF1F0F0" Height="24.0107">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <Image Margin="3,0"
-                           Source="/Images/zoom.png"
-                           Stretch="None" VerticalAlignment="Center" />
-                    <TextBlock Margin="3" Text="Fit View" VerticalAlignment="Center" />
-                </StackPanel>
-            </ToggleButton>-->
-                <!--<Button Grid.Column="14" Command="{Binding RecordCommand}" Style="{StaticResource ExampleToolbarButtonStyle}" Margin="2,0" VerticalAlignment="Center" BorderThickness="0.5">
-                <TextBlock Margin="3" Text="Rec" />
-            </Button>  -->
+                <Line Grid.Column="19" Margin="2,0" Stroke="#FFD6D5D5" Y2="16" VerticalAlignment="Center" Fill="#FFC1C1C1" />
             </Grid>
         </ScrollViewer>
 
@@ -327,7 +315,7 @@
                                             StrokeThickness="1"
                                             Style="{StaticResource LineSeriesStyle}"/>
             </s:SciChartSurface.RenderableSeries>
-            
+
             <!--Create default X and Y axes. Optional bands give a cool look and feel for minimal performance impact-->
 
             <s:SciChartSurface.XAxis>

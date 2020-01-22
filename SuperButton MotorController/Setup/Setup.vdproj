@@ -3,7 +3,7 @@
 "VSVersion" = "3:800"
 "ProjectType" = "8:{978C614F-708E-4E1A-B201-565925725DBA}"
 "IsWebType" = "8:FALSE"
-"ProjectName" = "8:Setup"
+"ProjectName" = "8:Setup x86"
 "LanguageId" = "3:1033"
 "CodePage" = "3:1252"
 "UILanguageId" = "3:1033"
@@ -21,19 +21,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_09C9AF89A44648EEA87BDDEDB34A6000"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_0A145524D24D77FC17F3F63D9A771E1E"
         "OwnerKey" = "8:_5AEA2DB7ED074AED8B13F30A4AC2E2F5"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_0E180FD23B2841F494B42980244A8A17"
+        "MsmKey" = "8:_1970B90C2C234277936258DAC039D6CD"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -81,13 +75,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_521C5B85E0AB48F382DADD033CD63B76"
+        "MsmKey" = "8:_44F1691157C94CAF8B3E531B772B300A"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_551AB666D7DD4BD8B10A769DDD202582"
+        "MsmKey" = "8:_521C5B85E0AB48F382DADD033CD63B76"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -112,6 +106,12 @@
         "Entry"
         {
         "MsmKey" = "8:_5AEA2DB7ED074AED8B13F30A4AC2E2F5"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_677D2E1C3B884B308A8524E0F1C77A5E"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -245,12 +245,6 @@
         {
         "MsmKey" = "8:_A6831B216FAB19A0B81B2432D98925B5"
         "OwnerKey" = "8:_5AEA2DB7ED074AED8B13F30A4AC2E2F5"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_CD03B3D986BD4D6E98A847A2CCEE70A0"
-        "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -523,26 +517,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_09C9AF89A44648EEA87BDDEDB34A6000"
-            {
-            "SourcePath" = "8:..\\..\\SerialProgrammer\\Serial Programmer.exe"
-            "TargetName" = "8:Serial Programmer.exe"
-            "Tag" = "8:"
-            "Folder" = "8:_9743A496EB1841FDB9A334EA32002819"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_0A145524D24D77FC17F3F63D9A771E1E"
             {
             "AssemblyRegister" = "3:1"
@@ -574,12 +548,12 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0E180FD23B2841F494B42980244A8A17"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_1970B90C2C234277936258DAC039D6CD"
             {
-            "SourcePath" = "8:..\\..\\SerialProgrammer\\data\\SerialProgrammer.ini"
-            "TargetName" = "8:SerialProgrammer.ini"
+            "SourcePath" = "8:..\\..\\SerialProgrammer\\Serial Programmer.aliases"
+            "TargetName" = "8:Serial Programmer.aliases"
             "Tag" = "8:"
-            "Folder" = "8:_23AFE02B04464E66A67E6873516620BB"
+            "Folder" = "8:_9743A496EB1841FDB9A334EA32002819"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -696,12 +670,12 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_521C5B85E0AB48F382DADD033CD63B76"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_44F1691157C94CAF8B3E531B772B300A"
             {
-            "SourcePath" = "8:..\\SuperButton\\Images\\Backgrounds\\HomeBackground.jpg"
-            "TargetName" = "8:HomeBackground.jpg"
+            "SourcePath" = "8:..\\..\\SerialProgrammer\\Serial Programmer.ini"
+            "TargetName" = "8:Serial Programmer.ini"
             "Tag" = "8:"
-            "Folder" = "8:_BEE54448614540EDA8B086B337B402C2"
+            "Folder" = "8:_9743A496EB1841FDB9A334EA32002819"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -716,12 +690,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_551AB666D7DD4BD8B10A769DDD202582"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_521C5B85E0AB48F382DADD033CD63B76"
             {
-            "SourcePath" = "8:..\\..\\SerialProgrammer\\Serial Programmer.ini"
-            "TargetName" = "8:Serial Programmer.ini"
+            "SourcePath" = "8:..\\SuperButton\\Images\\Backgrounds\\HomeBackground.jpg"
+            "TargetName" = "8:HomeBackground.jpg"
             "Tag" = "8:"
-            "Folder" = "8:_9743A496EB1841FDB9A334EA32002819"
+            "Folder" = "8:_BEE54448614540EDA8B086B337B402C2"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -765,6 +739,26 @@
             "Register" = "3:1"
             "Exclude" = "11:FALSE"
             "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_677D2E1C3B884B308A8524E0F1C77A5E"
+            {
+            "SourcePath" = "8:..\\..\\SerialProgrammer\\Serial Programmer.exe"
+            "TargetName" = "8:Serial Programmer.exe"
+            "Tag" = "8:"
+            "Folder" = "8:_9743A496EB1841FDB9A334EA32002819"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_68179279F2310791CC7EA0DA5A9A8AD5"
@@ -1097,26 +1091,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_CD03B3D986BD4D6E98A847A2CCEE70A0"
-            {
-            "SourcePath" = "8:..\\..\\SerialProgrammer\\Serial Programmer.aliases"
-            "TargetName" = "8:Serial Programmer.aliases"
-            "Tag" = "8:"
-            "Folder" = "8:_9743A496EB1841FDB9A334EA32002819"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D34FD956A3E4E82D33EBA0E18D2623BD"
             {
             "AssemblyRegister" = "3:1"
@@ -1342,7 +1316,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Motor Controller"
         "ProductCode" = "8:{68EA10BF-12DF-47B5-BC3B-8E689207D336}"
-        "PackageCode" = "8:{BE0A4CCA-050C-40BD-8243-D7852F0FB840}"
+        "PackageCode" = "8:{73FF8095-13F8-4BE2-B0D5-B21B00DF8D7E}"
         "UpgradeCode" = "8:{E8B12A53-C591-42CF-ACCF-9B1B8BD3976E}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

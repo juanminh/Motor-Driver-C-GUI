@@ -14,6 +14,8 @@ using System.Threading;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using SuperButton.Models.ParserBlock;
+using SuperButton.Views;
+using Timer = System.Timers.Timer;
 
 namespace SuperButton.ViewModels
 {
@@ -43,6 +45,7 @@ namespace SuperButton.ViewModels
         }
         private DebugViewModel()
         {
+            initSim();
         }
 
         private ObservableCollection<object> _debugList;
@@ -100,9 +103,11 @@ namespace SuperButton.ViewModels
 #if !DEBUG || RELEASE_MODE
         private bool _enRefresh = true;
         private bool _debugRefresh = true;
+        private bool _enPing = true;
 #else
         private bool _enRefresh = false;
         private bool _debugRefresh = false;
+        private bool _enPing = false;
 #endif
         public bool EnRefresh
         {
@@ -179,23 +184,41 @@ namespace SuperButton.ViewModels
 
             }
         }
+        public bool EnPing
+        {
+            get
+            {
+                return _enPing;
+            }
+            set
+            {
+                _enPing = value;
+                OnPropertyChanged("EnPing");
+                if(value && LeftPanelViewModel._app_running)
+                    LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.START);
+                else if(!value)
+                    LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.STOP);
+            }
+        }
+
         public static bool updateList = false;
         public ActionCommand addDebugOperation { get { return new ActionCommand(addDebugOperationCmd); } }
         private void addDebugOperationCmd()
         {
-            if(DebugID != "" && DebugIndex != "")
+
+            if(udID.Data != "" && udIndex.Data != "")
             {
-                if(!Commands.GetInstance.DebugCommandsList.ContainsKey(new Tuple<int, int, bool>(Convert.ToInt16(DebugID), Convert.ToInt16(DebugIndex), DebugIntFloat)))
+                if(!Commands.GetInstance.DebugCommandsList.ContainsKey(new Tuple<int, int, bool>(Convert.ToInt16(udID.Data), Convert.ToInt16(udIndex.Data), DebugIntFloat)))
                 {
                     var data = new DebugObjModel
                     {
-                        ID = DebugID,
-                        Index = DebugIndex,
+                        ID = udID.Data,
+                        Index = udIndex.Data,
                         IntFloat = DebugIntFloat,
                         GetData = "",
                         SetData = "",
                     };
-                    Commands.GetInstance.DebugCommandsList.Add(new Tuple<int, int, bool>(Convert.ToInt16(data.ID), Convert.ToInt16(data.Index), DebugIntFloat), data);
+                    Commands.GetInstance.DebugCommandsList.Add(new Tuple<int, int, bool>(Convert.ToInt16(udID.Data), Convert.ToInt16(udIndex.Data), DebugIntFloat), data);
                     Commands.GetInstance.DebugCommandsListbySubGroup["Debug List"].Add(data);
                     RefreshManger.buildGroup();
                 }
@@ -211,15 +234,15 @@ namespace SuperButton.ViewModels
         }
         private void removeDebugOperationCmd()
         {
-            if(DebugID != "" && DebugIndex != "")
+            if(udID.Data != "" && udIndex.Data != "")
             {
-                if(Commands.GetInstance.DebugCommandsList.ContainsKey(new Tuple<int, int, bool>(Convert.ToInt16(DebugID), Convert.ToInt16(DebugIndex), DebugIntFloat)))
+                if(Commands.GetInstance.DebugCommandsList.ContainsKey(new Tuple<int, int, bool>(Convert.ToInt16(udID.Data), Convert.ToInt16(udIndex.Data), DebugIntFloat)))
                 {
-                    Commands.GetInstance.DebugCommandsList.Remove(new Tuple<int, int, bool>(Convert.ToInt16(DebugID), Convert.ToInt16(DebugIndex), DebugIntFloat));
+                    Commands.GetInstance.DebugCommandsList.Remove(new Tuple<int, int, bool>(Convert.ToInt16(udID.Data), Convert.ToInt16(udIndex.Data), DebugIntFloat));
                     var data1 = new DebugObjModel
                     {
-                        ID = DebugID,
-                        Index = DebugIndex,
+                        ID = udID.Data,
+                        Index = udIndex.Data,
                         IntFloat = DebugIntFloat,
                         GetData = "",
                         SetData = "",
@@ -263,7 +286,12 @@ namespace SuperButton.ViewModels
         public void TxBuildOperation(object Data2Send, Int16 Id, Int16 SubId, bool IsSet, bool IsFloat)
         {
             #region building
-            byte[] temp = new byte[11] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+            byte[] temp;
+            if(IsSet == false)
+                temp = new byte[7] { 0, 0, 0, 0, 0, 0, 0 };
+            else
+                temp = new byte[11] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+
             char tempChar = (char)0;
 
             temp[0] = 0x49;           //PreambleLSByte
@@ -343,12 +371,13 @@ namespace SuperButton.ViewModels
                         }
                     }
                 }
-            }
-            //Risng up delegate , to call static function from CRC class
-            ushort TempCrc = CrcInputCalc(temp.Take(9), 2);   // Delegate won  
+                //Risng up delegate , to call static function from CRC class
+                ushort TempCrc = CrcInputCalc(temp.Take(9), 2);   // Delegate won  
 
-            temp[9] = (byte)(TempCrc & 0xFF);
-            temp[10] = (byte)((TempCrc >> 8) & 0xFF);
+                temp[9] = (byte)(TempCrc & 0xFF);
+                temp[10] = (byte)((TempCrc >> 8) & 0xFF);
+            }
+
             #endregion building
 
             StringBuilder hex = new StringBuilder(temp.Length * 2);
@@ -385,6 +414,257 @@ namespace SuperButton.ViewModels
             get { return _debugRx; }
             set { _debugRx = value; OnPropertyChanged("DebugRx"); }
         }
+
+        private UpDownControlModel _udID;
+        public UpDownControlModel udID
+        {
+            get { return _udID; }
+            set
+            {
+                if(value == _udID)
+                    return;
+                _udID = value;
+                OnPropertyChanged("udID");
+            }
+        }
+        private UpDownControlModel _udIndex;
+        public UpDownControlModel udIndex
+        {
+            get { return _udIndex; }
+            set
+            {
+                if(value == _udIndex)
+                    return;
+                _udIndex = value;
+                OnPropertyChanged("udIndex");
+            }
+        }
+
+        #region Simulation
+        void initSim()
+        {
+            _udID = new UpDownControlModel();
+            _udIndex = new UpDownControlModel();
+            _udIDSim = new UpDownControlModel();
+            _udIndexSim = new UpDownControlModel();
+        }
+        private bool _simulation = false;
+
+        public bool Simulation
+        {
+            get
+            {
+                return _simulation;
+            }
+            set
+            {
+                if(!value)
+                {
+                    SimulationTicks(LeftPanelViewModel.STOP);
+                    _simulation = false;
+                }
+                else if(value && LeftPanelViewModel._app_running)
+                {
+                    if(udIDSim.Data != null && udIndexSim.Data != null)
+                    {
+                        if(Convert.ToDouble(SimData) >= 0 && Convert.ToUInt32(SimCount) >= 0)
+                        {
+                            if(Convert.ToUInt32(SimStep) > 0)
+                            {
+                                SimulationTicks(LeftPanelViewModel.START);
+                                _simulation = true;
+                            }
+                            else
+                                _simulation = false;
+                        }
+                        else
+                            _simulation = false;
+                    }
+                    else
+                        _simulation = false;
+                }
+                OnPropertyChanged("Simulation");
+            }
+        }
+        
+        private UpDownControlModel _udIDSim;
+        public UpDownControlModel udIDSim
+        {
+            get { return _udIDSim; }
+            set
+            {
+                if(value == _udIDSim)
+                    return;
+                _udIDSim = value;
+                OnPropertyChanged("udIDSim");
+            }
+        }
+        private UpDownControlModel _udIndexSim;
+        public UpDownControlModel udIndexSim
+        {
+            get { return _udIndexSim; }
+            set
+            {
+                if(value == _udIndexSim)
+                    return;
+                _udIndexSim = value;
+                OnPropertyChanged("udIndexSim");
+            }
+        }
+        private bool _simIntFloat = false;
+        public bool SimIntFloat
+        {
+            get
+            {
+                return _simIntFloat;
+            }
+            set
+            {
+                _simIntFloat = value;
+                OnPropertyChanged("SimIntFloat");
+            }
+        }
+        private string _simData = "0";
+        public string SimData
+        {
+            get { return _simData; }
+            set
+            {
+                if(value == _simData)
+                    return;
+                _simData = value;
+                OnPropertyChanged("SimData");
+            }
+        }
+        private string _simCount = "100";
+        public string SimCount
+        {
+            get { return _simCount; }
+            set
+            {
+                if(value == _simCount)
+                    return;
+                _simCount = value;
+                OnPropertyChanged("SimCount");
+            }
+        }
+        private bool _simCountEn = true;
+        public bool SimCountEn
+        {
+            get
+            {
+                return _simCountEn;
+            }
+            set
+            {
+                _simCountEn = value;
+                OnPropertyChanged("SimCountEn");
+            }
+        }
+        private string _simStep = "1";
+        public string SimStep
+        {
+            get { return _simStep; }
+            set
+            {
+                if(value == _simStep)
+                    return;
+                _simStep = value;
+                OnPropertyChanged("SimStep");
+            }
+        }
+        private string _simDeltaT = "1";
+        public string SimDeltaT
+        {
+            get { return _simDeltaT; }
+            set
+            {
+                if(value == _simDeltaT)
+                    return;
+                _simDeltaT = value;
+                OnPropertyChanged("SimDeltaT");
+            }
+        }
+        private string _iterator = "1";
+        public string iterator
+        {
+            get { return _iterator; }
+            set
+            {
+                if(value == _iterator)
+                    return;
+                _iterator = value;
+                OnPropertyChanged("iterator");
+            }
+        }
+
+        private Timer _SimulationTimer;
+        //const double _SimulationInterval = 500;
+        public void SimulationTicks(int _mode)
+        {
+            switch(_mode)
+            {
+                case LeftPanelViewModel.STOP:
+                    lock(this)
+                    {
+                        if(_SimulationTimer != null)
+                        {
+                            lock(_SimulationTimer)
+                            {
+                                _SimulationTimer.Stop();
+                                _SimulationTimer.Elapsed -= SimulationFunc;
+                                _SimulationTimer = null;
+                                Thread.Sleep(10);
+                            }
+                            SimCountEn = true;
+                        }
+                    }
+                    break;
+                case LeftPanelViewModel.START:
+                    if(_SimulationTimer == null)
+                    {
+                        Task.Factory.StartNew(action: () =>
+                        {
+                            Thread.Sleep(100);
+                            SimCountEn = false;
+                            simDataTemp = Convert.ToUInt32(SimData);
+                            i = 0;
+                            _SimulationTimer = new Timer(Convert.ToUInt32(SimDeltaT)) { AutoReset = true };
+                            _SimulationTimer.Elapsed += SimulationFunc;
+                            _SimulationTimer.Start();
+                        });
+                    }
+                    break;
+            }
+        }
+        UInt32 simDataTemp = 0;
+        int i = 0;
+        public void SimulationFunc(object sender, EventArgs e)
+        {
+            if(Rs232Interface._comPort.IsOpen)
+            {
+                if(i < Convert.ToUInt32(SimCount))
+                {
+                    Rs232Interface.GetInstance.SendToParser(new PacketFields
+                    {
+                        Data2Send = simDataTemp.ToString(),
+                        ID = Convert.ToInt16(udIDSim.Data),
+                        SubID = Convert.ToInt16(udIndexSim.Data),
+                        IsSet = true,
+                        IsFloat = SimIntFloat
+                    });
+                    simDataTemp += Convert.ToUInt32(SimStep);
+                    i++;
+                    iterator = (Convert.ToUInt32(SimCount) - i).ToString();
+
+                    //if(i == Convert.ToUInt32(SimCount))
+                    //    Simulation = false;
+                }
+                else
+                    Simulation = false;
+            }
+        }
+        #endregion Simulation
     }
 }
 

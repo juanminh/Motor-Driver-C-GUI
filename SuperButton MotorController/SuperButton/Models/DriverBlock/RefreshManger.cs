@@ -583,7 +583,7 @@ namespace SuperButton.Models.DriverBlock
                     }
                 }
                 LeftPanelViewModel.GetInstance.ValueChange = false;
-                if(DebugViewModel.GetInstance.EnRefresh || LeftPanelViewModel.GetInstance.StarterOperationFlag)
+                if(DebugViewModel.GetInstance.EnRefresh || LeftPanelViewModel.GetInstance.StarterOperationFlag || true)
                 {
                     #region Calibration
                     if(commandidentifier.Item1 == 6)

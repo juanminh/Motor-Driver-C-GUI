@@ -112,37 +112,64 @@ namespace SuperButton.ViewModels
             }
         }
         public bool StarterOperationFlag = false;
+        public bool StarterPlotFlag = false;
         public int StarterCount = 0;
+        public bool plotList()
+        {
+            bool plotResult = false;
+            StarterPlotFlag = true;
+            OscilloscopeViewModel.GetInstance.ChComboEn = false;
+            Thread.Sleep(10);
+
+            Rs232Interface.GetInstance.SendToParser(new PacketFields
+            {
+                Data2Send = "",
+                ID = Convert.ToInt16(34),
+                SubID = Convert.ToInt16(1), // Start Plot list
+                IsSet = false,
+                IsFloat = false
+            });
+
+            int timeOutPlot = 0;
+            do
+            {
+                Thread.Sleep(100);
+                timeOutPlot++;
+            } while(OscilloscopeParameters.plotCount_temp != 0 && timeOutPlot <= 50);
+
+            Debug.WriteLine("TimeOutPlot: " + timeOutPlot);
+            if(OscilloscopeParameters.plotCount_temp == 0)
+            {
+                EventRiser.Instance.RiseEevent(string.Format($"Success"));
+                plotResult = true;
+            }
+            else
+            {
+                EventRiser.Instance.RiseEevent(string.Format($"Failed"));
+                OscilloscopeParameters.InitList();
+                plotResult = false;
+            }
+
+            OscilloscopeViewModel.GetInstance.ChComboEn = true;
+            //StarterPlotFlag = false;
+            return plotResult;
+
+        }
         private void StarterOperationTicks(object sender, EventArgs e)
         {
             #region Operations
             StarterOperationFlag = true;
             StarterCount = 0;
             RefreshManger.ConnectionCount = 0;
+
+            if(!plotList())
+                plotList();
+            /*StarterOperationFlag = true;
+            StarterCount = 0;
+            RefreshManger.ConnectionCount = 0;
             OscilloscopeViewModel.GetInstance.ChComboEn = false;
             Thread.Sleep(10);
-            if(RefreshManger.GetInstance.DisconnectedFlag)
-            {
-                Rs232Interface.GetInstance.SendToParser(new PacketFields
-                {
-                    Data2Send = "0",
-                    ID = Convert.ToInt16(60),
-                    SubID = Convert.ToInt16(1),
-                    IsSet = true,
-                    IsFloat = false
-                });
-                Thread.Sleep(10);
-
-                Rs232Interface.GetInstance.SendToParser(new PacketFields
-                {
-                    Data2Send = "0",
-                    ID = Convert.ToInt16(60),
-                    SubID = Convert.ToInt16(2),
-                    IsSet = true,
-                    IsFloat = false
-                });
-                Thread.Sleep(10);
-            }
+            
             Rs232Interface.GetInstance.SendToParser(new PacketFields
             {
                 Data2Send = "",
@@ -169,7 +196,7 @@ namespace SuperButton.ViewModels
             }
 
             OscilloscopeViewModel.GetInstance.ChComboEn = true;
-
+            */
             short[] ID = { 60, 60, 62, 62, 62, 62, 1 };
             short[] subID = { 1, 2, 10, 1, 2, 3, 0 };
             string[] param = { "Read Ch1", "Read Ch2", "Read Checksum", "Read SN", "Read HW Rev", "Read FW Rev", "Read motor status" };

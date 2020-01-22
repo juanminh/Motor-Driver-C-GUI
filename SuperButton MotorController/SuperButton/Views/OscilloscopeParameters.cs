@@ -12,7 +12,7 @@ namespace SuperButton.Views
         public static List<Tuple<float, float>> ScaleAndGainList = new List<Tuple<float, float>>();
         public static List<Int32> plotGeneral = new List<Int32>();
         public static List<float> plotFullScale = new List<float>();
-        public static float SingleChanelFreqC = (float)6666.666667;
+        public static float SingleChanelFreqC = (float)4000;//6666.666667;
         public static float ChanelFreq = SingleChanelFreqC;
         public static float Step = 1 / SingleChanelFreqC;
 
@@ -160,6 +160,9 @@ namespace SuperButton.Views
         private static void buildPlotList()
         {
             int i = 0;
+            ScaleAndGainList.Clear();
+            OscilloscopeViewModel.GetInstance.Channel1SourceItems.Clear();
+            OscilloscopeViewModel.GetInstance.ChannelYtitles.Clear();
             ScaleAndGainList.Add(new Tuple<float, float>((float)1.0, (float)1.0)); //Pause
             OscilloscopeViewModel.GetInstance.Channel1SourceItems.Add("Pause");
             OscilloscopeViewModel.GetInstance.ChannelYtitles.Add("Pause", "");

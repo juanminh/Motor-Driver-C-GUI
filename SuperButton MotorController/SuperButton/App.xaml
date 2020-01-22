@@ -14,8 +14,6 @@
 	StartupUri="MainWindow.xaml">
 	<Application.Resources>
 		<!-- Resources scoped at the Application level should be defined here. -->
-
-
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/Dictionary1.xaml" />
@@ -24,15 +22,12 @@
             <DataTemplate x:Key="OscilloscopeViewModel">
                 <views:OscilloscopeView></views:OscilloscopeView>
             </DataTemplate>
-
-           
             <DataTemplate x:Key="EnumViewModel">
                 <views:EnumView></views:EnumView>
             </DataTemplate>
             <DataTemplate x:Key="EnumViewSmallFont">
                 <views:EnumViewSmallFont></views:EnumViewSmallFont>
             </DataTemplate>
-
             <DataTemplate x:Key="EnumViewSmallFontInd">
                 <views:EnumViewSmallFontInd></views:EnumViewSmallFontInd>
             </DataTemplate>
@@ -54,15 +49,16 @@
             <DataTemplate x:Key="CalibrationButtonModel">
                 <views:CalibrationButton></views:CalibrationButton>
             </DataTemplate>
-            <DataTemplate x:Key="NumericTextboxModel">
-                <views:NumericTextboxView></views:NumericTextboxView>
-            </DataTemplate>
             <DataTemplate x:Key="BoolViewIndModel">
                 <views:BoolViewInd></views:BoolViewInd>
             </DataTemplate>
             <DataTemplate x:Key="DebugObjModel">
                 <views:DebugObj></views:DebugObj>
             </DataTemplate>
+            <DataTemplate x:Key="UpDownControlModel">
+                <views:UpDownControl></views:UpDownControl>
+            </DataTemplate>
+            
             <!--<DataTemplate x:Key="LeftPanelViewModel">
                 <local:GridSplitter></local:GridSplitter>
             </DataTemplate>-->
@@ -1017,7 +1013,6 @@
                     <GradientStop Color="#00AAB3CD"/>
                 </LinearGradientBrush>
             </Rectangle.Fill>-->
-
         </ResourceDictionary>
     </Application.Resources>
 </Application>

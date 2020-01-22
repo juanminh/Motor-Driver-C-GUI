@@ -65,16 +65,9 @@ namespace SuperButton.Views
         {
             ParametersWindowTabSelected = ((System.Windows.Controls.Primitives.Selector)sender).SelectedIndex;
         }
-
-        private void ItemsControl_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private new void MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-
+            (sender as TextBox).SelectAll();
         }
-
-        //private void HandleChecked(object sender, RoutedEventArgs e)
-        //{
-        //    ToggleButton toggle = sender as ToggleButton;
-        //    toggle.Background = new SolidColorBrush(Colors.Orange);
-        //}
     }
 }

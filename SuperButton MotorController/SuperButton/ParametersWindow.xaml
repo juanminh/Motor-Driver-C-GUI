@@ -4,6 +4,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:viewModels="clr-namespace:SuperButton.ViewModels"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+        xmlns:models="clr-namespace:SuperButton.Models"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         mc:Ignorable="d" 
@@ -440,7 +441,7 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBox  Grid.Column="0" BorderBrush="Wheat" BorderThickness="1" IsReadOnly="True" Text="{Binding PathFromFile}" FontSize="10"></TextBox>
+                            <TextBox  Grid.Column="0" BorderBrush="Wheat" BorderThickness="1" IsReadOnly="True" Text="{Binding PathFromFile}" FontSize="10" MouseDoubleClick="MouseDoubleClick"></TextBox>
                             <Button Grid.Column="1" Command="{Binding OpenFromFileCmd}" Style="{StaticResource ExampleToolbarButtonStyle}" Height="17" Width="25" BorderBrush="Wheat" BorderThickness="1" Margin="0">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Source="pack://application:,,,/Images/SelectFile.ico" Stretch="Fill" Width="17" Height="17" Margin="0,-3,0,0"/>
@@ -454,7 +455,7 @@
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <TextBox  Grid.Column="0" BorderBrush="Wheat" BorderThickness="1" IsReadOnly="True" Text="{Binding PathToFile}" FontSize="10"></TextBox>
+                            <TextBox  Grid.Column="0" BorderBrush="Wheat" BorderThickness="1" IsReadOnly="True" Text="{Binding PathToFile}" FontSize="10" MouseDoubleClick="MouseDoubleClick"></TextBox>
                             <Button Grid.Column="1" Command="{Binding OpenToFileCmd}" Style="{StaticResource ExampleToolbarButtonStyle}" Height="17" Width="25" BorderBrush="Wheat" BorderThickness="1" Margin="0">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Source="pack://application:,,,/Images/SelectFile.ico" Stretch="Fill" Width="17" Height="17" Margin="0,-3,0,0"/>
@@ -486,7 +487,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="5"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
                         <Grid.RowDefinitions>
@@ -608,10 +609,15 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <Border Grid.Row="0" BorderBrush="Gray" BorderThickness="1" CornerRadius="3">
+                        <Border Grid.Row="0" BorderBrush="Gray" BorderThickness="1" CornerRadius="3" Width="170" HorizontalAlignment="Left">
                             <Grid>
                                 <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
@@ -641,13 +647,16 @@
                                             </StackPanel>
                                         </Button>
                                     </Grid>
-                                    <TextBox Grid.Column="1" Text="{Binding DebugID, Mode=TwoWay}" Width="40" Height="22" FontSize="12"/>
-                                    <TextBox Grid.Column="2" Text="{Binding DebugIndex, Mode=TwoWay}" Width="40" Height="22" FontSize="12"/>
+                                    <UserControl:UpDownControl Grid.Column="1" DataContext="{Binding udID}" Width="40"/>
+                                    <UserControl:UpDownControl Grid.Column="2" DataContext="{Binding udIndex}" Width="40"/>
+                                    <!--<TextBox Grid.Column="1" Text="{Binding DebugID, Mode=TwoWay}" Width="40" Height="22" FontSize="12"/>
+                                    <TextBox Grid.Column="2" Text="{Binding DebugIndex, Mode=TwoWay}" Width="40" Height="22" FontSize="12"/>-->
                                     <CheckBox Grid.Column="3"     
                                                 Style="{StaticResource CheckBoxStyle3}"
                                                 VerticalAlignment="Center"
                                                 IsChecked="{Binding DebugIntFloat}"/>
                                 </Grid>
+
                             </Grid>
                         </Border>
                         <CheckBox Grid.Row="2" Content="Enable Refresh"
@@ -656,7 +665,83 @@
                         <CheckBox Grid.Row="3" Content="Debug Refresh"
                               IsChecked="{Binding DebugRefresh, Mode=TwoWay}">
                         </CheckBox>
-                        <Button FontSize="10" Grid.Row="4"
+                        <CheckBox Grid.Row="4" Content="Enable Ping"
+                              IsChecked="{Binding EnPing, Mode=TwoWay}">
+                        </CheckBox>
+                        <Grid Grid.Row="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <CheckBox Grid.Column="0" Content="Sim. ID[idx]:" x:Name="SimChecked"
+                              IsChecked="{Binding Simulation, Mode=TwoWay}"></CheckBox>
+                            <UserControl:UpDownControl Grid.Column="1" DataContext="{Binding udIDSim}" Width="35"/>
+                            <UserControl:UpDownControl Grid.Column="2" DataContext="{Binding udIndexSim}" Width="35"/>
+                            <CheckBox Grid.Column="3" x:Name="SimIntFloat"
+                                                VerticalAlignment="Center"
+                                                IsChecked="{Binding SimIntFloat}">
+                            </CheckBox>
+                            <TextBlock Grid.Column="4" Margin="-6,0,0,0">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Text" Value="Int" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ElementName=SimIntFloat, Path=IsChecked}" Value="True">
+                                                <Setter Property="Text" Value="Float" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                        <Grid Grid.Row="6">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Data" ></TextBlock>
+                            <TextBox Grid.Column="1" Width="55" Text="{Binding SimData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <i:Interaction.Behaviors>
+                                    <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
+                                </i:Interaction.Behaviors>
+                            </TextBox>
+                            <TextBlock Grid.Column="2" Text="Count" ></TextBlock>
+                            <TextBox Grid.Column="3" Width="65" Text="{Binding SimCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding SimCountEn}">
+                                <i:Interaction.Behaviors>
+                                    <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9]$" MaxLength="10"/>
+                                </i:Interaction.Behaviors>
+                            </TextBox>
+                        </Grid>
+                        <Grid Grid.Row="7">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Step" ></TextBlock>
+                            <TextBox Grid.Column="1" Width="35" Text="{Binding SimStep, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <i:Interaction.Behaviors>
+                                    <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
+                                </i:Interaction.Behaviors>
+                            </TextBox>
+                            <TextBlock Grid.Column="2" Text="&#x394;t(ms)" ></TextBlock>
+                            <TextBox Grid.Column="3" Width="35" Text="{Binding SimDeltaT, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <i:Interaction.Behaviors>
+                                    <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9]$" MaxLength="10"/>
+                                </i:Interaction.Behaviors>
+                            </TextBox>
+                            <TextBlock Grid.Column="4" Text="iterator" ></TextBlock>
+                            <TextBox Grid.Column="5" IsReadOnly="True" TextWrapping="NoWrap" Width="35" Text="{Binding iterator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                        </Grid>
+                        <Button FontSize="10" Grid.Row="8"
                             Command="{Binding ClearDebugOp}" 
                             Style="{StaticResource ExampleToolbarButtonStyle}" 
                             VerticalAlignment="Top" HorizontalAlignment="Left" 

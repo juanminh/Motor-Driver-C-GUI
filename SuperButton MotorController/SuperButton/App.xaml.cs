@@ -9,6 +9,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Security.AccessControl;
+using System.IO;
+using System.Security.Principal;
 
 namespace SuperButton
 {

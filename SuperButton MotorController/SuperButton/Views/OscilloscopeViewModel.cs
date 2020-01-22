@@ -60,7 +60,7 @@ namespace SuperButton.Views
             }
         }
         public object _lock = new object();          //Single tone variable
-        
+
         private string _selectedCh1DataSource;
 
         //CH2 ComboBox
@@ -530,33 +530,6 @@ namespace SuperButton.Views
             }
         }
 
-        private ObservableCollection<object> _ch1Gain;
-        public ObservableCollection<object> Ch1Gain
-        {
-            get
-            {
-                return Commands.GetInstance.GainList["Gain1 List"];
-            }
-            set
-            {
-                _ch1Gain = value;
-                OnPropertyChanged();
-            }
-        }
-        private ObservableCollection<object> _ch2Gain;
-        public ObservableCollection<object> Ch2Gain
-        {
-            get
-            {
-                return Commands.GetInstance.GainList["Gain2 List"];
-            }
-            set
-            {
-                _ch2Gain = value;
-                OnPropertyChanged();
-            }
-        }
-
         public OscilloscopeViewModel()
         {
             IsFreeze = RecFlag = false;
@@ -802,12 +775,9 @@ namespace SuperButton.Views
             get { return _ch1Index; }
             set
             {
-                if(_ch1Index == value)
-                    return;
-                if(value >= 0)
-                    _ch1Index = value;
-                else
-                    _ch1Index = 0;
+                if(value < 0)
+                    value = 0;
+                _ch1Index = value;
                 OnPropertyChanged("Ch1SelectedIndex");
             }
         }
@@ -816,12 +786,9 @@ namespace SuperButton.Views
             get { return _ch2Index; }
             set
             {
-                //if(_ch2Index == value)
-                //   return;
-                if(value >= 0)
-                    _ch2Index = value;
-                else
-                    _ch2Index = 0;
+                if(value < 0)
+                    value = 0;
+                _ch2Index = value;
                 OnPropertyChanged("Ch2SelectedIndex");
             }
         }
@@ -1326,7 +1293,7 @@ namespace SuperButton.Views
 
         public static List<float> Ytemp = new List<float>();
 
-        float step_temp = 0; bool performX_data = false;
+        float step_temp = 0;
         private float iqFactor = (float)Math.Pow(2.0, -15);
         private int IntegerFactor = 1;
         float calcFactor(float dataSample, int ChNo)
@@ -1355,26 +1322,46 @@ namespace SuperButton.Views
                 }
             }
             else
-                return dataSample;
+                return dataSample * iqFactor;
         }
-        float SubGain1 = 1;
-        float SubGain2 = 1;
+        private string _ch1Gain = "1";
+        public string Ch1Gain
+        {
+            get { return _ch1Gain; }
+            set
+            {
+                if(value == _ch1Gain || value == "")
+                    return;
+                _ch1Gain = value;
+                OnPropertyChanged("Ch1Gain");
+            }
+        }
+        private string _ch2Gain = "1";
+        public string Ch2Gain
+        {
+            get { return _ch2Gain; }
+            set
+            {
+                if(value == _ch2Gain || value == "")
+                    return;
+                _ch2Gain = value;
+                OnPropertyChanged("Ch2Gain");
+            }
+        }
         private void OnTick(object sender, EventArgs e)
         {
             try
             {
+                float SubGain1 = Convert.ToSingle(Ch1Gain);
+                float SubGain2 = Convert.ToSingle(Ch2Gain);
+
                 if(!IsFreeze)
                 {
                     lock(_timer)
                     {
                         State = 0;
                         if(step_temp != OscilloscopeParameters.Step)
-                        {
                             step_temp = OscilloscopeParameters.Step;
-                            performX_data = true;
-                        }
-                        else
-                            performX_data = false;
 
                         if(OscilloscopeParameters.ChanTotalCounter == 1)
                         {
@@ -1397,15 +1384,8 @@ namespace SuperButton.Views
                             {
                                 Ytemp = new List<float>();
                                 float item;
-                                //Record 
-                                //if(RecFlag)
-                                //{
-                                //    string[][] output;
-                                //}
 
-                                //retrieve all the data
-                                float SubGain1 = Convert.ToSingle(Commands.GetInstance.Gain["Ch1 Gain"].CommandValue);
-                                float SubGain2 = Convert.ToSingle(Commands.GetInstance.Gain["Ch2 Gain"].CommandValue);
+                                /*
                                 while(ParserRayonM1.GetInstanceofParser.FifoplotList.TryDequeue(out item))
                                 {
                                     if(ch1 != 0)
@@ -1419,6 +1399,41 @@ namespace SuperButton.Views
                                             RecList.Add(item * OscilloscopeParameters.Gain * OscilloscopeParameters.FullScale);
                                         else if(SelectedCh2DataSource != "Pause")
                                             RecList2.Add(item * OscilloscopeParameters.Gain2 * OscilloscopeParameters.FullScale2);
+                                    }
+                                }
+                                */
+                                #region RecordAray
+                                if(RecFlag)
+                                {
+                                    if(ch1 != 0)
+                                    {
+                                        while(ParserRayonM1.GetInstanceofParser.FifoplotList.TryDequeue(out item))
+                                        {
+                                            Ytemp.Add(calcFactor((item * OscilloscopeParameters.Gain * OscilloscopeParameters.FullScale * SubGain1), 1));
+                                            RecList.Add(calcFactor((item * OscilloscopeParameters.Gain * OscilloscopeParameters.FullScale * SubGain1), 1));
+                                        }
+                                    }
+                                    else
+                                    {
+                                        while(ParserRayonM1.GetInstanceofParser.FifoplotList.TryDequeue(out item))
+                                        {
+                                            Ytemp.Add(calcFactor((item * OscilloscopeParameters.Gain2 * OscilloscopeParameters.FullScale2 * SubGain2), 2));
+                                            RecList2.Add(calcFactor((item * OscilloscopeParameters.Gain2 * OscilloscopeParameters.FullScale2 * SubGain2), 2));
+                                        }
+                                    }
+                                }
+                                #endregion RecordAray
+                                else
+                                {
+                                    if(ch1 != 0)
+                                    {
+                                        while(ParserRayonM1.GetInstanceofParser.FifoplotList.TryDequeue(out item))
+                                            Ytemp.Add(calcFactor((item * OscilloscopeParameters.Gain * OscilloscopeParameters.FullScale * SubGain1), 1));
+                                    }
+                                    else
+                                    {
+                                        while(ParserRayonM1.GetInstanceofParser.FifoplotList.TryDequeue(out item))
+                                            Ytemp.Add(calcFactor((item * OscilloscopeParameters.Gain2 * OscilloscopeParameters.FullScale2 * SubGain2), 2));
                                     }
                                 }
 
@@ -1450,16 +1465,12 @@ namespace SuperButton.Views
                                             if(_yFloats.Length == 0) //Start fills
                                             {
                                                 _yFloats = new float[temp.Length];
-                                                //if(performX_data)
-                                                //{
                                                 xData = new float[temp.Length];
 
                                                 //X fills
                                                 for(int i = 0; i < temp.Length; i++)
-                                                {
                                                     xData[i] = i * OscilloscopeParameters.Step;
-                                                }
-                                                //}
+
                                                 Array.Copy(temp, 0, _yFloats, 0, temp.Length);
                                                 pivot = temp.Length;
                                             } //Follow
@@ -1468,13 +1479,9 @@ namespace SuperButton.Views
                                                 Array.Resize(ref xData, temp.Length + pivot);
                                                 Array.Resize(ref _yFloats, temp.Length + pivot);
 
-                                                // if(performX_data)
-                                                //{
                                                 for(int i = 0; i < pivot + temp.Length; i++)
-                                                {
                                                     xData[i] = i * OscilloscopeParameters.Step;
-                                                }
-                                                //}
+
                                                 Array.Copy(temp, 0, _yFloats, pivot, temp.Length);
                                                 pivot = pivot + temp.Length;
                                             }
@@ -1494,16 +1501,11 @@ namespace SuperButton.Views
                                                         utemp3L.Add(temp[i]);
                                                     }
                                                 }
-
-                                                //if(performX_data)
-                                                //{
                                                 xData = new float[utemp3L.Count];
 
                                                 for(int i = 0; i < utemp3L.Count; i++)
-                                                {
                                                     xData[i] = i * OscilloscopeParameters.Step * _undesample;
-                                                }
-                                                //}
+
                                                 _yFloats = new float[utemp3L.Count];
 
                                                 Array.Copy(utemp3L.ToArray(), 0, _yFloats, 0, utemp3L.Count);
@@ -1524,13 +1526,9 @@ namespace SuperButton.Views
                                                 Array.Resize(ref xData, utemp3L.Count + pivot);
                                                 Array.Resize(ref _yFloats, utemp3L.Count + pivot);
 
-                                                //if(performX_data)
-                                                //{
                                                 for(int i = 0; i < utemp3L.Count + pivot; i++)
-                                                {
                                                     xData[i] = i * OscilloscopeParameters.Step * _undesample;
-                                                }
-                                                //}
+
                                                 Array.Copy(utemp3L.ToArray(), 0, _yFloats, pivot, utemp3L.Count);
                                                 pivot += utemp3L.Count;
 
@@ -1573,19 +1571,8 @@ namespace SuperButton.Views
                                                 Array.Copy(temp3, 0, yDataTemp, _yFloats.Length - carry, carry); // Add range
                                                 Array.Copy(yDataTemp, 0, _yFloats, 0, POintstoPlot);
                                             }
-                                            //  var watch = Stopwatch.StartNew();                     
-                                            //watch.Stop();
-                                            //float elapsedMs = (float)watch.ElapsedMilliseconds;
-                                            //if (elapsedMs > 35)
-                                            //    Averadge++;
-                                            // return;
-                                            //if(performX_data)
-                                            //{
                                             for(int i = 0; i < POintstoPlot; i++)
-                                            {
                                                 xData[i] = i * (OscilloscopeParameters.Step * _undesample);
-                                            }
-                                            //}
                                             using(this.ChartData.SuspendUpdates())
                                             {
                                                 _series0.Clear();
@@ -1622,9 +1609,7 @@ namespace SuperButton.Views
                                             Array.Copy(yDataTemp, 0, _yFloats, 0, POintstoPlot);
 
                                             for(int i = 0; i < POintstoPlot; i++)
-                                            {
                                                 xData[i] = i * (OscilloscopeParameters.Step * _undesample);
-                                            }
 
                                             using(this.ChartData.SuspendUpdates())
                                             {
@@ -1679,27 +1664,17 @@ namespace SuperButton.Views
                                 {
                                     while(ParserRayonM1.GetInstanceofParser.FifoplotList.TryDequeue(out item))
                                     {
-                                        AllYData.Add(item * OscilloscopeParameters.Gain * OscilloscopeParameters.FullScale);
+                                        AllYData.Add(calcFactor((item * OscilloscopeParameters.Gain * OscilloscopeParameters.FullScale * SubGain1), 1));
                                         ParserRayonM1.GetInstanceofParser.FifoplotListCh2.TryDequeue(out item2);
-                                        AllYData2.Add(item2 * OscilloscopeParameters.Gain2 * OscilloscopeParameters.FullScale2);
+                                        AllYData2.Add(calcFactor((item2 * OscilloscopeParameters.Gain2 * OscilloscopeParameters.FullScale2 * SubGain2), 2));
 
-                                        RecList.Add(item * OscilloscopeParameters.Gain * OscilloscopeParameters.FullScale);
-                                        RecList2.Add(item2 * OscilloscopeParameters.Gain2 * OscilloscopeParameters.FullScale2);
-
+                                        RecList.Add(calcFactor((item * OscilloscopeParameters.Gain * OscilloscopeParameters.FullScale * SubGain1), 1));
+                                        RecList2.Add(calcFactor((item2 * OscilloscopeParameters.Gain2 * OscilloscopeParameters.FullScale2 * SubGain2), 2));
                                     }
                                 }
                                 #endregion RecordAray
                                 else
                                 {
-                                    try
-                                    {
-                                        SubGain1 = Convert.ToSingle(Commands.GetInstance.Gain["Ch1 Gain"].CommandValue);
-                                        SubGain2 = Convert.ToSingle(Commands.GetInstance.Gain["Ch2 Gain"].CommandValue);
-                                    }
-                                    catch(Exception)
-                                    {
-                                    }
-
                                     while(ParserRayonM1.GetInstanceofParser.FifoplotList.TryDequeue(out item))
                                     {
                                         AllYData.Add(calcFactor((item * OscilloscopeParameters.Gain * OscilloscopeParameters.FullScale * SubGain1), 1));
@@ -1739,22 +1714,17 @@ namespace SuperButton.Views
                                         else
                                             return;
 
-
                                         if(_yFloats.Length == 0) //Start fills
                                         {
                                             _yFloats = new float[temp.Length];
                                             _yFloats2 = new float[temp2.Length];
 
-                                            //if(performX_data)
-                                            //{
                                             xData = new float[temp.Length];
 
                                             for(int i = 0; i < temp.Length; i++)
                                             {
                                                 xData[i] = i * OscilloscopeParameters.Step;
                                             }
-                                            // }
-
                                             Array.Copy(temp, 0, _yFloats, 0, temp.Length);
                                             Array.Copy(temp2, 0, _yFloats2, 0, temp2.Length);
                                             pivot = temp.Length;
@@ -1773,10 +1743,6 @@ namespace SuperButton.Views
                                             Array.Copy(temp2, 0, _yFloats2, pivot, temp.Length);
                                             pivot = pivot + temp.Length;
                                         }
-                                        //if(xData.Length == 0)
-                                        //{
-
-                                        //}
                                         if(xData.Length != 0 && _yFloats.Length != 0 && _yFloats2.Length != 0)
                                         {
                                             lock(this)
@@ -1821,11 +1787,8 @@ namespace SuperButton.Views
                                             Array.Copy(temp4, 0, yDataTemp2, _yFloats2.Length - carry2, carry2); // Add range
                                             Array.Copy(yDataTemp2, 0, _yFloats2, 0, POintstoPlot);
                                         }
-                                        //if(performX_data)
-                                        //{
                                         for(int i = 0; i < POintstoPlot; i++)
                                             xData[i] = i * (OscilloscopeParameters.Step * _undesample);
-                                        //}
 #if PLOT_CHUNKED
                                     float chunk = POintstoPlot / 100;
                                     int rest = 0;
@@ -1990,14 +1953,14 @@ namespace SuperButton.Views
                         if(SelectedCh1DataSource != "Pause")
                         {
                             xstring = new string[RecList.Count + 1];
-                            ystring[0] = "Channel 1 - " + SelectedCh1DataSource;
+                            ystring[0] = "Channel 1 - " + SelectedCh1DataSource + " - Gain: " + Ch1Gain;
                         }
 
                         string[] ystring2 = new string[RecList2.Count + 1];
                         if(SelectedCh2DataSource != "Pause")
                         {
                             xstring = new string[RecList2.Count + 1];
-                            ystring2[0] = "Channel 2 - " + SelectedCh2DataSource;
+                            ystring2[0] = "Channel 2 - " + SelectedCh2DataSource + " - Gain: " + Ch2Gain;
                         }
                         xstring[0] = "Time";
 
@@ -2056,14 +2019,14 @@ namespace SuperButton.Views
                             if(SelectedCh1DataSource != "Pause")
                             {
                                 xstring = new string[count + 1];
-                                ystring[0] = "Channel 1 - " + SelectedCh1DataSource;
+                                ystring[0] = "Channel 1 - " + SelectedCh1DataSource + " - Gain: " + Ch1Gain;
                             }
 
                             string[] ystring2 = new string[count + 1];
                             if(SelectedCh2DataSource != "Pause")
                             {
                                 xstring = new string[count + 1];
-                                ystring2[0] = "Channel 2 - " + SelectedCh2DataSource;
+                                ystring2[0] = "Channel 2 - " + SelectedCh2DataSource + " - Gain: " + Ch2Gain;
                             }
                             xstring[0] = "Time";
 
