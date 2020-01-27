@@ -38,6 +38,7 @@ namespace SuperButton.ViewModels
         }
         public ActionCommand ForceStop { get { return new ActionCommand(FStop); } }
         public ActionCommand Showwindow { get { return new ActionCommand(ShowParametersWindow); } }
+        public ActionCommand ShowWizard { get { return new ActionCommand(ShowWizardWindow); } }
         public ActionCommand ClearLogCommand
         {
             get { return new ActionCommand(ClearLog); }
@@ -737,8 +738,7 @@ namespace SuperButton.ViewModels
         {
             if(ParametarsWindow.WindowsOpen != true)
             {
-
-                win = ParametarsWindow.GetInstance; // new ParametarsWindow();
+                win = ParametarsWindow.GetInstance;
                 if(win.ActualHeight != 0)
                 {
                     win.Activate();
@@ -749,13 +749,22 @@ namespace SuperButton.ViewModels
                 }
             }
             else if(win.WindowState == System.Windows.WindowState.Minimized)
-            {
                 win.WindowState = System.Windows.WindowState.Normal;
 
-                //App.Current.MainWindow.Topmost = true; /* Main window object */
-                //win.Activate();
+        }
+        public static Wizard WizardWindow;
+        private void ShowWizardWindow()
+        {
+            if(Wizard.WindowsOpen != true)
+            {
+                WizardWindow = Wizard.GetInstance;
+                if(WizardWindow.ActualHeight != 0)
+                    WizardWindow.Activate();
+                else
+                    WizardWindow.Show();
             }
-
+            else if(WizardWindow.WindowState == System.Windows.WindowState.Minimized)
+                WizardWindow.WindowState = System.Windows.WindowState.Normal;
         }
         public void Close_parmeterWindow()
         {

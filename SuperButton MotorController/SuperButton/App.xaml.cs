@@ -64,7 +64,7 @@ namespace SuperButton
                 return;
 
             // fire SelectionChangedEvent if two value are the same
-            if((string)comboBox.SelectedValue == (string)item.Content)
+            if((string)comboBox.SelectedValue.ToString() == (string)item.Content)
             {
                 comboBox.IsDropDownOpen = false;
                 comboBox.RaiseEvent(new SelectionChangedEventArgs(Selector.SelectionChangedEvent, new List<object>(), new List<object>()));

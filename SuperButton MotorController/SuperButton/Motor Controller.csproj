@@ -19,7 +19,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
+    <!--<TargetFrameworkProfile />-->
     <PublishUrl>C:\Projects\Motor Driver C# GUI\SuperButton\Exe\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -110,6 +110,9 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <NoWin32Manifest>true</NoWin32Manifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Abt.Controls.SciChart.Wpf, Version=3.21.0.5511, Culture=neutral, PublicKeyToken=b55dd9efe817e823, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -196,6 +199,7 @@
     <Compile Include="ViewModels\MotionViewModel.cs" />
     <Compile Include="ViewModels\OperationViewModel.cs" />
     <Compile Include="ViewModels\UpDownControlModel.cs" />
+    <Compile Include="ViewModels\WizardWindowViewModel.cs" />
     <Compile Include="Views\UpDownControl.xaml.cs">
       <DependentUpon>UpDownControl.xaml</DependentUpon>
     </Compile>
@@ -293,6 +297,9 @@
     </Compile>
     <Compile Include="ParametersWindow.xaml.cs">
       <DependentUpon>ParametersWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Wizard.xaml.cs">
+      <DependentUpon>Wizard.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\UpDownControl.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -405,6 +412,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Wizard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -426,6 +437,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+    <None Include="SerialProgrammer\Serial Programmer.aliases">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="SerialProgrammer\Serial Programmer.ini">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="SuperButton_TemporaryKey.pfx" />
     <None Include="Views\HomeBackground.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -656,13 +673,27 @@
     <Content Include="bin\Debug\Motor Controller.exe" />
     <Content Include="bin\Debug\Motor Controller.pdb" />
     <Content Include="bin\Release\SerialProgrammer\data\Crc16DLL.dll" />
+    <Resource Include="Images\Wizard.png" />
+    <Resource Include="Images\monitor.png" />
+    <Content Include="SerialProgrammer\Serial Programmer.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Resource Include="Images\up.png" />
     <Resource Include="Images\down.png" />
     <Resource Include="bin\Release\SerialProgrammer\data\Rayon70_020219.out.txt" />
     <Content Include="bin\Release\SerialProgrammer\Serial Programmer.exe" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="SerialProgrammer\data\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath32)\Microsoft.CSharp.targets" />
+  <!--<Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.UI.Xaml.2.0.181011001\build\Microsoft.UI.Xaml.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.UI.Xaml.2.0.181011001\build\Microsoft.UI.Xaml.props'))" />
+  </Target>-->
+  
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
 	     Other similar extension points exist, see Microsoft.Common.targets.
 	<Target Name="BeforeBuild">
