@@ -16,6 +16,7 @@
 // *************************************************************************************
 
 using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -91,6 +92,7 @@ namespace SuperButton.Common
             CollapseMode = GridSplitterCollapseMode.None;
             IsAnimated = true;
             LayoutUpdated += delegate { _gridCollapseDirection = GetCollapseDirection(); };
+            
         }
 
         public GridSplitterCollapseMode CollapseMode
@@ -437,8 +439,10 @@ namespace SuperButton.Common
         /// </summary>
         /// <param name="sender">An instance of the ToggleButton that fired the event.</param>
         /// <param name="e">Contains event arguments for the routed event that fired.</param>
-        private void GridSplitterButton_Checked(object sender, RoutedEventArgs e)
+        public void GridSplitterButton_Checked(object sender, RoutedEventArgs e)
         {
+            StackTrace stackTrace = new StackTrace();
+            //stackTrace.GetFrame(1).GetMethod().Name;
             if (IsCollapsed != true)
             {
                 // In our case, Checked = Collapsed.  Which means we want everything

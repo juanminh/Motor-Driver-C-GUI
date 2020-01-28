@@ -185,6 +185,7 @@
     <Compile Include="ViewModels\BoolViewIndModel.cs" />
     <Compile Include="ViewModels\BottomPanelViewModel.cs" />
     <Compile Include="ViewModels\CalibrationButtonModel.cs" />
+    <Compile Include="ViewModels\CalibrationWizardViewModel.cs" />
     <Compile Include="ViewModels\DebugObjModel.cs" />
     <Compile Include="ViewModels\DebugOutput.cs" />
     <Compile Include="ViewModels\DebugViewModel.cs" />
@@ -200,6 +201,9 @@
     <Compile Include="ViewModels\OperationViewModel.cs" />
     <Compile Include="ViewModels\UpDownControlModel.cs" />
     <Compile Include="ViewModels\WizardWindowViewModel.cs" />
+    <Compile Include="Views\UC_CalibrationWizard.xaml.cs">
+      <DependentUpon>UC_CalibrationWizard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UpDownControl.xaml.cs">
       <DependentUpon>UpDownControl.xaml</DependentUpon>
     </Compile>
@@ -263,7 +267,6 @@
     <Compile Include="Views\mainWindowPanels\UpperPanel.xaml.cs">
       <DependentUpon>UpperPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\BoolUCModel.cs" />
     <Compile Include="ViewModels\DataViewModel.cs" />
     <Compile Include="ViewModels\EnumViewModel.cs" />
     <Compile Include="ViewModels\IntegerUCModel.cs" />
@@ -301,6 +304,10 @@
     <Compile Include="Wizard.xaml.cs">
       <DependentUpon>Wizard.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\UC_CalibrationWizard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\UpDownControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -693,7 +700,6 @@
     </PropertyGroup>
     <Error Condition="!Exists('..\packages\Microsoft.UI.Xaml.2.0.181011001\build\Microsoft.UI.Xaml.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.UI.Xaml.2.0.181011001\build\Microsoft.UI.Xaml.props'))" />
   </Target>-->
-  
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
 	     Other similar extension points exist, see Microsoft.Common.targets.
 	<Target Name="BeforeBuild">

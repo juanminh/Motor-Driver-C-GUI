@@ -58,7 +58,9 @@
             <DataTemplate x:Key="UpDownControlModel">
                 <views:UpDownControl></views:UpDownControl>
             </DataTemplate>
-            
+            <DataTemplate x:Key="CalibrationWizardViewModel">
+                <views:UC_CalibrationWizard></views:UC_CalibrationWizard>
+            </DataTemplate>
             <!--<DataTemplate x:Key="LeftPanelViewModel">
                 <local:GridSplitter></local:GridSplitter>
             </DataTemplate>-->
