@@ -508,42 +508,41 @@ namespace SuperButton.CommandsDB
             EnumViewCommandsList.Add(new Tuple<int, int>(50, 2), enum2);
             EnumCommandsListbySubGroup["Control"].Add(enum2);
 
-            var tmp3 = new List<string>
+            var tmp6 = new List<string>
              {
-                 "Cla_Fdb_Hall",
-                 "Cla_Fdb_Enc1",
-                 "Cla_Fdb_Enc2"
-             };
-
-            Enums.Add("Speed Fdb Source", tmp3);
-            var enum3 = new EnumViewModel
+                "None",
+                "Incremental 1",
+                "Incremental Sin Cos",
+                "Absolute Sin Cos",
+                "Incremental 2",
+                "Ssi",
+                "Resolver",
+                "Com"
+            };
+            
+            Enums.Add("Motor encoder", tmp6);
+            var enum6 = new EnumViewModel
             {
-                CommandName = "Speed Fdb Source",
+                CommandName = "Motor encoder",
                 CommandId = "50",
                 CommandSubId = "3",
                 CommandValue = "0", //first enum in list
-                CommandList = Enums["Speed Fdb Source"]
+                CommandList = Enums["Motor encoder"]
             };
-            EnumViewCommandsList.Add(new Tuple<int, int>(50, 3), enum3);
-            EnumCommandsListbySubGroup["Control"].Add(enum3);
+            EnumViewCommandsList.Add(new Tuple<int, int>(50, 3), enum6);
+            EnumCommandsListbySubGroup["Control"].Add(enum6);
 
-            var tmp4 = new List<string>
-             {
-                 "Cla_Fdb_Hall",
-                 "Cla_Fdb_Enc1",
-                 "Cla_Fdb_Enc2"
-             };
-            Enums.Add("Position Fdb Source", tmp4);
-            var enum4 = new EnumViewModel
+            Enums.Add("External encoder", tmp6);
+            var enum7 = new EnumViewModel
             {
-                CommandName = "Position Fdb Source",
+                CommandName = "External encoder",
                 CommandId = "50",
                 CommandSubId = "4",
                 CommandValue = "0", //first enum in list
-                CommandList = Enums["Position Fdb Source"]
+                CommandList = Enums["External encoder"]
             };
-            EnumViewCommandsList.Add(new Tuple<int, int>(50, 4), enum4);
-            EnumCommandsListbySubGroup["Control"].Add(enum4);
+            EnumViewCommandsList.Add(new Tuple<int, int>(50, 4), enum7);
+            EnumCommandsListbySubGroup["Control"].Add(enum7);
 
             var tmp5 = new List<string>
              {
@@ -565,6 +564,39 @@ namespace SuperButton.CommandsDB
             };
             EnumViewCommandsList.Add(new Tuple<int, int>(50, 5), enum5);
             EnumCommandsListbySubGroup["Control"].Add(enum5);
+
+            var tmp3 = new List<string>
+             {
+                "None",
+                "Hall",
+                "Motor",
+                "External"
+             };
+
+            Enums.Add("Speed loop Fdb", tmp3);
+            var enum3 = new EnumViewModel
+            {
+                CommandName = "Speed loop Fdb",
+                CommandId = "50",
+                CommandSubId = "6",
+                CommandValue = "0", //first enum in list
+                CommandList = Enums["Speed loop Fdb"]
+            };
+            EnumViewCommandsList.Add(new Tuple<int, int>(50, 6), enum3);
+            EnumCommandsListbySubGroup["Control"].Add(enum3);
+
+
+            Enums.Add("Position loop Fdb", tmp3);
+            var enum4 = new EnumViewModel
+            {
+                CommandName = "Position loop Fdb",
+                CommandId = "50",
+                CommandSubId = "7",
+                CommandValue = "0", //first enum in list
+                CommandList = Enums["Position loop Fdb"]
+            };
+            EnumViewCommandsList.Add(new Tuple<int, int>(50, 7), enum4);
+            EnumCommandsListbySubGroup["Control"].Add(enum4);
 
             var data1 = new DataViewModel
             {
@@ -589,7 +621,7 @@ namespace SuperButton.CommandsDB
             DataViewCommandsList.Add(new Tuple<int, int>(51, 2), data2);
             DataCommandsListbySubGroup["Motor"].Add(data2);
 
-            string[] commandName = { "Max speed [CPS]", "Min Speed [CPS]", "Max position [C]", "Min position [C]", "Enable Position Limit", "Motor stuck current", "Motor stuck speed", "Motor stuck Duration" };
+            string[] commandName = { "Max speed [CPS]", "Max Speed [rpm]", "Max position [C]", "Min position [C]", "Enable Position Limit", "Motor stuck current", "Motor stuck speed", "Motor stuck Duration" };
             bool[] Type = { INT, INT, INT, INT, INT, FLOAT, INT, FLOAT };
 
             DataCommandsListbySubGroup.Add("Motion Limit", new ObservableCollection<object>());

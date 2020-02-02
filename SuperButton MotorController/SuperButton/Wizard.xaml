@@ -8,7 +8,7 @@
         xmlns:viewModels="clr-namespace:SuperButton.ViewModels"
         xmlns:models="clr-namespace:SuperButton.Models"
         mc:Ignorable="d"
-        Title="Wizard" Height="400" Width="500"
+        Title="Wizard" Height="400" Width="600"
         Closing="Window_Closing"
         Icon="./Themes/MotorController.png"
         WindowStartupLocation="CenterOwner"
@@ -16,6 +16,7 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity">
+
     <Window.Background>
         <ImageBrush ImageSource="pack://siteoforigin:,,,/Views/HomeBackground.jpg"/>
     </Window.Background>
@@ -23,6 +24,9 @@
         <viewModels:WizardWindowViewModel/>
     </Window.DataContext>
     <Window.Resources>
+        <!-- Variables -->
+        <System:Double x:Key="MotorParametersWidth">150</System:Double>
+
         <!--  Vertical GridSplitter Handle  -->
         <Style x:Key="VerticalGridSplitterHandleStyle" TargetType="ToggleButton">
             <Setter Property="Cursor" Value="Hand" />
@@ -257,160 +261,202 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" Height="15"/>
-            <Border Grid.Row="1" Width="230" Height="auto" BorderBrush="Gray" BorderThickness="1" CornerRadius="4" VerticalAlignment="Top">
+            <Border Grid.Row="1" Width="290" Height="auto" BorderBrush="Gray" BorderThickness="1" CornerRadius="4" VerticalAlignment="Top">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition>
-                            <RowDefinition.Style>
-                                <Style TargetType="{x:Type RowDefinition}">
-                                    <Setter Property="Height" Value="Auto" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding MotorType}" Value="0">
-                                            <Setter Property="Height" Value="0" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </RowDefinition.Style>
-                        </RowDefinition>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Width="Auto" Text="Motor Parameters" Foreground="White" Background="Gray"/>
-                    <TextBlock Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">Motor Type</TextBlock>
-                    <ComboBox Grid.Row="1" HorizontalAlignment="Right"
+                    <TextBlock Grid.Row="0" Width="Auto" Text="Parameters" Foreground="White" Background="Gray"/>
+                    <GroupBox Grid.Row="1" Width="Auto" Foreground="White" FontSize="12" Style="{x:Null}" BorderBrush="Transparent">
+                        <GroupBox.Header>
+                            <Span FontWeight="Bold">Motor Parameters</Span>
+                        </GroupBox.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition>
+                                    <RowDefinition.Style>
+                                        <Style TargetType="{x:Type RowDefinition}">
+                                            <Setter Property="Height" Value="Auto" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding MotorType}" Value="0">
+                                                    <Setter Property="Height" Value="0" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </RowDefinition.Style>
+                                </RowDefinition>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">Motor Type</TextBlock>
+                            <ComboBox Grid.Row="0" HorizontalAlignment="Right"
                               SelectedIndex="{Binding MotorType}"
-                              Width="100"
+                              Width="{StaticResource MotorParametersWidth}"
                               FontSize="12">
-                        <ComboBoxItem Content="DC Brushed"/>
-                        <ComboBoxItem Content="3 Phase Brushless"/>
-                    </ComboBox>
-                    <TextBlock Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto" Text="Pole Paire">
-                            <!--<TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Visibility" Value="Visible" />
-                                    <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding MotorType}" Value="0" />
-                                            </MultiDataTrigger.Conditions>
-                                            <MultiDataTrigger.Setters>
-                                                <Setter Property="Visibility" Value="Hidden" />
-                                            </MultiDataTrigger.Setters>
-                                        </MultiDataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>-->
-                        </TextBlock>
-                    <TextBox  Grid.Row="2" HorizontalAlignment="Right" BorderThickness="0"
-                              Width="100"
-                              FontSize="12" Text="{Binding PolePaire, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                        <i:Interaction.Behaviors>
-                            <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
-                        </i:Interaction.Behaviors>
-                        <!--<TextBox.Style>
-                                <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
-                                    <Setter Property="Visibility" Value="Visible" />
-                                    <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding MotorType}" Value="0" />
-                                            </MultiDataTrigger.Conditions>
-                                            <MultiDataTrigger.Setters>
-                                                <Setter Property="Visibility" Value="Hidden" />
-                                            </MultiDataTrigger.Setters>
-                                        </MultiDataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBox.Style>-->
-                    </TextBox>
-                    <TextBlock Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto" Text="Continuous Current [A]"></TextBlock>
-                    <TextBox Grid.Row="3" HorizontalAlignment="Right" BorderThickness="0"
-                              Width="100"
-                              FontSize="12" Text="{Binding ContinuousCurrent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                        <i:Interaction.Behaviors>
-                            <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
-                        </i:Interaction.Behaviors>
-                    </TextBox>
-                    <TextBlock Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto" Text="Motor Speed [cts/sec]"></TextBlock>
-                    <TextBox Grid.Row="4" HorizontalAlignment="Right" BorderThickness="0"
-                              Width="100"
-                              FontSize="12" Text="{Binding MotorSpeed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                        <i:Interaction.Behaviors>
-                            <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
-                        </i:Interaction.Behaviors>
-                    </TextBox>
-                    <TextBlock Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">Motor Feedbacks</TextBlock>
-                    <ComboBox Grid.Row="5" HorizontalAlignment="Right"
-                              Width="100"
-                              FontSize="12"
-                              SelectedIndex="{Binding MotorFeedbacks}">
-                        <!--<ComboBox.Style>
-                            <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
-                                <Setter Property="SelectedIndex" Value="0" />
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding MotorType}" Value="0">
-                                        <Setter Property="SelectedIndex" Value="2" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </ComboBox.Style>-->
-                        <ComboBoxItem Content="HALL">
-                            <ComboBoxItem.Style>
-                                <Style TargetType="{x:Type ComboBoxItem}" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
-                                    <Setter Property="Visibility" Value="Visible" />
-                                    <Setter Property="Height" Value="auto" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding MotorType}" Value="0">
-                                            <Setter Property="Visibility" Value="Hidden" />
-                                            <Setter Property="Height" Value="0" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ComboBoxItem.Style>
-                        </ComboBoxItem>
-                        <ComboBoxItem Content="INC encoder and HALL">
-                            <ComboBoxItem.Style>
-                                <Style TargetType="{x:Type ComboBoxItem}" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
-                                    <Setter Property="Visibility" Value="Visible" />
-                                    <Setter Property="Height" Value="auto" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding MotorType}" Value="0">
-                                            <Setter Property="Visibility" Value="Hidden" />
-                                            <Setter Property="Height" Value="0" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ComboBoxItem.Style>
-                        </ComboBoxItem>
-                        <ComboBoxItem Content="INC encoder">
-                            <ComboBoxItem.Style>
-                                <Style TargetType="{x:Type ComboBoxItem}" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
-                                    <Setter Property="Visibility" Value="Visible" />
-                                    <Setter Property="Height" Value="auto" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding MotorType}" Value="1">
-                                            <Setter Property="Visibility" Value="Hidden" />
-                                            <Setter Property="Height" Value="0" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </ComboBoxItem.Style>
-                        </ComboBoxItem>
-                        <ComboBoxItem Content="SSI absolute encoder"></ComboBoxItem>
-                    </ComboBox>
-                    <TextBlock Grid.Row="6" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">cts/Motor Revolution</TextBlock>
-                    <TextBox Grid.Row="6" HorizontalAlignment="Right" BorderThickness="0"
-                              Width="100"
-                              FontSize="12" Text="{Binding cts_Motor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                        <i:Interaction.Behaviors>
-                            <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
-                        </i:Interaction.Behaviors>
-                    </TextBox>
+                                <ComboBoxItem Content="DC Brushed"/>
+                                <ComboBoxItem Content="3 Phase Brushless"/>
+                            </ComboBox>
+                            <TextBlock Grid.Row="1" HorizontalAlignment="Left" 
+                               VerticalAlignment="Center" 
+                               Foreground="White" FontSize="12" 
+                               Width="Auto" 
+                               Text="Pole Pair">
+                            </TextBlock>
+                            <TextBox  Grid.Row="1" HorizontalAlignment="Right" BorderThickness="0"
+                              Width="{StaticResource MotorParametersWidth}" 
+                              FontSize="12" Text="{Binding PolePair, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <i:Interaction.Behaviors>
+                                    <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
+                                </i:Interaction.Behaviors>
+                            </TextBox>
+                            <TextBlock Grid.Row="2" HorizontalAlignment="Left" 
+                               VerticalAlignment="Center" 
+                               Foreground="White" FontSize="12" 
+                               Width="Auto" 
+                               Text="Continuous Current [A]"></TextBlock>
+                            <TextBox Grid.Row="2" HorizontalAlignment="Right" BorderThickness="0"
+                             Width="{StaticResource MotorParametersWidth}" 
+                             FontSize="12" Text="{Binding ContinuousCurrent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <i:Interaction.Behaviors>
+                                    <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
+                                </i:Interaction.Behaviors>
+                            </TextBox>
+                            <TextBlock Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto" Text="Max Speed [rpm]"></TextBlock>
+                            <TextBox Grid.Row="3" HorizontalAlignment="Right" BorderThickness="0"
+                              Width="{StaticResource MotorParametersWidth}" 
+                              FontSize="12" Text="{Binding MaxSpeed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <i:Interaction.Behaviors>
+                                    <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
+                                </i:Interaction.Behaviors>
+                            </TextBox>
+                        </Grid>
+                    </GroupBox>
+                    <GroupBox Grid.Row="2" Width="Auto" Foreground="White" FontSize="12" Style="{x:Null}" BorderBrush="Transparent">
+                        <GroupBox.Header>
+                            <Span FontWeight="Bold">Motor Feedbacks</Span>
+                        </GroupBox.Header>
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition>
+                                    <RowDefinition.Style>
+                                        <Style TargetType="{x:Type RowDefinition}">
+                                            <Setter Property="Height" Value="Auto" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding MotorType}" Value="0">
+                                                    <Setter Property="Height" Value="0" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </RowDefinition.Style>
+                                </RowDefinition>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">Hall</TextBlock>
+                            <ComboBox Grid.Row="0" HorizontalAlignment="Right"
+                                              Width="{StaticResource MotorParametersWidth}" 
+                                              FontSize="12"
+                                              SelectedIndex="{Binding HallEnDis}">
+                                <ComboBoxItem Content="Enable"></ComboBoxItem>
+                                <ComboBoxItem Content="Disable"></ComboBoxItem>
+                            </ComboBox>
+                            <GroupBox Grid.Row="1" Width="Auto" Foreground="White" FontSize="12" Style="{x:Null}" BorderBrush="Transparent">
+                                <GroupBox.Header>
+                                    <Span FontWeight="Bold">Encoder</Span>
+                                </GroupBox.Header>
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition Height="Auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">Type</TextBlock>
+                                    <ComboBox Grid.Row="0" HorizontalAlignment="Right"
+                                              Width="{StaticResource MotorParametersWidth}" 
+                                              FontSize="12"
+                                              SelectedIndex="{Binding EncoderFeedback}">
+                                        <ComboBoxItem Content="None"></ComboBoxItem>
+                                        <ComboBoxItem Content="Incremental 1"></ComboBoxItem>
+                                        <ComboBoxItem Content="Incremental Sin Cos"></ComboBoxItem>
+                                        <ComboBoxItem Content="Absolute Sin Cos"></ComboBoxItem>
+                                        <ComboBoxItem Content="Incremental 2"></ComboBoxItem>
+                                        <ComboBoxItem Content="Ssi"></ComboBoxItem>
+                                        <!--<ComboBoxItem Content="HALL">
+                                            <ComboBoxItem.Style>
+                                                <Style TargetType="{x:Type ComboBoxItem}" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                    <Setter Property="Height" Value="auto" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding MotorType}" Value="0">
+                                                            <Setter Property="Visibility" Value="Hidden" />
+                                                            <Setter Property="Height" Value="0" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ComboBoxItem.Style>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem Content="INC encoder and HALL">
+                                            <ComboBoxItem.Style>
+                                                <Style TargetType="{x:Type ComboBoxItem}" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                    <Setter Property="Height" Value="auto" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding MotorType}" Value="0">
+                                                            <Setter Property="Visibility" Value="Hidden" />
+                                                            <Setter Property="Height" Value="0" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ComboBoxItem.Style>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem Content="INC encoder">
+                                            <ComboBoxItem.Style>
+                                                <Style TargetType="{x:Type ComboBoxItem}" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
+                                                    <Setter Property="Visibility" Value="Visible" />
+                                                    <Setter Property="Height" Value="auto" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding MotorType}" Value="1">
+                                                            <Setter Property="Visibility" Value="Hidden" />
+                                                            <Setter Property="Height" Value="0" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ComboBoxItem.Style>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem Content="SSI absolute encoder"></ComboBoxItem>-->
+                                    </ComboBox>
+                                    <TextBlock Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">Resolution [cnts/rev]</TextBlock>
+                                    <TextBox Grid.Row="1" HorizontalAlignment="Right" BorderThickness="0"
+                                            Width="{StaticResource MotorParametersWidth}" 
+                                            FontSize="12" Text="{Binding cts_Motor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                        <TextBox.Style>
+                                            <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                                                <Setter Property="IsReadOnly" Value="False" />
+                                                <Setter Property="IsHitTestVisible" Value="True"/>
+                                                <Style.Triggers>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding EncoderFeedback}" Value="3" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <MultiDataTrigger.Setters>
+                                                            <Setter Property="IsReadOnly" Value="True" />
+                                                            <Setter Property="IsHitTestVisible" Value="False"/>
+                                                        </MultiDataTrigger.Setters>
+                                                    </MultiDataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBox.Style>
+                                        <i:Interaction.Behaviors>
+                                            <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
+                                        </i:Interaction.Behaviors>
+                                    </TextBox>
+                                </Grid>
+                            </GroupBox>
+                        </Grid>
+                    </GroupBox>
                 </Grid>
             </Border>
             <Grid Grid.Row="2" Height="15"/>
@@ -418,26 +464,29 @@
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="8"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
-                        <RowDefinition Height="Auto"/>
+                        <RowDefinition>
+                            <RowDefinition.Style>
+                                <Style TargetType="{x:Type RowDefinition}">
+                                    <Setter Property="Height" Value="Auto" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding AdvancedConfig}" Value="False">
+                                            <Setter Property="Height" Value="0" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </RowDefinition.Style>
+                        </RowDefinition>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Width="Auto" Text="Advanced Config" Foreground="White" Background="Gray"/>
-                    <common:CollapsableGridSplitter x:Name="AdvanceConfigGridSplitter" Grid.Row="1"
-                                        ResizeDirection="Rows"   
-                                        Margin="0"  
-                                        HorizontalAlignment="Stretch"
-                                        VerticalAlignment="Bottom"
-                                        CollapseMode="Next"
-                                        Height="8"
-                                        IsTabStop="False"
-                                        AllowDrop="True"
-                                        ResizeBehavior="PreviousAndNext">
-                    
-                    </common:CollapsableGridSplitter>
-                    <TextBlock Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">Calibration Advanced Mode</TextBlock>
-                    <CheckBox  Grid.Row="2" HorizontalAlignment="Right" IsChecked="{Binding CalibrationAdvancedMode}"/>
+                    <TextBlock Grid.Row="0" Width="Auto" Text="Advanced Configuration" Foreground="White" Background="Gray"/>
+                    <CheckBox  Grid.Row="0" HorizontalAlignment="Right" IsChecked="{Binding AdvancedConfig}"/>
+                    <Grid Grid.Row="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">Calibration Advanced Mode</TextBlock>
+                        <CheckBox  Grid.Row="0" HorizontalAlignment="Right" IsChecked="{Binding CalibrationAdvancedMode}"/>
+                    </Grid>
                 </Grid>
             </Border>
         </Grid>
@@ -470,37 +519,30 @@
                             <ColumnDefinition Width="Auto"/>
                         </Grid.ColumnDefinitions>
                         <Button FontSize="10" Grid.Column="0"
-                            Command="{Binding Start}" 
-                            Template="{DynamicResource PressedButton}" 
-                            VerticalAlignment="Center" HorizontalAlignment="Left" 
-                            BorderThickness="0.5" 
-                            Width="50" Height="15"
-                                Background="Orange"
-                                Foreground="White">
-                            <TextBlock Text="Start" VerticalAlignment="Center" Margin="0,-2,0,0"/>
-                        </Button>
-                        <Button FontSize="10" Grid.Column="2"
-                            Command="{Binding Abort}" 
-                            Style="{StaticResource ExampleToolbarButtonStyle}" 
-                            VerticalAlignment="Center" HorizontalAlignment="Left" 
-                            BorderThickness="0.5" 
-                            Width="50" Height="15" Background="Red">
-                            <TextBlock Text="Abort" VerticalAlignment="Center" Margin="0,-2,0,0"/>
-                        </Button>
-                    </Grid>
-                    <Button FontSize="10" Grid.Row="4"
                             Command="{Binding Start}"
                             Style="{StaticResource CalibButtonStyle}" 
                             VerticalAlignment="Center" HorizontalAlignment="Left" 
                             BorderThickness="0.5" 
                             Width="50" Height="15"
                                 Background="Orange"
-                                Foreground="White">
-                        <TextBlock Text="Start" VerticalAlignment="Center" Margin="0,-2,0,0"/>
-                    </Button>
+                                Foreground="Black">
+                            <TextBlock Text="Start" VerticalAlignment="Center" Margin="0,-2,0,0"/>
+                        </Button>
+                        <Button FontSize="10" Grid.Column="2"
+                            Command="{Binding Abort}"
+                            Style="{StaticResource CalibButtonStyle}" 
+                            VerticalAlignment="Center" HorizontalAlignment="Left" 
+                            BorderThickness="0.5" 
+                            Width="50" Height="15"
+                                Background="Red"
+                                Foreground="Black">
+                            <TextBlock Text="Abort" VerticalAlignment="Center" Margin="0,-2,0,0"/>
+                        </Button>
+                    </Grid>
                 </Grid>
             </Border>
         </Grid>
+        <!-- Vertical GridSplitter -->
         <!--<common:CollapsableGridSplitter Grid.Column="4"              
 			Width="9"
 			HorizontalAlignment="Center"
@@ -511,5 +553,18 @@
             ResizeDirection="Columns"
             Cursor="Hand"
             ResizeBehavior="PreviousAndNext"/>-->
+        <!-- Horizontal GridSplitter -->
+        <!--<common:CollapsableGridSplitter x:Name="AdvanceConfigGridSplitter" Grid.Row="1"
+                                        ResizeDirection="Rows"   
+                                        Margin="0"  
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Bottom"
+                                        CollapseMode="Next"
+                                        Height="8"
+                                        IsTabStop="False"
+                                        AllowDrop="True"
+                                        ResizeBehavior="PreviousAndNext">
+                    
+                    </common:CollapsableGridSplitter>-->
     </Grid>
 </Window>

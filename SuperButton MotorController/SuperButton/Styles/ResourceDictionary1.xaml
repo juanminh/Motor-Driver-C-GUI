@@ -3615,15 +3615,14 @@
                 </Trigger.EnterActions>
 
             </Trigger>
-            <Trigger Property="IsMouseOver" Value="true">
+            <!--<Trigger Property="IsMouseOver" Value="true">
                 <Trigger.ExitActions>
                     <BeginStoryboard Storyboard="{StaticResource HoverOff}" x:Name="HoverOff_BeginStoryboard" />
                 </Trigger.ExitActions>
                 <Trigger.EnterActions>
                     <BeginStoryboard Storyboard="{StaticResource HoverOn}" />
                 </Trigger.EnterActions>
-
-            </Trigger>
+            </Trigger>-->
             <Trigger Property="IsPressed" Value="true">
                 <Trigger.ExitActions>
                     <BeginStoryboard Storyboard="{StaticResource PressedOff}" />
@@ -3641,6 +3640,7 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
     
+    <!--PressedButton-->
     <ControlTemplate x:Key="PressedButton" TargetType="{x:Type Button}">
         <ControlTemplate.Resources>
             <Storyboard x:Key="Timeline1">
