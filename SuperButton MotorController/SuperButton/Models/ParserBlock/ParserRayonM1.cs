@@ -357,7 +357,7 @@ namespace SuperButton.Models.ParserBlock
             {
                 float value = 0;
                 float.TryParse((string)Data2Send, out value);
-                byte [] _value = BitConverter.GetBytes(value);
+                byte[] _value = BitConverter.GetBytes(value);
                 temp[5] = (byte)(_value[0]);
                 temp[6] = (byte)(_value[1]);
                 temp[7] = (byte)(_value[2]);
@@ -528,12 +528,10 @@ namespace SuperButton.Models.ParserBlock
                     !LeftPanelViewModel.GetInstance.StarterOperationFlag && !LeftPanelViewModel.GetInstance.StarterPlotFlag &&
                     !exceptionID.Contains(commandId) || !exceptionID.Contains(commandId))
                 {
-                    if(!WizardWindowViewModel.GetInstance.wizardStatus)
+                    if(isInt)
                     {
-                        if(isInt)
-                        {
-                            if(getSet == 1)
-                                RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), transit.ToString(), true);
+                        if(getSet == 1)
+                            RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), transit.ToString(), true);
 #if(DEBUG && DEBUG_OPERATION)
 #if DEBUG_SET
                         if(getSet == 0)
@@ -544,34 +542,29 @@ namespace SuperButton.Models.ParserBlock
                             Debug.WriteLine("{0} {1}[{2}]={3} {4} {5}.", "Drv", commandId, commandSubId, transit, "I", getSet == 0 ? "Set" : "Get");
 #endif
 #endif
-                        }
-                        else
-                        {
-                            var dataAray = new byte[4];
-                            for(int i = 0; i < 4; i++)
-                            {
-                                dataAray[i] = data[i + 3];
-                            }
-                            newPropertyValuef = System.BitConverter.ToSingle(dataAray, 0);
-                            if(getSet == 1)
-                            {
-                                RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), newPropertyValuef.ToString(), false);
-                            }
-#if(DEBUG && DEBUG_OPERATION)
-#if DEBUG_SET
-                        if(getSet == 0)
-                            Debug.WriteLine("{0} {1}[{2}]={3} {4} {5}.", "Drv", commandId, commandSubId, newPropertyValuef, "F", getSet == 0 ? "Set" : "Get");
-#endif
-#if DEBUG_GET
-                        if(getSet == 1)
-                            Debug.WriteLine("{0} {1}[{2}]={3} {4} {5}.", "Drv", commandId, commandSubId, newPropertyValuef, "F", getSet == 0 ? "Set" : "Get");
-#endif
-#endif
-                        }
                     }
-                    else if(WizardWindowViewModel.GetInstance.wizardStatus)
+                    else
                     {
-                        WizardWindowViewModel.GetInstance.updateCalibrationStatus(new Tuple<int, int>(commandId, commandSubId), transit.ToString(), isInt);
+                        var dataAray = new byte[4];
+                        for(int i = 0; i < 4; i++)
+                        {
+                            dataAray[i] = data[i + 3];
+                        }
+                        newPropertyValuef = System.BitConverter.ToSingle(dataAray, 0);
+                        if(getSet == 1)
+                        {
+                            RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), newPropertyValuef.ToString(), false);
+                        }
+#if(DEBUG && DEBUG_OPERATION)
+#if DEBUG_SET
+                        if(getSet == 0)
+                            Debug.WriteLine("{0} {1}[{2}]={3} {4} {5}.", "Drv", commandId, commandSubId, newPropertyValuef, "F", getSet == 0 ? "Set" : "Get");
+#endif
+#if DEBUG_GET
+                        if(getSet == 1)
+                            Debug.WriteLine("{0} {1}[{2}]={3} {4} {5}.", "Drv", commandId, commandSubId, newPropertyValuef, "F", getSet == 0 ? "Set" : "Get");
+#endif
+#endif
                     }
                 }
                 else if(commandId == 67)

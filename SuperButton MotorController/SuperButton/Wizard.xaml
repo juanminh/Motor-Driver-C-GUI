@@ -308,6 +308,26 @@
                             <TextBox  Grid.Row="1" HorizontalAlignment="Right" BorderThickness="0"
                               Width="{StaticResource MotorParametersWidth}" 
                               FontSize="12" Text="{Binding PolePair, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <TextBox.Style>
+                                    <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                                        <Setter Property="IsReadOnly" Value="False" />
+                                        <Setter Property="IsHitTestVisible" Value="True"/>
+                                        <Setter Property="IsEnabled" Value="True"/>
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding EncoderFeedback}" Value="0" />
+                                                </MultiDataTrigger.Conditions>
+                                                <MultiDataTrigger.Setters>
+                                                    <Setter Property="IsReadOnly" Value="True" />
+                                                    <Setter Property="IsHitTestVisible" Value="False"/>
+                                                    <Setter Property="Foreground" Value="White"/>
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </MultiDataTrigger.Setters>
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBox.Style>
                                 <i:Interaction.Behaviors>
                                     <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
                                 </i:Interaction.Behaviors>
@@ -360,8 +380,8 @@
                                               Width="{StaticResource MotorParametersWidth}" 
                                               FontSize="12"
                                               SelectedIndex="{Binding HallEnDis}">
-                                <ComboBoxItem Content="Enable"></ComboBoxItem>
                                 <ComboBoxItem Content="Disable"></ComboBoxItem>
+                                <ComboBoxItem Content="Enable"></ComboBoxItem>
                             </ComboBox>
                             <GroupBox Grid.Row="1" Width="Auto" Foreground="White" FontSize="12" Style="{x:Null}" BorderBrush="Transparent">
                                 <GroupBox.Header>
@@ -436,6 +456,7 @@
                                             <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
                                                 <Setter Property="IsReadOnly" Value="False" />
                                                 <Setter Property="IsHitTestVisible" Value="True"/>
+                                                <Setter Property="IsEnabled" Value="True"/>
                                                 <Style.Triggers>
                                                     <MultiDataTrigger>
                                                         <MultiDataTrigger.Conditions>
@@ -444,6 +465,19 @@
                                                         <MultiDataTrigger.Setters>
                                                             <Setter Property="IsReadOnly" Value="True" />
                                                             <Setter Property="IsHitTestVisible" Value="False"/>
+                                                            <Setter Property="Foreground" Value="White"/>
+                                                            <Setter Property="IsEnabled" Value="False"/>
+                                                        </MultiDataTrigger.Setters>
+                                                    </MultiDataTrigger>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding EncoderFeedback}" Value="0" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <MultiDataTrigger.Setters>
+                                                            <Setter Property="IsReadOnly" Value="True" />
+                                                            <Setter Property="IsHitTestVisible" Value="False"/>
+                                                            <Setter Property="Foreground" Value="White"/>
+                                                            <Setter Property="IsEnabled" Value="False"/>
                                                         </MultiDataTrigger.Setters>
                                                     </MultiDataTrigger>
                                                 </Style.Triggers>

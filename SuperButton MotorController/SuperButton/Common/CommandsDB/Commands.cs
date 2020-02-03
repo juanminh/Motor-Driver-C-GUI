@@ -621,7 +621,7 @@ namespace SuperButton.CommandsDB
             DataViewCommandsList.Add(new Tuple<int, int>(51, 2), data2);
             DataCommandsListbySubGroup["Motor"].Add(data2);
 
-            string[] commandName = { "Max speed [CPS]", "Max Speed [rpm]", "Max position [C]", "Min position [C]", "Enable Position Limit", "Motor stuck current", "Motor stuck speed", "Motor stuck Duration" };
+            string[] commandName = { "Max speed [CPS]", "Min Speed [CPS]", "Max position [C]", "Min position [C]", "Enable Position Limit", "Motor stuck current", "Motor stuck speed", "Motor stuck Duration" };
             bool[] Type = { INT, INT, INT, INT, INT, FLOAT, INT, FLOAT };
 
             DataCommandsListbySubGroup.Add("Motion Limit", new ObservableCollection<object>());
@@ -1271,7 +1271,7 @@ namespace SuperButton.CommandsDB
 
             var names = new[]
             {
-                "Current Offset", "PI Current Loop", "Hall Mapping", "Encoder1 Direction", "PI Speed Loop", "PI Position Loop", "Abs. Enc."
+                "Current Offset", "PI Current Loop", "Hall Mapping", "Feedback Direction", "PI Speed Loop", "PI Position Loop", "Abs. Enc."
             };
             for(int i = 0; i < names.Length; i++) // Calibration Button
             {

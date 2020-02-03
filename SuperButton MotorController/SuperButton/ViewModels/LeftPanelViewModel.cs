@@ -1,4 +1,4 @@
-﻿#define RELEASE_MODE
+﻿//#define RELEASE_MODE
 
 using System;
 using System.Data;
@@ -203,7 +203,8 @@ namespace SuperButton.ViewModels
             string[] param = { "Read Ch1", "Read Ch2", "Read Checksum", "Read SN", "Read HW Rev", "Read FW Rev", "Read motor status" };
 
             EventRiser.Instance.RiseEevent(string.Format($"Reading param..."));
-            for(int i = 0; i < param.Length; i++)
+            
+             for(int i = 0; i < param.Length; i++)
             {
                 //EventRiser.Instance.RiseEevent(string.Format(param[i]));
                 Rs232Interface.GetInstance.SendToParser(new PacketFields
@@ -216,6 +217,7 @@ namespace SuperButton.ViewModels
                 });
                 Thread.Sleep(50);
             }
+            
             #endregion  Operations
 
 #if !DEBUG || RELEASE_MODE
@@ -904,14 +906,17 @@ namespace SuperButton.ViewModels
                     if(led == TX_LED)
                     {
                         LedStatusTx = 1;
+                        WizardWindowViewModel.GetInstance.CalibrationWizardList[new Tuple<int, int>(6, 4)].CalibStatus = 1;
                         Thread.Sleep(3);
                     }
                     if(led == RX_LED)
                     {
                         LedStatusRx = 1;
+                        WizardWindowViewModel.GetInstance.CalibrationWizardList[new Tuple<int, int>(6, 4)].CalibStatus = 2;
                         Thread.Sleep(1);
                     }
-                    
+                    WizardWindowViewModel.GetInstance.CalibrationWizardList[new Tuple<int, int>(6, 4)].CalibStatus = 3;
+                    WizardWindowViewModel.GetInstance.cts_Motor = "23";
                     LedStatusTx = 0;
                     LedStatusRx = 0;
                     led = -1;
