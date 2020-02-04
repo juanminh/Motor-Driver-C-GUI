@@ -64,9 +64,9 @@ namespace SuperButton.ViewModels
             }
         }
         public bool ValueChange = false;
+        WizardWindowViewModel _wizardWindow = WizardWindowViewModel.GetInstance;
         public LeftPanelViewModel()
         {
-
             EventRiser.Instance.LoggerEvent += Instance_LoggerEvent;
             ComboBoxCOM = ComboBox.GetInstance;
         }
@@ -91,6 +91,7 @@ namespace SuperButton.ViewModels
                     ComboBox.GetInstance.ComPortComboboxEn = true;
                     LeftPanelViewModel._app_running = false;
                     ConnectTextBoxContent = "Not Connected";
+                    WizardWindowViewModel.GetInstance.StartEnable = false;
                 }
                 if(_connetButtonContent == value)
                     return;
@@ -278,6 +279,7 @@ namespace SuperButton.ViewModels
                 RefreshParamsTick(START);
 
             LeftPanelViewModel._app_running = true;
+            WizardWindowViewModel.GetInstance.StartEnable = true;
             StarterOperation(STOP);
         }
         private String _connectTextBoxContent;
@@ -752,7 +754,10 @@ namespace SuperButton.ViewModels
             }
             else if(win.WindowState == System.Windows.WindowState.Minimized)
                 win.WindowState = System.Windows.WindowState.Normal;
-
+            win.Activate();
+            win.Topmost = true;  // important
+            win.Topmost = false; // important
+            win.Focus();         // important
         }
         public static Wizard WizardWindow;
         private void ShowWizardWindow()
@@ -767,6 +772,10 @@ namespace SuperButton.ViewModels
             }
             else if(WizardWindow.WindowState == System.Windows.WindowState.Minimized)
                 WizardWindow.WindowState = System.Windows.WindowState.Normal;
+            WizardWindow.Activate();
+            WizardWindow.Topmost = true;  // important
+            WizardWindow.Topmost = false; // important
+            WizardWindow.Focus();         // important
         }
         public void Close_parmeterWindow()
         {
@@ -906,17 +915,13 @@ namespace SuperButton.ViewModels
                     if(led == TX_LED)
                     {
                         LedStatusTx = 1;
-                        WizardWindowViewModel.GetInstance.CalibrationWizardList[new Tuple<int, int>(6, 4)].CalibStatus = 1;
                         Thread.Sleep(3);
                     }
                     if(led == RX_LED)
                     {
                         LedStatusRx = 1;
-                        WizardWindowViewModel.GetInstance.CalibrationWizardList[new Tuple<int, int>(6, 4)].CalibStatus = 2;
                         Thread.Sleep(1);
                     }
-                    WizardWindowViewModel.GetInstance.CalibrationWizardList[new Tuple<int, int>(6, 4)].CalibStatus = 3;
-                    WizardWindowViewModel.GetInstance.cts_Motor = "23";
                     LedStatusTx = 0;
                     LedStatusRx = 0;
                     led = -1;

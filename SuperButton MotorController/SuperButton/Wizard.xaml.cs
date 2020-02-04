@@ -46,7 +46,6 @@ namespace SuperButton.Views
         public Wizard()
         {
             InitializeComponent();
-            //CollapsableGridSplitter.GridSplitterButton_Checked(this.AdvanceConfigGridSplitter, ToggleButton.Checked);
             Wizard.WindowsOpen = true;
         }
 

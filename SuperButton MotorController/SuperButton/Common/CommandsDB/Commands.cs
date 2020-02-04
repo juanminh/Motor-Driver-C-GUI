@@ -567,7 +567,6 @@ namespace SuperButton.CommandsDB
 
             var tmp3 = new List<string>
              {
-                "None",
                 "Hall",
                 "Motor",
                 "External"

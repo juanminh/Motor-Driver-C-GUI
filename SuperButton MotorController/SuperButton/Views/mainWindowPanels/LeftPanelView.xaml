@@ -782,7 +782,7 @@
                     <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="MOTOR" VerticalAlignment="Bottom" Width="70" FontWeight="Bold" FontSize="15" Foreground="White"/>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <TextBlock HorizontalAlignment="Left" Text="Controller        Version 1.1.t" VerticalAlignment="Top" Width="160" Foreground="#FF5499D3" FontSize="12"/>
+                    <TextBlock HorizontalAlignment="Left" Text="Controller        Version 1.1.u" VerticalAlignment="Top" Width="160" Foreground="#FF5499D3" FontSize="12"/>
                 </Grid>
                 <Grid Grid.Row="2" Height="10">
                 </Grid>
@@ -937,7 +937,7 @@
                         </Button>
                     </Border>
                     <!-- Monitor -->
-                    <Border Grid.Column="5" CornerRadius="15" BorderBrush="Gray" BorderThickness="1" Width="30">
+                    <!--<Border Grid.Column="5" CornerRadius="15" BorderBrush="Gray" BorderThickness="1" Width="30">
                         <Button Grid.Column="5" Command ="{Binding Showwindow}"
                             Background="Transparent" 
                             Foreground="Transparent"
@@ -945,7 +945,7 @@
                             Padding="0">
                             <Image Source="pack://application:,,,/Images/monitor.png"></Image>
                         </Button>
-                    </Border>
+                    </Border>-->
                 </Grid>
                 <Grid Grid.Row="14" Height="10">
                 </Grid>

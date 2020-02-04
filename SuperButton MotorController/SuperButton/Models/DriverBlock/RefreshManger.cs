@@ -598,10 +598,9 @@ namespace SuperButton.Models.DriverBlock
                         else if(Commands.GetInstance.DataViewCommandsList.ContainsKey(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)))
                             Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)].CommandValue = CalibrationGetStatus(newPropertyValue);
 
-                        WizardWindowViewModel.GetInstance.updateCalibrationStatus(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2), newPropertyValue, false);
                         if(WizardWindowViewModel.GetInstance.CalibrationWizardList.ContainsKey(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)))
-                            WizardWindowViewModel.GetInstance.CalibrationWizardList[new Tuple<int, int>(6, commandidentifier.Item2)].CalibStatus = RoundBoolLed.FAILED;
-                        Debug.WriteLine(commandidentifier.Item1.ToString() + "[" + commandidentifier.Item2.ToString() + "] = " + newPropertyValue);
+                            WizardWindowViewModel.GetInstance.updateCalibrationStatus(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2), newPropertyValue);
+                            //Debug.WriteLine(commandidentifier.Item1.ToString() + "[" + commandidentifier.Item2.ToString() + "] = " + newPropertyValue);
 
                     }
                     #endregion Calibration
