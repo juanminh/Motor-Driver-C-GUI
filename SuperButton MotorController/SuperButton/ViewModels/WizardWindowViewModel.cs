@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using Timer = System.Timers.Timer;
 using System.Diagnostics;
 using SuperButton.CommandsDB;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 namespace SuperButton.ViewModels
 {
@@ -51,8 +53,17 @@ namespace SuperButton.ViewModels
         Cmtn_DC_Brushed = 9
     };
 
-    internal class WizardWindowViewModel : ViewModelBase
+    internal class WizardWindowViewModel : INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
+        public void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
+
+            if(handler != null)
+                handler(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         public Dictionary<Tuple<int, int>, CalibrationWizardViewModel> CalibrationWizardList = new Dictionary<Tuple<int, int>, CalibrationWizardViewModel>();
         public Dictionary<string, ObservableCollection<object>> CalibrationWizardListbySubGroup = new Dictionary<string, ObservableCollection<object>>();
         public Dictionary<Tuple<int, int>, DataViewModel> OperationList = new Dictionary<Tuple<int, int>, DataViewModel>();
@@ -128,25 +139,25 @@ namespace SuperButton.ViewModels
                 switch(value)
                 {
                     case 0:
-                        cts_Motor = "1000";
+                        EncoderResolution = "1000";
                         PolePair = "1";
                         break;
                     case 3:
-                        cts_Motor = "4096";
+                        EncoderResolution = "4096";
                         break;
                     default:
-                        cts_Motor = cts_Motor;
+                        EncoderResolution = EncoderResolution;
                         break;
                 }
                 BuildCalibrationWizardList();
                 OnPropertyChanged("EncoderFeedback");
             }
         }
-        private string _cts_Motor = "1000";
-        public string cts_Motor
+        private string _encoderResolution = "1000";
+        public string EncoderResolution
         {
-            get { return _cts_Motor; }
-            set { _cts_Motor = value; OnPropertyChanged("cts_Motor"); }
+            get { return _encoderResolution; }
+            set { _encoderResolution = value; OnPropertyChanged("EncoderResolution"); }
         }
         private int _hallEnDis = 0;
         public int HallEnDis
@@ -240,10 +251,13 @@ namespace SuperButton.ViewModels
         {
             if(!LeftPanelViewModel._app_running)
                 return;
-            if(PolePair == "" || PolePair == "0" || ContinuousCurrent == "" || ContinuousCurrent == "0" || MaxSpeed == "" || MaxSpeed == "0" || cts_Motor == "" || cts_Motor == "0")
+            if(PolePair == "" || PolePair == "0" || 
+                ContinuousCurrent == "" || ContinuousCurrent == "0" || 
+                MaxSpeed == "" || MaxSpeed == "0" || 
+                EncoderResolution == "" || EncoderResolution == "0")
                 return;
             
-            //StartEnable = false;
+            StartEnable = false;
             #region InitVariables
             DataViewModel operation = new DataViewModel();
             Int32 commandId = 0, commandSubId = 0;
@@ -261,11 +275,11 @@ namespace SuperButton.ViewModels
             }
             if(GetInstance.OperationList.Count == 0)
             {
-                //StartEnable = true;
+                StartEnable = true;
                 return;
             }
-            //else
-                //StartEnable = false;
+            else
+                StartEnable = false;
 
             GetInstance.OperationList.Clear();
 
@@ -311,7 +325,7 @@ namespace SuperButton.ViewModels
             if(MotorType == 0)
                 comutation_source = ((int)ComutationSource.Cmtn_DC_Brushed).ToString();
 
-            int max_speed = (Convert.ToInt32(MaxSpeed) / 60) * Convert.ToInt32(cts_Motor);
+            int max_speed = (Convert.ToInt32(MaxSpeed) / 60) * Convert.ToInt32(EncoderResolution);
             int min_seed = -max_speed;
 
             operation = new DataViewModel { CommandName = "Load Default", CommandId = "63", CommandSubId = "1", IsFloat = false, CommandValue = "1" };
@@ -379,7 +393,7 @@ namespace SuperButton.ViewModels
 
             if(id_fdbck_cmd_temp != "")
             {
-                operation = new DataViewModel { CommandName = "Resolution", CommandId = id_fdbck_cmd_temp, CommandSubId = "5", IsFloat = false, CommandValue = cts_Motor };
+                operation = new DataViewModel { CommandName = "Resolution", CommandId = id_fdbck_cmd_temp, CommandSubId = "5", IsFloat = false, CommandValue = EncoderResolution };
                 Int32.TryParse(operation.CommandId, out commandId);
                 Int32.TryParse(operation.CommandSubId, out commandSubId);
                 GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
@@ -387,7 +401,7 @@ namespace SuperButton.ViewModels
 
             if(EncoderFeedback == (int)eEncSel.Enc_Fdb_Ssi)
             {
-                operation = new DataViewModel { CommandName = "PacketLenght", CommandId = "73", CommandSubId = "8", IsFloat = false, CommandValue = ((Math.Log(Convert.ToInt32(cts_Motor)) / Math.Log(2)) + 1).ToString() };
+                operation = new DataViewModel { CommandName = "PacketLenght", CommandId = "73", CommandSubId = "8", IsFloat = false, CommandValue = ((Math.Log(Convert.ToInt32(EncoderResolution)) / Math.Log(2)) + 1).ToString() };
                 Int32.TryParse(operation.CommandId, out commandId);
                 Int32.TryParse(operation.CommandSubId, out commandSubId);
                 GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
@@ -468,7 +482,7 @@ namespace SuperButton.ViewModels
             //    GetInstance.CalibrationWizardList[new Tuple<int, int>(6, Convert.ToInt16(GetInstance.OperationList.ElementAt(GetInstance.Count).Value.CommandSubId))].CalibStatus = RoundBoolLed.FAILED;
             //}
 
-            //StartEnable = true;
+            StartEnable = true;
             CalibrationGetStatusTask(STOP);
             GetInstance.Count = GetInstance.OperationList.Count;
         }
@@ -497,6 +511,72 @@ namespace SuperButton.ViewModels
                 OnPropertyChanged("AdvancedConfig");
             }
         }
+        private int _externalFeedback = 0;
+        public int ExternalFeedback
+        {
+            get { return _externalFeedback; }
+            set
+            {
+                _externalFeedback = value;
+                OnPropertyChanged("ExternalFeedback");
+            }
+        }
+        private int _externalEncoder = 0;
+        public int ExternalEncoder
+        {
+            get { return _externalEncoder; }
+            set
+            {
+                _externalEncoder = value;
+                OnPropertyChanged("ExternalEncoder");
+            }
+        }
+        private string _externalResolution = "1000";
+        public string ExternalResolution
+        {
+            get { return _externalResolution; }
+            set { _externalResolution = value; OnPropertyChanged("ExternalResolution"); }
+        }
+        private int _externalSpeedLoop = 0;
+        public int ExternalSpeedLoop
+        {
+            get { return _externalSpeedLoop; }
+            set
+            {
+                _externalSpeedLoop = value;
+                OnPropertyChanged("ExternalSpeedLoop");
+            }
+        }
+        private int _externalPositionLoop = 0;
+        public int ExternalPositionLoop
+        {
+            get { return _externalPositionLoop; }
+            set
+            {
+                _externalPositionLoop = value;
+                OnPropertyChanged("ExternalPositionLoop");
+            }
+        }
+        private int _externalDriveMode = 0;
+        public int ExternalDriveMode
+        {
+            get { return _externalDriveMode; }
+            set
+            {
+                _externalDriveMode = value;
+                OnPropertyChanged("ExternalDriveMode");
+            }
+        }
+        private int _externalCommandSource = 0;
+        public int ExternalCommandSource
+        {
+            get { return _externalCommandSource; }
+            set
+            {
+                _externalCommandSource = value;
+                OnPropertyChanged("ExternalCommandSource");
+            }
+        }
         #endregion AdvancedConfiguration
         #region Tasks
         public const int START = 1;
@@ -511,7 +591,6 @@ namespace SuperButton.ViewModels
                 case STOP:
                     lock(this)
                     {
-                        //StartEnable = true;
                         if(_calibrationGetStatus != null)
                         {
                             lock(_calibrationGetStatus)
@@ -520,7 +599,6 @@ namespace SuperButton.ViewModels
                                 _calibrationGetStatus.Elapsed -= CalibrationGetStatus;
                                 _calibrationGetStatus = null;
                                 Thread.Sleep(10);
-                                //StartEnable = true;
                             }
                         }
                     }
@@ -605,10 +683,8 @@ namespace SuperButton.ViewModels
             }
             if(GetInstance.Count == GetInstance.OperationList.Count)
             {
-                //StartEnable = true;
-                Thread.Sleep(10);
-                //AbortCalib();
-                //CalibrationGetStatusTask(STOP);
+                StartEnable = true;
+                CalibrationGetStatusTask(STOP);
             }
         }
         private void sendPreStartOperation()

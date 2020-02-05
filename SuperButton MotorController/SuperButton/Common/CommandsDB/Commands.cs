@@ -578,7 +578,7 @@ namespace SuperButton.CommandsDB
                 CommandName = "Speed loop Fdb",
                 CommandId = "50",
                 CommandSubId = "6",
-                CommandValue = "0", //first enum in list
+                CommandValue = "1", //first enum in list
                 CommandList = Enums["Speed loop Fdb"]
             };
             EnumViewCommandsList.Add(new Tuple<int, int>(50, 6), enum3);
@@ -591,7 +591,7 @@ namespace SuperButton.CommandsDB
                 CommandName = "Position loop Fdb",
                 CommandId = "50",
                 CommandSubId = "7",
-                CommandValue = "0", //first enum in list
+                CommandValue = "1", //first enum in list
                 CommandList = Enums["Position loop Fdb"]
             };
             EnumViewCommandsList.Add(new Tuple<int, int>(50, 7), enum4);

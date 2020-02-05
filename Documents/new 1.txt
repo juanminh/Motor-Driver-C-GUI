@@ -1,0 +1,34 @@
+Exception thrown: 'System.TimeoutException' in System.dll
+The thread 0x3fb8 has exited with code 0 (0x0).
+
+Exception thrown: 'System.IndexOutOfRangeException' in Abt.Controls.SciChart.Wpf.dll
+
+Exception thrown: 'System.IndexOutOfRangeException' in Abt.Controls.SciChart.Wpf.dll
+ SciChartSurface didn't render, because an exception was thrown:
+  Message: Index was outside the bounds of the array.
+
+  Stack Trace:    at A.	`1.(IList`1 , IList`1 , IndexRange , Int32 , Boolean )
+   at A.	`1.Execute(ResamplingMode resamplingMode, IndexRange pointRange, Int32 viewportWidth, Boolean isFifo, Boolean isCategoryAxis, IList xColumn, IList yColumn, Nullable`1 dataIsSorted, Nullable`1 dataIsEvenlySpaced, Nullable`1 dataIsDisplayedAs2d, IRange visibleXRange)
+   at Abt.Controls.SciChart.Model.DataSeries.XyDataSeries`2.ToPointSeries(ResamplingMode resamplingMode, IndexRange pointRange, Int32 viewportWidth, Boolean isCategoryAxis, Nullable`1 dataIsDisplayedAs2D, IRange visibleXRange, IPointResamplerFactory factory)
+   at A..(AxisCollection , IRenderableSeries , RenderPassInfo , IPointResamplerFactory , IDataSeries& , IndexRange& , IPointSeries& )
+   at A..(ISciChartSurface , Size )
+   at A..RenderLoop(IRenderContext2D renderContext)
+   at Abt.Controls.SciChart.VisualException thrown: 'System.IndexOutOfRangeException' in Abt.Controls.SciChart.Wpf.dll
+Plot 1: 3:44:42.814
+16666
+2
+s.SciChartSurface.DoDrawingLoop()
+
+ SciChartSurface didn't render, because an exception was thrown:
+  Message: Index was outside the bounds of the array.
+
+  Stack Trace:    at A.	`1.(IList`1 , IList`1 , IndexRange , Int32 , Boolean )
+   at A.	`1.Execute(ResamplingMode resamplingMode, IndexRange pointRange, Int32 viewportWidth, Boolean isFifo, Boolean isCategoryAxis, IList xColumn, IList yColumn, Nullable`1 dataIsSorted, Nullable`1 dataIsEvenlySpaced, Nullable`1 dataIsDisplayedAs2d, IRange visibleXRange)
+   at Abt.Controls.SciChart.Model.DataSeries.XyDataSeries`2.ToPointSeries(ResamplingMode resamplingMode, IndexRange pointRange, Int32 viewportWidth, Boolean isCategoryAxis, Nullable`1 dataIsDisplayedAs2D, IRange visibleXRange, IPointResamplerFactory factory)
+   at A..(AxisCollection , IRenderableSeries , RenderPassInfo , IPointResamplerFactory , IDataSeries& , IndexRange& , IPointSeries& )
+   at A..(ISciChartSurface , Size )
+   at A..RenderLoop(IRenderContext2D renderContext)Plot 2: 3:44:42.938
+
+   
+
+   at Abt.Controls.SciChart.Visuals.SciChartSurface.DoDrawingLoop()

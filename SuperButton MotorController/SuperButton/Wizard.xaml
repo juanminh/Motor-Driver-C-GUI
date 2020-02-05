@@ -8,7 +8,7 @@
         xmlns:viewModels="clr-namespace:SuperButton.ViewModels"
         xmlns:models="clr-namespace:SuperButton.Models"
         mc:Ignorable="d"
-        Title="Wizard" Height="460" Width="600"
+        Title="Wizard" Height="500" Width="600"
         Closing="Window_Closing"
         Icon="./Themes/MotorController.png"
         WindowStartupLocation="CenterOwner"
@@ -246,6 +246,7 @@
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="Auto"/>
@@ -254,7 +255,8 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <Grid Grid.Column="0">
+        <!--#region Col_1-->
+        <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
@@ -263,6 +265,7 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" Height="15"/>
+            <!--#region Parameters-->
             <Border Grid.Row="1" Width="290" Height="auto" BorderBrush="Gray" BorderThickness="1" CornerRadius="4" VerticalAlignment="Top">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -271,6 +274,7 @@
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
                     <TextBlock Grid.Row="0" Width="Auto" Text="Parameters" Foreground="White" Background="Gray"/>
+                    <!--#region MotorParameters-->
                     <GroupBox Grid.Row="1" Width="Auto" Foreground="White" FontSize="12" Style="{x:Null}" BorderBrush="Transparent">
                         <GroupBox.Header>
                             <Span FontWeight="Bold">Motor Parameters</Span>
@@ -289,7 +293,7 @@
                                             </Style.Triggers>
                                         </Style>
                                     </RowDefinition.Style>
-                                </RowDefinition>
+                                </RowDefinition> <!-- Make Pole Pair visible or not -->
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
@@ -356,6 +360,8 @@
                             </TextBox>
                         </Grid>
                     </GroupBox>
+                    <!--#endregion MotorParameters-->
+                    <!--#region MotorFeedbacks-->
                     <GroupBox Grid.Row="2" Width="Auto" Foreground="White" FontSize="12" Style="{x:Null}" BorderBrush="Transparent">
                         <GroupBox.Header>
                             <Span FontWeight="Bold">Motor Feedbacks</Span>
@@ -373,7 +379,7 @@
                                             </Style.Triggers>
                                         </Style>
                                     </RowDefinition.Style>
-                                </RowDefinition>
+                                </RowDefinition> <!-- Make Hall visible or not -->
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
                             </Grid.RowDefinitions>
@@ -401,10 +407,45 @@
                                               FontSize="12"
                                               SelectedIndex="{Binding EncoderFeedback}">
                                         <ComboBoxItem Content="None"></ComboBoxItem>
-                                        <ComboBoxItem Content="Incremental 1"></ComboBoxItem>
-                                        <ComboBoxItem Content="Incremental Sin Cos"></ComboBoxItem>
+                                        <ComboBoxItem Content="Incremental 1">
+                                            <ComboBoxItem.Style>
+                                               <Style TargetType="{x:Type ComboBoxItem}" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
+                                                  <Setter Property="Foreground" Value="White" />
+                                                    <Setter Property="ToolTip" Value="" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding HallEnDis}" Value="0">
+                                                          <Setter Property="Foreground" Value="Red" />
+                                                            <Setter Property="ToolTip" Value="You cannot choose this option" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ComboBoxItem.Style>
+                                        </ComboBoxItem>
+                                        <ComboBoxItem Content="Incremental Sin Cos">
+                                            <ComboBoxItem.Style>
+                                                <Style TargetType="{x:Type ComboBoxItem}" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
+                                                    <Setter Property="Foreground" Value="White" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding HallEnDis}" Value="0">
+                                                            <Setter Property="Foreground" Value="Red" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ComboBoxItem.Style>
+                                        </ComboBoxItem>
                                         <ComboBoxItem Content="Absolute Sin Cos"></ComboBoxItem>
-                                        <ComboBoxItem Content="Incremental 2"></ComboBoxItem>
+                                        <ComboBoxItem Content="Incremental 2">
+                                            <ComboBoxItem.Style>
+                                                <Style TargetType="{x:Type ComboBoxItem}" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
+                                                    <Setter Property="Foreground" Value="White" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding HallEnDis}" Value="0">
+                                                            <Setter Property="Foreground" Value="Red" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </ComboBoxItem.Style>
+                                        </ComboBoxItem>
                                         <ComboBoxItem Content="Ssi"></ComboBoxItem>
                                         <!--<ComboBoxItem Content="HALL">
                                             <ComboBoxItem.Style>
@@ -453,7 +494,7 @@
                                     <TextBlock Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">Resolution [cnts/rev]</TextBlock>
                                     <TextBox Grid.Row="1" HorizontalAlignment="Right" BorderThickness="0"
                                             Width="{StaticResource MotorParametersWidth}" 
-                                            FontSize="12" Text="{Binding cts_Motor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                            FontSize="12" Text="{Binding EncoderResolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                         <TextBox.Style>
                                             <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
                                                 <Setter Property="IsReadOnly" Value="False" />
@@ -493,9 +534,12 @@
                             </GroupBox>
                         </Grid>
                     </GroupBox>
+                    <!--#endregion MotorFeedbacks-->
                 </Grid>
             </Border>
+            <!--#endregion Parameters-->
             <Grid Grid.Row="2" Height="15"/>
+            <!--#region AdvancedConfiguration-->
             <Border Grid.Row="3" Width="Auto" Height="auto" BorderBrush="Gray" BorderThickness="1" CornerRadius="4" VerticalAlignment="Top">
                 <Grid>
                     <Grid.RowDefinitions>
@@ -517,6 +561,8 @@
                     <CheckBox  Grid.Row="0" HorizontalAlignment="Right" IsChecked="{Binding AdvancedConfig}"/>
                     <Grid Grid.Row="1">
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
@@ -589,6 +635,7 @@
                                 </i:Interaction.Behaviors>
                             </TextBox>
                         </Grid>
+                        <!--#region Encoder-->
                         <GroupBox Grid.Row="2" Width="Auto" Foreground="White" FontSize="12" Style="{x:Null}" BorderBrush="Transparent">
                             <GroupBox.Header>
                                 <Span FontWeight="Bold">PI Loop Feedback</Span>
@@ -618,30 +665,34 @@
                                     <ComboBoxItem Content="Motor"></ComboBoxItem>
                                     <ComboBoxItem Content="External"></ComboBoxItem>
                                 </ComboBox>
-                                <TextBlock Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">Drive Mode</TextBlock>
-                                <ComboBox Grid.Row="2" HorizontalAlignment="Right"
+                            </Grid>
+                        </GroupBox>
+
+                        <TextBlock Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">Drive Mode</TextBlock>
+                        <ComboBox Grid.Row="3" HorizontalAlignment="Right"
                                               Width="{StaticResource MotorParametersWidth}" 
                                               FontSize="12"
                                               SelectedIndex="{Binding ExternalDriveMode}">
-                                    <ComboBoxItem Content="Current Control"></ComboBoxItem>
-                                    <ComboBoxItem Content="Speed Control"></ComboBoxItem>
-                                    <ComboBoxItem Content="Position Control"></ComboBoxItem>
-                                </ComboBox>
-                                <TextBlock Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">Command Source</TextBlock>
-                                <ComboBox Grid.Row="3" HorizontalAlignment="Right"
+                            <ComboBoxItem Content="Current Control"></ComboBoxItem>
+                            <ComboBoxItem Content="Speed Control"></ComboBoxItem>
+                            <ComboBoxItem Content="Position Control"></ComboBoxItem>
+                        </ComboBox>
+                        <TextBlock Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">Command Source</TextBlock>
+                        <ComboBox Grid.Row="4" HorizontalAlignment="Right"
                                               Width="{StaticResource MotorParametersWidth}" 
                                               FontSize="12"
                                               SelectedIndex="{Binding ExternalCommandSource}">
-                                    <ComboBoxItem Content="Digital"></ComboBoxItem>
-                                    <ComboBoxItem Content="Analog"></ComboBoxItem>
-                                </ComboBox>
-                            </Grid>
-                        </GroupBox>
+                            <ComboBoxItem Content="Digital"></ComboBoxItem>
+                            <ComboBoxItem Content="Analog"></ComboBoxItem>
+                        </ComboBox>
+                        <!--#endregion Encoder-->
                     </Grid>
                 </Grid>
             </Border>
+            <!--#endregion AdvancedConfiguration-->
         </Grid>
-        <Grid Grid.Column="2">
+        <!--#endregion Col_1-->
+        <Grid Grid.Column="3">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
@@ -722,8 +773,9 @@
                 </Grid>
             </Border>
         </Grid>
-        <!-- Vertical GridSplitter wizardStatus                             Style="{StaticResource CalibButtonStyle}" 
- -->
+        
+        
+        <!-- Vertical GridSplitter -->
         <!--<common:CollapsableGridSplitter Grid.Column="4"              
 			Width="9"
 			HorizontalAlignment="Center"
