@@ -1,0 +1,130 @@
+﻿<UserControl x:Class="SuperButton.Views.UC_CalibrationWizard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SuperButton.Views"
+             xmlns:Helpers="clr-namespace:SuperButton.Helpers"
+             mc:Ignorable="d" 
+             d:DesignHeight="40" d:DesignWidth="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition>
+                <ColumnDefinition.Style>
+                    <Style TargetType="{x:Type ColumnDefinition}">
+                        <Setter Property="Width" Value="Auto" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding AdvanceMode_Calibration}" Value="false">
+                                <Setter Property="Width" Value="0" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ColumnDefinition.Style>
+            </ColumnDefinition>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <CheckBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="16" IsChecked="{Binding CalibrationPerform}"/>
+        <TextBlock Grid.Column="3" Width="120" Height="22" 
+                    Foreground="White"
+                    VerticalAlignment="Center" 
+                    HorizontalAlignment="Center"
+                    Text="{Binding CalibrationName}"/>
+        <Helpers:RoundBoolLed Grid.Column="5"
+                              Width="20" Height="20" 
+                              CurrStatus="{Binding CalibStatus}"
+                              VerticalAlignment="Center" 
+                              HorizontalAlignment="Center"/>
+        <TextBox Grid.Column="7" Height="22" Width="100"
+                 IsHitTestVisible="False"
+                 IsReadOnly="True"
+                 HorizontalContentAlignment="Center">
+            <TextBox.Style>
+                <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                    <Setter Property="Text" Value="idle" />
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding CalibStatus}" Value="4" />
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter Property="Text" Value="Running" />
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding CalibStatus}" Value="3" />
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter Property="Text" Value="Disabled" />
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding CalibStatus}" Value="2" />
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter Property="Text" Value="Failed" />
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding CalibStatus}" Value="1" />
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter Property="Text" Value="Passed" />
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+    </Grid>
+</UserControl>
+
+<!--
+    default
+Rs232Interface.GetInstance.SendToParser(new PacketFields
+                    {
+                        Data2Send = 1,
+                        ID = 63,
+                        SubID = Convert.ToInt16(1),
+                        IsSet = true,
+                        IsFloat = false
+                    }
+                    );
+    reset
+     Rs232Interface.GetInstance.SendToParser(new PacketFields
+                    {
+                        Data2Send = 1,
+                        ID = 63,
+                        SubID = Convert.ToInt16(9),
+                        IsSet = true,
+                        IsFloat = false
+                    }
+                    );
+    
+    save
+    Rs232Interface.GetInstance.SendToParser(new PacketFields
+                    {
+                        Data2Send = 1,
+                        ID = 63,
+                        SubID = Convert.ToInt16(0),
+                        IsSet = true,
+                        IsFloat = false
+                    }
+                    );
+    Pre start:
+1.	Speed and postion
+51[5] = 51[6]= Fdb_Motor
+2.	External encoder 50[4] = Enc_Fdb_None
+3.	Peak current 52[2] = 52[1]
+
+    
+    -->
