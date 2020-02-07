@@ -600,7 +600,8 @@ namespace SuperButton.Models.DriverBlock
 
                         if(WizardWindowViewModel.GetInstance.CalibrationWizardList.ContainsKey(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)))
                             WizardWindowViewModel.GetInstance.updateCalibrationStatus(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2), newPropertyValue);
-                            //Debug.WriteLine(commandidentifier.Item1.ToString() + "[" + commandidentifier.Item2.ToString() + "] = " + newPropertyValue);
+
+                        //Debug.WriteLine(commandidentifier.Item1.ToString() + "[" + commandidentifier.Item2.ToString() + "] = " + newPropertyValue);
 
                     }
                     #endregion Calibration

@@ -13,6 +13,11 @@ using System.Diagnostics;
 using SuperButton.CommandsDB;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Data;
+using System.Globalization;
+using System.Windows.Media;
+using System.Windows.Input;
+using SuperButton.Models;
 
 namespace SuperButton.ViewModels
 {
@@ -52,7 +57,6 @@ namespace SuperButton.ViewModels
         Cmtn_Hall_Inc_Enc1 = 5,
         Cmtn_DC_Brushed = 9
     };
-
     internal class WizardWindowViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
@@ -62,8 +66,16 @@ namespace SuperButton.ViewModels
 
             if(handler != null)
                 handler(this, new PropertyChangedEventArgs(propertyName));
+            if(propertyName != "ValidOperations")
+                VerifyValidOperation();
         }
-
+        public void OnPropertyChanged(PropertyChangedEventArgs e)
+        {
+            if(PropertyChanged != null)
+            {
+                PropertyChanged(this, e);
+            }
+        }
         public Dictionary<Tuple<int, int>, CalibrationWizardViewModel> CalibrationWizardList = new Dictionary<Tuple<int, int>, CalibrationWizardViewModel>();
         public Dictionary<string, ObservableCollection<object>> CalibrationWizardListbySubGroup = new Dictionary<string, ObservableCollection<object>>();
         public Dictionary<Tuple<int, int>, DataViewModel> OperationList = new Dictionary<Tuple<int, int>, DataViewModel>();
@@ -97,6 +109,7 @@ namespace SuperButton.ViewModels
                 CalibrationWizardListbySubGroup.Add("CalibrationList", new ObservableCollection<object>());
                 BuildCalibrationWizardList();
             }
+            Start = new RelayCommand(StartCalib);
         }
         ~WizardWindowViewModel() { }
         #region Motor_Parameter
@@ -111,11 +124,15 @@ namespace SuperButton.ViewModels
                 OnPropertyChanged("MotorType");
             }
         }
-        private string _polePaire = "1";
+        private string _polePaire = "";
         public string PolePair
         {
             get { return _polePaire; }
-            set { _polePaire = value; OnPropertyChanged("PolePair"); }
+            set
+            {
+                _polePaire = value;
+                OnPropertyChanged("PolePair");
+            }
         }
         private string _continuousCurrent = "";
         public string ContinuousCurrent
@@ -129,36 +146,6 @@ namespace SuperButton.ViewModels
             get { return _maxSpeed; }
             set { _maxSpeed = value; OnPropertyChanged("MaxSpeed"); }
         }
-        private int _encoderFeedback = 0;
-        public int EncoderFeedback
-        {
-            get { return _encoderFeedback; }
-            set
-            {
-                _encoderFeedback = value;
-                switch(value)
-                {
-                    case 0:
-                        EncoderResolution = "1000";
-                        PolePair = "1";
-                        break;
-                    case 3:
-                        EncoderResolution = "4096";
-                        break;
-                    default:
-                        EncoderResolution = EncoderResolution;
-                        break;
-                }
-                BuildCalibrationWizardList();
-                OnPropertyChanged("EncoderFeedback");
-            }
-        }
-        private string _encoderResolution = "1000";
-        public string EncoderResolution
-        {
-            get { return _encoderResolution; }
-            set { _encoderResolution = value; OnPropertyChanged("EncoderResolution"); }
-        }
         private int _hallEnDis = 0;
         public int HallEnDis
         {
@@ -170,13 +157,68 @@ namespace SuperButton.ViewModels
                 OnPropertyChanged("HallEnDis");
             }
         }
+        private int _encoderFeedback = 0;
+        public int EncoderFeedback
+        {
+            get { return _encoderFeedback; }
+            set
+            {
+                _encoderFeedback = value;
+                switch(value)
+                {
+                    case (int)eEncSel.Enc_Fdb_None:
+                        EncoderResolution = "1000";
+                        break;
+                    case (int)eEncSel.Enc_Fdb_Abs_Sin_Cos:
+                        EncoderResolution = "4096";
+                        break;
+                    default:
+                        EncoderResolution = _encoderResolution;
+                        break;
+                }
+                if(value == 0)
+                    EncoderFeedbackExist = false;
+                else
+                    EncoderFeedbackExist = true;
+                BuildCalibrationWizardList();
+                OnPropertyChanged("EncoderFeedback");
+            }
+        }
+        private bool _encoderFeedbackExist = false;
+        public bool EncoderFeedbackExist
+        {
+            get { return _encoderFeedbackExist; }
+            set
+            {
+                _encoderFeedbackExist = value;
+                OnPropertyChanged("EncoderFeedbackExist");
+            }
+        }
+        private string _encoderResolution = "1000";
+        public string EncoderResolution
+        {
+            get { return _encoderResolution; }
+            set { _encoderResolution = value; OnPropertyChanged("EncoderResolution"); }
+        }
         #endregion Motor_Parameter
         #region Calibration
+        private int _validOperations = RoundBoolLed.FAILED;
+        public int ValidOperations
+        {
+            get { return _validOperations; }
+            set
+            {
+                _validOperations = value;
+                OnPropertyChanged("ValidOperations");
+            }
+        }
         private bool _startEnable = true;
-        public bool StartEnable {
+        public bool StartEnable
+        {
             get { return _startEnable; }
-            set {
-                 _startEnable = value;
+            set
+            {
+                _startEnable = value;
                 OnPropertyChanged("StartEnable");
             }
         }
@@ -246,18 +288,60 @@ namespace SuperButton.ViewModels
                 }
             }
         }
-        public ActionCommand Start { get { return new ActionCommand(StartCalib); } }
+        //public ActionCommand Start { get { return new ActionCommand(StartCalib); } }
+        private bool canExecute = true;
+        public void ChangeCanExecute(object obj)
+        {
+            canExecute = !canExecute;
+        }
+        public bool CanExecute
+        {
+            get
+            {
+                return this.canExecute;
+            }
+
+            set
+            {
+                if(this.canExecute == value)
+                {
+                    return;
+                }
+
+                this.canExecute = value;
+            }
+        }
+        private ICommand _start { get; set; }
+
+        public ICommand Start {
+            get
+            {
+                return _start;
+            }
+            set
+            {
+                _start = value;
+            }
+        }
         private void StartCalib()
         {
+            StartEnable = false;
+            Debug.WriteLine("wait");
+            Thread.Sleep(5000);
+            CalibrationGetStatusTask(STOP);
+            Debug.WriteLine("end");
+            return;
+
             if(!LeftPanelViewModel._app_running)
                 return;
-            if(PolePair == "" || PolePair == "0" || 
-                ContinuousCurrent == "" || ContinuousCurrent == "0" || 
-                MaxSpeed == "" || MaxSpeed == "0" || 
+            if(PolePair == "" || PolePair == "0" ||
+                ContinuousCurrent == "" || ContinuousCurrent == "0" ||
+                MaxSpeed == "" || MaxSpeed == "0" ||
                 EncoderResolution == "" || EncoderResolution == "0")
                 return;
-            
+
             StartEnable = false;
+
             #region InitVariables
             DataViewModel operation = new DataViewModel();
             Int32 commandId = 0, commandSubId = 0;
@@ -511,16 +595,6 @@ namespace SuperButton.ViewModels
                 OnPropertyChanged("AdvancedConfig");
             }
         }
-        private int _externalFeedback = 0;
-        public int ExternalFeedback
-        {
-            get { return _externalFeedback; }
-            set
-            {
-                _externalFeedback = value;
-                OnPropertyChanged("ExternalFeedback");
-            }
-        }
         private int _externalEncoder = 0;
         public int ExternalEncoder
         {
@@ -528,10 +602,36 @@ namespace SuperButton.ViewModels
             set
             {
                 _externalEncoder = value;
+                switch(value)
+                {
+                    case (int)eEncSel.Enc_Fdb_None:
+                        ExternalResolution = "1000";
+                        break;
+                    case (int)eEncSel.Enc_Fdb_Abs_Sin_Cos:
+                        ExternalResolution = "4096";
+                        break;
+                    default:
+                        EncoderResolution = _encoderResolution;
+                        break;
+                }
+                if(value == 0)
+                    ExternalEncoderExist = false;
+                else
+                    ExternalEncoderExist = true;
                 OnPropertyChanged("ExternalEncoder");
             }
         }
-        private string _externalResolution = "1000";
+        private bool _externalEncoderExist = false;
+        public bool ExternalEncoderExist
+        {
+            get { return _externalEncoderExist; }
+            set
+            {
+                _externalEncoderExist = value;
+                OnPropertyChanged("ExternalEncoderExist");
+            }
+        }
+        private string _externalResolution = "";
         public string ExternalResolution
         {
             get { return _externalResolution; }
@@ -557,7 +657,7 @@ namespace SuperButton.ViewModels
                 OnPropertyChanged("ExternalPositionLoop");
             }
         }
-        private int _externalDriveMode = 0;
+        private int _externalDriveMode = 1;
         public int ExternalDriveMode
         {
             get { return _externalDriveMode; }
@@ -579,6 +679,155 @@ namespace SuperButton.ViewModels
         }
         #endregion AdvancedConfiguration
         #region Tasks
+        private bool _motorParameters = false;
+        private void VerifyValidOperation()
+        {
+            //if(!_motorParameters)
+            { // if Motor Parameters Group is not valid 
+                switch(_motorType)
+                {
+                    case 0:
+                        if(_continuousCurrent != "" && _continuousCurrent != "0")
+                        {
+                            if(_maxSpeed != "" && _maxSpeed != "0")
+                            {
+                                switch(_encoderFeedback)
+                                {
+                                    case 0:
+                                        ValidOperations = RoundBoolLed.FAILED;
+                                        _motorParameters = false;
+                                        break;
+                                    case 1:
+                                    case 2:
+                                    case 4:
+                                        ValidOperations = RoundBoolLed.FAILED;
+                                        _motorParameters = false;
+                                        break;
+                                    default:
+                                        if(_encoderResolution != "" && _encoderResolution != "0")
+                                        {
+                                            ValidOperations = RoundBoolLed.PASSED;
+                                            _motorParameters = true;
+                                        }
+                                        else
+                                        {
+                                            ValidOperations = RoundBoolLed.FAILED;
+                                            _motorParameters = false;
+                                        }
+                                        break;
+                                }
+                            }
+                            else
+                            {
+                                ValidOperations = RoundBoolLed.FAILED;
+                                _motorParameters = false;
+                            }
+                        }
+                        else
+                        {
+                            ValidOperations = RoundBoolLed.FAILED;
+                            _motorParameters = false;
+                        }
+                        break;
+                    case 1:
+                        if(_polePaire != "" && _polePaire != "0")
+                        {
+                            if(_continuousCurrent != "" && _continuousCurrent != "0")
+                            {
+                                if(_maxSpeed != "" && _maxSpeed != "0")
+                                {
+                                    switch(_hallEnDis)
+                                    {
+                                        case 0: // Hall Disable
+                                            switch(_encoderFeedback)
+                                            {
+                                                case 0:
+                                                    ValidOperations = RoundBoolLed.FAILED;
+                                                    _motorParameters = false;
+                                                    break;
+                                                default:
+                                                    if(_encoderResolution != "" && _encoderResolution != "0")
+                                                    {
+                                                        ValidOperations = RoundBoolLed.PASSED;
+                                                        _motorParameters = true;
+                                                    }
+                                                    else
+                                                    {
+                                                        ValidOperations = RoundBoolLed.FAILED;
+                                                        _motorParameters = false;
+                                                    }
+                                                    break;
+                                            }
+                                            break;
+                                        case 1: // Hall Enable
+                                            switch(_encoderFeedback)
+                                            {
+                                                case 0:
+                                                    ValidOperations = RoundBoolLed.PASSED;
+                                                    _motorParameters = true;
+                                                    break;
+                                                default:
+                                                    if(_encoderResolution != "" && _encoderResolution != "0")
+                                                    {
+                                                        ValidOperations = RoundBoolLed.PASSED;
+                                                        _motorParameters = true;
+                                                    }
+                                                    else
+                                                    {
+                                                        ValidOperations = RoundBoolLed.FAILED;
+                                                        _motorParameters = false;
+                                                    }
+                                                    break;
+                                            }
+                                            break;
+                                    }
+                                }
+                                else
+                                {
+                                    ValidOperations = RoundBoolLed.FAILED;
+                                    _motorParameters = false;
+                                }
+                            }
+                            else
+                            {
+                                ValidOperations = RoundBoolLed.FAILED;
+                                _motorParameters = false;
+                            }
+                        }
+                        else
+                        {
+                            ValidOperations = RoundBoolLed.FAILED;
+                            _motorParameters = false;
+                        }
+                        break;
+                }
+            }
+            // if Motor Parameters Group is valid and external encoder feedback selectionned, 
+            // then verify External Group valid operation.
+            if(_motorParameters)// 
+            {
+                if(_encoderFeedback != _externalEncoder &&
+                    _externalEncoder != 0 &&
+                    _externalResolution != "" && _externalResolution != "0")
+                    ValidOperations = RoundBoolLed.PASSED;
+                else
+                    ValidOperations = RoundBoolLed.FAILED;
+
+                if(_motorType == 1 && _hallEnDis == 0 && (_externalSpeedLoop == 0 || _externalPositionLoop == 0))
+                    ValidOperations = RoundBoolLed.FAILED;
+                else
+                    ValidOperations = RoundBoolLed.PASSED;
+                if(_encoderFeedback == 0 && (_externalSpeedLoop == 1 || _externalPositionLoop == 1))
+                    ValidOperations = RoundBoolLed.FAILED;
+                else
+                    ValidOperations = RoundBoolLed.PASSED;
+                if(_externalEncoder == 0 && (_externalSpeedLoop == 2 || _externalPositionLoop == 2))
+                    ValidOperations = RoundBoolLed.FAILED;
+                else
+                    ValidOperations = RoundBoolLed.PASSED;
+            }
+        }
+
         public const int START = 1;
         public const int STOP = 0;
 
@@ -591,27 +840,28 @@ namespace SuperButton.ViewModels
                 case STOP:
                     lock(this)
                     {
-                        if(_calibrationGetStatus != null)
+                        if(GetInstance._calibrationGetStatus != null)
                         {
-                            lock(_calibrationGetStatus)
+                            lock(GetInstance._calibrationGetStatus)
                             {
-                                _calibrationGetStatus.Stop();
-                                _calibrationGetStatus.Elapsed -= CalibrationGetStatus;
-                                _calibrationGetStatus = null;
+                                GetInstance._calibrationGetStatus.Stop();
+                                GetInstance._calibrationGetStatus.Elapsed -= GetInstance.CalibrationGetStatus;
+                                GetInstance._calibrationGetStatus = null;
                                 Thread.Sleep(10);
                             }
                         }
                     }
+                    StartEnable = true;
                     break;
                 case START:
-                    if(_calibrationGetStatus == null)
+                    if(GetInstance._calibrationGetStatus == null)
                     {
                         Task.Factory.StartNew(action: () =>
                         {
                             Thread.Sleep(100);
-                            _calibrationGetStatus = new Timer(_calibrationGetStatusInterval) { AutoReset = true };
-                            _calibrationGetStatus.Elapsed += CalibrationGetStatus;
-                            _calibrationGetStatus.Start();
+                            GetInstance._calibrationGetStatus = new Timer(_calibrationGetStatusInterval) { AutoReset = true };
+                            GetInstance._calibrationGetStatus.Elapsed += GetInstance.CalibrationGetStatus;
+                            GetInstance._calibrationGetStatus.Start();
                         });
                     }
                     break;
@@ -637,6 +887,7 @@ namespace SuperButton.ViewModels
         }
         private void CalibrationGetStatus(object sender, EventArgs e)
         {
+            /*
             if(GetInstance.Count < GetInstance.OperationList.Count)
             {
                 Rs232Interface.GetInstance.SendToParser(new PacketFields
@@ -649,6 +900,7 @@ namespace SuperButton.ViewModels
                 });
                 Debug.WriteLine(GetInstance.OperationList.ElementAt(GetInstance.Count).Value.CommandId + "[" + Convert.ToInt16(GetInstance.OperationList.ElementAt(GetInstance.Count).Value.CommandSubId) + "]");
             }
+            */
         }
         public void updateCalibrationStatus(Tuple<int, int> commandidentifier, string newPropertyValue)
         {
@@ -682,10 +934,7 @@ namespace SuperButton.ViewModels
                 }
             }
             if(GetInstance.Count == GetInstance.OperationList.Count)
-            {
-                StartEnable = true;
                 CalibrationGetStatusTask(STOP);
-            }
         }
         private void sendPreStartOperation()
         {
@@ -708,5 +957,55 @@ namespace SuperButton.ViewModels
             }
         }
         #endregion Tasks
+
     }
+
+    //[ValueConversion(typeof(int), typeof(Brush))]
+    //public class CutoffConverter : IValueConverter,INotifyPropertyChanged
+    //{
+    //    private string _age = "";
+
+    //    public event PropertyChangedEventHandler PropertyChanged;
+    //    public void OnPropertyChanged([CallerMemberName] string propertyName = null)
+    //    {
+    //        PropertyChangedEventHandler handler = PropertyChanged;
+
+    //        if(handler != null)
+    //            handler(this, new PropertyChangedEventArgs(propertyName));
+    //    }
+
+    //    public string Age
+    //    {
+    //        get { return _age; }
+    //        set { _age = value;  OnPropertyChanged(); }
+    //    }
+    //    public object Convert(object value, Type target)
+    //    {
+    //        int age;
+    //        Int32.TryParse(value.ToString(), out age);
+    //        return (age >= 2 ? Brushes.Red : Brushes.Black);
+
+    //    }
+    //    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    //    {
+    //        return ((int)value) > Cutoff;
+    //    }
+
+    //    public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+
+    //    object IValueConverter.Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+
+    //    object IValueConverter.ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+    //    {
+    //        throw new NotImplementedException();
+    //    }
+
+    //    public int Cutoff { get; set; }
+    //}
 }

@@ -46,6 +46,7 @@ namespace SuperButton.Views
         public Wizard()
         {
             InitializeComponent();
+            DataContext = new ViewModels.WizardWindowViewModel();
             Wizard.WindowsOpen = true;
         }
 

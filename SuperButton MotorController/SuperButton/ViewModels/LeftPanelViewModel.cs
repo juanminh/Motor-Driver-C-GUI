@@ -64,7 +64,7 @@ namespace SuperButton.ViewModels
             }
         }
         public bool ValueChange = false;
-        WizardWindowViewModel _wizardWindow = WizardWindowViewModel.GetInstance;
+        //WizardWindowViewModel _wizardWindow = WizardWindowViewModel.GetInstance;
         public LeftPanelViewModel()
         {
             EventRiser.Instance.LoggerEvent += Instance_LoggerEvent;
