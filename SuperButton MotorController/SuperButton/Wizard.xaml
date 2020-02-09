@@ -702,20 +702,20 @@
                         <Helpers:RoundBoolLed Grid.Column="1" Width="10" Height="10" VerticalAlignment="Stretch"
                                               CurrStatus="{Binding ValidOperations}">
                         </Helpers:RoundBoolLed>
-                        <!--IsEnabled="{Binding StartEnable}"-->
+                        <!--   Command="{Binding Start}" -->
                         <Button FontSize="10" Grid.Column="3"
-                            Command="{Binding Start}"
                             VerticalAlignment="Center" HorizontalAlignment="Left" 
                             BorderThickness="0.5" 
                             Width="50" Height="15"
-                            Background="Orange">
+                            Background="Orange"
+                                IsEnabled="{Binding StartEnable}"
+                                Command="{Binding Start}">
                             <Button.Style>
                                 <Style TargetType="Button" BasedOn="{StaticResource CalibButtonStyle}">
                                     <Setter Property="Foreground" Value="Black"/>
                                     <Style.Triggers>
                                         <MultiDataTrigger>
                                             <MultiDataTrigger.Conditions>
-                                                <!--<Condition Binding="{Binding StartEnable}" Value="False" />-->
                                                 <Condition Binding="{Binding StartEnable}">
                                                     <Condition.Value>false</Condition.Value>
                                                 </Condition>
@@ -727,6 +727,11 @@
                                     </Style.Triggers>
                                 </Style>
                             </Button.Style>
+                            <!--<i:Interaction.Triggers>
+                                <i:EventTrigger EventName="Click">
+                                    <i:InvokeCommandAction Command="{Binding Start}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>-->
                             <TextBlock Text="Start" VerticalAlignment="Center" Margin="0,-2,0,0"/>
                         </Button>
                         <Button FontSize="10" Grid.Column="5"

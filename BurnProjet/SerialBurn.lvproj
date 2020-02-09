@@ -61,10 +61,10 @@
 			<Item Name="Crc16DLL.dll" Type="Document" URL="../data/Crc16DLL.dll"/>
 			<Item Name="CRC_compare.vi" Type="VI" URL="../Functions/CRC_compare.vi"/>
 			<Item Name="Data_Convert.vi" Type="VI" URL="../C280xxx_Flash_programmer_with_cmd_example/Data_Convert.vi"/>
-			<Item Name="DescriptReceivedMsg SingleBoard (SubVI).vi" Type="VI" URL="../../../SingleBoard/LabVIEW/BurnProjet/Functions/DescriptReceivedMsg SingleBoard (SubVI).vi"/>
+			<Item Name="DescriptReceivedMsg SingleBoard (SubVI).vi" Type="VI" URL="../Functions/DescriptReceivedMsg SingleBoard (SubVI).vi"/>
 			<Item Name="ExpectedSumAndRxSum (SubVI).vi" Type="VI" URL="../Functions/ExpectedSumAndRxSum (SubVI).vi"/>
 			<Item Name="FrameCmdB.vi" Type="VI" URL="../Functions/FrameCmdB.vi"/>
-			<Item Name="Idx_calc.vi" Type="VI" URL="../../../SingleBoard/LabVIEW/BurnProjet/Functions/Idx_calc.vi"/>
+			<Item Name="Idx_calc.vi" Type="VI" URL="../Functions/Idx_calc.vi"/>
 			<Item Name="Int_Float.vi" Type="VI" URL="../Functions/Int_Float.vi"/>
 			<Item Name="iterate func (SubVI).vi" Type="VI" URL="../Functions/iterate func (SubVI).vi"/>
 			<Item Name="LoadData (SubVI).vi" Type="VI" URL="../Functions/LoadData (SubVI).vi"/>

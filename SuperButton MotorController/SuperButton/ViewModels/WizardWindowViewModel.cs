@@ -109,7 +109,7 @@ namespace SuperButton.ViewModels
                 CalibrationWizardListbySubGroup.Add("CalibrationList", new ObservableCollection<object>());
                 BuildCalibrationWizardList();
             }
-            Start = new RelayCommand(StartCalib);
+            //Start = new RelayCommand(StartButton);
         }
         ~WizardWindowViewModel() { }
         #region Motor_Parameter
@@ -220,6 +220,8 @@ namespace SuperButton.ViewModels
             {
                 _startEnable = value;
                 OnPropertyChanged("StartEnable");
+                //if (!value)
+                //    StartCalib();
             }
         }
         private ObservableCollection<object> _calibList;
@@ -288,7 +290,7 @@ namespace SuperButton.ViewModels
                 }
             }
         }
-        //public ActionCommand Start { get { return new ActionCommand(StartCalib); } }
+        public ActionCommand Start { get { return new ActionCommand(StartButton); } }
         private bool canExecute = true;
         public void ChangeCanExecute(object obj)
         {
@@ -311,21 +313,25 @@ namespace SuperButton.ViewModels
                 this.canExecute = value;
             }
         }
-        private ICommand _start { get; set; }
+        //private ICommand _start { get; set; }
 
-        public ICommand Start {
-            get
-            {
-                return _start;
-            }
-            set
-            {
-                _start = value;
-            }
-        }
-        private void StartCalib()
+        //public ICommand Start {
+        //    get
+        //    {
+        //        return _start;
+        //    }
+        //    set
+        //    {
+        //        _start = value;
+        //    }
+        //}
+        private async void StartButton()
         {
             StartEnable = false;
+            await Task.Run(() => StartCalib());
+        }
+        private async void StartCalib()
+        {
             Debug.WriteLine("wait");
             Thread.Sleep(5000);
             CalibrationGetStatusTask(STOP);
