@@ -12,7 +12,7 @@
     mc:Ignorable="d"
 	x:Class="SuperButton.App"
 	StartupUri="MainWindow.xaml">
-	<Application.Resources>
+    <Application.Resources>
 		<!-- Resources scoped at the Application level should be defined here. -->
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

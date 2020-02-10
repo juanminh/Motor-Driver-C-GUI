@@ -1,4 +1,4 @@
-﻿//#define RELEASE_MODE
+﻿#define RELEASE_MODE
 
 using System;
 using System.Data;
@@ -16,6 +16,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Media;
 using Timer = System.Timers.Timer;
 using System.Collections.Generic;
+using System.Windows.Threading;
 
 namespace SuperButton.ViewModels
 {
@@ -54,9 +55,9 @@ namespace SuperButton.ViewModels
         {
             get
             {
-                lock(Synlock)
+                lock (Synlock)
                 {
-                    if(_instance != null)
+                    if (_instance != null)
                         return _instance;
                     _instance = new LeftPanelViewModel();
                     return _instance;
@@ -82,7 +83,7 @@ namespace SuperButton.ViewModels
             get { return _connetButtonContent; }
             set
             {
-                if(value == "Disconnect")
+                if (value == "Disconnect")
                 {
                     ComboBox.GetInstance.ComPortComboboxEn = false;
                 }
@@ -91,9 +92,8 @@ namespace SuperButton.ViewModels
                     ComboBox.GetInstance.ComPortComboboxEn = true;
                     LeftPanelViewModel._app_running = false;
                     ConnectTextBoxContent = "Not Connected";
-                    WizardWindowViewModel.GetInstance.StartEnable = false;
                 }
-                if(_connetButtonContent == value)
+                if (_connetButtonContent == value)
                     return;
                 _connetButtonContent = value;
                 OnPropertyChanged("ConnectButtonContent");
@@ -107,7 +107,7 @@ namespace SuperButton.ViewModels
             get { return _connectButtonEnable; }
             set
             {
-                if(_connectButtonEnable == value)
+                if (_connectButtonEnable == value)
                     return;
                 _connectButtonEnable = value;
                 OnPropertyChanged("ConnectButtonEnable");
@@ -137,10 +137,10 @@ namespace SuperButton.ViewModels
             {
                 Thread.Sleep(100);
                 timeOutPlot++;
-            } while(OscilloscopeParameters.plotCount_temp != 0 && timeOutPlot <= 50);
+            } while (OscilloscopeParameters.plotCount_temp != 0 && timeOutPlot <= 50);
 
             Debug.WriteLine("TimeOutPlot: " + timeOutPlot);
-            if(OscilloscopeParameters.plotCount_temp == 0)
+            if (OscilloscopeParameters.plotCount_temp == 0)
             {
                 EventRiser.Instance.RiseEevent(string.Format($"Success"));
                 plotResult = true;
@@ -164,7 +164,7 @@ namespace SuperButton.ViewModels
             StarterCount = 0;
             RefreshManger.ConnectionCount = 0;
 
-            if(!plotList())
+            if (!plotList())
                 plotList();
             /*StarterOperationFlag = true;
             StarterCount = 0;
@@ -204,8 +204,8 @@ namespace SuperButton.ViewModels
             string[] param = { "Read Ch1", "Read Ch2", "Read Checksum", "Read SN", "Read HW Rev", "Read FW Rev", "Read motor status" };
 
             EventRiser.Instance.RiseEevent(string.Format($"Reading param..."));
-            
-             for(int i = 0; i < param.Length; i++)
+
+            for (int i = 0; i < param.Length; i++)
             {
                 //EventRiser.Instance.RiseEevent(string.Format(param[i]));
                 Rs232Interface.GetInstance.SendToParser(new PacketFields
@@ -218,7 +218,7 @@ namespace SuperButton.ViewModels
                 });
                 Thread.Sleep(50);
             }
-            
+
             #endregion  Operations
 
 #if !DEBUG || RELEASE_MODE
@@ -230,14 +230,14 @@ namespace SuperButton.ViewModels
             {
                 Thread.Sleep(100);
                 timeOutReadParam++;
-            } while(StarterOperationFlag && timeOutReadParam <= 20);
+            } while (StarterOperationFlag && timeOutReadParam <= 20);
 
-            if(StarterCount == 7)
+            if (StarterCount == 7)
                 EventRiser.Instance.RiseEevent(string.Format($"Connected successfully with unit"));
             else
                 EventRiser.Instance.RiseEevent(string.Format($"Failed reading params"));
 
-            if(RefreshManger.GetInstance.DisconnectedFlag)
+            if (RefreshManger.GetInstance.DisconnectedFlag)
             {
                 Thread.Sleep(10);
                 Rs232Interface.GetInstance.SendToParser(new PacketFields
@@ -275,11 +275,10 @@ namespace SuperButton.ViewModels
             BlinkLedsTicks(START);
 
             RefreshParamsTick(STOP);
-            if(DebugViewModel.GetInstance.EnRefresh)
+            if (DebugViewModel.GetInstance.EnRefresh)
                 RefreshParamsTick(START);
 
             LeftPanelViewModel._app_running = true;
-            WizardWindowViewModel.GetInstance.StartEnable = true;
             StarterOperation(STOP);
         }
         private String _connectTextBoxContent;
@@ -288,7 +287,7 @@ namespace SuperButton.ViewModels
             get { return _connectTextBoxContent; }
             set
             {
-                if(_connectTextBoxContent == value)
+                if (_connectTextBoxContent == value)
                     return;
                 _connectTextBoxContent = value;
                 OnPropertyChanged("ConnectTextBoxContent");
@@ -316,7 +315,7 @@ namespace SuperButton.ViewModels
             get { return _setCurrentPid; }
             set
             {
-                if(_setCurrentPid == value)
+                if (_setCurrentPid == value)
                     return;
                 _setCurrentPid = value;
                 OnPropertyChanged("SetCurrentPid");
@@ -330,7 +329,7 @@ namespace SuperButton.ViewModels
             get { return _currentPid; }
             set
             {
-                if(_currentPid == value)
+                if (_currentPid == value)
                     return;
 
                 _currentPid = value;
@@ -346,7 +345,7 @@ namespace SuperButton.ViewModels
             get { return _sendButtonContent; }
             set
             {
-                if(_sendButtonContent == value)
+                if (_sendButtonContent == value)
                     return;
                 _sendButtonContent = value;
                 OnPropertyChanged("SendButtonContent");
@@ -361,7 +360,7 @@ namespace SuperButton.ViewModels
             get { return _stopButtonContent; }
             set
             {
-                if(_stopButtonContent == value)
+                if (_stopButtonContent == value)
                     return;
                 _stopButtonContent = value;
                 OnPropertyChanged("StopButtonContent");
@@ -382,11 +381,11 @@ namespace SuperButton.ViewModels
             }
             set
             {
-                if(_connetButtonContent == "Disconnect")
+                if (_connetButtonContent == "Disconnect")
                 {
                     _motorOnToggleChecked = value;
                     //Sent
-                    if(!MotorOnOff_flag)
+                    if (!MotorOnOff_flag)
                     {
                         Rs232Interface.GetInstance.SendToParser(new PacketFields
                         {
@@ -418,12 +417,12 @@ namespace SuperButton.ViewModels
             }
             set
             {
-                if(value == 0)
+                if (value == 0)
                 {
                     MotorOnOff_flag = true;
                     MotorOnToggleChecked = false;
                 }
-                else if(value == 1)
+                else if (value == 1)
                 {
                     MotorOnOff_flag = true;
                     MotorOnToggleChecked = true;
@@ -492,25 +491,25 @@ namespace SuperButton.ViewModels
 
         public void SendXLS()
         {
-            if(_xlThread.ThreadState == System.Threading.ThreadState.Running)
+            if (_xlThread.ThreadState == System.Threading.ThreadState.Running)
             {
                 System.Windows.MessageBox.Show(" Wait until the end of XLS!! thread running)))");
                 return;
             }
 
-            if(_xlThread.ThreadState == System.Threading.ThreadState.WaitSleepJoin)
+            if (_xlThread.ThreadState == System.Threading.ThreadState.WaitSleepJoin)
             {
                 System.Windows.MessageBox.Show(" Wait until the end of XLS!! thread Sleeping)))");
                 return;
             }
 
-            if(_xlThread.ThreadState == System.Threading.ThreadState.Unstarted)
+            if (_xlThread.ThreadState == System.Threading.ThreadState.Unstarted)
             {
 
                 _xlThread.Start();
             }
 
-            if(_xlThread.ThreadState == System.Threading.ThreadState.Stopped)
+            if (_xlThread.ThreadState == System.Threading.ThreadState.Stopped)
             {
                 _xlThread = new Thread(ThreadProc);
                 _xlThread.Start();
@@ -539,7 +538,7 @@ namespace SuperButton.ViewModels
 
             poRefCmd = new byte[11];
 
-            using(OleDbConnection connection = new OleDbConnection())
+            using (OleDbConnection connection = new OleDbConnection())
             {
                 connection.ConnectionString = "Provider=Microsoft.ACE.OLEDB.12.0;Data Source=" + excelPath +
                                                 ";Extended Properties=\"Excel 12.0 Xml;HDR=YES\"";
@@ -556,7 +555,7 @@ namespace SuperButton.ViewModels
 
 
             // ProtocolParser.GetInstance.BuildPacketToSend("1", "213" /*CommandId*/, "0" /* subid*/, true /*IsSet*/);
-            if(Rs232Interface.GetInstance.IsSynced)
+            if (Rs232Interface.GetInstance.IsSynced)
             {
                 //Send command to the target 
                 PacketFields RxPacket;
@@ -574,7 +573,7 @@ namespace SuperButton.ViewModels
 
             Stopwatch sw = new Stopwatch();
 
-            foreach(DataRow row in table.Rows)
+            foreach (DataRow row in table.Rows)
             {
                 double temp = (double)row[0];
                 object item = (double)((((double)row[0] * countesPerRev) / mmperRev) + offset);
@@ -582,11 +581,11 @@ namespace SuperButton.ViewModels
                 int var_i = (int)Convert.ToInt32(item);
                 string datatosend = var_i.ToString();
 
-                if(ChankLen > 0)
+                if (ChankLen > 0)
                 {
                     ChankLen--;
                     //  ProtocolParser.GetInstance.BuildPacketToSend(datatosend, "403" /*CommandId*/, "0" /* subid*/, true /*IsSet*/);
-                    if(Rs232Interface.GetInstance.IsSynced)
+                    if (Rs232Interface.GetInstance.IsSynced)
                     {
                         //Send command to the target 
                         PacketFields RxPacket;
@@ -601,7 +600,7 @@ namespace SuperButton.ViewModels
                     DebugCount++;
                     #region SW
                     sw.Start();
-                    while(sw.ElapsedTicks < 50)
+                    while (sw.ElapsedTicks < 50)
                     {
                     }
                     sw.Reset();
@@ -610,13 +609,13 @@ namespace SuperButton.ViewModels
                 else
                 {
                     sw.Start();
-                    while(sw.ElapsedTicks < 50)
+                    while (sw.ElapsedTicks < 50)
                     {
                     }
                     sw.Reset();
                     ChankLen = 0;
                     //   ProtocolParser.GetInstance.BuildPacketToSend(datatosend, "403" /*CommandId*/, "0" /* subid*/, true /*IsSet*/);
-                    if(Rs232Interface.GetInstance.IsSynced)
+                    if (Rs232Interface.GetInstance.IsSynced)
                     {
                         //Send command to the target 
                         PacketFields RxPacket;
@@ -632,9 +631,9 @@ namespace SuperButton.ViewModels
                     mre.Reset();//Suspend
                     mre.WaitOne();
                 }
-                lock(TableLock)
+                lock (TableLock)
                 {
-                    if(Stop == true)
+                    if (Stop == true)
                     {
                         break;
                     }
@@ -644,7 +643,7 @@ namespace SuperButton.ViewModels
             }
 
             sw.Start();
-            while(sw.ElapsedTicks < 10000)
+            while (sw.ElapsedTicks < 10000)
             {
             }
             sw.Reset();
@@ -661,17 +660,17 @@ namespace SuperButton.ViewModels
         public void AutoConnectCommand()
         {
             ConnectButtonEnable = false;
-            if(Rs232Interface.GetInstance.IsSynced == false && busy == false)
+            if (Rs232Interface.GetInstance.IsSynced == false && busy == false)
             {
                 busy = true;
-                lock(ConnectLock)
+                lock (ConnectLock)
                 {
                     // Erase textboxs content, reset all default.
-                    foreach(var element in Commands.GetInstance.DataViewCommandsList)
+                    foreach (var element in Commands.GetInstance.DataViewCommandsList)
                     {
                         element.Value.CommandValue = "";
                     }
-                    foreach(var element in Commands.GetInstance.CalibartionCommandsList)
+                    foreach (var element in Commands.GetInstance.CalibartionCommandsList)
                     {
                         element.Value.ButtonContent = "Run";
                         element.Value.CommandValue = "";
@@ -681,10 +680,10 @@ namespace SuperButton.ViewModels
                     task.Start();
                 }
             }
-            else if(busy == false)
+            else if (busy == false)
             {
                 busy = true;
-                lock(ConnectLock)
+                lock (ConnectLock)
                 {
                     Rs232Interface.GetInstance.Disconnect();
                 }
@@ -697,7 +696,7 @@ namespace SuperButton.ViewModels
         private void Instance_LoggerEvent(object sender, EventArgs e)
         {
             string temp = ((CustomEventArgs)e).Msg + Environment.NewLine + LogText;
-            if(!LogText.Contains(((CustomEventArgs)e).Msg))
+            if (!LogText.Contains(((CustomEventArgs)e).Msg))
                 LogText = temp;
         }
         public string LogText
@@ -724,13 +723,13 @@ namespace SuperButton.ViewModels
         }
         public void FStop()
         {
-            lock(TableLock)
+            lock (TableLock)
             {
                 Stop = true;
             }
             Thread.Sleep(1000);
 
-            if(_xlThread.ThreadState == System.Threading.ThreadState.WaitSleepJoin)
+            if (_xlThread.ThreadState == System.Threading.ThreadState.WaitSleepJoin)
             {
                 _xlThread.Abort();
             }
@@ -740,10 +739,10 @@ namespace SuperButton.ViewModels
         public static ParametarsWindow win;
         private void ShowParametersWindow()
         {
-            if(ParametarsWindow.WindowsOpen != true)
+            if (ParametarsWindow.WindowsOpen != true)
             {
                 win = ParametarsWindow.GetInstance;
-                if(win.ActualHeight != 0)
+                if (win.ActualHeight != 0)
                 {
                     win.Activate();
                 }
@@ -752,25 +751,44 @@ namespace SuperButton.ViewModels
                     win.Show();
                 }
             }
-            else if(win.WindowState == System.Windows.WindowState.Minimized)
+            else if (win.WindowState == System.Windows.WindowState.Minimized)
                 win.WindowState = System.Windows.WindowState.Normal;
             win.Activate();
             win.Topmost = true;  // important
             win.Topmost = false; // important
             win.Focus();         // important
         }
+
         public static Wizard WizardWindow;
         private void ShowWizardWindow()
         {
-            if(Wizard.WindowsOpen != true)
+            if (Wizard.WindowsOpen != true)
             {
                 WizardWindow = Wizard.GetInstance;
-                if(WizardWindow.ActualHeight != 0)
+                if (WizardWindow.ActualHeight != 0)
                     WizardWindow.Activate();
                 else
-                    WizardWindow.Show();
+                {
+                    //WizardWindow.Show();
+                    //Thread thread = new Thread((ThreadStart)(() =>
+                    //{
+                    //    WizardWindow.Show();
+
+                    //    System.Windows.Threading.Dispatcher.Run();
+                    //}));
+
+                    //thread.SetApartmentState(ApartmentState.STA);
+                    //thread.Start();
+
+                    WizardWindow.Dispatcher.Invoke(DispatcherPriority.Normal,
+                        new Action(delegate ()
+                        {
+                            WizardWindow.Show();
+                        }
+                        ));
+                }
             }
-            else if(WizardWindow.WindowState == System.Windows.WindowState.Minimized)
+            else if (WizardWindow.WindowState == System.Windows.WindowState.Minimized)
                 WizardWindow.WindowState = System.Windows.WindowState.Normal;
             WizardWindow.Activate();
             WizardWindow.Topmost = true;  // important
@@ -795,14 +813,14 @@ namespace SuperButton.ViewModels
         public const int RX_LED = 0;
         public void RefreshParamsTick(int _mode)
         {
-            switch(_mode)
+            switch (_mode)
             {
                 case STOP:
-                    lock(this)
+                    lock (this)
                     {
-                        if(_RefreshParamsTickTimer != null)
+                        if (_RefreshParamsTickTimer != null)
                         {
-                            lock(_RefreshParamsTickTimer)
+                            lock (_RefreshParamsTickTimer)
                             {
                                 _RefreshParamsTickTimer.Stop();
                                 _RefreshParamsTickTimer.Elapsed -= RefreshParams;
@@ -813,7 +831,7 @@ namespace SuperButton.ViewModels
                     }
                     break;
                 case START:
-                    if(_RefreshParamsTickTimer == null)
+                    if (_RefreshParamsTickTimer == null)
                     {
                         Task.Factory.StartNew(action: () =>
                         {
@@ -828,7 +846,7 @@ namespace SuperButton.ViewModels
         }
         public void RefreshParams(object sender, EventArgs e)
         {
-            if((_app_running && DebugViewModel.GetInstance.EnRefresh) || (_app_running && DebugViewModel.GetInstance.DebugRefresh))
+            if ((_app_running && DebugViewModel.GetInstance.EnRefresh) || (_app_running && DebugViewModel.GetInstance.DebugRefresh))
             {
                 RefreshManger.GetInstance.StartRefresh();
             }
@@ -838,14 +856,14 @@ namespace SuperButton.ViewModels
         const double _VerifyConnectionInterval = 500;
         public void VerifyConnectionTicks(int _mode)
         {
-            switch(_mode)
+            switch (_mode)
             {
                 case STOP:
-                    lock(this)
+                    lock (this)
                     {
-                        if(_VerifyConnectionTimer != null)
+                        if (_VerifyConnectionTimer != null)
                         {
-                            lock(_VerifyConnectionTimer)
+                            lock (_VerifyConnectionTimer)
                             {
                                 _VerifyConnectionTimer.Stop();
                                 _VerifyConnectionTimer.Elapsed -= RefreshManger.GetInstance.VerifyConnection;
@@ -856,7 +874,7 @@ namespace SuperButton.ViewModels
                     }
                     break;
                 case START:
-                    if(_VerifyConnectionTimer == null)
+                    if (_VerifyConnectionTimer == null)
                     {
                         Task.Factory.StartNew(action: () =>
                         {
@@ -874,14 +892,14 @@ namespace SuperButton.ViewModels
         const double _BlinkLedsInterval = 1;
         public void BlinkLedsTicks(int _mode)
         {
-            switch(_mode)
+            switch (_mode)
             {
                 case STOP:
-                    lock(this)
+                    lock (this)
                     {
-                        if(_BlinkLedsTimer != null)
+                        if (_BlinkLedsTimer != null)
                         {
-                            lock(_BlinkLedsTimer)
+                            lock (_BlinkLedsTimer)
                             {
                                 _BlinkLedsTimer.Stop();
                                 _BlinkLedsTimer.Elapsed -= BlinkLeds;
@@ -892,7 +910,7 @@ namespace SuperButton.ViewModels
                     }
                     break;
                 case START:
-                    if(_BlinkLedsTimer == null)
+                    if (_BlinkLedsTimer == null)
                     {
                         Task.Factory.StartNew(action: () =>
                         {
@@ -908,16 +926,16 @@ namespace SuperButton.ViewModels
         public int led = -1;
         public void BlinkLeds(object sender, EventArgs e)
         {
-            if(_app_running)
+            if (_app_running)
             {
-                lock(Synlock)
+                lock (Synlock)
                 {
-                    if(led == TX_LED)
+                    if (led == TX_LED)
                     {
                         LedStatusTx = 1;
                         Thread.Sleep(3);
                     }
-                    if(led == RX_LED)
+                    if (led == RX_LED)
                     {
                         LedStatusRx = 1;
                         Thread.Sleep(1);
@@ -933,14 +951,14 @@ namespace SuperButton.ViewModels
         const double _StarterOperationInterval = 1;
         public void StarterOperation(int _mode)
         {
-            switch(_mode)
+            switch (_mode)
             {
                 case STOP:
-                    lock(this)
+                    lock (this)
                     {
-                        if(_StarterOperationTimer != null)
+                        if (_StarterOperationTimer != null)
                         {
-                            lock(_StarterOperationTimer)
+                            lock (_StarterOperationTimer)
                             {
                                 _StarterOperationTimer.Stop();
                                 _StarterOperationTimer.Elapsed -= StarterOperationTicks;
@@ -951,7 +969,7 @@ namespace SuperButton.ViewModels
                     }
                     break;
                 case START:
-                    if(_StarterOperationTimer == null)
+                    if (_StarterOperationTimer == null)
                     {
                         Task.Factory.StartNew(action: () =>
                         {
@@ -966,6 +984,7 @@ namespace SuperButton.ViewModels
         }
 
         private string _driverStat;
+
         public string DriverStat
         {
             get { return _driverStat; }

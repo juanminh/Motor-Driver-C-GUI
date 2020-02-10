@@ -30,7 +30,9 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <CheckBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="16" IsChecked="{Binding CalibrationPerform}"/>
+        <CheckBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="16" 
+                  IsChecked="{Binding CalibrationPerform}" 
+                  IsEnabled="{Binding CalibrationEnabled}"/>
         <TextBlock Grid.Column="3" Width="120" Height="22" 
                     Foreground="White"
                     VerticalAlignment="Center" 

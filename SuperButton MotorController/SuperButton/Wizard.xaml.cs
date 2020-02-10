@@ -31,9 +31,9 @@ namespace SuperButton.Views
         {
             get
             {
-                lock(Synlock)
+                lock (Synlock)
                 {
-                    if(_instance != null)
+                    if (_instance != null)
                         return _instance;
                     _instance = new Wizard();
                     var vaultHwnd = Process.GetCurrentProcess().MainWindowHandle; //Vault window handle
@@ -46,7 +46,7 @@ namespace SuperButton.Views
         public Wizard()
         {
             InitializeComponent();
-            DataContext = new ViewModels.WizardWindowViewModel();
+            this.DataContext = new ViewModels.WizardWindowViewModel();
             Wizard.WindowsOpen = true;
         }
 

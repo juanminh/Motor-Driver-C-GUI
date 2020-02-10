@@ -20,8 +20,8 @@ namespace SuperButton.ViewModels
 
             if(handler != null)
                 handler(this, new PropertyChangedEventArgs(propertyName));
-            //Debug.WriteLine(propertyName);
-            //Debug.WriteLine(handler.Method);
+        //Debug.WriteLine(propertyName);
+        //Debug.WriteLine(handler.Method);
         }
 
         public void RaisePropertyChanged(string propertyName)

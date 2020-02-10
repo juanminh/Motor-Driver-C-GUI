@@ -1,4 +1,4 @@
-﻿//#define RELEASE_MODE
+﻿#define RELEASE_MODE
 using Abt.Controls.SciChart;
 using SuperButton.Models.DriverBlock;
 using SuperButton.Models;

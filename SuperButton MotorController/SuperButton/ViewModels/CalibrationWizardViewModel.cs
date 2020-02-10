@@ -49,6 +49,16 @@ namespace SuperButton.ViewModels
                 OnPropertyChanged("CalibrationPerform");
             }
         }
+        private bool _calibrationEnabled = true;
+        public bool CalibrationEnabled
+        {
+            get { return _calibrationEnabled; }
+            set
+            {
+                _calibrationEnabled = value;
+                OnPropertyChanged("CalibrationEnabled");
+            }
+        }
         private string _commandValue = "";
         public string CommandValue { get { return _commandValue; } set { _commandValue = value; OnPropertyChanged(); } }
         private string _commandId = "";
