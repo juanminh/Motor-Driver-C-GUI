@@ -468,42 +468,47 @@ namespace SuperButton.CommandsDB
 
             var tmp2 = new List<string>
              {
-                 //"Cmtn Hall",
-                 //"Cmtn Qep1",
-                 //"Cmtn Qep2",
-                 //"Cmtn Hall And Qep1",
-                 //"Cmtn Hall And Qep2",
-                 //"Cmtn SSI Abs",
-                 //"Cmtn Forced",
-                 //"Cmtn SSI Abs",
-                 //"Cmtn DC Brushed",
-                 //"Cmtn SSI Inc",
-                 //"Cmtn Src Analog",
-                 //"Cmtn Src Sin Cos",
-                 //"Cmtn SensorLess"
+                //"Cmtn Hall",
+                //"Cmtn Qep1",
+                //"Cmtn Qep2",
+                //"Cmtn Hall And Qep1",
+                //"Cmtn Hall And Qep2",
+                //"Cmtn SSI Abs",
+                //"Cmtn Forced",
+                //"Cmtn SSI Abs",
+                //"Cmtn DC Brushed",
+                //"Cmtn SSI Inc",
+                //"Cmtn Src Analog",
+                //"Cmtn Src Sin Cos",
+                //"Cmtn SensorLess"
 
-                 "Cmtn_Forced_Rotate",
-                 "Cmtn_Hall",
-                 "Cmtn_Enc1",
-                 "Cmtn_Abs_Enc1",
-                 "Cmtn_Hall_Inc_Enc1",
-                 "Cmtn_Enc2",
-                 "Cmtn_Abs_Enc2",
-                 "Cmtn_Hall_Inc_Enc2",
-                 "Cmtn_DC_Brushed",
-                 "Cmtn_SensorLess",
-                 "Cmtn_Set_angle"
+                //"Cmtn_Forced_Rotate",
+                //"Cmtn_Hall",
+                //"Cmtn_Enc1",
+                //"Cmtn_Abs_Enc1",
+                //"Cmtn_Hall_Inc_Enc1",
+                //"Cmtn_Enc2",
+                //"Cmtn_Abs_Enc2",
+                //"Cmtn_Hall_Inc_Enc2",
+                //"Cmtn_DC_Brushed",
+                //"Cmtn_SensorLess",
+                //"Cmtn_Set_angle"
+
+                "Brushed",
+                "BL with Hall",
+                "BL with Hall and Incremental encoder",
+                "BL with Absolute encoder",
+                "BL Stepper Sensorless"
              };
-            Enums.Add("Commutation Source", tmp2);
-
-
+            Enums.Add("Electrical Commutation Type", tmp2);
+            
             var enum2 = new EnumViewModel
             {
-                CommandName = "Commutation Source",
+                CommandName = "Electrical Commutation Type",
                 CommandId = "50",
                 CommandSubId = "2",
-                CommandValue = "1", //first enum in list
-                CommandList = Enums["Commutation Source"]
+                CommandValue = "0", //first enum in list
+                CommandList = Enums["Electrical Commutation Type"]
             };
             EnumViewCommandsList.Add(new Tuple<int, int>(50, 2), enum2);
             EnumCommandsListbySubGroup["Control"].Add(enum2);
@@ -515,11 +520,11 @@ namespace SuperButton.CommandsDB
                 "Incremental Sin Cos",
                 "Absolute Sin Cos",
                 "Incremental 2",
-                "Ssi",
+                "SSI",
                 "Resolver",
                 "Com"
             };
-            
+
             Enums.Add("Motor encoder", tmp6);
             var enum6 = new EnumViewModel
             {
@@ -1335,7 +1340,7 @@ namespace SuperButton.CommandsDB
             ErrorList.Add(166, "OUT OF MODULO RANGE");
             ErrorList.Add(200, "Reset Driver occurred");
         }
-        
+
         private void GenerateDebugListCommands()
         {
             DebugCommandsListbySubGroup.Add("Debug List", new ObservableCollection<object>());

@@ -408,7 +408,7 @@
                                         <ComboBoxItem Content="Incremental Sin Cos"></ComboBoxItem>
                                         <ComboBoxItem Content="Absolute Sin Cos"></ComboBoxItem>
                                         <ComboBoxItem Content="Incremental 2"></ComboBoxItem>
-                                        <ComboBoxItem Content="Ssi"></ComboBoxItem>
+                                        <ComboBoxItem Content="SSI"></ComboBoxItem>
                                         <!--<ComboBoxItem Content="HALL">
                                             <ComboBoxItem.Style>
                                                 <Style TargetType="{x:Type ComboBoxItem}" BasedOn="{StaticResource {x:Type ComboBoxItem}}">
@@ -559,7 +559,7 @@
                                     <ComboBoxItem Content="Incremental Sin Cos"></ComboBoxItem>
                                     <ComboBoxItem Content="Absolute Sin Cos"></ComboBoxItem>
                                     <ComboBoxItem Content="Incremental 2"></ComboBoxItem>
-                                    <ComboBoxItem Content="Ssi"></ComboBoxItem>
+                                    <ComboBoxItem Content="SSI"></ComboBoxItem>
                                 </ComboBox>
                                 <TextBlock Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">Resolution [cnts/rev]</TextBlock>
                                 <TextBox Grid.Row="1" HorizontalAlignment="Right" BorderThickness="0"
