@@ -1,6 +1,8 @@
 ﻿//#define DEBUG_OPERATION
 //#define DEBUG_SET
 //#define DEBUG_GET
+#define New_Packet_Plot
+
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -76,7 +78,7 @@ namespace SuperButton.Models.ParserBlock
         public UInt32 TickerC = 1;
 
         private List<int> exceptionID = new List<int>(); // Contains all the ID that dont need to be descripted by refersh manager class.
-        int[] exceptionID_Arr = { 100, 67, 34, 35, 36 }; // 100: Error, 67: Load To/From file params started, 34, 35, 36: Init plots table. , 34, 35, 36
+        int[] exceptionID_Arr = { 100, 67, 34, 35, 36, 65 }; // 100: Error, 67: Load To/From file params started, 34, 35, 36: Init plots table. , 34, 35, 36
         public ParserRayonM1()
         {
             Rs232Interface.GetInstance.RxtoParser += parseOutdata;
@@ -89,27 +91,30 @@ namespace SuperButton.Models.ParserBlock
         #region Parser_Selection
 
         //TODO here will switch between parsers depends on sender object
-
+#if DEBUG_OPERATION
         int CurrentCmdCounterTx = 0;
-
+#endif
         void parseOutdata(object sender, Rs232InterfaceEventArgs e)
         {
-
+#if DEBUG_OPERATION
             if(e.PacketRx.ID == DebugOutput.GetInstance.ID && e.PacketRx.SubID == DebugOutput.GetInstance.subID && e.PacketRx.IsSet == true)
             {
                 CurrentCmdCounterTx++;
                 Debug.WriteLine("CurrentCmdCounterTx: " + CurrentCmdCounterTx + " Value: " + e.PacketRx.Data2Send);
             }
+#endif
             if(sender is Rs232Interface)//RayonM3 Parser
             {
                 ParseOutputData(e.PacketRx.Data2Send, e.PacketRx.ID, e.PacketRx.SubID, e.PacketRx.IsSet,
                     e.PacketRx.IsFloat);
+#if DEBUG_OPERATION
                 //Debug.WriteLine("{0} {1}[{2}]={3} {4}.", e.PacketRx.IsSet ? "Set" : "Get", e.PacketRx.ID, e.PacketRx.SubID, e.PacketRx.Data2Send, e.PacketRx.IsFloat ? "F" : "I");
                 if(e.PacketRx.ID == DebugOutput.GetInstance.ID && e.PacketRx.SubID == DebugOutput.GetInstance.subID && e.PacketRx.IsSet == true)
                 {
                     //CurrentCmdCounterTx++;
                     Debug.WriteLine(" Value sent: " + e.PacketRx.Data2Send);
                 }
+#endif
                 if(LeftPanelViewModel.GetInstance != null)
                 { // perform Get after "set" function
                     if(LeftPanelViewModel._app_running == true && DebugViewModel.GetInstance.EnRefresh == false && e.PacketRx.IsSet != false)
@@ -141,7 +146,6 @@ namespace SuperButton.Models.ParserBlock
 
         #region Input_Parse 
         //RayonRs232 old parser
-
         public void ParseInputData(int length, byte[] dataInput)
         {
             if(Rs232Interface.GetInstance.IsSynced == false)//TODO
@@ -250,9 +254,9 @@ namespace SuperButton.Models.ParserBlock
         }
 
         //not need func:
-        private void ParseData(int length, byte[] dataInput)
-        {
-        }
+        //private void ParseData(int length, byte[] dataInput)
+        //{
+        //}
 
         #endregion //TODO 
 
@@ -411,11 +415,12 @@ namespace SuperButton.Models.ParserBlock
 
             //Rise another event that sends out to target
 
+#if DEBUG_OPERATION
             if(Id == DebugOutput.GetInstance.ID && SubId == DebugOutput.GetInstance.subID && IsSet == true)
             {
                 Debug.WriteLine("Parser2Send data: " + Data2Send);
             }
-
+#endif
             if(Parser2Send != null)
             {
                 Parser2Send(this, new Parser2SendEventArgs(temp));
@@ -452,7 +457,7 @@ namespace SuperButton.Models.ParserBlock
             }
 
         }
-        private void ParsesynchAckMessege(byte[] data)
+        private void ParsesynchAckMessege(byte[] data) // Autobaud Check Response.
         {
             var crclsb = data[7];
             var crcmsb = data[8];
@@ -461,7 +466,7 @@ namespace SuperButton.Models.ParserBlock
 
             if(crcBytes[0] == crclsb && crcBytes[1] == crcmsb)//CHECK
             {
-                Int32 transit = data[6];
+                UInt32 transit = data[6];
                 transit <<= 8;
                 transit |= data[5];
                 transit <<= 8;
@@ -469,7 +474,7 @@ namespace SuperButton.Models.ParserBlock
                 transit <<= 8;
                 transit |= data[3];
 
-                if(transit == 1)
+                if(transit == 0x8B3C8B3C) // 1
                     Rs232Interface.GetInstance.IsSynced = true;
                 else
                     Rs232Interface.GetInstance.IsSynced = false;
@@ -477,16 +482,15 @@ namespace SuperButton.Models.ParserBlock
                 mre.Set();
             }
         }
-        public void ParseStandartData(List<byte[]> dataList)
-        {
-            for(int i = 0; i < dataList.Count; i++)
-            {
-                ParseInputPacket(dataList[i]);
-            }
-        }
+        //public void ParseStandartData(List<byte[]> dataList)
+        //{
+        //    for(int i = 0; i < dataList.Count; i++)
+        //    {
+        //        ParseInputPacket(dataList[i]);
+        //    }
+        //}
         public static byte[] DebugData = { };
-        int CurrentCmdCounterRx = 0;
-        int Counter100 = 0;
+
         public bool ParseInputPacket(byte[] data)
         {
             DebugData = data;
@@ -522,8 +526,7 @@ namespace SuperButton.Models.ParserBlock
                 transit |= data[4];
                 transit <<= 8;
                 transit |= data[3];
-                if(commandId == 3 && commandSubId == 0)
-                    CurrentCmdCounterRx++;
+
                 if(ParametarsWindow.ParametersWindowTabSelected == ParametarsWindowViewModel.DEBUG &&
                     !LeftPanelViewModel.GetInstance.StarterOperationFlag && !LeftPanelViewModel.GetInstance.StarterPlotFlag &&
                     !exceptionID.Contains(commandId) || !exceptionID.Contains(commandId))
@@ -729,6 +732,10 @@ namespace SuperButton.Models.ParserBlock
                     else
                         LeftPanelViewModel.GetInstance.StarterPlotFlag = false;
                 }
+                else if(commandId == 65 && commandSubId == 0)
+                {
+
+                }
                 else
                 {   // Error ID 100
                     string result;
@@ -782,39 +789,112 @@ namespace SuperButton.Models.ParserBlock
         //    else
         //        return dataSample;
         //}
+
         public void ParsePlot(List<byte[]> PlotList)
         {
             // In order to achive best performance using good old-fashioned for loop: twice faster! then "foreach (byte[] packet in PlotList)"
             //Debug.WriteLine("ParsePlot 1" + DateTime.Now.ToString("h:mm:ss.fff"));
-            //if(!OscilloscopeViewModel.GetInstance.IsFreeze)
-            {
-                for(var i = 0; i < PlotList.Count; i++)
-                {
-                    lock(PlotListLock)
-                    {
-                        //First
-                        FifoplotList.Enqueue((short)((PlotList[i][3] << 8) | PlotList[i][2]));
+            string plotType_ch1 = "", plotType_ch2 = "";
+            if(OscilloscopeParameters.plotType_ls.Count != 0)
+            { 
+                plotType_ch1 = OscilloscopeParameters.plotType_ls.ElementAt(OscilloscopeViewModel.GetInstance.Ch1SelectedIndex);
+                plotType_ch2 = OscilloscopeParameters.plotType_ls.ElementAt(OscilloscopeViewModel.GetInstance.Ch2SelectedIndex);
 
-                        //Second
-                        if(OscilloscopeParameters.ChanTotalCounter == 1)
-                            FifoplotList.Enqueue((short)((PlotList[i][5] << 8) | PlotList[i][4]));
-                        else if(OscilloscopeParameters.ChanTotalCounter == 2)
-                            FifoplotListCh2.Enqueue((short)((PlotList[i][5] << 8) | PlotList[i][4]));
-
-                        //Third
-                        FifoplotList.Enqueue((short)((PlotList[i][7] << 8) | PlotList[i][6]));
-
-                        //Fourth
-                        if(OscilloscopeParameters.ChanTotalCounter == 1)
-                            FifoplotList.Enqueue((short)((PlotList[i][9] << 8) | PlotList[i][8]));
-                        else if(OscilloscopeParameters.ChanTotalCounter == 2)
-                            FifoplotListCh2.Enqueue((short)((PlotList[i][9] << 8) | PlotList[i][8]));
-                    }
-
-                }
-                PlotList.Clear();
-                //Debug.WriteLine("ParsePlot 2" + DateTime.Now.ToString("h:mm:ss.fff"));
+                // maked plotType_ch1 or plotType_ch2 empty in case one of them is pause
             }
+            for(var i = 0; i < PlotList.Count; i++)
+            {
+                lock(PlotListLock)
+                {
+#if New_Packet_Plot
+                    #region New_Packet_Plot
+                    if(OscilloscopeParameters.ChanTotalCounter == 1)
+                    {
+                        if(plotType_ch1 == "Int32" || plotType_ch1 == "Float32" || plotType_ch2 == "Int32" || plotType_ch2 == "Float32")
+                        {
+                            var element = ((PlotList[i][5] << 24) | (PlotList[i][4] << 16) | (PlotList[i][3] << 8) | (PlotList[i][2]));
+                            //First
+                            FifoplotList.Enqueue(element);
+                            //Second
+                            FifoplotList.Enqueue(element);
+
+                            element = ((PlotList[i][9] << 24) | (PlotList[i][8] << 16) | (PlotList[i][7] << 8) | (PlotList[i][6]));
+                            //Third
+                            FifoplotList.Enqueue(element);
+                            //Fourth
+                            FifoplotList.Enqueue(element);
+                        }
+                        else
+                        {
+                            //First
+                            FifoplotList.Enqueue((short)((PlotList[i][3] << 8) | PlotList[i][2]));
+                            //Second
+                            FifoplotList.Enqueue((short)((PlotList[i][5] << 8) | PlotList[i][4]));
+                            //Third
+                            FifoplotList.Enqueue((short)((PlotList[i][7] << 8) | PlotList[i][6]));
+                            //Fourth
+                            FifoplotList.Enqueue((short)((PlotList[i][9] << 8) | PlotList[i][8]));
+                        }
+                    }
+                    else if(OscilloscopeParameters.ChanTotalCounter == 2)
+                    {
+                        if(plotType_ch1 == "Int32" || plotType_ch1 == "Float32")
+                        {
+                            var element = ((PlotList[i][5] << 24) | (PlotList[i][4] << 16) | (PlotList[i][3] << 8) | (PlotList[i][2]));
+                            //First
+                            FifoplotList.Enqueue(element);
+                            //Second
+                            FifoplotList.Enqueue(element);
+                        }
+                        else
+                        {
+                            //First
+                            FifoplotList.Enqueue((short)((PlotList[i][3] << 8) | PlotList[i][2]));
+                            //Second
+                            FifoplotList.Enqueue((short)((PlotList[i][5] << 8) | PlotList[i][4]));
+                        }
+                        if(plotType_ch2 == "Int32" || plotType_ch2 == "Float32")
+                        {
+                            var element = ((PlotList[i][9] << 24) | (PlotList[i][8] << 16) | (PlotList[i][7] << 8) | (PlotList[i][6]));
+                            //Third
+                            FifoplotListCh2.Enqueue(element);
+                            //Fourth
+                            FifoplotListCh2.Enqueue(element);
+                        }
+                        else
+                        {
+                            //Third
+                            FifoplotListCh2.Enqueue((short)((PlotList[i][7] << 8) | PlotList[i][6]));
+                            //Fourth
+                            FifoplotListCh2.Enqueue((short)((PlotList[i][9] << 8) | PlotList[i][8]));
+                        }
+                    }
+                    #endregion New_Packet_Plot
+#else//#endif  // New_Packet_Plot
+
+                    //First
+                    FifoplotList.Enqueue((short)((PlotList[i][3] << 8) | PlotList[i][2]));
+
+                    //Second
+                    if(OscilloscopeParameters.ChanTotalCounter == 1)
+                        FifoplotList.Enqueue((short)((PlotList[i][5] << 8) | PlotList[i][4]));
+                    else if(OscilloscopeParameters.ChanTotalCounter == 2)
+                        FifoplotListCh2.Enqueue((short)((PlotList[i][5] << 8) | PlotList[i][4]));
+
+                    //Third
+                    FifoplotList.Enqueue((short)((PlotList[i][7] << 8) | PlotList[i][6]));
+
+                    //Fourth
+                    if(OscilloscopeParameters.ChanTotalCounter == 1)
+                        FifoplotList.Enqueue((short)((PlotList[i][9] << 8) | PlotList[i][8]));
+                    else if(OscilloscopeParameters.ChanTotalCounter == 2)
+                        FifoplotListCh2.Enqueue((short)((PlotList[i][9] << 8) | PlotList[i][8]));
+#endif
+                }
+
+            }
+            PlotList.Clear();
+            //Debug.WriteLine("ParsePlot 2" + DateTime.Now.ToString("h:mm:ss.fff"));
         }
 
     }//Class

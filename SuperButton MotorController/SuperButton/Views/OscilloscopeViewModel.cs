@@ -1314,6 +1314,8 @@ namespace SuperButton.Views
                 {
                     case "Integer":
                         return dataSample * IntegerFactor;
+                    case "Int32":
+                        return dataSample;
                     case "Float":
                     case "Iq24":
                     case "Iq15":

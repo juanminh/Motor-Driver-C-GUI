@@ -190,6 +190,15 @@ namespace SuperButton.CommandsDB
             };
             DataCommandsListbySubGroup["DeviceSynchCommand"].Add(temp);
 
+            temp = new DataViewModel
+            {
+                CommandId = "64",
+                CommandSubId = "1",
+                CommandName = "Synchcmd",
+                IsFloat = false,
+                CommandValue = "0"
+            };
+            DataCommandsListbySubGroup["DeviceSynchCommand"].Add(temp);
             #endregion
 
         }
@@ -551,12 +560,12 @@ namespace SuperButton.CommandsDB
 
             var tmp5 = new List<string>
              {
-                "Digital_Cmd",
-                "Analog_Cmd",
-                "PWM_Cmd",
-                "Buffer_Cmd",
-                "Spi_Cmd",
-                "Signal_gen_Cmd"
+                "Digital Cmd",
+                "Analog Cmd",
+                "PWM Cmd",
+                "Buffer Cmd",
+                "Spi Cmd",
+                "Signal gen Cmd"
             };
             Enums.Add("Command Source", tmp5);
             var enum5 = new EnumViewModel

@@ -221,7 +221,7 @@ namespace SuperButton.Models.DriverBlock
                 switch(tabIndex)
                 {
                     case 0:
-                        arr = new string[] { "Motion Limit" }; // "Control", "Motor", already in PanelElements array
+                        arr = new string[] { "Motion Limit", "CurrentLimit List" }; // "Control", "Motor", already in PanelElements array
                         break;
                     case 1:
                         arr = new string[] { "Hall", "Qep1", "Qep2", "SSI_Feedback", "Qep1Bis", "Qep2Bis" };
@@ -233,16 +233,16 @@ namespace SuperButton.Models.DriverBlock
                         arr = new string[] { "DeviceSerial", "BaudrateList" };
                         break;
                     case 4:
-                        arr = new string[] { "Calibration Result List", "Calibration List" };
-                        break;
-                    case 5:
-                        arr = new string[] { "CurrentLimit List" };
-                        break;
-                    case 7:
                         arr = new string[] { "AnalogCommand List" };
                         break;
-                    default:
+                    case 5:
+                        arr = new string[] { "Calibration Result List", "Calibration List" };
                         break;
+                    //case 8:
+                    //    arr = new string[] { "AnalogCommand List" };
+                    //    break;
+                    default:
+                        return PanelElements;
                 }
                 arr = arr.Concat(PanelElements).ToArray();
             }
@@ -250,7 +250,7 @@ namespace SuperButton.Models.DriverBlock
             {
                 switch(tabIndex)
                 {
-                    case 8:
+                    case 7:
                         arr = arr.Concat(new string[] { "Debug List" }).ToArray();
                         break;
                     default:
@@ -350,7 +350,17 @@ namespace SuperButton.Models.DriverBlock
         {
             if(Rs232Interface._comPort.IsOpen)
             {
+                /* Sync command */
+                Rs232Interface.GetInstance.SendToParser(new PacketFields
+                {
+                    Data2Send = "1",
+                    ID = Convert.ToInt16(64),
+                    SubID = Convert.ToInt16(0),
+                    IsSet = true,
+                    IsFloat = false
+                });
 
+                /* Motor Status */
                 Rs232Interface.GetInstance.SendToParser(new PacketFields
                 {
                     Data2Send = "",

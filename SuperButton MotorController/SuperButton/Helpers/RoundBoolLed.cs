@@ -28,6 +28,8 @@ namespace SuperButton.Helpers
         public const int FAILED = 2;
         public const int DISABLED = 3;
         public const int RUNNING = 4;
+        public const int STOPPED = 5;
+
         #endregion
         #region FIELDS
         private Grid disableLineGrid;
@@ -165,6 +167,9 @@ namespace SuperButton.Helpers
             //if (_worker != null && _worker.IsBusy && CurrStatus != Consts.BOOL_RUNNING) _worker.CancelAsync();
             switch (CurrStatus)
             {
+                case Consts.BOOL_STOPPED:
+                    myBackgroundBrush = _rg_fail;
+                    break;
                 case Consts.BOOL_RUNNING:
                     if (_worker != null && _worker.IsBusy)
                         break;

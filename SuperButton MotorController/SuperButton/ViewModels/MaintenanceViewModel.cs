@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 using System.Diagnostics;
 using Abt.Controls.SciChart;
 using MotorController.Helpers;
+using SuperButton.ViewModels;
 
 namespace SuperButton.ViewModels
 {
@@ -651,36 +652,17 @@ namespace SuperButton.ViewModels
         }
         public ActionCommand OpenSerialProgrammer
         {
-            get { return new ActionCommand(SerialProgrammer); }
+            get { return new ActionCommand(SerialProgrammerFunc); }
         }
-        private void SerialProgrammer()
+        public bool _serialProgrammerStarted = false;
+        private void SerialProgrammerFunc()
         {
-            string iniPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
-
-            // section, key, value, _iniFile
-            iniFile.WritePrivateProfileString("Programmer", "CmdBaud", Rs232Interface.GetInstance.BaudRate, iniPath + "\\SerialProgrammer\\data\\SerialProgrammer.ini");
-            iniFile.WritePrivateProfileString("Programmer", "COM", Rs232Interface.GetInstance.ComPortStr, iniPath + "\\SerialProgrammer\\data\\SerialProgrammer.ini");
-
-            if(LeftPanelViewModel.GetInstance.ConnectTextBoxContent != "Not Connected")
-                Rs232Interface.GetInstance.Disconnect();
-
-            int countDisconnection = 0;
-            while(LeftPanelViewModel.GetInstance.ConnectTextBoxContent != "Not Connected")
-            {
-                Thread.Sleep(500);
-                Debug.WriteLine("wait end connection");
-                countDisconnection++;
-                if(countDisconnection == 3)
-                    Rs232Interface.GetInstance.Disconnect();
-            }
-
-            Process.Start(iniPath + "\\SerialProgrammer\\Serial Programmer.exe");
-
-            Thread SerialProgrammer = new Thread(SerialProgrammerApp);
-            SerialProgrammer.Start();
+            _serialProgrammerStarted = true;
+            SerialProgrammer.GetInstance.SerialProgrammerProcess();
+            _serialProgrammerStarted = false;
         }
 
-        private void SerialProgrammerApp()
+        public void SerialProgrammerApp()
         {
             Process[] Proc = Process.GetProcessesByName("Serial Programmer");
             while(Proc.Length != 0)

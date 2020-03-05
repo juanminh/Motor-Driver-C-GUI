@@ -64,14 +64,14 @@
                     <Grid Grid.Column="0" >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="87"/>
-                            <RowDefinition Height="185"/>
+                            <RowDefinition Height="19"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <GroupBox  Header="Control" Grid.Row="0">
                             <ItemsControl ItemsSource="{Binding ControlList}" 
                                           ItemTemplate="{StaticResource EnumViewModel}"/>
                         </GroupBox>
-                        <GroupBox Header="Motor" Grid.Row="1" Margin="0,10,0,0" 
+                        <GroupBox Header="Motor" Grid.Row="2"
                             FocusManager.IsFocusScope="True">
                             <ItemsControl ItemsSource="{Binding MotorlList}" 
                                           ItemTemplate="{StaticResource DataViewModel}"/>
@@ -80,11 +80,16 @@
                     <Grid Grid.Column="2" >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="10"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <GroupBox Header="Motor Limit"  Grid.Row="0">
                             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                                 <ItemsControl ItemsSource="{Binding MotorLimitlList}" ItemTemplate="{StaticResource DataViewModel}"/>
                             </ScrollViewer>
+                        </GroupBox>
+                        <GroupBox Grid.Row="2" Header="Current Limit" >
+                            <ItemsControl ItemsSource="{Binding CurrentLimitList}" ItemTemplate="{StaticResource DataViewModel}" />
                         </GroupBox>
                     </Grid>
                 </Grid>
@@ -262,6 +267,22 @@
                     </Grid>
                 </Grid>
             </TabItem>
+            <TabItem Header="I/O" TabIndex="5" DataContext="{Binding IOViewModel}" Background="Black" Foreground="White" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="160"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <GroupBox Grid.Row="0" Header="Analog Command" >
+                            <ItemsControl ItemsSource="{Binding AnalogCommandList}" ItemTemplate="{StaticResource DataViewModel}"/>
+                        </GroupBox>
+                    </Grid>
+                </Grid>
+            </TabItem>
             <!--<TabItem Header="Driver" TabIndex="5" Background="Black" Foreground="White">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -280,7 +301,7 @@
                     </Grid>
                 </Grid>
             </TabItem>-->
-            <TabItem Header="Calibration" TabIndex="5" DataContext="{Binding CalibrationViewModel}" Foreground="White">
+            <TabItem Header="Calibration" TabIndex="6" DataContext="{Binding CalibrationViewModel}" Foreground="White">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -312,22 +333,6 @@
                                 </StackPanel>-->
                             </GroupBox>
                         </Border>
-                    </Grid>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Motion" TabIndex="6" DataContext="{Binding MotionViewModel}" Background="Black" Foreground="White" Margin="-1,0,1,0" >
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="300"/>
-                        <ColumnDefinition Width="160"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <GroupBox Grid.Row="0" Header="Current Limit" >
-                            <ItemsControl ItemsSource="{Binding CurrentLimitList}" ItemTemplate="{StaticResource DataViewModel}" />
-                        </GroupBox>
                     </Grid>
                 </Grid>
             </TabItem>
@@ -463,23 +468,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="I/O" TabIndex="8" DataContext="{Binding IOViewModel}" Background="Black" Foreground="White" >
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="300"/>
-                        <ColumnDefinition Width="160"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <GroupBox Grid.Row="0" Header="Analog Command" >
-                            <ItemsControl ItemsSource="{Binding AnalogCommandList}" ItemTemplate="{StaticResource DataViewModel}"/>
-                        </GroupBox>
-                    </Grid>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Debug" TabIndex="9" DataContext="{Binding DebugViewModel}" Background="Black" Foreground="White" >
+            <TabItem Header="Debug" TabIndex="8" DataContext="{Binding DebugViewModel}" Background="Black" Foreground="White" >
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -750,6 +739,22 @@
                     </Grid>
                 </Grid>
             </TabItem>
+            <TabItem Header="Motion" TabIndex="9" DataContext="{Binding MotionViewModel}" Background="Black" Foreground="White" Margin="-1,0,1,0" Visibility="Hidden">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="160"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <GroupBox Grid.Row="0" Header="Current Limit" >
+                            <ItemsControl ItemsSource="{Binding CurrentLimitList}" ItemTemplate="{StaticResource DataViewModel}" />
+                        </GroupBox>
+                    </Grid>
+                </Grid>
+            </TabItem>
             <!--<TabItem Header="Operations" TabIndex="7" DataContext="{Binding OperationViewModel}" Background="Black" Foreground="White" >
                 <Grid Background="#FF616161">
                     <Grid.ColumnDefinitions>
@@ -807,16 +812,6 @@
                 </Grid>
             </TabItem>-->
         </TabControl>
-        <!--<Rectangle   Grid.Row="1" Grid.ColumnSpan="3" Height="4.5" StrokeThickness="0.5" Stretch="UniformToFill" StrokeDashArray="1 0" StrokeDashCap="Square" SnapsToDevicePixels="True" Margin="0,2.4,-0.4,2.4" >
-            <Rectangle.Fill>
-                <LinearGradientBrush EndPoint="-0.001,0.747" MappingMode="RelativeToBoundingBox" StartPoint="1,0.697">
-                    <GradientStop Color="#00F9F9F9"/>
-                    <GradientStop Color="#00F2F3F7" Offset="1"/>
-                    <GradientStop Color="#FFF5F5F7" Offset="0.455"/>
-                </LinearGradientBrush>
-            </Rectangle.Fill>
-        </Rectangle>
-        <Border BorderBrush="#FF616161" BorderThickness="0,0.5" Background="#19616161" Margin="0,2,-0.4,0.6" Grid.ColumnSpan="3"/>-->
     </Grid>
 </Window>
 

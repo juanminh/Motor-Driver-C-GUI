@@ -53,6 +53,14 @@
                     <Style.Triggers>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding CalibStatus}" Value="5" />
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter Property="Text" Value="Stopped" />
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding CalibStatus}" Value="4" />
                             </MultiDataTrigger.Conditions>
                             <MultiDataTrigger.Setters>

@@ -112,8 +112,8 @@ namespace SuperButton.Views
         static List<string> plotName_ls = new List<string>();
         public static List<string> plotType_ls = new List<string>();
 
-        static string[] plotType = new[] { "Integer", "Float", "Iq24", "Iq15" };
-        static string[] plotUnit = new[] { "Amper", "Volt", "", "", "", "Elec Angle", "mechanical Angle", "", "", "", "RPM Per Volt", "Count Per Sec", "Round Per Minute", "Counts" };
+        static string[] plotType = new[] { "Integer", "Float", "Iq24", "Iq15", "Int32", "Float32" };
+        static string[] plotUnit = new[] { "Amper", "Volt", "", "", "", "Elec Angle", "mechanical Angle", "", "", "", "RPM Per Volt", "Count Per Sec", "Round Per Minute", "Counts", "Deg C" };
 
         static OscilloscopeParameters()
         {
@@ -173,6 +173,7 @@ namespace SuperButton.Views
                 {
                     ScaleAndGainList.Add(new Tuple<float, float>(1, plotFullScale[i]));
                     OscilloscopeViewModel.GetInstance._channel1SourceItems.Add(plotName_ls[element & 0xFFFF]);
+                    //if(!OscilloscopeViewModel.GetInstance.ChannelYtitles.ContainsKey(new Tuple<string, string>((plotName_ls[element & 0xFFFF]), (plotUnit[(element >> 24) & 0xFF])))
                     OscilloscopeViewModel.GetInstance.ChannelYtitles.Add(plotName_ls[element & 0xFFFF], plotUnit[(element >> 24) & 0xFF]);
                     plotType_ls.Add(plotType[(element >> 16) & 0xFF]);
                 }

@@ -138,7 +138,7 @@ namespace SuperButton.ViewModels
                 OnPropertyChanged("MotorType");
             }
         }
-        private string _polePaire = "";
+        private string _polePaire = "3";
         public string PolePair
         {
             get { return _polePaire; }
@@ -148,19 +148,19 @@ namespace SuperButton.ViewModels
                 OnPropertyChanged("PolePair");
             }
         }
-        private string _continuousCurrent = "";
+        private string _continuousCurrent = "1";
         public string ContinuousCurrent
         {
             get { return _continuousCurrent; }
             set { _continuousCurrent = value; OnPropertyChanged("ContinuousCurrent"); }
         }
-        private string _maxSpeed = "";
+        private string _maxSpeed = "5000";
         public string MaxSpeed
         {
             get { return _maxSpeed; }
             set { _maxSpeed = value; OnPropertyChanged("MaxSpeed"); }
         }
-        private int _hallEnDis = 0;
+        private int _hallEnDis = 1;
         public int HallEnDis
         {
             get { return _hallEnDis; }
@@ -171,7 +171,7 @@ namespace SuperButton.ViewModels
                 OnPropertyChanged("HallEnDis");
             }
         }
-        private int _encoderFeedback = 0;
+        private int _encoderFeedback = (int)eEncSel.Enc_Fdb_Ssi;
         public int EncoderFeedback
         {
             get { return _encoderFeedback; }
@@ -208,7 +208,7 @@ namespace SuperButton.ViewModels
                 OnPropertyChanged("EncoderFeedbackExist");
             }
         }
-        private string _encoderResolution = "1000";
+        private string _encoderResolution = "4096";//"1000";
         public string EncoderResolution
         {
             get { return _encoderResolution; }
@@ -285,7 +285,7 @@ namespace SuperButton.ViewModels
                 {
                     AdvanceMode_Calibration = CalibrationAdvancedMode,
                     CalibrationEnabled = i == 0 ? false : true,
-                    CalibrationPerform = true,
+                    CalibrationPerform = true, //i == 0 ? true : false,
                     CalibrationName = calibOperation.ElementAt(i).Key,
                     CalibStatus = 0,
                     CommandId = "6",
@@ -304,44 +304,12 @@ namespace SuperButton.ViewModels
             }
         }
         public ActionCommand Start { get { return new ActionCommand(StartButton); } }
-        //private bool canExecute = true;
-        //public void ChangeCanExecute(object obj)
-        //{
-        //    canExecute = !canExecute;
-        //}
-        //public bool CanExecute
-        //{
-        //    get
-        //    {
-        //        return this.canExecute;
-        //    }
-
-        //    set
-        //    {
-        //        if(this.canExecute == value)
-        //        {
-        //            return;
-        //        }
-
-        //        this.canExecute = value;
-        //    }
-        //}
-        //private ICommand _start { get; set; }
-
-        //public ICommand Start {
-        //    get
-        //    {
-        //        return _start;
-        //    }
-        //    set
-        //    {
-        //        _start = value;
-        //    }
-        //}
+        CancellationToken cancellationTokenCalib;
         private async void StartButton()
         {
             StartEnable = false;
-            await Task.Run(() => StartCalib());
+            cancellationTokenCalib = new CancellationToken(false);
+            await Task.Run(() => StartCalib(cancellationTokenCalib));
             StartEnable = true;
         }
         private async void StartButtonStop()
@@ -351,25 +319,23 @@ namespace SuperButton.ViewModels
             await Task.Run(() =>
             {
                 for(int i = 1; i < GetInstance.CalibrationWizardList.Count; i++)
+                {
                     GetInstance.CalibrationWizardList.ElementAt(i).Value.CalibrationEnabled = true;
-            }
-            );
-            //await Task.Run(() => CalibrationGetStatusTask(STOP));
+                    if(GetInstance.CalibrationWizardList.ElementAt(i).Value.CalibStatus == RoundBoolLed.RUNNING)
+                        updateCalibrationStatus(new Tuple<int, int>(Convert.ToInt32(GetInstance.CalibrationWizardList.ElementAt(i).Value.CommandId), Convert.ToInt32(GetInstance.CalibrationWizardList.ElementAt(i).Value.CommandSubId)), RoundBoolLed.STOPPED.ToString());
+                }
+            });
         }
-        private void StartCalib()
+        private void StartCalib(CancellationToken cancellationToken)
         {
-            //updateCalibrationStatus(new Tuple<int, int>(6, -1), RoundBoolLed.RUNNING.ToString());
-
-            //Debug.WriteLine("Start");
-            //Thread.Sleep(4000);
-            //Debug.WriteLine("End");
-            //updateCalibrationStatus(new Tuple<int, int>(6, -1), RoundBoolLed.PASSED.ToString());
-            //StartButtonStop();
-            //return;
-
 
             if(!LeftPanelViewModel._app_running || ValidOperations == RoundBoolLed.FAILED)
                 return;
+            if(LeftPanelViewModel.GetInstance.MotorOnToggleChecked)
+            {
+                EventRiser.Instance.RiseEevent(string.Format($"Motor must be off."));
+                return;
+            }
             if(PolePair == "" || PolePair == "0" ||
                 ContinuousCurrent == "" || ContinuousCurrent == "0" ||
                 MaxSpeed == "" || MaxSpeed == "0" ||
@@ -382,7 +348,6 @@ namespace SuperButton.ViewModels
             GetInstance.Count = 0;
             #endregion InitVariables
 
-            //updateCalibrationStatus(new Tuple<int, int>(6, -1), "1");
             GetInstance.CalibrationWizardList[new Tuple<int, int>(6, -1)].CalibStatus = RoundBoolLed.RUNNING;
             Thread.Sleep(50);
 
@@ -400,8 +365,6 @@ namespace SuperButton.ViewModels
                 if(GetInstance.CalibrationWizardList.ElementAt(i).Value.CalibrationPerform)
                     GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
             }
-            if(GetInstance.OperationList.Count == 0)
-                return;
 
             GetInstance.OperationList.Clear();
 
@@ -493,30 +456,8 @@ namespace SuperButton.ViewModels
             Int32.TryParse(operation.CommandSubId, out commandSubId);
             GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
 
-            /*
-            operation = new DataViewModel { CommandName = "External Encoder", CommandId = "50", CommandSubId = "4", IsFloat = false, CommandValue = "0" };
-            Int32.TryParse(operation.CommandId, out commandId);
-            Int32.TryParse(operation.CommandSubId, out commandSubId);
-            GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
-
-            operation = new DataViewModel { CommandName = "Command Source", CommandId = "50", CommandSubId = "5", IsFloat = false, CommandValue = "1" };
-            Int32.TryParse(operation.CommandId, out commandId);
-            Int32.TryParse(operation.CommandSubId, out commandSubId);
-            GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
-
-            operation = new DataViewModel { CommandName = "Speed Source", CommandId = "50", CommandSubId = "6", IsFloat = false, CommandValue = ((int)ClaFdb.Cla_Fdb_Motor).ToString() };
-            Int32.TryParse(operation.CommandId, out commandId);
-            Int32.TryParse(operation.CommandSubId, out commandSubId);
-            GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
-
-            operation = new DataViewModel { CommandName = "Position Source", CommandId = "50", CommandSubId = "7", IsFloat = false, CommandValue = ((int)ClaFdb.Cla_Fdb_Motor).ToString() };
-            Int32.TryParse(operation.CommandId, out commandId);
-            Int32.TryParse(operation.CommandSubId, out commandSubId);
-            GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
-            */
-
             /*update "Pole pair" parameter*/
-            if(MotorType == (int)eMotorType.Three_Phase_Brushless) 
+            if(MotorType == (int)eMotorType.Three_Phase_Brushless)
             {
                 operation = new DataViewModel { CommandName = "Pole Pair", CommandId = "51", CommandSubId = "1", IsFloat = false, CommandValue = PolePair };
                 Int32.TryParse(operation.CommandId, out commandId);
@@ -542,20 +483,45 @@ namespace SuperButton.ViewModels
             Int32.TryParse(operation.CommandSubId, out commandSubId);
             GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
 
-            /*update  "Motor Encoder Resolution" parameter*/
+            /*update "Roll High", "Roll Low" parameter when Hall Enable*/
+            if(HallEnDis == 1)
+            {
+                operation = new DataViewModel { CommandName = "Roll High", CommandId = "70", CommandSubId = "2", IsFloat = false, CommandValue = (Convert.ToInt32(EncoderResolution)*1000 - 1).ToString() };
+                Int32.TryParse(operation.CommandId, out commandId);
+                Int32.TryParse(operation.CommandSubId, out commandSubId);
+                GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
+
+                operation = new DataViewModel { CommandName = "Roll Low", CommandId = "70", CommandSubId = "3", IsFloat = false, CommandValue = "0" };
+                Int32.TryParse(operation.CommandId, out commandId);
+                Int32.TryParse(operation.CommandSubId, out commandSubId);
+                GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
+            }
+
+            /*update SSI "Packet len" parameter*/
+            if(EncoderFeedback == (int)eEncSel.Enc_Fdb_Ssi) //Motor feedback
+            {
+                operation = new DataViewModel { CommandName = "PacketLenght", CommandId = "73", CommandSubId = "8", IsFloat = false, CommandValue = /*((Math.Log*/(Convert.ToInt32(EncoderResolution) + 1)/* / Math.Log(2)) + 1)*/.ToString() };
+                Int32.TryParse(operation.CommandId, out commandId);
+                Int32.TryParse(operation.CommandSubId, out commandSubId);
+                GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
+
+                EncoderResolution = (Math.Pow(2, Convert.ToInt32(EncoderResolution))).ToString();
+            }
+
+            /*update  "Motor Encoder Resolution", "Roll High", "Roll Low" parameter*/
             if(id_fdbck_cmd_temp != "")
             {
                 operation = new DataViewModel { CommandName = "Resolution", CommandId = id_fdbck_cmd_temp, CommandSubId = "5", IsFloat = false, CommandValue = EncoderResolution };
                 Int32.TryParse(operation.CommandId, out commandId);
                 Int32.TryParse(operation.CommandSubId, out commandSubId);
                 GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
-            }
 
+                operation = new DataViewModel { CommandName = "Roll High", CommandId = id_fdbck_cmd_temp, CommandSubId = "2", IsFloat = false, CommandValue = (Convert.ToInt32(EncoderResolution) * 1000 - 1).ToString() };
+                Int32.TryParse(operation.CommandId, out commandId);
+                Int32.TryParse(operation.CommandSubId, out commandSubId);
+                GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
 
-            /*update SSI "Packet len" parameter*/
-            if(EncoderFeedback == (int)eEncSel.Enc_Fdb_Ssi) //Motor feedback
-            {
-                operation = new DataViewModel { CommandName = "PacketLenght", CommandId = "73", CommandSubId = "8", IsFloat = false, CommandValue = ((Math.Log(Convert.ToInt32(EncoderResolution)) / Math.Log(2)) + 1).ToString() };
+                operation = new DataViewModel { CommandName = "Roll Low", CommandId = id_fdbck_cmd_temp, CommandSubId = "3", IsFloat = false, CommandValue = "0" };
                 Int32.TryParse(operation.CommandId, out commandId);
                 Int32.TryParse(operation.CommandSubId, out commandSubId);
                 GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
@@ -572,8 +538,7 @@ namespace SuperButton.ViewModels
             Int32.TryParse(operation.CommandId, out commandId);
             Int32.TryParse(operation.CommandSubId, out commandSubId);
             GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
-
-
+            
             /*update  "External Encoder Type" parameter*/
             operation = new DataViewModel { CommandName = "External Encoder Type", CommandId = "50", CommandSubId = "4", IsFloat = false, CommandValue = ExternalEncoder.ToString() };
             Int32.TryParse(operation.CommandId, out commandId);
@@ -604,7 +569,20 @@ namespace SuperButton.ViewModels
             }
             if(id_ext_fdbck_cmd_temp != "")
             {
-                operation = new DataViewModel { CommandName = "External Encoder Resolution", CommandId = id_fdbck_cmd_temp, CommandSubId = "5", IsFloat = false, CommandValue = ExternalResolution };
+                if(ExternalEncoder == (int)eEncSel.Enc_Fdb_Ssi)
+                    ExternalResolution = (Math.Pow(2, Convert.ToInt32(ExternalResolution))).ToString();
+
+                operation = new DataViewModel { CommandName = "External Encoder Resolution", CommandId = id_ext_fdbck_cmd_temp, CommandSubId = "5", IsFloat = false, CommandValue = ExternalResolution };
+                Int32.TryParse(operation.CommandId, out commandId);
+                Int32.TryParse(operation.CommandSubId, out commandSubId);
+                GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
+
+                operation = new DataViewModel { CommandName = "Roll High", CommandId = id_ext_fdbck_cmd_temp, CommandSubId = "2", IsFloat = false, CommandValue = (Convert.ToInt32(ExternalResolution) - 1).ToString() };
+                Int32.TryParse(operation.CommandId, out commandId);
+                Int32.TryParse(operation.CommandSubId, out commandSubId);
+                GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
+
+                operation = new DataViewModel { CommandName = "Roll Low", CommandId = id_ext_fdbck_cmd_temp, CommandSubId = "3", IsFloat = false, CommandValue = "0" };
                 Int32.TryParse(operation.CommandId, out commandId);
                 Int32.TryParse(operation.CommandSubId, out commandSubId);
                 GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
@@ -615,7 +593,7 @@ namespace SuperButton.ViewModels
             {
                 if(id_ext_fdbck_cmd_temp != "")
                     ExternalSpeedLoop = 2; //external encoder
-                else if(MotorType == (int)eMotorType.Three_Phase_Brushless) 
+                else if(MotorType == (int)eMotorType.Three_Phase_Brushless)
                     ExternalSpeedLoop = 0; //use hall
                 else
                     ExternalSpeedLoop = -1; //  1. remove PI Speed/Position/direction calibrations, 2. set unit mode to current
@@ -631,7 +609,7 @@ namespace SuperButton.ViewModels
             {
                 if(id_ext_fdbck_cmd_temp != "")
                     ExternalPositionLoop = 2; //external encoder
-                else if(MotorType == (int)eMotorType.Three_Phase_Brushless) 
+                else if(MotorType == (int)eMotorType.Three_Phase_Brushless)
                     ExternalPositionLoop = 0; //use hall
                 else
                     ExternalPositionLoop = -1; //  1. remove PI Speed/Position/direction calibrations, 2. set unit mode to current
@@ -670,9 +648,10 @@ namespace SuperButton.ViewModels
             #endregion BuildOperationList
             sendPreStartOperation();
             GetInstance.OperationList.Clear();
-
-            //updateCalibrationStatus(new Tuple<int, int>(6, -1), "3");
-            GetInstance.CalibrationWizardList[new Tuple<int, int>(6, -1)].CalibStatus = RoundBoolLed.PASSED;
+            if(!cancellationTokenCalib.IsCancellationRequested)
+            {
+                GetInstance.CalibrationWizardList[new Tuple<int, int>(6, -1)].CalibStatus = RoundBoolLed.PASSED;
+            };
             Thread.Sleep(300);
 
             for(int i = 1; i < GetInstance.CalibrationWizardList.Count; i++)
@@ -693,21 +672,17 @@ namespace SuperButton.ViewModels
                     GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
                 }
             }
-            //GetInstance.Count = 0;
-            //await Task.Run(() =>
-            //{
-            //CalibrationGetStatusTask(START);
 
             CalibrationStart();
             CalibrationGetStatus();
-
-            //});
         }
         public ActionCommand Abort { get { return new ActionCommand(AbortCalib); } }
         private void AbortCalib()
         {
             if(StartEnable)
                 return;
+
+            cancellationTokenCalib = new CancellationToken(true);
 
             Rs232Interface.GetInstance.SendToParser(new PacketFields
             {
@@ -1000,6 +975,7 @@ namespace SuperButton.ViewModels
             }
         }
 
+        #region Task_NOT_IN_USE
         public const int START = 1;
         public const int STOP = 0;
 
@@ -1017,7 +993,7 @@ namespace SuperButton.ViewModels
                             lock(GetInstance._calibrationGetStatus)
                             {
                                 GetInstance._calibrationGetStatus.Stop();
-                                //GetInstance._calibrationGetStatus.Elapsed -= GetInstance.CalibrationGetStatus;
+                                //GetInstance._calibrationGetStatus.Elapsed -= GetInstance.sendPreStartOperation;
                                 GetInstance._calibrationGetStatus = null;
                                 Thread.Sleep(10);
                             }
@@ -1027,17 +1003,16 @@ namespace SuperButton.ViewModels
                 case START:
                     if(GetInstance._calibrationGetStatus == null)
                     {
-                        Task.Factory.StartNew(action: () =>
-                        {
-                            Thread.Sleep(100);
-                            GetInstance._calibrationGetStatus = new Timer(_calibrationGetStatusInterval) { AutoReset = true };
-                            //GetInstance._calibrationGetStatus.Elapsed += GetInstance.CalibrationGetStatus;
-                            GetInstance._calibrationGetStatus.Start();
-                        });
+                        Thread.Sleep(100);
+                        GetInstance._calibrationGetStatus = new Timer(_calibrationGetStatusInterval) { AutoReset = false };
+                        //GetInstance._calibrationGetStatus.Elapsed += GetInstance.sendPreStartOperation;
+                        GetInstance._calibrationGetStatus.Start();
                     }
                     break;
             }
         }
+        #endregion Task_NOT_IN_USE
+
         private int Count = 0;
         private void CalibrationStart()
         {
@@ -1054,9 +1029,8 @@ namespace SuperButton.ViewModels
                 Debug.WriteLine(GetInstance.OperationList.ElementAt(GetInstance.Count).Value.CommandId + "[" + Convert.ToInt16(Convert.ToInt16(GetInstance.OperationList.ElementAt(GetInstance.Count).Value.CommandSubId) - 1) + "]");
             }
         }
-        private void CalibrationGetStatus(/*object sender, EventArgs e*/)
+        private void CalibrationGetStatus()
         {
-
             while(GetInstance.Count < GetInstance.OperationList.Count && StartEnable == false)
             {
                 Rs232Interface.GetInstance.SendToParser(new PacketFields
@@ -1070,8 +1044,6 @@ namespace SuperButton.ViewModels
                 Debug.WriteLine(GetInstance.OperationList.ElementAt(GetInstance.Count).Value.CommandId + "[" + Convert.ToInt16(GetInstance.OperationList.ElementAt(GetInstance.Count).Value.CommandSubId) + "]");
                 Thread.Sleep(1000);
             }
-            //else
-            //CalibrationGetStatusTask(STOP);
         }
         public void updateCalibrationStatus(Tuple<int, int> commandidentifier, string newPropertyValue)
         {
@@ -1090,6 +1062,9 @@ namespace SuperButton.ViewModels
                     break;
                 case 3:
                     StateTemp = RoundBoolLed.PASSED;
+                    break;
+                case 5:
+                    StateTemp = RoundBoolLed.STOPPED;
                     break;
                 default:
                     StateTemp = RoundBoolLed.FAILED;
@@ -1111,8 +1086,15 @@ namespace SuperButton.ViewModels
         }
         private void sendPreStartOperation()
         {
+            Thread.Sleep(10);
             for(int i = 0; i < GetInstance.OperationList.Count; i++)
             {
+                if(cancellationTokenCalib.IsCancellationRequested)
+                {
+                    Debug.WriteLine("sendPreStartOperation Stopped");
+                    GetInstance.CalibrationWizardList.ElementAt(0).Value.CalibStatus = RoundBoolLed.STOPPED;
+                    return;
+                };
                 Rs232Interface.GetInstance.SendToParser(new PacketFields
                 {
                     Data2Send = GetInstance.OperationList.ElementAt(i).Value.CommandValue,
@@ -1129,6 +1111,6 @@ namespace SuperButton.ViewModels
                 Thread.Sleep(10);
             }
         }
-        #endregion Tasks
     }
+    #endregion Tasks
 }

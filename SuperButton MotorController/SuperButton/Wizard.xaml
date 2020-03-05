@@ -277,7 +277,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Width="Auto" Text="Parameters" Foreground="White" Background="Gray"/>
+                    <TextBlock Grid.Row="0" Width="Auto" Text="Parameters" Foreground="White" Background="Gray" FontWeight="Bold"/>
                     <!--#region MotorParameters-->
                     <GroupBox Grid.Row="1" Width="Auto" Foreground="White" FontSize="12" Style="{x:Null}" BorderBrush="Transparent">
                         <GroupBox.Header>
@@ -453,7 +453,18 @@
                                         </ComboBoxItem>
                                         <ComboBoxItem Content="SSI absolute encoder"></ComboBoxItem>-->
                                     </ComboBox>
-                                    <TextBlock Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">Resolution [cnts/rev]</TextBlock>
+                                    <TextBlock Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Text" Value="Resolution [cnts/rev]" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding EncoderFeedback}" Value="5">
+                                                        <Setter Property="Text" Value="Resolution [bit]" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
                                     <TextBox Grid.Row="1" HorizontalAlignment="Right" BorderThickness="0"
                                             Width="{StaticResource MotorParametersWidth}" 
                                             FontSize="12"
@@ -520,7 +531,7 @@
                             </RowDefinition.Style>
                         </RowDefinition>
                     </Grid.RowDefinitions>
-                    <TextBlock Grid.Row="0" Width="Auto" Text="Advanced Configuration" Foreground="White" Background="Gray"/>
+                    <TextBlock Grid.Row="0" Width="Auto" Text="Advanced Configuration" Foreground="White" Background="Gray" FontWeight="Bold"/>
                     <CheckBox  Grid.Row="0" HorizontalAlignment="Right" IsChecked="{Binding AdvancedConfig}"/>
                     <!---->
                     <Grid Grid.Row="1">
@@ -561,7 +572,17 @@
                                     <ComboBoxItem Content="Incremental 2"></ComboBoxItem>
                                     <ComboBoxItem Content="SSI"></ComboBoxItem>
                                 </ComboBox>
-                                <TextBlock Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">Resolution [cnts/rev]</TextBlock>
+                                <TextBlock Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto"><TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+                                                <Setter Property="Text" Value="Resolution [cnts/rev]" />
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding ExternalEncoder}" Value="5">
+                                                        <Setter Property="Text" Value="Resolution [bit]" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                </TextBlock>
                                 <TextBox Grid.Row="1" HorizontalAlignment="Right" BorderThickness="0"
                                             Width="{StaticResource MotorParametersWidth}" 
                                             FontSize="12">
@@ -777,6 +798,8 @@
                 </Grid>
             </Grid>
         </Border>
+        <Grid Grid.Row="2" Height="15"/>
+        <Image Grid.Row="3" Stretch="Uniform" Source="pack://siteoforigin:,,,/WizardMotorImages/Picture1.png" Height="30" Width="auto"></Image>
     </Grid>
 
 

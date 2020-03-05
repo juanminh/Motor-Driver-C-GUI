@@ -68,7 +68,6 @@ namespace SuperButton.ViewModels
         //WizardWindowViewModel _wizardWindow = WizardWindowViewModel.GetInstance;
         public LeftPanelViewModel()
         {
-            EventRiser.Instance.LoggerEvent += Instance_LoggerEvent;
             ComboBoxCOM = ComboBox.GetInstance;
         }
         public ComboBox ComboBoxCOM
@@ -693,7 +692,7 @@ namespace SuperButton.ViewModels
         private string _logText;
 
         int logCounter = 0;
-        private void Instance_LoggerEvent(object sender, EventArgs e)
+        public void Instance_LoggerEvent(object sender, EventArgs e)
         {
             string temp = ((CustomEventArgs)e).Msg + Environment.NewLine + LogText;
             if (!LogText.Contains(((CustomEventArgs)e).Msg))

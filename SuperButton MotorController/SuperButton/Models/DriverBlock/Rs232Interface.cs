@@ -148,6 +148,7 @@ namespace SuperButton.Models.DriverBlock
                         Driver2Mainmodel(this, new Rs232InterfaceEventArgs("Connect"));
                         LeftPanelViewModel.busy = false;
                     }
+                    _comPort = null;
                     OscilloscopeViewModel.GetInstance.ChComboEn = false;
                     break;
                 case 1:
@@ -249,8 +250,8 @@ namespace SuperButton.Models.DriverBlock
                                     //Init synchronization packet, and rises event for parser
                                     if(RxtoParser != null)
                                     {
-                                        DataViewModel temp = (DataViewModel)Commands.GetInstance.DataCommandsListbySubGroup["DeviceSynchCommand"][0];
-                                        Commands.AssemblePacket(out RxPacket, Int16.Parse(temp.CommandId), Int16.Parse(temp.CommandSubId), true, false, 1);
+                                        DataViewModel temp = (DataViewModel)Commands.GetInstance.DataCommandsListbySubGroup["DeviceSynchCommand"][1];
+                                        Commands.AssemblePacket(out RxPacket, Int16.Parse(temp.CommandId), Int16.Parse(temp.CommandSubId), false, false, 0);
                                         RxtoParser(this, new Rs232InterfaceEventArgs(RxPacket));
                                     }
                                     Thread.Sleep(100);// while with timeout of 1 second
@@ -490,6 +491,7 @@ namespace SuperButton.Models.DriverBlock
             if(port != null)
             {
                 byte[] buffer = new byte[port.BytesToRead];
+                byte[] bufferTemp = new byte[0];
                 try
                 {
                     port.Read(buffer, 0, buffer.Length);
@@ -501,14 +503,17 @@ namespace SuperButton.Models.DriverBlock
                 }
                 if(Rx2Packetizer != null && buffer.Length > 0)
                 {
+                    //for(int i = 0; i < buffer.Length;i++)
+                    //    Debug.Write(buffer[i].ToString());
+                    //Debug.WriteLine("");
                     Rx2Packetizer(this, new Rs232InterfaceEventArgs(buffer)); // Go to Packetizer -> MakePacketsBuff function
                 }
             }
         }
-        public void Connect()
-        {
-            _comPort.DataReceived += DataReceived;
-        }
+        //public void Connect()
+        //{
+        //    _comPort.DataReceived += DataReceived;
+        //}
 
         #endregion
 

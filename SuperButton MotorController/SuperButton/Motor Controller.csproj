@@ -166,6 +166,7 @@
     </ApplicationDefinition>
     <Compile Include="Behaviors\InputBindingsManager.cs" />
     <Compile Include="Behaviors\ListBoxMouseWheelScrollingBehavior.cs" />
+    <Compile Include="Common\Operations.cs" />
     <Compile Include="Common\Configuration.cs" />
     <Compile Include="Common\Consts.cs" />
     <Compile Include="Common\IsModifierTypeConverter.cs" />
@@ -199,6 +200,7 @@
     <Compile Include="ViewModels\MessageBoxVM.cs" />
     <Compile Include="ViewModels\MotionViewModel.cs" />
     <Compile Include="ViewModels\OperationViewModel.cs" />
+    <Compile Include="ViewModels\SerialProgrammer.cs" />
     <Compile Include="ViewModels\UpDownControlModel.cs" />
     <Compile Include="ViewModels\WizardWindowViewModel.cs" />
     <Compile Include="Views\UC_CalibrationWizard.xaml.cs">
@@ -673,6 +675,8 @@
     <Resource Include="Images\serialPorgrammer.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="WizardMotorImages\Picture1.png" />
+    <Resource Include="WizardMotorImages\full.png" />
     <Resource Include="Images\Wizard.png" />
     <Resource Include="Images\monitor.png" />
     <Content Include="SerialProgrammer\Serial Programmer.exe">

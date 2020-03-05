@@ -11,6 +11,7 @@ using SuperButton.Models.DriverBlock;
 using SuperButton.ViewModels;
 using SuperButton.Helpers;
 using SuperButton.Views;
+using System.Diagnostics;
 
 namespace SuperButton.Models.ParserBlock
 {
@@ -90,8 +91,8 @@ namespace SuperButton.Models.ParserBlock
                     for(int i = 0; i < length; i++)
                     {
                         FiilsPlotPackets(data[i]); //Plot packets
-                        FiilsStandartPackets(data[i]);//Standart Packets                    
-                        FiilsStandartPacketsNew(data[i]);//Standart Pavkets New Updeted
+                        //FiilsStandartPackets(data[i]);//Standart Packets                    
+                        FiilsStandartPacketsNew(data[i]);//Standart Packets New Updeted
                     }
                     if(PlotPacketsList.Count > 0)
                     {
@@ -129,7 +130,6 @@ namespace SuperButton.Models.ParserBlock
                     }
                 }
             }
-
         }
         private void FiilsStandartPacketsNew(byte ch)
         {
@@ -204,72 +204,74 @@ namespace SuperButton.Models.ParserBlock
         }
         private void FiilsStandartPackets(byte ch)
         {
-
-            switch(standpacketState)
+            try
             {
-                case (0):	//First magic
-                    if(ch == 0x8b)
-                    {
+                switch(standpacketState)
+                {
+                    case (0):   //First magic
+                        if(ch == 0x8b)
+                        {
 
-                        // pack[plotpacketState] = ch;
-                        standpacketState++;
-                        TempA = 0;
-                    }
-                    break;
-                case (1)://Second magic
+                            // pack[plotpacketState] = ch;
+                            standpacketState++;
+                            TempA = 0;
+                        }
+                        break;
+                    case (1)://Second magic
 
-                    if(ch == 0x3c)
-                    {
-                        pack[standpacketState] = ch;
+                        if(ch == 0x3c)
+                        {
+                            pack[standpacketState] = ch;
+                            standpacketState++;
+                        }
+                        else
+                            standpacketState = 0;
+                        break;
+                    case (2):
+                        if(ch == 213)
+                        {
+                            standpacketState++;
+                        }
+                        else
+                            standpacketState = 0;
+                        break;
+                    case (3):
                         standpacketState++;
-                    }
-                    else
+                        break;
+                    case (4):
+
+                        standpacketState++;
+
+                        break;
+                    case (5):
+                        TempA = ch;
+
+                        standpacketState++;
+
+                        break;
+                    case (6):
+                        TempA = TempA + Convert.ToInt16((ch << 8));
+
+                        standpacketState++;
+                        break;
+                    case (7):
+                        TempA = TempA + Convert.ToInt16((ch << 16));
+                        standpacketState++;
+                        break;
+                    case (8):
+                        TempA = TempA + Convert.ToInt16((ch << 24));
                         standpacketState = 0;
-                    break;
-                case (2):
-                    if(ch == 213)
-                    {
-                        standpacketState++;
-                    }
-                    else
+                        LeftPanelViewModel.ChankLen = TempA;
+                        LeftPanelViewModel.mre.Set();
+                        break;
+
+
+                    default:
                         standpacketState = 0;
-                    break;
-                case (3):
-                    standpacketState++;
-                    break;
-                case (4):
-
-                    standpacketState++;
-
-                    break;
-                case (5):
-                    TempA = ch;
-
-                    standpacketState++;
-
-                    break;
-                case (6):
-                    TempA = TempA + Convert.ToInt16((ch << 8));
-
-                    standpacketState++;
-                    break;
-                case (7):
-                    TempA = TempA + Convert.ToInt16((ch << 16));
-
-                    standpacketState++;
-                    break;
-                case (8):
-                    TempA = TempA + Convert.ToInt16((ch << 24));
-                    standpacketState = 0;
-                    LeftPanelViewModel.ChankLen = TempA;
-                    LeftPanelViewModel.mre.Set();
-                    break;
-
-
-                default:
-                    standpacketState = 0;
-                    break;
+                        break;
+                }
             }
+            catch(Exception e) { Debug.WriteLine(e.Message); }
         }
         private void FiilsPlotPackets(byte ch)
         {
@@ -366,10 +368,6 @@ namespace SuperButton.Models.ParserBlock
                     break;
             }
         }
-
-
-
-
     }
 }
 

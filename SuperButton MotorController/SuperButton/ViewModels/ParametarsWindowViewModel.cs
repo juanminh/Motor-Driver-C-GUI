@@ -72,7 +72,21 @@ namespace SuperButton.ViewModels
             }
 
         }
-        
+        private ObservableCollection<object> _currentLimitList;
+        public ObservableCollection<object> CurrentLimitList
+        {
+
+            get
+            {
+                return Commands.GetInstance.DataCommandsListbySubGroup["CurrentLimit List"];
+            }
+            set
+            {
+                _currentLimitList = value;
+                OnPropertyChanged();
+            }
+
+        }
         public ObservableCollection<object> DigitalFeedbackFeedBackList
         {
 
