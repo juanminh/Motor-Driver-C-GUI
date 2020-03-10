@@ -12,7 +12,7 @@ namespace SuperButton.Views
         public static List<Tuple<float, float>> ScaleAndGainList = new List<Tuple<float, float>>();
         public static List<Int32> plotGeneral = new List<Int32>();
         public static List<float> plotFullScale = new List<float>();
-        public static float SingleChanelFreqC = (float)4000;//6666.666667;
+        public static float SingleChanelFreqC = (float)6666.666667;//4000;//
         public static float ChanelFreq = SingleChanelFreqC;
         public static float Step = 1 / SingleChanelFreqC;
 

@@ -12,6 +12,8 @@ using System.Windows.Input;
 using System.Security.AccessControl;
 using System.IO;
 using System.Security.Principal;
+using SuperButton.Helpers;
+using System.Threading.Tasks;
 
 namespace SuperButton
 {
@@ -26,8 +28,24 @@ namespace SuperButton
         // 
         // You can test the Runtime Key is installed correctly by Running your application 
         // OUTSIDE Of Visual Studio (no debugger attached). Trial watermarks should be removed. 
+
+
+
         public App()
         {
+            LeftPanelViewModel.GetInstance.LogText = "";
+            EventRiser.Instance.LoggerEvent += LeftPanelViewModel.GetInstance.Instance_LoggerEvent;
+
+            //EventRiser.Instance.RiseEevent(string.Format($"App Started"));
+
+            Startup += new StartupEventHandler(App_Startup); // Can be called from XAML 
+
+            DispatcherUnhandledException += App_DispatcherUnhandledException; //Example 2 
+
+            TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException; //Example 4 
+
+            System.Windows.Forms.Application.ThreadException += WinFormApplication_ThreadException; //Example 5 
+
             //SciChartSurface.SetRuntimeLicenseKey(@"<LicenseContract>
             //<Customer>Redler technologies</Customer>
             //<OrderId>ABT141014-5754-30127</OrderId>
@@ -38,6 +56,65 @@ namespace SuperButton
             //<KeyCode>lwAAAAEAAAAYTULLhErUAXAAQ3VzdG9tZXI9UmVkbGVyIHRlY2hub2xvZ2llcztPcmRlcklkPUFCVDE0MTAxNC01NzU0LTMwMTI3O1N1YnNjcmlwdGlvblZhbGlkVG89MTItSmFuLTIwMTU7UHJvZHVjdENvZGU9U0MtV1BGLUJTQyu69TgpwVx+uxEH2B+6rKOQ/5YDD2Oh+vDxAZ3OzX+X05jc9xhuF7mPcAXFaqyfWA==</KeyCode>
             //</LicenseContract>");
         }
+        void App_Startup(object sender, StartupEventArgs e)
+        {
+            //Here if called from XAML, otherwise, this code can be in App() 
+            AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException; // Example 1 
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException; // Example 3 
+        }
+        // Example 1 
+        void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
+        {
+            //MessageBox.Show("1. CurrentDomain_FirstChanceException");
+            //ProcessError(e.Exception);   - This could be used here to log ALL errors, even those caught by a Try/Catch block 
+            EventRiser.Instance.RiseEevent(string.Format(e.Exception.Message));
+        }
+
+        // Example 2 
+        void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
+        {
+            //MessageBox.Show("2. App_DispatcherUnhandledException");
+            //log.ProcessError(e.Exception);
+            EventRiser.Instance.RiseEevent(string.Format(e.Exception.Message));
+
+            e.Handled = true;
+        }
+
+        // Example 3 
+        void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            //MessageBox.Show("3. CurrentDomain_UnhandledException");
+            var exception = e.ExceptionObject as Exception;
+            //log.ProcessError(exception);
+            EventRiser.Instance.RiseEevent(string.Format(exception.Message));
+
+            //if(e.IsTerminating)
+            {
+                //Now is a good time to write that critical error file! 
+                //MessageBox.Show("Goodbye world!");
+            }
+        }
+
+        // Example 4 
+        void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        {
+            //MessageBox.Show("4. TaskScheduler_UnobservedTaskException");
+            //log.ProcessError(e.Exception);
+            EventRiser.Instance.RiseEevent(string.Format(e.Exception.Message));
+
+            e.SetObserved();
+        }
+
+        // Example 5 
+        void WinFormApplication_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
+        {
+            //.Show("5. WinFormApplication_ThreadException");
+            //log.ProcessError(e.Exception);
+            EventRiser.Instance.RiseEevent(string.Format(e.Exception.Message));
+
+        }
+
+
         protected override void OnStartup(StartupEventArgs e)
         {
             Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Normal;
@@ -45,7 +122,7 @@ namespace SuperButton
             // raise selection change event even when there's no change in index
             EventManager.RegisterClassHandler(typeof(ComboBoxItem), UIElement.PreviewMouseLeftButtonDownEvent,
                                               new MouseButtonEventHandler(ComboBoxSelfSelection), true);
-            EventManager.RegisterClassHandler(typeof(Window), Window.PreviewMouseDownEvent, new MouseButtonEventHandler(OnPreviewMouseDown));
+            //EventManager.RegisterClassHandler(typeof(Window), Window.PreviewMouseDownEvent, new MouseButtonEventHandler(OnPreviewMouseDown));
 
             base.OnStartup(e);
         }

@@ -140,7 +140,7 @@ namespace SuperButton.Views
         private int _undesample = 1;
         private uint _undesampleCounter = 0;
 
-        private const double TimerIntervalMs = 1;
+        private const double TimerIntervalMs = 100;
 
         private int ucarry;
         //private int ustate = 0;
@@ -183,7 +183,7 @@ namespace SuperButton.Views
         {
             Debug.WriteLine("YDirPlus");
 
-            if(_yzoom > 0 && _yzoom < 1000)
+            //if(_yzoom > 0 && _yzoom < 1000)
             {
                 _yzoom = _yzoom * 2;
                 YLimit = new DoubleRange(-_yzoom, _yzoom); //ubdate visible limits        
@@ -372,7 +372,7 @@ namespace SuperButton.Views
                         break;
 
                     }
-            }
+                }
 
             XLimit = new DoubleRange(0, _duration); //ubdate visible limits        
             XVisibleRange = XLimit;
@@ -1054,7 +1054,7 @@ namespace SuperButton.Views
             }
         }
 
-        private void ResetZoom()
+        public void ResetZoom()
         {
             try
             {

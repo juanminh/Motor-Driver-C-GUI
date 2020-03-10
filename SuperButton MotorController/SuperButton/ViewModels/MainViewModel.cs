@@ -106,8 +106,8 @@ namespace SuperButton.ViewModels
         public MainViewModel()
         {
             //System.Windows.Media.Color color;
-            LeftPanelViewModel.GetInstance.LogText = "";
-            EventRiser.Instance.LoggerEvent += LeftPanelViewModel.GetInstance.Instance_LoggerEvent;
+            //LeftPanelViewModel.GetInstance.LogText = "";
+            //EventRiser.Instance.LoggerEvent += LeftPanelViewModel.GetInstance.Instance_LoggerEvent;
 
             leftPanelViewModel.ConnectButtonContent = "Connect";
             leftPanelViewModel.ConnectTextBoxContent = "Not Connected";

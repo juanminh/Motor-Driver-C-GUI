@@ -102,7 +102,7 @@ namespace SuperButton.ViewModels
         }
 #if !DEBUG || RELEASE_MODE
         private bool _enRefresh = true;
-        private bool _debugRefresh = true;
+        private bool _debugRefresh = false;
         private bool _enPing = true;
 #else
         private bool _enRefresh = false;

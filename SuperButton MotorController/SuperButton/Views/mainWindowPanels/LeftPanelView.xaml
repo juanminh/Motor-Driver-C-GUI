@@ -778,11 +778,11 @@
                     <RowDefinition Height="auto"></RowDefinition>
                     <RowDefinition Height="auto"></RowDefinition>
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0">
+                <Grid Grid.Row="0"><!--(&#x3B2;)-->
                     <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="MOTOR" VerticalAlignment="Bottom" Width="70" FontWeight="Bold" FontSize="15" Foreground="White"/>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <TextBlock HorizontalAlignment="Left" Text="Controller        Version 1.1.x'" VerticalAlignment="Top" Width="160" Foreground="#FF5499D3" FontSize="12"/>
+                    <TextBlock HorizontalAlignment="Left" Text="Controller           Version 1.2.c" VerticalAlignment="Top" Width="Auto" Foreground="#FF5499D3" FontSize="12"/>
                 </Grid>
                 <Grid Grid.Row="2" Height="10">
                 </Grid>
@@ -906,9 +906,9 @@
                         <TextBlock Text="Clear Log" VerticalAlignment="Center" Margin="0,-2,0,0"/>
                     </Button>
                 </Grid>
-                <Grid Grid.Row="12" Height="15">
+                <Grid Grid.Row="12" Height="10">
                 </Grid>
-                <Grid Grid.Row="13" Height="30">
+                <Grid Grid.Row="13" Height="50">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="30*"/>
                         <ColumnDefinition Width="5*"/>
@@ -917,7 +917,7 @@
                         <ColumnDefinition Width="30*"/>
                     </Grid.ColumnDefinitions>
                     <!-- Wizard -->
-                    <Border Grid.Column="0" CornerRadius="1" BorderBrush="Gray" BorderThickness="1" Width="30">
+                    <Border Grid.Column="0" CornerRadius="1" BorderBrush="Gray" BorderThickness="1" Width="50">
                         <Button Grid.Column="0" Command ="{Binding ShowWizard}"
                             Background="Transparent" 
                             Foreground="Transparent"
@@ -927,7 +927,7 @@
                         </Button>
                     </Border>
                     <!-- Param And Action -->
-                    <Border Grid.Column="2" CornerRadius="2" BorderBrush="Gray" BorderThickness="1" Width="30">
+                    <Border Grid.Column="2" CornerRadius="2" BorderBrush="Gray" BorderThickness="1" Width="50">
                         <Button Command ="{Binding Showwindow}"
                             Background="Transparent" 
                             Foreground="Transparent"
@@ -937,7 +937,7 @@
                         </Button>
                     </Border>
                     <!-- Monitor -->
-                    <!--<Border Grid.Column="5" CornerRadius="15" BorderBrush="Gray" BorderThickness="1" Width="30">
+                    <!--<Border Grid.Column="5" CornerRadius="15" BorderBrush="Gray" BorderThickness="1" Width="50">
                         <Button Grid.Column="5" Command ="{Binding Showwindow}"
                             Background="Transparent" 
                             Foreground="Transparent"
@@ -948,6 +948,7 @@
                     </Border>-->
                 </Grid>
                 <Grid Grid.Row="14" Height="10">
+                    <TextBlock Text="     Wizard           Parameters" Foreground="White" FontSize="8" FontWeight="Bold"/>
                 </Grid>
                 <Grid Grid.Row="15">
                     <Separator Width="65"></Separator>
@@ -960,7 +961,7 @@
                 <Grid Grid.Row="18" HorizontalAlignment="Center">
                     <!--<ItemsControl ItemsSource="{Binding DriverStatusList}" ItemTemplate="{StaticResource DataViewSmallFontInd}" FontSize="20"/>-->
                     <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="0.5">
-                        <TextBlock Name="DrvSt" Width="130" HorizontalAlignment="Right" Margin="0,0,1,0" Text="{Binding DriverStat}" FontSize="13" FontWeight="Bold">
+                        <TextBlock Name="DrvSt" Width="130" HorizontalAlignment="Center" Margin="0,0,1,0" Text="{Binding DriverStat}" FontSize="13" FontWeight="Bold">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Foreground" Value="Red" />

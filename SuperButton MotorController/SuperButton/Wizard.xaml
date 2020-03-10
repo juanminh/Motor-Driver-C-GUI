@@ -365,6 +365,7 @@
                                         </Style>
                                     </RowDefinition.Style>
                                 </RowDefinition>
+                                <RowDefinition Height="Auto"/>
                                 <!-- Make Hall visible or not -->
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
@@ -377,9 +378,10 @@
                                 <ComboBoxItem Content="Disable"></ComboBoxItem>
                                 <ComboBoxItem Content="Enable"></ComboBoxItem>
                             </ComboBox>
-                            <GroupBox Grid.Row="1" Width="Auto" Foreground="White" FontSize="12" Style="{x:Null}" BorderBrush="Transparent">
+                            <!--<TextBlock Grid.Row="1" Width="Auto" Text="   Encoder" VerticalAlignment="Center" Foreground="White" Background="Transparent" FontWeight="DemiBold" FontSize="12"/>-->
+                            <GroupBox Grid.Row="2" Width="Auto" Style="{x:Null}" BorderBrush="Gray" BorderThickness="0.6">
                                 <GroupBox.Header>
-                                    <Span FontWeight="Bold">Encoder</Span>
+                                    <Span FontWeight="DemiBold" Foreground="White">Encoder</Span>
                                 </GroupBox.Header>
                                 <Grid>
                                     <Grid.RowDefinitions>
@@ -387,8 +389,8 @@
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">Type</TextBlock>
-                                    <ComboBox Grid.Row="0" HorizontalAlignment="Right"
+                                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">Type</TextBlock>
+                                    <ComboBox HorizontalAlignment="Right"
                                               Width="{StaticResource MotorParametersWidth}" 
                                               FontSize="12"
                                               SelectedIndex="{Binding EncoderFeedback}">
@@ -591,7 +593,7 @@
                                             <Setter Property="IsReadOnly" Value="False" />
                                             <Setter Property="IsHitTestVisible" Value="True"/>
                                             <Setter Property="IsEnabled" Value="True"/>
-                                            <Setter Property="Text" Value="{Binding ExternalResolution}"/>
+                                            <Setter Property="Text" Value="{Binding ExternalResolution, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                                             <Style.Triggers>
                                                 <MultiDataTrigger>
                                                     <MultiDataTrigger.Conditions>
@@ -799,7 +801,7 @@
             </Grid>
         </Border>
         <Grid Grid.Row="2" Height="15"/>
-        <Image Grid.Row="3" Stretch="Uniform" Source="pack://siteoforigin:,,,/WizardMotorImages/Picture1.png" Height="30" Width="auto"></Image>
+        <Image Grid.Row="3" Stretch="Uniform" Source="pack://siteoforigin:,,,/WizardMotorImages/Jos.png" Height="80" Width="auto"></Image>
     </Grid>
 
 

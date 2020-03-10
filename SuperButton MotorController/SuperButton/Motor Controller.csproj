@@ -675,8 +675,15 @@
     <Resource Include="Images\serialPorgrammer.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="WizardMotorImages\Picture1.png" />
-    <Resource Include="WizardMotorImages\full.png" />
+    <Resource Include="WizardMotorImages\Jos.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="WizardMotorImages\Picture1.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="WizardMotorImages\full.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\Wizard.png" />
     <Resource Include="Images\monitor.png" />
     <Content Include="SerialProgrammer\Serial Programmer.exe">

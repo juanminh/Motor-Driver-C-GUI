@@ -17,6 +17,7 @@ using System.Diagnostics;
 using Abt.Controls.SciChart;
 using MotorController.Helpers;
 using SuperButton.ViewModels;
+using System.Runtime.InteropServices;
 
 namespace SuperButton.ViewModels
 {
@@ -233,6 +234,7 @@ namespace SuperButton.ViewModels
             string tempPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\MotorController\\Parameters\\";
             if(!Directory.Exists(tempPath))
                 Directory.CreateDirectory(tempPath);
+
             Process.Start(tempPath);
         }
         public void OpenFromFile()
@@ -306,11 +308,13 @@ namespace SuperButton.ViewModels
                 {
                     Data2Send = 0,
                     ID = 64,
-                    SubID = Convert.ToInt16(1),
+                    SubID = Convert.ToInt16(0),
                     IsSet = true,
                     IsFloat = false
                 });
+                Thread.Sleep(10);
                 DebugViewModel.GetInstance.EnRefresh = false;
+                Thread.Sleep(10);
                 return "both";
             }
             else if(plot > 0)
@@ -319,7 +323,7 @@ namespace SuperButton.ViewModels
                 {
                     Data2Send = 0,
                     ID = 64,
-                    SubID = Convert.ToInt16(1),
+                    SubID = Convert.ToInt16(0),
                     IsSet = true,
                     IsFloat = false
                 });
@@ -327,7 +331,9 @@ namespace SuperButton.ViewModels
             }
             else if(refresh)
             {
+                Thread.Sleep(10);
                 DebugViewModel.GetInstance.EnRefresh = false;
+                Thread.Sleep(10);
                 return "refresh";
             }
             else
@@ -343,15 +349,19 @@ namespace SuperButton.ViewModels
                 {
                     Data2Send = 1,
                     ID = 64,
-                    SubID = Convert.ToInt16(1),
+                    SubID = Convert.ToInt16(0),
                     IsSet = true,
                     IsFloat = false
                 });
+                Thread.Sleep(10);
                 DebugViewModel.GetInstance.EnRefresh = true;
+                Thread.Sleep(10);
             }
             else if(state == "refresh")
             {
+                Thread.Sleep(10);
                 DebugViewModel.GetInstance.EnRefresh = true;
+                Thread.Sleep(10);
             }
             else if(state == "plot")
             {
@@ -359,7 +369,7 @@ namespace SuperButton.ViewModels
                 {
                     Data2Send = 1,
                     ID = 64,
-                    SubID = Convert.ToInt16(1),
+                    SubID = Convert.ToInt16(0),
                     IsSet = true,
                     IsFloat = false
                 });
@@ -383,7 +393,7 @@ namespace SuperButton.ViewModels
                     else */
                     _redoState = PreRedoState(OscilloscopeParameters.ChanTotalCounter, DebugViewModel.GetInstance.EnRefresh);
                     PbarValueFromFile = 0;
-                    if(PathFromFile == "")
+                    if(String.IsNullOrWhiteSpace(PathFromFile))
                     {
                         //OpenToFile();
                         EventRiser.Instance.RiseEevent(string.Format($"Please choose a file and retry!"));
@@ -503,7 +513,7 @@ namespace SuperButton.ViewModels
             }));
             t.SetApartmentState(ApartmentState.STA);
             t.Start();
-            t.Join();
+            //t.Join();
         }
         public static string MonthTrans(int month)
         {
@@ -604,8 +614,10 @@ namespace SuperButton.ViewModels
                             timeout = 0;
                         }
                         else
+                        {
                             timeout++;
-                        Thread.Sleep(5);
+                            Thread.Sleep(100);
+                        }
                         if(PbarValueToFile == 100)
                             break;
                         if(timeout >= 100)
@@ -634,7 +646,7 @@ namespace SuperButton.ViewModels
                         }
                         else
                             timeout++;
-                        Thread.Sleep(5);
+                        Thread.Sleep(100);
                         if(PbarValueFromFile == 100)
                             break;
                         if(timeout >= 100)

@@ -69,5 +69,10 @@ namespace SuperButton.Views
         {
             (sender as TextBox).SelectAll();
         }
+
+        private void FolderTB_ScrolltoEnd(object sender, EventArgs e)
+        {
+            ((TextBox)sender).ScrollToHorizontalOffset(((TextBox)sender).ExtentWidth);
+        }
     }
 }

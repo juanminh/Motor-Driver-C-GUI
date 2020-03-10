@@ -523,8 +523,8 @@
                                 <RowDefinition Height="20"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
-                            <Border Grid.Row="0" Grid.Column="0" BorderBrush="Transparent"  BorderThickness="1" CornerRadius="3" Width="110" Height="20" VerticalAlignment="Center" Margin="5,0,0,0">
-                                <TextBlock MaxHeight="17" Text="Motion Commands" HorizontalAlignment="Center" Foreground="White" FontSize="12"></TextBlock>
+                            <Border Grid.Row="0" Grid.Column="0" BorderBrush="Transparent"  BorderThickness="1" CornerRadius="3" Width="Auto" Height="20" VerticalAlignment="Center">
+                                <TextBlock Text="Commands" HorizontalAlignment="Center" Foreground="White" FontSize="14" FontWeight="Bold"></TextBlock>
                             </Border>
                             <Grid Grid.Row="1">
                                 <Grid.ColumnDefinitions>
@@ -632,8 +632,8 @@
                                 <RowDefinition Height="20"></RowDefinition>
                                 <RowDefinition Height="*"></RowDefinition>
                             </Grid.RowDefinitions>
-                            <Border Grid.Row="0" Grid.Column="0" BorderBrush="Transparent"  BorderThickness="1" CornerRadius="3" Width="110" Height="20" VerticalAlignment="Center" Margin="5,0,0,0">
-                                <TextBlock Height="17" Text="Motion Status" HorizontalAlignment="Center" Foreground="White" FontSize="12"></TextBlock>
+                            <Border Grid.Row="0" Grid.Column="0" BorderBrush="Transparent"  BorderThickness="1" CornerRadius="3" Width="Auto" Height="20" VerticalAlignment="Center">
+                                <TextBlock Height="17" Text="Reports" HorizontalAlignment="Center" Foreground="White" FontSize="14" FontWeight="Bold"></TextBlock>
                             </Border>
                             <Grid Grid.Row="1">
                                 <Grid.ColumnDefinitions>

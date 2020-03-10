@@ -279,6 +279,7 @@ namespace SuperButton.ViewModels
 
             LeftPanelViewModel._app_running = true;
             StarterOperation(STOP);
+            OscilloscopeViewModel.GetInstance.ResetZoom();
         }
         private String _connectTextBoxContent;
         public String ConnectTextBoxContent
@@ -691,7 +692,7 @@ namespace SuperButton.ViewModels
 
         private string _logText;
 
-        int logCounter = 0;
+        //int logCounter = 0;
         public void Instance_LoggerEvent(object sender, EventArgs e)
         {
             string temp = ((CustomEventArgs)e).Msg + Environment.NewLine + LogText;

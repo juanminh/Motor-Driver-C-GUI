@@ -355,8 +355,8 @@ namespace SuperButton.Models.ParserBlock
                     }
                     else
                     {
-                        readypacket = new byte[11] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-                        PlotPacketsList.Add(readypacket);
+                        //readypacket = new byte[11] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+                        //PlotPacketsList.Add(readypacket);
                         //ParserRayonM1.GetInstanceofParser.ParsePlot(PlotPacketsList);
                     }
 

@@ -82,11 +82,11 @@ namespace SuperButton.ViewModels
         {
 
 #if SerialProgrammerLabVIEW
-            string iniPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+            string iniPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); // Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
             // section, key, value, _iniFile
-            iniFile.WritePrivateProfileString("Programmer", "CmdBaud", Rs232Interface.GetInstance.BaudRate, iniPath + "\\SerialProgrammer\\data\\SerialProgrammer.ini");
-            iniFile.WritePrivateProfileString("Programmer", "COM", Rs232Interface.GetInstance.ComPortStr, iniPath + "\\SerialProgrammer\\data\\SerialProgrammer.ini");
+            iniFile.WritePrivateProfileString("Programmer", "CmdBaud", Rs232Interface.GetInstance.BaudRate, iniPath + "\\MotorController\\SerialProgrammer\\SerialProgrammer.ini");
+            iniFile.WritePrivateProfileString("Programmer", "COM", LeftPanelViewModel.GetInstance.ComboBoxCOM.ComString, iniPath + "\\MotorController\\SerialProgrammer\\SerialProgrammer.ini");
 
             if(LeftPanelViewModel.GetInstance.ConnectTextBoxContent != "Not Connected")
                 Rs232Interface.GetInstance.Disconnect();
@@ -101,7 +101,7 @@ namespace SuperButton.ViewModels
                     Rs232Interface.GetInstance.Disconnect();
             }
 
-            Process.Start(iniPath + "\\SerialProgrammer\\Serial Programmer.exe");
+            Process.Start(Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\SerialProgrammer\\Serial Programmer.exe");
 
             Thread SerialProgrammer = new Thread(MaintenanceViewModel.GetInstance.SerialProgrammerApp);
             SerialProgrammer.Start();

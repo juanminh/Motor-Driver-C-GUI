@@ -184,7 +184,7 @@ namespace SuperButton.CommandsDB
             {
                 CommandId = "64",
                 CommandSubId = "0",
-                CommandName = "Synchcmd",
+                CommandName = "PlotCommand",
                 IsFloat = false,
                 CommandValue = "0"
             };
@@ -194,7 +194,7 @@ namespace SuperButton.CommandsDB
             {
                 CommandId = "64",
                 CommandSubId = "1",
-                CommandName = "Synchcmd",
+                CommandName = "AutoBaud",
                 IsFloat = false,
                 CommandValue = "0"
             };
@@ -997,7 +997,7 @@ namespace SuperButton.CommandsDB
 
             data = new DataViewModel
             {
-                CommandName = "QEP",
+                CommandName = "Motor",
                 CommandId = "26",
                 CommandSubId = "2",
                 CommandValue = "",
@@ -1008,7 +1008,7 @@ namespace SuperButton.CommandsDB
 
             data = new DataViewModel
             {
-                CommandName = "SSI",
+                CommandName = "External",
                 CommandId = "26",
                 CommandSubId = "3",
                 CommandValue = "",
