@@ -5,21 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Timer = System.Timers.Timer;
 using System.Diagnostics;
-using SuperButton.CommandsDB;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows.Data;
-using System.Globalization;
-using System.Windows.Media;
-using System.Windows.Input;
-using SuperButton.Models;
 using System.IO;
-using MotorController.Helpers;
 
 namespace SuperButton.ViewModels
 {
@@ -35,7 +27,7 @@ namespace SuperButton.ViewModels
         DC_Brushed = 0,
         Three_Phase_Brushless = 1
     };
-    enum ClaFdb
+    enum eClaFdb
     {
         [Description("Feedbacks type")]
         Cla_Fdb_None = 0x0000,
@@ -59,7 +51,7 @@ namespace SuperButton.ViewModels
         Enc_Fdb_End = 0x08
     };
 
-    enum ComutationSource
+    enum eComutationSource
     {
         [Description("Comutation source type")]
         Cmtn_Brushed = 0,
@@ -68,7 +60,26 @@ namespace SuperButton.ViewModels
         Cmtn_Abs_Enc = 3,
         Cmtn_Forced_Rotate = 4,
     };
-    internal class WizardWindowViewModel : INotifyPropertyChanged
+    enum eHall
+    {
+        [Description("Hall Status")]
+        Disable = 0,
+        Enable = 1
+    };
+
+    enum eDriveMode
+    {
+        Current_Control = 0,
+        Speed_Control = 1,
+        Position_Control = 2
+    };
+    enum eCommandSource
+    {
+        Digital = 0,
+        Analog = 1
+    };
+
+    public partial class WizardWindowViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged = delegate { };
         public void OnPropertyChanged([CallerMemberName] string propertyName = null)
@@ -120,6 +131,10 @@ namespace SuperButton.ViewModels
                 CalibrationWizardListbySubGroup.Add("CalibrationList", new ObservableCollection<object>());
                 BuildCalibrationWizardList();
             }
+            else
+            {
+                readWizardParams();
+            }
             //Start = new RelayCommand(StartButton);
         }
         ~WizardWindowViewModel() { }
@@ -157,7 +172,7 @@ namespace SuperButton.ViewModels
             get { return _maxSpeed; }
             set { _maxSpeed = value; OnPropertyChanged("MaxSpeed"); }
         }
-        private int _hallEnDis = 1;
+        private int _hallEnDis = (int)eHall.Enable;
         public int HallEnDis
         {
             get { return _hallEnDis; }
@@ -281,7 +296,7 @@ namespace SuperButton.ViewModels
             for(int i = 0; i < names.Length; i++)
                 calibOperation.Add(names[i], SubID[i]);
 
-            if(MotorType == 0 || HallEnDis == 0)
+            if(MotorType == 0 || HallEnDis == (int)eHall.Enable)
                 calibOperation.Remove("Hall Mapping");
             if(!(EncoderFeedback == (int)eEncSel.Enc_Fdb_Ssi || EncoderFeedback == (int)eEncSel.Enc_Fdb_Abs_Sin_Cos))
                 calibOperation.Remove("Electrical Angle");
@@ -388,7 +403,7 @@ namespace SuperButton.ViewModels
 
             /*Commutation select*/
             if(MotorType == (int)eMotorType.DC_Brushed)
-                comutation_source = ((int)ComutationSource.Cmtn_Brushed).ToString();
+                comutation_source = ((int)eComutationSource.Cmtn_Brushed).ToString();
             else
             {
                 switch(EncoderFeedback) // EncoderFeedback => Motor Feedback
@@ -396,8 +411,8 @@ namespace SuperButton.ViewModels
                     case (int)eEncSel.Enc_Fdb_Inc1:
                     case (int)eEncSel.Enc_Fdb_Inc_Sin_Cos:
                     case (int)eEncSel.Enc_Fdb_Inc2:
-                        if(HallEnDis == 1) // if Hall Enable
-                            comutation_source = ((int)ComutationSource.Cmtn_Hall_Inc_Enc).ToString();
+                        if(HallEnDis == (int)eHall.Enable) // if Hall Enable
+                            comutation_source = ((int)eComutationSource.Cmtn_Hall_Inc_Enc).ToString();
                         else
                         {
                             return; // Cannot use BL motor without hall or absolute encoder
@@ -405,11 +420,11 @@ namespace SuperButton.ViewModels
                         break;
                     case (int)eEncSel.Enc_Fdb_Abs_Sin_Cos:
                     case (int)eEncSel.Enc_Fdb_Ssi:
-                        comutation_source = ((int)ComutationSource.Cmtn_Abs_Enc).ToString();
+                        comutation_source = ((int)eComutationSource.Cmtn_Abs_Enc).ToString();
                         break;
                     case (int)eEncSel.Enc_Fdb_None:
-                        if(HallEnDis == 1) // if Hall Enable
-                            comutation_source = ((int)ComutationSource.Cmtn_Hall).ToString();
+                        if(HallEnDis == (int)eHall.Enable) // if Hall Enable
+                            comutation_source = ((int)eComutationSource.Cmtn_Hall).ToString();
                         else
                         {
                             return; // Cannot use BL motor without hall or absolute encoder
@@ -498,7 +513,7 @@ namespace SuperButton.ViewModels
             GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
 
             /*update "Roll High", "Roll Low" parameter when Hall Enable*/
-            if(HallEnDis == 1)
+            if(HallEnDis == (int)eHall.Enable)
             {
                 operation = new DataViewModel { CommandName = "Roll High", CommandId = "70", CommandSubId = "2", IsFloat = false, CommandValue = (Convert.ToInt32(EncoderResolution) * 1000 - 1).ToString() };
                 Int32.TryParse(operation.CommandId, out commandId);
@@ -665,7 +680,6 @@ namespace SuperButton.ViewModels
             #region Save_parameters_to_ini_file
             saveWizardParams();
             #endregion Save_parameters_to_ini_file
-            return;
 
             sendPreStartOperation();
             GetInstance.OperationList.Clear();
@@ -816,7 +830,7 @@ namespace SuperButton.ViewModels
                 OnPropertyChanged("ExternalResolution");
             }
         }
-        private int _externalSpeedLoop = (int)ClaFdb.Cla_Fdb_Motor - 1;
+        private int _externalSpeedLoop = (int)eClaFdb.Cla_Fdb_Motor - 1;
         public int ExternalSpeedLoop
         {
             get { return _externalSpeedLoop; }
@@ -826,7 +840,7 @@ namespace SuperButton.ViewModels
                 OnPropertyChanged("ExternalSpeedLoop");
             }
         }
-        private int _externalPositionLoop = (int)ClaFdb.Cla_Fdb_Motor - 1;
+        private int _externalPositionLoop = (int)eClaFdb.Cla_Fdb_Motor - 1;
         public int ExternalPositionLoop
         {
             get { return _externalPositionLoop; }
@@ -1149,9 +1163,9 @@ namespace SuperButton.ViewModels
         }
         #endregion Tasks
 
-        private void saveWizardParams()
+        string _section = "Wizard";
+        public void saveWizardParams()
         {
-
             string path = "\\MotorController\\Wizard\\";
             path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + path;
             if(!Directory.Exists(path))
@@ -1159,25 +1173,94 @@ namespace SuperButton.ViewModels
             string _file_name = "WizardParameters.ini";
             iniFile _wizard_parameters_file = new iniFile(path + _file_name);
 
+            #region Save_Parameters
 
-            string _section = "Wizard";
+            _wizard_parameters_file.Write("Motor Type", Enum.GetNames(typeof(eMotorType)).ElementAt(MotorType), _section);
+            _wizard_parameters_file.Write("Pole Paire", PolePair, _section);
+            _wizard_parameters_file.Write("Continuous Current", ContinuousCurrent, _section);
+            _wizard_parameters_file.Write("Max Speed", MaxSpeed, _section);
+            _wizard_parameters_file.Write("Hall", Enum.GetNames(typeof(eHall)).ElementAt(HallEnDis), _section);
+            _wizard_parameters_file.Write("Encoder Feedback", Enum.GetNames(typeof(eEncSel)).ElementAt(EncoderFeedback), _section);
+            _wizard_parameters_file.Write("Encoder Resolution", EncoderResolution, _section);
 
-            for(int i = 0; i < GetInstance.OperationList.Count; i++)
+            #endregion Save_Parameters
+
+            #region Advanced_Configuration
+
+            _wizard_parameters_file.Write("External Encoder Feedback", Enum.GetNames(typeof(eEncSel)).ElementAt(ExternalEncoder), _section);
+            _wizard_parameters_file.Write("External Encoder Resolution", ExternalResolution, _section);
+            _wizard_parameters_file.Write("Speed Loop", Enum.GetNames(typeof(eClaFdb)).ElementAt(ExternalSpeedLoop), _section);
+            _wizard_parameters_file.Write("Position Loop", Enum.GetNames(typeof(eClaFdb)).ElementAt(ExternalPositionLoop), _section);
+            _wizard_parameters_file.Write("Drive Mode", Enum.GetNames(typeof(eDriveMode)).ElementAt(ExternalDriveMode), _section);
+            _wizard_parameters_file.Write("Command Source", Enum.GetNames(typeof(eCommandSource)).ElementAt(ExternalCommandSource), _section);
+
+            #endregion Advanced_Configuration
+
+            /*
+            string tempar = Enum.GetNames(typeof(eMotorType)).ElementAt(MotorType); // Get string name of enum with int value. 
+
+            int val = (int)EnumHelper.GetEnumValue<eMotorType>("Three_Phase_Brushless"); // Get int num of enum with string value.
+            */
+        }
+        private void readWizardParams()
+        {
+            string path = "\\MotorController\\Wizard\\";
+            path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + path;
+            string _file_name = path + "WizardParameters.ini";
+
+            if(!File.Exists(_file_name))
+                EventRiser.Instance.RiseEevent(string.Format($"No wizard parameters file found!"));
+            else
             {
-                if(GetInstance.OperationList.ElementAt(i).Value.CommandName != "Load Default" &&
-                   GetInstance.OperationList.ElementAt(i).Value.CommandName != "Save" &&
-                   GetInstance.OperationList.ElementAt(i).Value.CommandName != "Reset" &&
-                   GetInstance.OperationList.ElementAt(i).Value.CommandName != "Synchronisation Command")
-                    _wizard_parameters_file.Write(GetInstance.OperationList.ElementAt(i).Value.CommandName, GetInstance.OperationList.ElementAt(i).Value.CommandValue, _section);
+                iniFile _wizard_parameters_file = new iniFile(_file_name);
+
+                #region Read_Parameters
+
+                MotorType = (int)EnumHelper.GetEnumValue<eMotorType>(_wizard_parameters_file.Read("Motor Type", _section));
+                PolePair = _wizard_parameters_file.Read("Pole Paire", _section);
+                ContinuousCurrent = _wizard_parameters_file.Read("Continuous Current", _section);
+                MaxSpeed = _wizard_parameters_file.Read("Max Speed", _section);
+                HallEnDis = (int)EnumHelper.GetEnumValue<eHall>(_wizard_parameters_file.Read("Hall", _section));
+                EncoderFeedback = (int)EnumHelper.GetEnumValue<eEncSel>(_wizard_parameters_file.Read("Encoder Feedback", _section));
+                EncoderResolution = _wizard_parameters_file.Read("Encoder Resolution", _section);
+
+                #endregion Read_Parameters
+
+                #region Advanced_Configuration
+
+                ExternalEncoder = (int)EnumHelper.GetEnumValue<eEncSel>(_wizard_parameters_file.Read("External Encoder Feedback", _section));
+                ExternalResolution = _wizard_parameters_file.Read("External Encoder Resolution", _section);
+                ExternalSpeedLoop = (int)EnumHelper.GetEnumValue<eClaFdb>(_wizard_parameters_file.Read("Speed Loop", _section));
+                ExternalPositionLoop = (int)EnumHelper.GetEnumValue<eClaFdb>(_wizard_parameters_file.Read("Position Loop", _section));
+                ExternalDriveMode = (int)EnumHelper.GetEnumValue<eDriveMode>(_wizard_parameters_file.Read("Drive Mode", _section));
+                ExternalCommandSource = (int)EnumHelper.GetEnumValue<eCommandSource>(_wizard_parameters_file.Read("Command Source", _section));
+
+                #endregion Advanced_Configuration
             }
-            for(int i = 0; i < GetInstance.OperationList.Count; i++)
+        }
+    }
+    public static class EnumHelper
+    {
+        public static T GetEnumValue<T>(string str) where T : struct, IConvertible
+        {
+            Type enumType = typeof(T);
+            if(!enumType.IsEnum)
             {
-                if(GetInstance.OperationList.ElementAt(i).Value.CommandName != "Load Default" &&
-                    GetInstance.OperationList.ElementAt(i).Value.CommandName != "Save" &&
-                    GetInstance.OperationList.ElementAt(i).Value.CommandName != "Reset" &&
-                    GetInstance.OperationList.ElementAt(i).Value.CommandName != "Synchronisation Command")
-                    Debug.WriteLine(GetInstance.OperationList.ElementAt(i).Value.CommandName + ": " + _wizard_parameters_file.Read(GetInstance.OperationList.ElementAt(i).Value.CommandName, _section));
+                throw new Exception("T must be an Enumeration type.");
             }
+            T val;
+            return Enum.TryParse<T>(str, true, out val) ? val : default(T);
+        }
+
+        public static T GetEnumValue<T>(int intValue) where T : struct, IConvertible
+        {
+            Type enumType = typeof(T);
+            if(!enumType.IsEnum)
+            {
+                throw new Exception("T must be an Enumeration type.");
+            }
+
+            return (T)Enum.ToObject(enumType, intValue);
         }
     }
 }

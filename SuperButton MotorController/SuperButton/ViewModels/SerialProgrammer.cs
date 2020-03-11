@@ -15,7 +15,6 @@ using static SuperButton.Operations;
 using System.Windows.Forms;
 using System.IO;
 using SuperButton.Helpers;
-using MotorController.Helpers;
 
 namespace SuperButton.ViewModels
 {

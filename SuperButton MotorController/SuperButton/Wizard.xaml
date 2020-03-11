@@ -308,7 +308,7 @@
                               Width="{StaticResource MotorParametersWidth}"
                               FontSize="12">
                                 <ComboBoxItem Content="DC Brushed"/>
-                                <ComboBoxItem Content="3 Phase Brushless"/>
+                                <ComboBoxItem Content="Three Phase Brushless"/>
                             </ComboBox>
                             <TextBlock Grid.Row="1" HorizontalAlignment="Left" 
                                VerticalAlignment="Center" 

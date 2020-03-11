@@ -15,7 +15,7 @@ using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using Abt.Controls.SciChart;
-using MotorController.Helpers;
+using SuperButton.Helpers;
 using SuperButton.ViewModels;
 using System.Runtime.InteropServices;
 

@@ -1,4 +1,5 @@
 ﻿using SuperButton.Common;
+using SuperButton.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -46,12 +47,13 @@ namespace SuperButton.Views
         public Wizard()
         {
             InitializeComponent();
-            this.DataContext = new ViewModels.WizardWindowViewModel();
+            this.DataContext = WizardWindowViewModel.GetInstance;// WizardWindowViewModel();
             Wizard.WindowsOpen = true;
         }
 
         public void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            WizardWindowViewModel.GetInstance.saveWizardParams();
             WindowsOpen = false;
             _instance = null;
         }

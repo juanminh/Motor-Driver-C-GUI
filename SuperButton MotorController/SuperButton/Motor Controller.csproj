@@ -170,6 +170,7 @@
     <Compile Include="Common\Configuration.cs" />
     <Compile Include="Common\Consts.cs" />
     <Compile Include="Common\IsModifierTypeConverter.cs" />
+    <Compile Include="Draft.cs" />
     <Compile Include="Example.cs" />
     <Compile Include="ExampleGroupViewModel.cs" />
     <Compile Include="GroupedExamplesViewModel.cs" />
