@@ -33,6 +33,8 @@ namespace SuperButton
 
         public App()
         {
+            Operations Op = Operations.GetInstance;
+            Operations.GetInstance.readDataBase();
             LeftPanelViewModel.GetInstance.LogText = "";
             EventRiser.Instance.LoggerEvent += LeftPanelViewModel.GetInstance.Instance_LoggerEvent;
 

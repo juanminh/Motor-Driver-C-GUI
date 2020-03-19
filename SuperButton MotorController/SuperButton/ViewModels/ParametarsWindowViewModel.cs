@@ -20,7 +20,6 @@ namespace SuperButton.ViewModels
         public const int I_O = 7;
         public const int DEBUG = 8;
 
-        private OperationViewModel _operationViewModel;
         private CalibrationViewModel _calibrationViewModel;
         private MotionViewModel _motionViewModel;
         private MaintenanceViewModel _maintenanceViewModel;
@@ -30,7 +29,6 @@ namespace SuperButton.ViewModels
         //private LoadParamsViewModel _loadParamsViewModel;
         public ParametarsWindowViewModel()
         {
-            _operationViewModel = OperationViewModel.GetInstance;
             _calibrationViewModel = CalibrationViewModel.GetInstance;
             _motionViewModel = MotionViewModel.GetInstance;
             _maintenanceViewModel = MaintenanceViewModel.GetInstance;
@@ -135,7 +133,6 @@ namespace SuperButton.ViewModels
 
         }
         private ObservableCollection<object> _pidPositionList;
-        //private string _motorDriver;
         public ObservableCollection<object> PidPositionList
         {
 
@@ -150,8 +147,6 @@ namespace SuperButton.ViewModels
             }
 
         }
-
-        // private ObservableCollection<object> _deviceSerialList;
         private ObservableCollection<object> _baudrateList;
         public ObservableCollection<object> DeviceSerialList
         {
@@ -176,16 +171,6 @@ namespace SuperButton.ViewModels
             }
 
         }
-        //private ObservableCollection<object> _driverFullScaleList;
-        public ObservableCollection<object> DriverFullScaleList
-        {
-
-            get
-            {
-                return Commands.GetInstance.DataCommandsListbySubGroup["DriverFullScale"];
-            }
-
-        }
         
         public virtual ICommand TestEnumChange
         {
@@ -194,12 +179,6 @@ namespace SuperButton.ViewModels
                 return new RelayCommand(EnumChange, CheckValue);
             }
         }
-        
-        public OperationViewModel OperationViewModel
-        {
-            get { return _operationViewModel; }
-        }
-
         public CalibrationViewModel CalibrationViewModel
         {
             get { return _calibrationViewModel; }

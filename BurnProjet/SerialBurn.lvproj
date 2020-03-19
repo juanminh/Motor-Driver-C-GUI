@@ -82,59 +82,58 @@
 				<Property Name="Destination[0].type" Type="Str">userFolder</Property>
 				<Property Name="DestinationCount" Type="Int">1</Property>
 				<Property Name="DistPart[0].flavorID" Type="Str">_full_</Property>
-				<Property Name="DistPart[0].productID" Type="Str">{6B2D1DEB-CFE9-43D9-B325-AB607C62A29C}</Property>
-				<Property Name="DistPart[0].productName" Type="Str">NI-488.2 Runtime 17.0</Property>
-				<Property Name="DistPart[0].upgradeCode" Type="Str">{357F6618-C660-41A2-A185-5578CC876D1D}</Property>
-				<Property Name="DistPart[1].flavorID" Type="Str">_full_</Property>
-				<Property Name="DistPart[1].productID" Type="Str">{5E17F5AF-F47C-4C3A-A219-91F4638CE9D1}</Property>
-				<Property Name="DistPart[1].productName" Type="Str">NI-Serial Runtime 17.0</Property>
-				<Property Name="DistPart[1].upgradeCode" Type="Str">{01D82F43-B48D-46FF-8601-FC4FAAE20F41}</Property>
-				<Property Name="DistPart[2].flavorID" Type="Str">_deployment_</Property>
-				<Property Name="DistPart[2].productID" Type="Str">{F9B5B433-547E-4A74-AFE6-91C16787824E}</Property>
-				<Property Name="DistPart[2].productName" Type="Str">NI-VISA Runtime 17.0</Property>
-				<Property Name="DistPart[2].upgradeCode" Type="Str">{8627993A-3F66-483C-A562-0D3BA3F267B1}</Property>
-				<Property Name="DistPart[3].flavorID" Type="Str">DefaultFull</Property>
-				<Property Name="DistPart[3].productID" Type="Str">{86591E9D-23D6-4425-BB06-1B16A5E80E37}</Property>
-				<Property Name="DistPart[3].productName" Type="Str">NI LabVIEW Runtime 2017 f2 (64-bit)</Property>
-				<Property Name="DistPart[3].SoftDep[0].exclude" Type="Bool">false</Property>
-				<Property Name="DistPart[3].SoftDep[0].productName" Type="Str">NI ActiveX Container (64-bit)</Property>
-				<Property Name="DistPart[3].SoftDep[0].upgradeCode" Type="Str">{1038A887-23E1-4289-B0BD-0C4B83C6BA21}</Property>
-				<Property Name="DistPart[3].SoftDep[1].exclude" Type="Bool">false</Property>
-				<Property Name="DistPart[3].SoftDep[1].productName" Type="Str">Math Kernel Libraries</Property>
-				<Property Name="DistPart[3].SoftDep[1].upgradeCode" Type="Str">{699C1AC5-2CF2-4745-9674-B19536EBA8A3}</Property>
-				<Property Name="DistPart[3].SoftDep[10].exclude" Type="Bool">false</Property>
-				<Property Name="DistPart[3].SoftDep[10].productName" Type="Str">NI Deployment Framework 2017</Property>
-				<Property Name="DistPart[3].SoftDep[10].upgradeCode" Type="Str">{838942E4-B73C-492E-81A3-AA1E291FD0DC}</Property>
-				<Property Name="DistPart[3].SoftDep[11].exclude" Type="Bool">false</Property>
-				<Property Name="DistPart[3].SoftDep[11].productName" Type="Str">NI Error Reporting 2017 (64-bit)</Property>
-				<Property Name="DistPart[3].SoftDep[11].upgradeCode" Type="Str">{785BE224-E5B2-46A5-ADCB-55C949B5C9C7}</Property>
-				<Property Name="DistPart[3].SoftDep[2].exclude" Type="Bool">false</Property>
-				<Property Name="DistPart[3].SoftDep[2].productName" Type="Str">NI Logos 5.9</Property>
-				<Property Name="DistPart[3].SoftDep[2].upgradeCode" Type="Str">{5E4A4CE3-4D06-11D4-8B22-006008C16337}</Property>
-				<Property Name="DistPart[3].SoftDep[3].exclude" Type="Bool">false</Property>
-				<Property Name="DistPart[3].SoftDep[3].productName" Type="Str">NI TDM Streaming 17.0</Property>
-				<Property Name="DistPart[3].SoftDep[3].upgradeCode" Type="Str">{4CD11BE6-6BB7-4082-8A27-C13771BC309B}</Property>
-				<Property Name="DistPart[3].SoftDep[4].exclude" Type="Bool">false</Property>
-				<Property Name="DistPart[3].SoftDep[4].productName" Type="Str">NI LabVIEW Web Server 2017 (64-bit)</Property>
-				<Property Name="DistPart[3].SoftDep[4].upgradeCode" Type="Str">{5F449D4C-83B9-492E-986B-6B85A29C431D}</Property>
-				<Property Name="DistPart[3].SoftDep[5].exclude" Type="Bool">false</Property>
-				<Property Name="DistPart[3].SoftDep[5].productName" Type="Str">NI LabVIEW Real-Time NBFifo 2017</Property>
-				<Property Name="DistPart[3].SoftDep[5].upgradeCode" Type="Str">{4F261250-2C38-488D-A9EC-9D1EFCC24D4B}</Property>
-				<Property Name="DistPart[3].SoftDep[6].exclude" Type="Bool">false</Property>
-				<Property Name="DistPart[3].SoftDep[6].productName" Type="Str">NI VC2008MSMs</Property>
-				<Property Name="DistPart[3].SoftDep[6].upgradeCode" Type="Str">{FDA3F8BB-BAA9-45D7-8DC7-22E1F5C76315}</Property>
-				<Property Name="DistPart[3].SoftDep[7].exclude" Type="Bool">false</Property>
-				<Property Name="DistPart[3].SoftDep[7].productName" Type="Str">NI VC2010MSMs</Property>
-				<Property Name="DistPart[3].SoftDep[7].upgradeCode" Type="Str">{EFBA6F9E-F934-4BD7-AC51-60CCA480489C}</Property>
-				<Property Name="DistPart[3].SoftDep[8].exclude" Type="Bool">false</Property>
-				<Property Name="DistPart[3].SoftDep[8].productName" Type="Str">NI VC2015 Runtime</Property>
-				<Property Name="DistPart[3].SoftDep[8].upgradeCode" Type="Str">{D42E7BAE-6589-4570-B6A3-3E28889392E7}</Property>
-				<Property Name="DistPart[3].SoftDep[9].exclude" Type="Bool">false</Property>
-				<Property Name="DistPart[3].SoftDep[9].productName" Type="Str">NI mDNS Responder 14.0</Property>
-				<Property Name="DistPart[3].SoftDep[9].upgradeCode" Type="Str">{9607874B-4BB3-42CB-B450-A2F5EF60BA3B}</Property>
-				<Property Name="DistPart[3].SoftDepCount" Type="Int">12</Property>
-				<Property Name="DistPart[3].upgradeCode" Type="Str">{0A5935DD-3D5B-4396-8769-038C205F86EA}</Property>
-				<Property Name="DistPartCount" Type="Int">4</Property>
+				<Property Name="DistPart[0].productID" Type="Str">{C1F48628-DF94-40A8-BA2B-77BEE154C572}</Property>
+				<Property Name="DistPart[0].productName" Type="Str">NI-Serial Runtime 19.5</Property>
+				<Property Name="DistPart[0].upgradeCode" Type="Str">{01D82F43-B48D-46FF-8601-FC4FAAE20F41}</Property>
+				<Property Name="DistPart[1].flavorID" Type="Str">_deployment_</Property>
+				<Property Name="DistPart[1].productID" Type="Str">{D9084972-85DA-4F19-B6B3-527E3948D5A1}</Property>
+				<Property Name="DistPart[1].productName" Type="Str">NI-VISA Runtime 19.5</Property>
+				<Property Name="DistPart[1].upgradeCode" Type="Str">{8627993A-3F66-483C-A562-0D3BA3F267B1}</Property>
+				<Property Name="DistPart[2].flavorID" Type="Str">DefaultFull</Property>
+				<Property Name="DistPart[2].productID" Type="Str">{1A4448CF-1F95-420D-ABAD-2AB572A8A341}</Property>
+				<Property Name="DistPart[2].productName" Type="Str">NI LabVIEW Runtime 2017 SP1 f3</Property>
+				<Property Name="DistPart[2].SoftDep[0].exclude" Type="Bool">false</Property>
+				<Property Name="DistPart[2].SoftDep[0].productName" Type="Str">NI LabVIEW Runtime 2017 SP1 Non-English Support.</Property>
+				<Property Name="DistPart[2].SoftDep[0].upgradeCode" Type="Str">{182AE811-85B6-4238-B67E-F19497CC186B}</Property>
+				<Property Name="DistPart[2].SoftDep[1].exclude" Type="Bool">false</Property>
+				<Property Name="DistPart[2].SoftDep[1].productName" Type="Str">NI ActiveX Container</Property>
+				<Property Name="DistPart[2].SoftDep[1].upgradeCode" Type="Str">{1038A887-23E1-4289-B0BD-0C4B83C6BA21}</Property>
+				<Property Name="DistPart[2].SoftDep[10].exclude" Type="Bool">false</Property>
+				<Property Name="DistPart[2].SoftDep[10].productName" Type="Str">NI mDNS Responder 17.0</Property>
+				<Property Name="DistPart[2].SoftDep[10].upgradeCode" Type="Str">{9607874B-4BB3-42CB-B450-A2F5EF60BA3B}</Property>
+				<Property Name="DistPart[2].SoftDep[11].exclude" Type="Bool">false</Property>
+				<Property Name="DistPart[2].SoftDep[11].productName" Type="Str">NI Deployment Framework 2018</Property>
+				<Property Name="DistPart[2].SoftDep[11].upgradeCode" Type="Str">{838942E4-B73C-492E-81A3-AA1E291FD0DC}</Property>
+				<Property Name="DistPart[2].SoftDep[12].exclude" Type="Bool">false</Property>
+				<Property Name="DistPart[2].SoftDep[12].productName" Type="Str">NI Error Reporting 2018</Property>
+				<Property Name="DistPart[2].SoftDep[12].upgradeCode" Type="Str">{42E818C6-2B08-4DE7-BD91-B0FD704C119A}</Property>
+				<Property Name="DistPart[2].SoftDep[2].exclude" Type="Bool">false</Property>
+				<Property Name="DistPart[2].SoftDep[2].productName" Type="Str">Math Kernel Libraries</Property>
+				<Property Name="DistPart[2].SoftDep[2].upgradeCode" Type="Str">{699C1AC5-2CF2-4745-9674-B19536EBA8A3}</Property>
+				<Property Name="DistPart[2].SoftDep[3].exclude" Type="Bool">false</Property>
+				<Property Name="DistPart[2].SoftDep[3].productName" Type="Str">NI Logos 18.0</Property>
+				<Property Name="DistPart[2].SoftDep[3].upgradeCode" Type="Str">{5E4A4CE3-4D06-11D4-8B22-006008C16337}</Property>
+				<Property Name="DistPart[2].SoftDep[4].exclude" Type="Bool">false</Property>
+				<Property Name="DistPart[2].SoftDep[4].productName" Type="Str">NI TDM Streaming 18.0</Property>
+				<Property Name="DistPart[2].SoftDep[4].upgradeCode" Type="Str">{4CD11BE6-6BB7-4082-8A27-C13771BC309B}</Property>
+				<Property Name="DistPart[2].SoftDep[5].exclude" Type="Bool">false</Property>
+				<Property Name="DistPart[2].SoftDep[5].productName" Type="Str">NI LabVIEW Web Server 2017</Property>
+				<Property Name="DistPart[2].SoftDep[5].upgradeCode" Type="Str">{0960380B-EA86-4E0C-8B57-14CD8CCF2C15}</Property>
+				<Property Name="DistPart[2].SoftDep[6].exclude" Type="Bool">false</Property>
+				<Property Name="DistPart[2].SoftDep[6].productName" Type="Str">NI LabVIEW Real-Time NBFifo 2017</Property>
+				<Property Name="DistPart[2].SoftDep[6].upgradeCode" Type="Str">{4F261250-2C38-488D-A9EC-9D1EFCC24D4B}</Property>
+				<Property Name="DistPart[2].SoftDep[7].exclude" Type="Bool">false</Property>
+				<Property Name="DistPart[2].SoftDep[7].productName" Type="Str">NI VC2008MSMs</Property>
+				<Property Name="DistPart[2].SoftDep[7].upgradeCode" Type="Str">{FDA3F8BB-BAA9-45D7-8DC7-22E1F5C76315}</Property>
+				<Property Name="DistPart[2].SoftDep[8].exclude" Type="Bool">false</Property>
+				<Property Name="DistPart[2].SoftDep[8].productName" Type="Str">NI VC2010MSMs</Property>
+				<Property Name="DistPart[2].SoftDep[8].upgradeCode" Type="Str">{EFBA6F9E-F934-4BD7-AC51-60CCA480489C}</Property>
+				<Property Name="DistPart[2].SoftDep[9].exclude" Type="Bool">false</Property>
+				<Property Name="DistPart[2].SoftDep[9].productName" Type="Str">NI VC2015 Runtime</Property>
+				<Property Name="DistPart[2].SoftDep[9].upgradeCode" Type="Str">{D42E7BAE-6589-4570-B6A3-3E28889392E7}</Property>
+				<Property Name="DistPart[2].SoftDepCount" Type="Int">13</Property>
+				<Property Name="DistPart[2].upgradeCode" Type="Str">{620DBAE1-B159-4204-8186-0813C8A6434C}</Property>
+				<Property Name="DistPartCount" Type="Int">3</Property>
 				<Property Name="INST_author" Type="Str">Engineer</Property>
 				<Property Name="INST_autoIncrement" Type="Bool">true</Property>
 				<Property Name="INST_buildLocation" Type="Path">../BurnProjet/Installer</Property>
@@ -142,9 +141,9 @@
 				<Property Name="INST_buildSpecName" Type="Str">Installer</Property>
 				<Property Name="INST_defaultDir" Type="Str">{3912416A-D2E5-411B-AFEE-B63654D690C0}</Property>
 				<Property Name="INST_productName" Type="Str">Motor Controller</Property>
-				<Property Name="INST_productVersion" Type="Str">1.0.12</Property>
-				<Property Name="InstSpecBitness" Type="Str">64-bit</Property>
-				<Property Name="InstSpecVersion" Type="Str">17008011</Property>
+				<Property Name="INST_productVersion" Type="Str">1.0.13</Property>
+				<Property Name="InstSpecBitness" Type="Str">32-bit</Property>
+				<Property Name="InstSpecVersion" Type="Str">17018010</Property>
 				<Property Name="MSI_arpCompany" Type="Str">Redler</Property>
 				<Property Name="MSI_arpURL" Type="Str">http://www.redler.co.il/</Property>
 				<Property Name="MSI_autoselectDrivers" Type="Bool">true</Property>
@@ -158,14 +157,16 @@
 				<Property Name="RegDestCount" Type="Int">1</Property>
 				<Property Name="Source[0].dest" Type="Str">{46EA32B4-76C4-4A6F-AF30-010FF0A7BCF6}</Property>
 				<Property Name="Source[0].File[0].dest" Type="Str">{46EA32B4-76C4-4A6F-AF30-010FF0A7BCF6}</Property>
-				<Property Name="Source[0].File[0].name" Type="Str">SerialProgrammer.ini</Property>
-				<Property Name="Source[0].File[0].tag" Type="Ref">/My Computer/SerialProgrammer.ini</Property>
-				<Property Name="Source[0].File[0].unlock" Type="Bool">true</Property>
+				<Property Name="Source[0].File[0].name" Type="Str">Serial Programmer.exe</Property>
+				<Property Name="Source[0].File[0].Shortcut[0].destIndex" Type="Int">1</Property>
+				<Property Name="Source[0].File[0].Shortcut[0].name" Type="Str">Serial Programmer</Property>
+				<Property Name="Source[0].File[0].Shortcut[0].subDir" Type="Str"></Property>
+				<Property Name="Source[0].File[0].ShortcutCount" Type="Int">1</Property>
+				<Property Name="Source[0].File[0].tag" Type="Str">{5863E68F-1C0A-4D9F-B3CC-1ABE6A1EE560}</Property>
 				<Property Name="Source[0].File[1].dest" Type="Str">{46EA32B4-76C4-4A6F-AF30-010FF0A7BCF6}</Property>
 				<Property Name="Source[0].File[1].name" Type="Str">setup.exe</Property>
-				<Property Name="Source[0].File[1].runEXE" Type="Bool">true</Property>
 				<Property Name="Source[0].File[1].tag" Type="Ref">/My Computer/MotorController/setup.exe</Property>
-				<Property Name="Source[0].FileCount" Type="Int">2</Property>
+				<Property Name="Source[0].FileCount" Type="Int">1</Property>
 				<Property Name="Source[0].name" Type="Str">Serial Programmer</Property>
 				<Property Name="Source[0].tag" Type="Ref">/My Computer/Build Specifications/Serial Programmer</Property>
 				<Property Name="Source[0].type" Type="Str">EXE</Property>
@@ -186,7 +187,7 @@
 				<Property Name="Bld_localDestDirType" Type="Str">relativeToCommon</Property>
 				<Property Name="Bld_modifyLibraryFile" Type="Bool">true</Property>
 				<Property Name="Bld_previewCacheID" Type="Str">{4655D5B0-E7E0-4AA9-B222-089A3AE77F5C}</Property>
-				<Property Name="Bld_version.build" Type="Int">23</Property>
+				<Property Name="Bld_version.build" Type="Int">24</Property>
 				<Property Name="Bld_version.major" Type="Int">1</Property>
 				<Property Name="Destination[0].destName" Type="Str">Serial Programmer.exe</Property>
 				<Property Name="Destination[0].path" Type="Path">../SerialProgrammer/Serial Programmer.exe</Property>
@@ -198,7 +199,7 @@
 				<Property Name="Destination[2].path" Type="Path">../SerialProgrammer/data/MotoController</Property>
 				<Property Name="DestinationCount" Type="Int">3</Property>
 				<Property Name="Exe_iconItemID" Type="Ref">/My Computer/seriaporgrammer_X5P_icon.ico</Property>
-				<Property Name="Source[0].itemID" Type="Str">{5214DCCB-EACE-4689-A1BB-E1F4BE7C0FDA}</Property>
+				<Property Name="Source[0].itemID" Type="Str">{B34D1D88-41F1-46B6-9996-EF3DB9CA593C}</Property>
 				<Property Name="Source[0].type" Type="Str">Container</Property>
 				<Property Name="Source[1].destinationIndex" Type="Int">0</Property>
 				<Property Name="Source[1].itemID" Type="Ref">/My Computer/Programmer.vi</Property>
@@ -206,13 +207,10 @@
 				<Property Name="Source[1].type" Type="Str">VI</Property>
 				<Property Name="Source[2].destinationIndex" Type="Int">0</Property>
 				<Property Name="Source[2].itemID" Type="Ref">/My Computer/SerialProgrammer.ini</Property>
-				<Property Name="Source[2].sourceInclusion" Type="Str">Include</Property>
 				<Property Name="Source[3].Container.applyDestination" Type="Bool">true</Property>
-				<Property Name="Source[3].Container.applyInclusion" Type="Bool">true</Property>
 				<Property Name="Source[3].Container.depDestIndex" Type="Int">0</Property>
 				<Property Name="Source[3].destinationIndex" Type="Int">2</Property>
 				<Property Name="Source[3].itemID" Type="Ref">/My Computer/MotorController</Property>
-				<Property Name="Source[3].sourceInclusion" Type="Str">Include</Property>
 				<Property Name="Source[3].type" Type="Str">Container</Property>
 				<Property Name="SourceCount" Type="Int">4</Property>
 				<Property Name="TgtF_companyName" Type="Str">Engineer</Property>

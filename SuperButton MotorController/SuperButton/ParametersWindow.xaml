@@ -284,24 +284,6 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <!--<TabItem Header="Driver" TabIndex="5" Background="Black" Foreground="White">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="190"/>
-                        <ColumnDefinition Width="160"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="100"/>
-                        </Grid.RowDefinitions>
-                        <GroupBox Grid.Row="0" Header="Full Scale" >
-                            <StackPanel Background="Transparent" Orientation="Vertical" >
-                                <ItemsControl ItemsSource="{Binding DriverFullScaleList}" ItemTemplate="{StaticResource DataViewModel}" Margin="0,4,0,-4"/>
-                            </StackPanel>
-                        </GroupBox>
-                    </Grid>
-                </Grid>
-            </TabItem>-->
             <TabItem Header="Calibration" TabIndex="6" DataContext="{Binding CalibrationViewModel}" Foreground="White">
                 <Grid>
                     <Grid.ColumnDefinitions>
