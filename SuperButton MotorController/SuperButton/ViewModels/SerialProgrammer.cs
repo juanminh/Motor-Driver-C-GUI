@@ -1,4 +1,5 @@
-﻿#define SerialProgrammerLabVIEW
+﻿//#define SerialProgrammerLabVIEW
+//#define Learning
 using SuperButton.Models.DriverBlock;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ using Timer = System.Timers.Timer;
 using System.Windows.Forms;
 using System.IO;
 using SuperButton.Helpers;
+using SuperButton.Common;
 
 namespace SuperButton.ViewModels
 {
@@ -77,7 +79,7 @@ namespace SuperButton.ViewModels
 
         public void SerialProgrammerProcess()
         {
-
+            _filePath = "C:\\Users\\Joseph\\Documents\\MotorController\\FirmwareUpdate\\RayonM3_2803x.txt";
 #if SerialProgrammerLabVIEW
             string iniPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments); // Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
 
@@ -103,6 +105,10 @@ namespace SuperButton.ViewModels
             Thread SerialProgrammer = new Thread(MaintenanceViewModel.GetInstance.SerialProgrammerApp);
             SerialProgrammer.Start();
 #else
+            EventRiser.Instance.RiseEevent(string.Format($"Burn firmware process started"));
+            Thread.Sleep(50);
+
+            #region ReconnectBaud230400
             if(Rs232Interface._comPort != null)
             {
                 Rs232Interface._comPort.DataReceived -= Rs232Interface.GetInstance.DataReceived;
@@ -111,31 +117,74 @@ namespace SuperButton.ViewModels
             }
             try
             {
-                PortChat.GetInstance.Main(Configuration.SelectedCom);
-                EventRiser.Instance.RiseEevent(string.Format($"Success opening COM"));
+                PortChat.GetInstance.CloseComunication();
+                PortChat.GetInstance.Main(Configuration.SelectedCom, (int)eBaudRate.Baud230400);
+                EventRiser.Instance.RiseEevent(string.Format("Success opening COM {0}", (int)eBaudRate.Baud230400));
             }
             catch(Exception)
             {
-                EventRiser.Instance.RiseEevent(string.Format($"Fail opening COM"));
+                EventRiser.Instance.RiseEevent(string.Format("Fail opening COM {0}", (int)eBaudRate.Baud230400));
+                PortChat.GetInstance.CloseComunication();
+                return;
             }
+            PortChat.GetInstance.ReadTick((int)(eSTATE.START));
+            #endregion ReconnectBaud230400
+            #region ReadFromFile
+            /*
+            var t = new Thread((ThreadStart)(() =>
+            {
+                OpenFromFile();
+            }));
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
 
+            while(String.IsNullOrEmpty(_filePath))
+            {
+                Thread.Sleep(100);
+            }
+            */
+
+            string readText = File.ReadAllText(_filePath);
+            var _array = readText.Split((string[])null, StringSplitOptions.RemoveEmptyEntries);
+            try
+            {
+                for(int i = 1; i < _array.Length - 1; i++)
+                    _dataFromFile.Add(Convert.ToByte(_array[i], 16));
+            }
+            catch(Exception) { };
+            byte[] _header = new byte[22];
+            UInt16 _checkSum = 0;
+            Array.Copy(_dataFromFile.ToArray(), 0, _header, 0, _header.Length);
+            _dataFromFile.RemoveRange(0, 22);
+            for(int i = 0; i < _header.Length; i++)
+                _checkSum += _header[i];
+            #endregion ReadFromFile
+
+
+            
             _currentState = (int)eSTAGE.BOOT_COMMAND;
+            PortChat.GetInstance._packetsList.Clear();
             ParseOutputData(1, 65, 0, true, false);
             bool wait = true;
             int equal = 0;
-            byte[] expectedResponse = { 134, 0, 0, 79, 218, 62, 0, 192, 135 };             //  Requiered response => 139 60 134 0 0 79 218 62 0 192 135
+            byte[] expectedResponse = { 134, 0, 0, 113, 229, 62, 0, 253, 99 };             //  Requiered response => 139 60 134 0 0 79 218 62 0 192 135
             int timeout = 0;
+#if !Learning 
+            #region BootCmd          
             while(wait && timeout < MAX_TIMEOUT)
             {
                 if(PortChat.GetInstance._packetsList.Count != 0)
                 {
-                    for(int i = 0; i < PortChat.GetInstance._packetsList.ElementAt(0).Count(); i++)
+                    for(int i = 0; i < PortChat.GetInstance._packetsList.Count(); i++)
                     {
-                        if(PortChat.GetInstance._packetsList.ElementAt(0)[i] == expectedResponse[i])
-                            equal++;
+                        for(int j = 0; j < 3/*PortChat.GetInstance._packetsList.ElementAt(i).Count()*/; j++)
+                        {
+                            if(PortChat.GetInstance._packetsList.ElementAt(i)[j] == expectedResponse[j])
+                                equal++;
+                        }
+                        if(equal == 3)
+                            wait = false;
                     }
-                    if(equal == 9)
-                        wait = false;
                 }
                 timeout++;
                 Thread.Sleep(100);
@@ -144,52 +193,70 @@ namespace SuperButton.ViewModels
                 EventRiser.Instance.RiseEevent(string.Format($"Boot command fail"));
             else
                 EventRiser.Instance.RiseEevent(string.Format($"Boot command sucess"));
-
+            #endregion BootCmd
+            #region ReconnectBaud460800
+            try
+            {
+                PortChat.GetInstance.ReadTick((int)eSTATE.STOP);
+                PortChat.GetInstance.CloseComunication();
+                PortChat.GetInstance.Main(Configuration.SelectedCom, (int)eBaudRate.Baud460800);
+                EventRiser.Instance.RiseEevent(string.Format("Success opening COM {0}", (int)eBaudRate.Baud460800));
+            }
+            catch(Exception)
+            {
+                EventRiser.Instance.RiseEevent(string.Format("Fail opening COM {0}", (int)eBaudRate.Baud460800));
+                PortChat.GetInstance.CloseComunication();
+                return;
+            }
+            PortChat.GetInstance.ReadTick((int)(eSTATE.START));
+            #endregion ReconnectBaud460800
+            #region Autobaud
             _currentState = (int)eSTAGE.AUTOBAUD;
             byte[] A = new byte[1] { 65 };
             expectedResponse = new byte[] { 65 };
-            for(int i = 0; i < 5; i++)
+            wait = true;
+            for(int i = 0; i < 3 && wait == true; i++)
             {
+                wait = true;
+                timeout = 0;
+                PortChat.GetInstance._packetsList.Clear();
                 PortChat.Send(A);
-
-                if(PortChat.GetInstance._packetsList.Count != 0)
+                while(wait && timeout < MAX_TIMEOUT)
                 {
-                    if(PortChat.GetInstance._packetsList.ElementAt(0)[0] == expectedResponse[0])
+                    if(PortChat.GetInstance._packetsList.Count != 0)
                     {
-                        EventRiser.Instance.RiseEevent(string.Format($"Autobaud sucess"));
-                        break;
+                        if(PortChat.GetInstance._packetsList.ElementAt(0)[0] == expectedResponse[0])
+                        {
+                            wait = false;
+                            break;
+                        }
                     }
-                    else
-                        Thread.Sleep(100);
+                    timeout++;
+                    Thread.Sleep(60);
                 }
-                else
-                    Thread.Sleep(100);
             }
-            
-            OpenFromFile();
-            string readText = File.ReadAllText(_filePath);
-            var _array = readText.Split((string[])null, StringSplitOptions.RemoveEmptyEntries);
-            try
+            if(timeout == MAX_TIMEOUT)
             {
-                for(int i = 1; i < _array.Length - 1; i++)
-                    _dataFromFile.Add(Convert.ToByte(_array[i], 16) );
+                EventRiser.Instance.RiseEevent(string.Format($"Autobaud fail"));
+                PortChat.GetInstance.ReadTick((int)eSTATE.STOP);
+                PortChat.GetInstance.CloseComunication();
+                return;
             }
-            catch(Exception e) { };
-
+            else
+                EventRiser.Instance.RiseEevent(string.Format($"Autobaud sucess"));
+            #endregion Autobaud
+            #region Erase
+            PortChat.GetInstance.ReadTick((int)(eSTATE.START));
             EventRiser.Instance.RiseEevent(string.Format($"Erase start"));
             _currentState = (int)eSTAGE.HEADER;
-            byte[] _header = new byte[22];
-            UInt16 _checkSum = 0;
-            Array.Copy(_dataFromFile.ToArray(), 0, _header, 0, _header.Length);
-            for(int i = 0; i < _header.Length; i++)
-                _checkSum += _header[i];
 
-            PortChat.GetInstance._packetsList.Clear();
-            PortChat.Send(_header);
             wait = true;
             equal = 0;
             timeout = 0;
-            expectedResponse = new byte[] { 0x01, 0xc5 };
+            expectedResponse = new byte[] { (byte)(_checkSum & 0xFF), (byte)(_checkSum >> 8) };
+
+            PortChat.GetInstance._packetsList.Clear();
+            PortChat.Send(_header);
             while(wait && timeout < MAX_TIMEOUT)
             {
                 if(PortChat.GetInstance._packetsList.Count != 0)
@@ -203,21 +270,155 @@ namespace SuperButton.ViewModels
                         wait = false;
                 }
                 timeout++;
-                Thread.Sleep(100);
+                Thread.Sleep(200);
             }
             if(timeout == MAX_TIMEOUT)
+            {
                 EventRiser.Instance.RiseEevent(string.Format($"Erase fail"));
+                PortChat.GetInstance.ReadTick((int)eSTATE.STOP);
+                PortChat.GetInstance.CloseComunication();
+                return;
+            }
             else
                 EventRiser.Instance.RiseEevent(string.Format($"Erase sucess"));
-            
+
+            #endregion Erase
+
+#endif
+            #region Program
+            bool exit = false, subExit = false;
+            while((_dataFromFile.ElementAt(1) << 8 | _dataFromFile.ElementAt(0)) != 0 && !exit)
+            {
+                int sizeBuf = ((_dataFromFile.ElementAt(1) << 8 | _dataFromFile.ElementAt(0)) + 3) * 2;
+                byte[] Buf = new byte[sizeBuf];
+                UInt16[] Buf16 = new UInt16[sizeBuf / 2];
+                Array.Copy(_dataFromFile.ToArray(), 0, Buf, 0, sizeBuf);
+                for(int i = 0; i < sizeBuf / 2; i++)
+                    Buf16[i] = (UInt16)(Buf[2 * i] << 8 | Buf[2 * i + 1]);
+                 _dataFromFile.RemoveRange(0, sizeBuf);
+                _checkSum = 0;
+                for(int i = 0; i < sizeBuf; i++)
+                    _checkSum += Buf[i];
+                Debug.WriteLine("checksum {0}", _checkSum);
+
+                if(sizeBuf / 2 <= 1027)
+                {
+                    if(sizeBuf == 6)
+                        continue;
+                    else
+                    {
+                        if(!sendCS(Buf, _checkSum))
+                            exit = true;
+                    }
+                }
+                else
+                {
+                    subExit = false;
+                    int index = 0, size = 0;
+                    UInt16[] subBuf16 = new UInt16[1027];
+                    Array.Copy(Buf16, index, subBuf16, 0, 1027);
+                    byte[] subBuf = new byte[2054];
+                    Array.Copy(Buf, index, subBuf, 0, 2054);
+                    _checkSum = 0;
+                    for(int i = 0; i < subBuf.Length; i++)
+                        _checkSum += subBuf[i];
+                    Debug.WriteLine("checksum {0}", _checkSum);
+                    while(!subExit)
+                    {
+                        if(!sendCS(subBuf, _checkSum))
+                            subExit = true;
+
+                        if((1027 + ((index + 1) * 1024)) <= Buf16.Length)
+                            size = 1024;
+                        else
+                            size = Buf16.Length - (1027 + (index * 1024));
+                        if(size < 0)
+                            break;
+                        subBuf16 = new UInt16[size];
+                        Array.Copy(Buf16, 1027 + (index * 1024), subBuf16, 0, size);
+                        subBuf = new byte[size * 2];
+                        Array.Copy(Buf, 2054 + (index * 2048), subBuf, 0, size * 2);
+                        _checkSum = 0;
+                        for(int i = 0; i < subBuf.Length; i++)
+                            _checkSum += subBuf[i];
+                        Debug.WriteLine("checksum {0}", _checkSum);
+                        index++;
+                    }
+                    if(subExit)
+                        exit = true;
+                }
+                //wait = true;
+                //equal = 0;
+                //timeout = 0;
+                //expectedResponse = new byte[] { (byte)(_checkSum & 0xFF), (byte)(_checkSum >> 8) };
+
+                //PortChat.GetInstance._packetsList.Clear();
+                //PortChat.Send(Buf);
+                //while(wait && timeout < MAX_TIMEOUT)
+                //{
+                //    if(PortChat.GetInstance._packetsList.Count != 0)
+                //    {
+                //        for(int i = 0; i < PortChat.GetInstance._packetsList.ElementAt(0).Count(); i++)
+                //        {
+                //            if(PortChat.GetInstance._packetsList.ElementAt(0)[i] == expectedResponse[i])
+                //                equal++;
+                //        }
+                //        if(equal == 2)
+                //            wait = false;
+                //    }
+                //    timeout++;
+                //    Thread.Sleep(1);
+                //}
+                //if(timeout == MAX_TIMEOUT)
+                //{
+                //    EventRiser.Instance.RiseEevent(string.Format($"Program fail"));
+                //    PortChat.GetInstance.ReadTick((int)eSTATE.STOP);
+                //    PortChat.GetInstance.CloseComunication();
+                //    return;
+                //}
+            }
+            if(!sendCS(new byte[] { 0, 0}, 0) || exit || subExit)
+                EventRiser.Instance.RiseEevent(string.Format($"Program failed"));
+            else
+                EventRiser.Instance.RiseEevent(string.Format($"Program success"));
+
+            #endregion Program
+
             EventRiser.Instance.RiseEevent(string.Format($"Close COM"));
-            PortChat.GetInstance._serialPort.Close();
-            PortChat.GetInstance._serialPort.Dispose();
             PortChat.GetInstance.ReadTick((int)eSTATE.STOP);
+            PortChat.GetInstance.CloseComunication();
             //  Rs232Interface.GetInstance.AutoConnect();
 #endif
         }
+        private bool sendCS(byte[] Buf, UInt16 expectedCS)
+        {
+            bool wait = true;
+            int equal = 0;
+            int timeout = 0;
+            byte[] expectedResponse = new byte[] { (byte)(expectedCS & 0xFF), (byte)(expectedCS >> 8) };
 
+            PortChat.GetInstance._packetsList.Clear();
+            PortChat.Send(Buf);
+            while(wait && timeout < MAX_TIMEOUT)
+            {
+                if(PortChat.GetInstance._packetsList.Count != 0)
+                {
+                    for(int i = 0; i < PortChat.GetInstance._packetsList.ElementAt(0).Count(); i++)
+                    {
+                        if(PortChat.GetInstance._packetsList.ElementAt(0)[i] == expectedResponse[i])
+                            equal++;
+                    }
+                    if(equal == 2)
+                        wait = false;
+                }
+                timeout++;
+                Thread.Sleep(1);
+            }
+            if(timeout == MAX_TIMEOUT)
+                return false;
+            else
+                return true;
+        }
         public void ParseOutputData(object Data2Send, Int16 Id, Int16 SubId, bool IsSet, bool IsFloat)
         {
             char tempChar = (char)0;
@@ -320,7 +521,7 @@ namespace SuperButton.ViewModels
             ChooseFile.FilterIndex = 1;
 
             ChooseFile.Multiselect = false;
-            ChooseFile.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\MotorController\\Parameters\\";
+            ChooseFile.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\MotorController\\FirmwareUpdate\\";
 
             if(ChooseFile.ShowDialog() == DialogResult.OK)
             {
@@ -358,33 +559,36 @@ namespace SuperButton.ViewModels
         private PortChat()
         {
         }
-
-        public SerialPort _serialPort;
-
-        public void Main(string serialPort)
+        public SerialPort _serialPort = new SerialPort();
+        public void Main(string serialPort, int Baudrate)
         {
             StringComparer stringComparer = StringComparer.OrdinalIgnoreCase;
             // Create a new SerialPort object with default settings.
-            _serialPort = new SerialPort();
+            //_serialPort = new SerialPort();
 
             // Allow the user to set the appropriate properties.
             _serialPort.PortName = serialPort;
-            _serialPort.BaudRate = (int)eBaudRate.Baud230400;
+            _serialPort.BaudRate = Baudrate; // (int)eBaudRate.Baud230400;
             _serialPort.Parity = Parity.None;
             _serialPort.DataBits = 0x00000008;
             _serialPort.StopBits = StopBits.One;
             _serialPort.Handshake = Handshake.None;
 
-            // Set the read/write timeouts
+            // Set the read/write timeouts (ms)
             _serialPort.ReadTimeout = 500;
             _serialPort.WriteTimeout = 500;
 
             _serialPort.Open();
-
-            ReadTick((int)(eSTATE.START));
+        }
+        public void CloseComunication()
+        {
+            _serialPort.Close();
+            _serialPort.Dispose();
         }
         public static void Send(byte[] packetToSend)
         {
+            //for(int i = 0; i < packetToSend.Length; i++)
+            //    Debug.WriteLine("tsv {0}", packetToSend[i]);
             if(PortChat.GetInstance._serialPort != null)
                 PortChat.GetInstance._serialPort.Write(packetToSend, 0, packetToSend.Length);
         }
@@ -459,6 +663,11 @@ namespace SuperButton.ViewModels
             {
 
             }
+            //for(int i = 0; i < _packetsList.Count; i++)
+            //{
+            //    for(int j = 0; j < _packetsList.ElementAt(i).Length; j++)
+            //        Debug.WriteLine("rcv {0}", _packetsList.ElementAt(i)[j]);
+            //}
         }
         private void FillPackets(byte ch)
         {

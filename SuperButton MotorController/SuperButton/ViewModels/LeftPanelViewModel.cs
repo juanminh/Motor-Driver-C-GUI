@@ -198,9 +198,9 @@ namespace SuperButton.ViewModels
 
             OscilloscopeViewModel.GetInstance.ChComboEn = true;
             */
-            short[] ID = { 60, 60, 62, 62, 62, 62, 1 };
-            short[] subID = { 1, 2, 10, 1, 2, 3, 0 };
-            string[] param = { "Read Ch1", "Read Ch2", "Read Checksum", "Read SN", "Read HW Rev", "Read FW Rev", "Read motor status" };
+            short[] ID = { 60, 60,/* 62,*/ 62, 62, 62, 1 };
+            short[] subID = { 1, 2, /*10,*/ 1, 2, 3, 0 };
+            string[] param = { "Read Ch1", "Read Ch2", /*"Read Checksum",*/ "Read SN", "Read HW Rev", "Read FW Rev", "Read motor status" };
 
             EventRiser.Instance.RiseEevent(string.Format($"Reading param..."));
 
@@ -231,7 +231,7 @@ namespace SuperButton.ViewModels
                 timeOutReadParam++;
             } while (StarterOperationFlag && timeOutReadParam <= 20);
 
-            if (StarterCount == 7)
+            if (StarterCount == param.Length)
                 EventRiser.Instance.RiseEevent(string.Format($"Connected successfully with unit"));
             else
                 EventRiser.Instance.RiseEevent(string.Format($"Failed reading params"));

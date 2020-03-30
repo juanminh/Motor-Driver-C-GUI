@@ -1,4 +1,5 @@
-﻿using Abt.Controls.SciChart.Visuals;
+﻿//#define LOAD_FROM_DB
+using Abt.Controls.SciChart.Visuals;
 using SuperButton.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -33,8 +34,10 @@ namespace SuperButton
 
         public App()
         {
+#if LOAD_FROM_DB 
             Operations Op = Operations.GetInstance;
             Operations.GetInstance.readDataBase();
+#endif
             LeftPanelViewModel.GetInstance.LogText = "";
             EventRiser.Instance.LoggerEvent += LeftPanelViewModel.GetInstance.Instance_LoggerEvent;
 

@@ -666,10 +666,16 @@ namespace SuperButton.ViewModels
             get { return new ActionCommand(SerialProgrammerFunc); }
         }
         public bool _serialProgrammerStarted = false;
-        private void SerialProgrammerFunc()
+        private async void SerialProgrammerFunc()
         {
             _serialProgrammerStarted = true;
-            SerialProgrammer.GetInstance.SerialProgrammerProcess();
+            try
+            {
+                await Task.Run(() => SerialProgrammer.GetInstance.SerialProgrammerProcess());
+            }
+            catch
+            { }
+
             _serialProgrammerStarted = false;
         }
 

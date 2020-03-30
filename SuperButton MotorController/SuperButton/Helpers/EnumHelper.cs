@@ -1,0 +1,43 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SuperButton.Helpers
+{
+    public static class EnumHelper
+    {
+        public static T GetEnumValue<T>(string str) where T : struct, IConvertible
+        {
+            Type enumType = typeof(T);
+            if(!enumType.IsEnum)
+            {
+                throw new Exception("T must be an Enumeration type.");
+            }
+            T val;
+            return Enum.TryParse<T>(str, true, out val) ? val : default(T);
+        }
+
+        public static T GetEnumValue<T>(int intValue) where T : struct, IConvertible
+        {
+            Type enumType = typeof(T);
+            if(!enumType.IsEnum)
+            {
+                throw new Exception("T must be an Enumeration type.");
+            }
+
+            return (T)Enum.ToObject(enumType, intValue);
+        }
+
+        public static string[] GetNames(string[] Enum)
+        {
+            string[] transormedEnum = new string[Enum.Length];
+            for(int i = 0; i < Enum.Length; i++)
+            {
+                transormedEnum[i] = Enum[i].Replace('_', ' ');
+            }
+            return transormedEnum;
+        }
+    }
+}
