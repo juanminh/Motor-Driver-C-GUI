@@ -209,7 +209,7 @@ namespace SuperButton.ViewModels
         public static bool DefaultButton = false;
         public static UInt32 ParamsCount = 0;
         public static UInt32 PbarParamsCount = 0;
-        private string _pathToFile, _pathFromFile = "";
+        private string _pathToFile, _pathFromFile, _pathFW = "";
         public string PathToFile
         {
             get { return _pathToFile; }
@@ -220,6 +220,11 @@ namespace SuperButton.ViewModels
             get { return _pathFromFile; }
             set { _pathFromFile = value; OnPropertyChanged("PathFromFile"); }
         }
+        public string PathFW
+        {
+            get { return _pathFW; }
+            set { _pathFW = value; OnPropertyChanged("PathFW"); }
+        }
         public ActionCommand OpenToFileCmd
         {
             get { return new ActionCommand(OpenToFile); }
@@ -227,6 +232,10 @@ namespace SuperButton.ViewModels
         public ActionCommand OpenFromFileCmd
         {
             get { return new ActionCommand(OpenFromFile); }
+        }
+        public ActionCommand OpenPathFWCmd
+        {
+            get { return new ActionCommand(OpenPathFW); }
         }
         public void OpenToFile()
         {
@@ -244,10 +253,27 @@ namespace SuperButton.ViewModels
 
             ChooseFile.Multiselect = false;
             ChooseFile.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\MotorController\\Parameters\\";
+            if(!Directory.Exists(ChooseFile.InitialDirectory))
+                Directory.CreateDirectory(ChooseFile.InitialDirectory);
 
             if(ChooseFile.ShowDialog() == DialogResult.OK)
             {
                 PathFromFile = ChooseFile.FileName;
+            }
+        }
+        public void OpenPathFW()
+        {
+            System.Windows.Forms.OpenFileDialog ChooseFile = new System.Windows.Forms.OpenFileDialog();
+            ChooseFile.Filter = "All Files (*.*)|*.*";
+            ChooseFile.FilterIndex = 1;
+
+            ChooseFile.Multiselect = false;
+            ChooseFile.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\MotorController\\FirmwareUpdate\\";
+            if(!Directory.Exists(ChooseFile.InitialDirectory))
+                Directory.CreateDirectory(ChooseFile.InitialDirectory);
+            if(ChooseFile.ShowDialog() == DialogResult.OK)
+            {
+                PathFW = ChooseFile.FileName;
             }
         }
         public bool SaveToFile
@@ -595,7 +621,12 @@ namespace SuperButton.ViewModels
             get { return _pbarValueToFile; }
             set { _pbarValueToFile = value; OnPropertyChanged("PbarValueToFile"); }
         }
-
+        private long _pbarValueFW = 0;
+        public long PbarValueFW
+        {
+            get { return _pbarValueFW; }
+            set { _pbarValueFW = value; OnPropertyChanged("PbarValueFW"); }
+        }
         private void CheckPBar(string way)
         {
             int timeout = 0;
@@ -668,6 +699,12 @@ namespace SuperButton.ViewModels
         public bool _serialProgrammerStarted = false;
         private async void SerialProgrammerFunc()
         {
+            if(String.IsNullOrWhiteSpace(PathFW))
+            {
+                EventRiser.Instance.RiseEevent(string.Format("File path not valid"));
+                return;
+            }
+
             _serialProgrammerStarted = true;
             try
             {

@@ -25,7 +25,7 @@ namespace SuperButton.Helpers
             }
 
         }
-        int logCounter = 0;
+        //int logCounter = 0;
         public void RiseEevent(string msg)
         {
             if(LoggerEvent != null)

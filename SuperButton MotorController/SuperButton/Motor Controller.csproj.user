@@ -3,10 +3,10 @@
   <PropertyGroup>
     <PublishUrlHistory>C:\Projects\Motor Driver C# GUI\SuperButton\Exe\|C:\Projects\SuperButtonReal\SuperButton\Exe\</PublishUrlHistory>
     <InstallUrlHistory />
-    <SupportUrlHistory />
+    <SupportUrlHistory>https://www.redler.co.il/</SupportUrlHistory>
     <UpdateUrlHistory />
-    <BootstrapperUrlHistory />
-    <ErrorReportUrlHistory />
+    <BootstrapperUrlHistory>https://www.microsoft.com/en-us/download/details.aspx%3fid=48145</BootstrapperUrlHistory>
+    <ErrorReportUrlHistory>https://www.redler.co.il/contact</ErrorReportUrlHistory>
     <FallbackCulture>en-US</FallbackCulture>
     <VerifyUploadedFiles>false</VerifyUploadedFiles>
     <ProjectView>ShowAllFiles</ProjectView>

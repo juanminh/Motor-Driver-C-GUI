@@ -490,7 +490,6 @@ namespace SuperButton.Models.ParserBlock
         //    }
         //}
         public static byte[] DebugData = { };
-
         public bool ParseInputPacket(byte[] data)
         {
             DebugData = data;

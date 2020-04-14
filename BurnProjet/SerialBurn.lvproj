@@ -58,7 +58,6 @@
 			<Item Name="Connect COM Port &amp; AutoBaud (SubVI).vi" Type="VI" URL="../Functions/Connect COM Port &amp; AutoBaud (SubVI).vi"/>
 			<Item Name="ConvertDataFrom File (SubVI).vi" Type="VI" URL="../Functions/ConvertDataFrom File (SubVI).vi"/>
 			<Item Name="CRC16_Calc.vi" Type="VI" URL="../Functions/CRC16_Calc.vi"/>
-			<Item Name="Crc16DLL.dll" Type="Document" URL="../data/Crc16DLL.dll"/>
 			<Item Name="CRC_compare.vi" Type="VI" URL="../Functions/CRC_compare.vi"/>
 			<Item Name="Data_Convert.vi" Type="VI" URL="../C280xxx_Flash_programmer_with_cmd_example/Data_Convert.vi"/>
 			<Item Name="DescriptReceivedMsg SingleBoard (SubVI).vi" Type="VI" URL="../Functions/DescriptReceivedMsg SingleBoard (SubVI).vi"/>
@@ -187,7 +186,7 @@
 				<Property Name="Bld_localDestDirType" Type="Str">relativeToCommon</Property>
 				<Property Name="Bld_modifyLibraryFile" Type="Bool">true</Property>
 				<Property Name="Bld_previewCacheID" Type="Str">{4655D5B0-E7E0-4AA9-B222-089A3AE77F5C}</Property>
-				<Property Name="Bld_version.build" Type="Int">24</Property>
+				<Property Name="Bld_version.build" Type="Int">28</Property>
 				<Property Name="Bld_version.major" Type="Int">1</Property>
 				<Property Name="Destination[0].destName" Type="Str">Serial Programmer.exe</Property>
 				<Property Name="Destination[0].path" Type="Path">../SerialProgrammer/Serial Programmer.exe</Property>
@@ -199,7 +198,7 @@
 				<Property Name="Destination[2].path" Type="Path">../SerialProgrammer/data/MotoController</Property>
 				<Property Name="DestinationCount" Type="Int">3</Property>
 				<Property Name="Exe_iconItemID" Type="Ref">/My Computer/seriaporgrammer_X5P_icon.ico</Property>
-				<Property Name="Source[0].itemID" Type="Str">{B34D1D88-41F1-46B6-9996-EF3DB9CA593C}</Property>
+				<Property Name="Source[0].itemID" Type="Str">{0AEF7BF9-80C2-4189-A5B6-974DE27D2E7F}</Property>
 				<Property Name="Source[0].type" Type="Str">Container</Property>
 				<Property Name="Source[1].destinationIndex" Type="Int">0</Property>
 				<Property Name="Source[1].itemID" Type="Ref">/My Computer/Programmer.vi</Property>

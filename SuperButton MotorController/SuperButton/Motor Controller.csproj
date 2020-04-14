@@ -21,7 +21,6 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
-    <!--<TargetFrameworkProfile />-->
     <PublishUrl>C:\Projects\Motor Driver C# GUI\SuperButton\Exe\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -32,11 +31,20 @@
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
-    <ApplicationRevision>1</ApplicationRevision>
-    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <SupportUrl>https://www.redler.co.il/</SupportUrl>
+    <ErrorReportUrl>https://www.redler.co.il/contact</ErrorReportUrl>
+    <TargetCulture>en-US</TargetCulture>
+    <ProductName>Motor Controller</ProductName>
+    <PublisherName>Redler Technologies</PublisherName>
+    <SuiteName>Motor Controller</SuiteName>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.2.4.0</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
+    <BootstrapperComponentsLocation>Absolute</BootstrapperComponentsLocation>
+    <BootstrapperComponentsUrl>https://www.microsoft.com/en-us/download/details.aspx%3fid=48145</BootstrapperComponentsUrl>
+    <!--<TargetFrameworkProfile />-->
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -61,16 +69,16 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>E4034261435741EC5D43DEDFADFAAC17754F4219</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>7CE7DAB29BD1B8E333523CB9268DA60110B32231</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>SuperButton_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>Motor Controller_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <GenerateManifests>true</GenerateManifests>
+    <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>false</SignManifests>
+    <SignManifests>true</SignManifests>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -111,9 +119,20 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
     <Prefer32Bit>true</Prefer32Bit>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+  <PropertyGroup />
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
-    <NoWin32Manifest>true</NoWin32Manifest>
+    <TargetZone>Custom</TargetZone>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>false</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>Motor Controller_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Abt.Controls.SciChart.Wpf, Version=3.21.0.5511, Culture=neutral, PublicKeyToken=b55dd9efe817e823, processorArchitecture=MSIL">
@@ -460,6 +479,7 @@
     <None Include="app.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="app.manifest" />
     <None Include="Application.ico">
       <Visible>false</Visible>
     </None>
@@ -467,13 +487,10 @@
     <None Include="Images\HomeBackground.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="Motor Controller_TemporaryKey.pfx" />
     <None Include="packages.config" />
-    <None Include="SerialProgrammer\Serial Programmer.aliases">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="SerialProgrammer\Serial Programmer.ini">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Include="SerialProgrammer\Serial Programmer.aliases" />
+    <None Include="SerialProgrammer\Serial Programmer.ini" />
     <None Include="SuperButton_TemporaryKey.pfx" />
     <None Include="Views\HomeBackground.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -712,14 +729,17 @@
     </Resource>
     <Resource Include="Images\Wizard.png" />
     <Resource Include="Images\monitor.png" />
-    <Content Include="SerialProgrammer\Serial Programmer.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Resource Include="Images\up.png" />
     <Resource Include="Images\down.png" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="SerialProgrammer\data\" />
+    <Content Include="NDP451-KB2858728-x86-x64-AllOS-ENU.exe">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="SerialProgrammer\Serial Programmer.exe">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath32)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
