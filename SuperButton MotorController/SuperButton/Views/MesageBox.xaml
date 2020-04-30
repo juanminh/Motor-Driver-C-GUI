@@ -23,7 +23,7 @@
             <RowDefinition Height="40*"/>
         </Grid.RowDefinitions>
         <Grid.Background>
-            <ImageBrush ImageSource="pack://siteoforigin:,,,/HomeBackground.jpg" Stretch="UniformToFill"/>
+            <ImageBrush ImageSource="pack://siteoforigin:,,,/Views/HomeBackground.jpg" Stretch="UniformToFill"/>
         </Grid.Background>
         <Grid Grid.Row="0">
             <Grid.ColumnDefinitions>

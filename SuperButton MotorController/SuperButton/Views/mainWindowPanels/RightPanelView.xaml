@@ -814,7 +814,7 @@
         
         <Rectangle  Style="{StaticResource rectangleStyle}" Grid.Column="1" Margin="0" Width="180" Opacity="0.3" >
             <Rectangle.Fill>
-                <ImageBrush  ImageSource="pack://application:,,,/Images/HomeBackground.jpg"   Stretch="UniformToFill"/>
+                <ImageBrush  ImageSource="pack://application:,,,/Views/HomeBackground.jpg"   Stretch="UniformToFill"/>
             </Rectangle.Fill>
         </Rectangle>
        

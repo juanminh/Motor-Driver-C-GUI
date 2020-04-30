@@ -22,6 +22,9 @@ namespace SuperButton.ViewModels
 {
     class MaintenanceViewModel : ViewModelBase
     {
+        string iniPath = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\MotorController\\SerialProgrammer\\SerialProgrammer.ini"; // Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location);
+        iniFile _serial_programmer_parameters;
+
         private static readonly object Synlock = new object();
         private static MaintenanceViewModel _instance;
         public static MaintenanceViewModel GetInstance
@@ -43,8 +46,20 @@ namespace SuperButton.ViewModels
         }
         private MaintenanceViewModel()
         {
-        }
+            foreach(var fb in EnumHelper.GetNames(Enum.GetNames(typeof(eBaudRate))))
+                _flashBaudrateList.Add(fb.TrimStart(new char[] { 'B', 'a', 'u', 'd' }));
 
+            _serial_programmer_parameters = new iniFile(iniPath);
+            // section, key, value, _iniFile
+            PathFW = _serial_programmer_parameters.Read("Firmware Path", "Programmer");
+            FlashBaudRate = _serial_programmer_parameters.Read("FlashBaud", "Programmer");
+            if(String.IsNullOrWhiteSpace(FlashBaudRate))
+                FlashBaudRate = "230400";
+
+        }
+        ~MaintenanceViewModel()
+        {
+        }
         private bool _save = false;
         public bool Save
         {
@@ -692,6 +707,24 @@ namespace SuperButton.ViewModels
                 });
             }
         }
+
+        public CancellationToken cancellationTokenSerialProgrammer;
+        private bool _serialProgrammer;
+        public bool SerialProgrammerCheck
+        {
+            get { return _serialProgrammer; }
+            set
+            {
+                _serialProgrammer = value;
+                OnPropertyChanged("SerialProgrammerCheck");
+                if(value)
+                {
+                    SerialProgrammerFunc();
+                }
+                else if(_serialProgrammerStarted)
+                    cancellationTokenSerialProgrammer = new CancellationToken(true);
+            }
+        }
         public ActionCommand OpenSerialProgrammer
         {
             get { return new ActionCommand(SerialProgrammerFunc); }
@@ -699,21 +732,19 @@ namespace SuperButton.ViewModels
         public bool _serialProgrammerStarted = false;
         private async void SerialProgrammerFunc()
         {
-            if(String.IsNullOrWhiteSpace(PathFW))
-            {
-                EventRiser.Instance.RiseEevent(string.Format("File path not valid"));
-                return;
-            }
-
             _serialProgrammerStarted = true;
+            cancellationTokenSerialProgrammer = new CancellationToken(false);
             try
             {
                 await Task.Run(() => SerialProgrammer.GetInstance.SerialProgrammerProcess());
             }
             catch
             { }
-
+            SerialProgrammerCheck = false;
             _serialProgrammerStarted = false;
+
+            _serial_programmer_parameters.Write("Firmware Path", PathFW, "Programmer");
+            _serial_programmer_parameters.Write("FlashBaud", FlashBaudRate, "Programmer");
         }
 
         public void SerialProgrammerApp()
@@ -727,6 +758,36 @@ namespace SuperButton.ViewModels
             }
             Debug.WriteLine("app closed");
             LeftPanelViewModel.GetInstance.AutoConnectCommand();
+        }
+
+        private ObservableCollection<string> _flashBaudrateList = new ObservableCollection<string>();
+        
+        public ObservableCollection<string> FlashBaudrateList
+        {
+
+            get
+            {
+                return _flashBaudrateList;
+            }
+            set
+            {
+                _flashBaudrateList = value;
+                OnPropertyChanged();
+            }
+
+        }
+        private string _flashBaudRate = "230400";
+        public string FlashBaudRate
+        {
+            get
+            {
+                return _flashBaudRate;
+            }
+            set
+            {
+                _flashBaudRate = value;
+                OnPropertyChanged();
+            }
         }
     }
 }

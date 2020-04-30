@@ -6,9 +6,9 @@ using System.Diagnostics;
 
 namespace SuperButton.ViewModels
 {
-    public partial class WizardWindowViewModel
-    {
+    //public partial class WizardWindowViewModel
+    //{
 
-    }
+    //}
    
 }

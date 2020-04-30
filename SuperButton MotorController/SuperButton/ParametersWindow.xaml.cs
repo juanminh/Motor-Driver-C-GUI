@@ -50,15 +50,15 @@ namespace SuperButton.Views
             InitializeComponent();
             ParametarsWindow.WindowsOpen = true;
         }
-
+        ~ParametarsWindow()
+        {
+            MaintenanceViewModel.GetInstance = null;
+        }
         public void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             WindowsOpen = false;
             ParametersWindowTabSelected = -1;
             _instance = null;
-        }
-
-        ~ParametarsWindow() {
         }
 
         private void TabSelected(object sender, SelectionChangedEventArgs e)

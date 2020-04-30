@@ -165,39 +165,7 @@ namespace SuperButton.ViewModels
 
             if (!plotList())
                 plotList();
-            /*StarterOperationFlag = true;
-            StarterCount = 0;
-            RefreshManger.ConnectionCount = 0;
-            OscilloscopeViewModel.GetInstance.ChComboEn = false;
-            Thread.Sleep(10);
-            
-            Rs232Interface.GetInstance.SendToParser(new PacketFields
-            {
-                Data2Send = "",
-                ID = Convert.ToInt16(34),
-                SubID = Convert.ToInt16(1), // Start Plot list
-                IsSet = false,
-                IsFloat = false
-            });
 
-            int timeOutPlot = 0;
-            do
-            {
-                Thread.Sleep(100);
-                timeOutPlot++;
-            } while(OscilloscopeParameters.plotCount_temp != 0 && timeOutPlot <= 20);
-
-            Debug.WriteLine("TimeOutPlot: " + timeOutPlot);
-            if(OscilloscopeParameters.plotCount_temp == 0)
-                EventRiser.Instance.RiseEevent(string.Format($"Success"));
-            else
-            {
-                EventRiser.Instance.RiseEevent(string.Format($"Failed"));
-                OscilloscopeParameters.InitList();
-            }
-
-            OscilloscopeViewModel.GetInstance.ChComboEn = true;
-            */
             short[] ID = { 60, 60,/* 62,*/ 62, 62, 62, 1 };
             short[] subID = { 1, 2, /*10,*/ 1, 2, 3, 0 };
             string[] param = { "Read Ch1", "Read Ch2", /*"Read Checksum",*/ "Read SN", "Read HW Rev", "Read FW Rev", "Read motor status" };

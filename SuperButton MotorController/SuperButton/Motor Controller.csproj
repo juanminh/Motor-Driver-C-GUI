@@ -139,9 +139,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\net40\Abt.Controls.SciChart.Wpf.dll</HintPath>
     </Reference>
-    <Reference Include="Abt.Controls.SciChart3D.Wpf">
-      <HintPath>..\..\net40\Abt.Controls.SciChart3D.Wpf.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -484,13 +481,9 @@
       <Visible>false</Visible>
     </None>
     <None Include="ClassDiagram1.cd" />
-    <None Include="Images\HomeBackground.jpg">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Resource Include="Images\HomeBackground.jpg" />
     <None Include="Motor Controller_TemporaryKey.pfx" />
     <None Include="packages.config" />
-    <None Include="SerialProgrammer\Serial Programmer.aliases" />
-    <None Include="SerialProgrammer\Serial Programmer.ini" />
     <None Include="SuperButton_TemporaryKey.pfx" />
     <None Include="Views\HomeBackground.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -503,6 +496,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\alt-parameters-icone-9469-64.png" />
     <Resource Include="Images\Backgrounds\BlackSteel.jpg" />
     <Resource Include="Images\Backgrounds\ECG.jpg" />
     <Resource Include="Images\Backgrounds\HomeBackground.jpg" />
@@ -523,6 +517,7 @@
     <Resource Include="Images\cursor_drag_hand.png" />
     <Resource Include="Images\cursor_hand.png" />
     <Resource Include="Images\cursor_V_split.png" />
+    <Resource Include="Images\down.png" />
     <Resource Include="Images\ExampleIcons\area_icon.png" />
     <Resource Include="Images\ExampleIcons\band_icon.png" />
     <Resource Include="Images\ExampleIcons\bubble_icon.png" />
@@ -630,36 +625,42 @@
     <Resource Include="Images\FeatureIcons\featureZoomingAndPanning.png" />
     <Resource Include="Images\fit_to_size.png" />
     <Resource Include="Images\hexgridgenerated.png" />
+    <Resource Include="Images\hide_menu-128.png" />
     <Resource Include="Images\home_tb.png" />
     <Resource Include="Images\kservices.png" />
     <Resource Include="Images\media_controls_dark_stop.png" />
     <Resource Include="Images\media_pause.png" />
     <Resource Include="Images\media_play_green.png" />
     <Resource Include="Images\media_stop_red.png" />
+    <Resource Include="Images\minus3.png" />
+    <Resource Include="Images\monitor.png" />
     <Resource Include="Images\next_tb.png" />
     <Resource Include="Images\pan.png" />
     <Resource Include="Images\playback_pause.png" />
     <Resource Include="Images\playback_stop.png" />
+    <Resource Include="Images\plusZoom.png" />
     <Resource Include="Images\rollover.png" />
     <Resource Include="Images\scichartlogo.png" />
     <Resource Include="Images\SciChartLogo_Dark.png" />
     <Resource Include="Images\search.png" />
+    <Resource Include="Images\SelectFile.ico" />
     <Resource Include="Images\selection.png" />
     <Resource Include="Images\selection_view.png" />
+    <Resource Include="Images\serialPorgrammer.png" />
     <Resource Include="Images\sq_br_next.png" />
     <Resource Include="Images\step_line.png" />
     <Resource Include="Images\target.png" />
     <Resource Include="Images\tutorials_tb.png" />
+    <Resource Include="Images\up.png" />
     <Resource Include="Images\view_1_1.png" />
+    <Resource Include="Images\Warning.jpg" />
+    <Resource Include="Images\Wizard.png" />
     <Resource Include="Images\zoom.png" />
     <Resource Include="Properties\1452207982_settings.png" />
     <Resource Include="Properties\alt-parameters-icone-9469-64.png" />
     <Resource Include="Properties\Free MP3 Converter.png" />
     <Resource Include="Properties\reload_all_tabs.png" />
     <Resource Include="Views\black1.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\hide_menu-128.png" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5.1">
@@ -675,19 +676,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\alt-parameters-icone-9469-64.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\Warning.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\minus3.png" />
-    <Resource Include="Images\plusZoom.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\SelectFile.ico" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WPFSpark_v1.1\WPFSpark\WPFSpark\WPFSpark.csproj">
@@ -714,32 +702,23 @@
   <ItemGroup>
     <Resource Include="Themes\MotorController.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Images\serialPorgrammer.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="WizardMotorImages\Jos.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="WizardMotorImages\Picture1.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="WizardMotorImages\full.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Resource>
-    <Resource Include="Images\Wizard.png" />
-    <Resource Include="Images\monitor.png" />
-    <Resource Include="Images\up.png" />
-    <Resource Include="Images\down.png" />
-  </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="NDP451-KB2858728-x86-x64-AllOS-ENU.exe">
+    <Resource Include="Images\1452207982_settings.png" />
+    <Resource Include="Images\Backgrounds\black1.jpg" />
+    <Resource Include="Images\Free MP3 Converter.png" />
+    <Resource Include="Images\reload_all_tabs.png" />
+    <Resource Include="Images\SelectFile.png" />
+    <Resource Include="Images\zoomMinus_3.jpg" />
+    <Resource Include="Images\zoomPlus_2.png" />
+    <Resource Include="Images\zoomPlus_3.png" />
+    <Content Include="NDP451-KB2858728-x86-x64-AllOS-ENU.exe" />
+    <Content Include="SerialProgrammer\Serial Programmer.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="SerialProgrammer\Serial Programmer.exe">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <None Include="WizardMotorImages\Motor.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath32)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

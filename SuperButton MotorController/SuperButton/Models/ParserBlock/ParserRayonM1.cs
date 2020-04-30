@@ -534,6 +534,8 @@ namespace SuperButton.Models.ParserBlock
                     {
                         if(getSet == 1)
                             RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), transit.ToString(), true);
+                        else if(ParametarsWindow.ParametersWindowTabSelected == ParametarsWindowViewModel.DEBUG)
+                            RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), newPropertyValuef.ToString(), false);
 #if(DEBUG && DEBUG_OPERATION)
 #if DEBUG_SET
                         if(getSet == 0)
@@ -557,6 +559,9 @@ namespace SuperButton.Models.ParserBlock
                         {
                             RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), newPropertyValuef.ToString(), false);
                         }
+                        else if(ParametarsWindow.ParametersWindowTabSelected == ParametarsWindowViewModel.DEBUG)
+                            RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), newPropertyValuef.ToString(), false);
+
 #if(DEBUG && DEBUG_OPERATION)
 #if DEBUG_SET
                         if(getSet == 0)
@@ -742,6 +747,10 @@ namespace SuperButton.Models.ParserBlock
                         EventRiser.Instance.RiseEevent(string.Format($"Com. Error: " + result));
                     else
                         EventRiser.Instance.RiseEevent(string.Format($"Error: " + commandId.ToString() + "[" + commandSubId.ToString() + "] = " + transit.ToString()));
+                    if(WizardWindowViewModel.GetInstance.StartEnable == false)
+                    {
+                        WizardWindowViewModel.GetInstance._save_cmd_success = true;
+                    }
                 }
                 return true;
             }

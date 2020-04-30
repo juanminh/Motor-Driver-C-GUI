@@ -17,7 +17,7 @@
         <Grid.Background>
             <ImageBrush AlignmentX="Center"
                         AlignmentY="Top"
-                        ImageSource="/Images/Backgrounds/HomeBackground.jpg"
+                        ImageSource="/Views/HomeBackground.jpg"
                         Stretch="UniformToFill" TileMode="Tile" />
         </Grid.Background>
 

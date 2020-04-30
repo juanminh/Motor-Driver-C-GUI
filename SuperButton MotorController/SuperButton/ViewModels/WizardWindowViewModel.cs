@@ -101,7 +101,7 @@ namespace SuperButton.ViewModels
         public Dictionary<Tuple<int, int>, CalibrationWizardViewModel> CalibrationWizardList = new Dictionary<Tuple<int, int>, CalibrationWizardViewModel>();
         public Dictionary<string, ObservableCollection<object>> CalibrationWizardListbySubGroup = new Dictionary<string, ObservableCollection<object>>();
         public Dictionary<Tuple<int, int>, DataViewModel> OperationList = new Dictionary<Tuple<int, int>, DataViewModel>();
-
+        public bool _save_cmd_success = false;
         #region FIELDS
         private static readonly object Synlock = new object();
         private static WizardWindowViewModel _instance;
@@ -296,10 +296,12 @@ namespace SuperButton.ViewModels
             for(int i = 0; i < names.Length; i++)
                 calibOperation.Add(names[i], SubID[i]);
 
-            if(MotorType == 0 || HallEnDis == (int)eHall.Enable)
+            if(MotorType == 0 || HallEnDis == (int)eHall.Disable)
                 calibOperation.Remove("Hall Mapping");
             if(!(EncoderFeedback == (int)eEncSel.Enc_Fdb_Ssi || EncoderFeedback == (int)eEncSel.Enc_Fdb_Abs_Sin_Cos))
                 calibOperation.Remove("Electrical Angle");
+            if(EncoderFeedback == (int)eEncSel.Enc_Fdb_None)
+                calibOperation.Remove("Feedback Direction");
 
             CalibrationWizardViewModel calibElement;
             for(int i = 0; i < calibOperation.Count; i++)
@@ -372,6 +374,7 @@ namespace SuperButton.ViewModels
             //    return;
 
             #region InitVariables
+            _save_cmd_success = false;
             DataViewModel operation = new DataViewModel();
             Int32 commandId = 0, commandSubId = 0;
             GetInstance.Count = 0;
@@ -685,6 +688,17 @@ namespace SuperButton.ViewModels
             GetInstance.OperationList.Clear();
             if(!cancellationTokenCalib.IsCancellationRequested)
             {
+                int timeout = 0;
+                while(_save_cmd_success == false && timeout < 10)
+                {
+                    Thread.Sleep(200);
+                    timeout++;
+                }
+                if(timeout >= 10)
+                {
+                    GetInstance.CalibrationWizardList[new Tuple<int, int>(6, -1)].CalibStatus = RoundBoolLed.FAILED;
+                    return;
+                }
                 GetInstance.CalibrationWizardList[new Tuple<int, int>(6, -1)].CalibStatus = RoundBoolLed.PASSED;
             };
             Thread.Sleep(300);
