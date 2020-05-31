@@ -334,6 +334,12 @@ namespace SuperButton.ViewModels
         {
             StartEnable = false;
             cancellationTokenCalib = new CancellationToken(false);
+
+            RefreshManger.TempTab = -1;
+            LeftPanelViewModel.GetInstance.RefreshParamsTick(STOP);
+            LeftPanelViewModel.GetInstance.RefreshParamsTick(START);
+            Thread.Sleep(100);
+
             try
             {
                 await Task.Run(() => StartCalib(cancellationTokenCalib));
@@ -343,6 +349,10 @@ namespace SuperButton.ViewModels
                 AbortCalib();
             }
             StartEnable = true;
+
+            RefreshManger.TempTab = -1;
+            LeftPanelViewModel.GetInstance.RefreshParamsTick(STOP);
+            LeftPanelViewModel.GetInstance.RefreshParamsTick(START);
         }
         private async void StartButtonStop()
         {
@@ -439,7 +449,8 @@ namespace SuperButton.ViewModels
                         return;// don't start when start clicked
                 }
             }
-
+            string EncoderBits = "0", EncoderResolutionTemp = "0";
+            EncoderResolutionTemp = EncoderResolution;
             /*set resolution for selected encoder*/
             switch(EncoderFeedback) // EncoderFeedback => Motor Feedback
             {
@@ -452,6 +463,8 @@ namespace SuperButton.ViewModels
                     break;
                 case (int)eEncSel.Enc_Fdb_Ssi:
                     id_fdbck_cmd_temp = "73";
+                    EncoderBits = EncoderResolution;
+                    EncoderResolutionTemp = (Math.Pow(2, Convert.ToInt32(EncoderResolution))).ToString();
                     break;
                 default:
                 case (int)eEncSel.Enc_Fdb_None:
@@ -464,7 +477,7 @@ namespace SuperButton.ViewModels
 
             if(Convert.ToInt32(MaxSpeed) > 0)
             {
-                max_speed = (Convert.ToInt32(MaxSpeed) * Convert.ToInt32(EncoderResolution) / 60);
+                max_speed = (Convert.ToInt32(MaxSpeed) * Convert.ToInt32(EncoderResolutionTemp) / 60);
                 min_speed = -max_speed;
             }
             else
@@ -518,7 +531,7 @@ namespace SuperButton.ViewModels
             /*update "Roll High", "Roll Low" parameter when Hall Enable*/
             if(HallEnDis == (int)eHall.Enable)
             {
-                operation = new DataViewModel { CommandName = "Roll High", CommandId = "70", CommandSubId = "2", IsFloat = false, CommandValue = (Convert.ToInt32(EncoderResolution) * 1000 - 1).ToString() };
+                operation = new DataViewModel { CommandName = "Roll High", CommandId = "70", CommandSubId = "2", IsFloat = false, CommandValue = (Convert.ToInt32(EncoderResolutionTemp) * 1000 - 1).ToString() };
                 Int32.TryParse(operation.CommandId, out commandId);
                 Int32.TryParse(operation.CommandSubId, out commandSubId);
                 GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
@@ -528,16 +541,17 @@ namespace SuperButton.ViewModels
                 Int32.TryParse(operation.CommandSubId, out commandSubId);
                 GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
             }
-            string EncoderResolutionTemp = EncoderResolution;
+
+
             /*update SSI "Packet len" parameter*/
             if(EncoderFeedback == (int)eEncSel.Enc_Fdb_Ssi) //Motor feedback
             {
-                operation = new DataViewModel { CommandName = "PacketLenght", CommandId = "73", CommandSubId = "8", IsFloat = false, CommandValue = (Convert.ToInt32(EncoderResolutionTemp) + 1).ToString() };
+                operation = new DataViewModel { CommandName = "PacketLenght", CommandId = "73", CommandSubId = "8", IsFloat = false, CommandValue = (Convert.ToInt32(EncoderBits) + 1).ToString() };
                 Int32.TryParse(operation.CommandId, out commandId);
                 Int32.TryParse(operation.CommandSubId, out commandSubId);
                 GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
 
-                EncoderResolutionTemp = (Math.Pow(2, Convert.ToInt32(EncoderResolutionTemp))).ToString();
+            
             }
 
             /*update  "Motor Encoder Resolution", "Roll High", "Roll Low" parameter*/
@@ -594,6 +608,8 @@ namespace SuperButton.ViewModels
                     break;
                 case (int)eEncSel.Enc_Fdb_Ssi:
                     id_ext_fdbck_cmd_temp = "73";
+                    EncoderBits = ExternalResolution;
+                    ExternalResolution = (Math.Pow(2, Convert.ToInt32(ExternalResolution))).ToString();
                     break;
                 default:
                     id_ext_fdbck_cmd_temp = "";
@@ -602,8 +618,6 @@ namespace SuperButton.ViewModels
             if(id_ext_fdbck_cmd_temp != "")
             {
                 EncoderResolutionTemp = ExternalResolution;
-                if(ExternalEncoder == (int)eEncSel.Enc_Fdb_Ssi)
-                    EncoderResolutionTemp = (Math.Pow(2, Convert.ToInt32(EncoderResolutionTemp))).ToString();
 
                 operation = new DataViewModel { CommandName = "External Encoder Resolution", CommandId = id_ext_fdbck_cmd_temp, CommandSubId = "5", IsFloat = false, CommandValue = EncoderResolutionTemp };
                 Int32.TryParse(operation.CommandId, out commandId);
@@ -619,6 +633,16 @@ namespace SuperButton.ViewModels
                 Int32.TryParse(operation.CommandId, out commandId);
                 Int32.TryParse(operation.CommandSubId, out commandSubId);
                 GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
+
+                /*update SSI "Packet len" parameter*/
+                if(ExternalEncoder == (int)eEncSel.Enc_Fdb_Ssi) //Motor feedback
+                {
+                    operation = new DataViewModel { CommandName = "PacketLenght", CommandId = "73", CommandSubId = "8", IsFloat = false, CommandValue = (Convert.ToInt32(EncoderBits) + 1).ToString() };
+                    Int32.TryParse(operation.CommandId, out commandId);
+                    Int32.TryParse(operation.CommandSubId, out commandSubId);
+                    GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
+                }
+
             }
 
             /*update  "PI Speed Loop Feedback" parameter*/
@@ -755,6 +779,10 @@ namespace SuperButton.ViewModels
             StartButtonStop();
             Thread.Sleep(100);
             GetInstance.Count = GetInstance.OperationList.Count;
+
+            RefreshManger.TempTab = -1;
+            LeftPanelViewModel.GetInstance.RefreshParamsTick(STOP);
+            LeftPanelViewModel.GetInstance.RefreshParamsTick(START);
         }
         #endregion Calibration
         #region AdvancedConfiguration
@@ -1091,7 +1119,7 @@ namespace SuperButton.ViewModels
         }
         private void CalibrationGetStatus()
         {
-            while(GetInstance.Count < GetInstance.OperationList.Count && StartEnable == false)
+            while(GetInstance.Count < GetInstance.OperationList.Count && StartEnable == false/* && Views.ParametarsWindow.ParametersWindowTabSelected != (int)eTab.CALIBRATION*/)
             {
                 Rs232Interface.GetInstance.SendToParser(new PacketFields
                 {
@@ -1130,7 +1158,9 @@ namespace SuperButton.ViewModels
                     StateTemp = RoundBoolLed.FAILED;
                     break;
             }
-            if(GetInstance.CalibrationWizardList[new Tuple<int, int>(6, commandidentifier.Item2)].CalibStatus != StateTemp)
+            if(StartEnable)
+                GetInstance.CalibrationWizardList[new Tuple<int, int>(6, commandidentifier.Item2)].CalibStatus = StateTemp;
+            else if(GetInstance.CalibrationWizardList[new Tuple<int, int>(6, commandidentifier.Item2)].CalibStatus != StateTemp)
             {
                 GetInstance.CalibrationWizardList[new Tuple<int, int>(6, commandidentifier.Item2)].CalibStatus = StateTemp;
                 if(StateTemp == RoundBoolLed.FAILED)
@@ -1143,7 +1173,7 @@ namespace SuperButton.ViewModels
                     CalibrationStart();
                 }
             }
-            if(GetInstance.Count == GetInstance.OperationList.Count)
+            if(GetInstance.Count == GetInstance.OperationList.Count && !StartEnable)
                 StartButtonStop();
             Thread.Sleep(100);
             //CalibrationGetStatusTask(STOP);

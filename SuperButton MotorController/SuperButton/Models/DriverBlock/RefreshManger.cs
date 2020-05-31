@@ -236,7 +236,8 @@ namespace SuperButton.Models.DriverBlock
                         arr = new string[] { "AnalogCommand List" };
                         break;
                     case 5:
-                        arr = new string[] { "Calibration Result List", "Calibration List" };
+                        if(WizardWindowViewModel.GetInstance.StartEnable)
+                            arr = new string[] { "Calibration Result List", "Calibration List" };
                         break;
                     //case 8:
                     //    arr = new string[] { "AnalogCommand List" };
@@ -371,7 +372,7 @@ namespace SuperButton.Models.DriverBlock
                 });
                 ConnectionCount++;
                 //if(ConnectionCount > 0)
-                    //Debug.WriteLine("Send: " + ConnectionCount + " " + DateTime.Now.ToString("h:mm:ss.fff"));
+                //Debug.WriteLine("Send: " + ConnectionCount + " " + DateTime.Now.ToString("h:mm:ss.fff"));
                 if(ConnectionCount > 5 && ConnectionCount < 7)
                 {
                     EventRiser.Instance.RiseEevent(string.Format($"No communication with Driver"));
@@ -598,6 +599,7 @@ namespace SuperButton.Models.DriverBlock
                     #region Calibration
                     if(commandidentifier.Item1 == 6)
                     {
+
                         if(Commands.GetInstance.CalibartionCommandsList.ContainsKey(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)))
                         {
                             if(Convert.ToInt16(newPropertyValue) == 0)
@@ -608,6 +610,7 @@ namespace SuperButton.Models.DriverBlock
                         else if(Commands.GetInstance.DataViewCommandsList.ContainsKey(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)))
                             Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)].CommandValue = CalibrationGetStatus(newPropertyValue);
 
+                        //if(!WizardWindowViewModel.GetInstance.StartEnable)
                         if(WizardWindowViewModel.GetInstance.CalibrationWizardList.ContainsKey(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)))
                             WizardWindowViewModel.GetInstance.updateCalibrationStatus(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2), newPropertyValue);
 

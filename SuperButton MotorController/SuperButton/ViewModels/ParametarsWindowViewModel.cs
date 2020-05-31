@@ -8,17 +8,19 @@ using System.Threading;
 
 namespace SuperButton.ViewModels
 {
+    enum eTab
+    {
+        MOTOR = 0,
+        FEED_BACKS = 1,
+        PID = 2,
+        DEVICE = 3,
+        I_O = 4,
+        CALIBRATION = 5,
+        MAINTENANCE = 6,
+        DEBUG = 7
+    };
     internal class ParametarsWindowViewModel : ViewModelBase
     {
-        public const int MOTOR = 0;
-        public const int FEED_BACKS = 1;
-        public const int PID = 2;
-        public const int DEVICE = 3;
-        public const int I_O = 4;
-        public const int CALIBRATION = 5;
-        public const int MAINTENANCE = 6;
-        public const int DEBUG = 7;
-
         private CalibrationViewModel _calibrationViewModel;
         private MotionViewModel _motionViewModel;
         private MaintenanceViewModel _maintenanceViewModel;
@@ -170,7 +172,7 @@ namespace SuperButton.ViewModels
             }
 
         }
-        
+
         public virtual ICommand TestEnumChange
         {
             get
@@ -196,7 +198,7 @@ namespace SuperButton.ViewModels
         {
             get { return _maintenanceViewModel; }
         }
-        
+
         public FeedBackViewModel FeedBackViewModel
         {
             get { return _feedBackViewModel; }

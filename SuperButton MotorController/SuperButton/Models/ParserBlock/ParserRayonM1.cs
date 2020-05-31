@@ -526,7 +526,7 @@ namespace SuperButton.Models.ParserBlock
                 transit <<= 8;
                 transit |= data[3];
 
-                if(ParametarsWindow.ParametersWindowTabSelected == ParametarsWindowViewModel.DEBUG &&
+                if(ParametarsWindow.ParametersWindowTabSelected == (int)eTab.DEBUG &&
                     !LeftPanelViewModel.GetInstance.StarterOperationFlag && !LeftPanelViewModel.GetInstance.StarterPlotFlag &&
                     !exceptionID.Contains(commandId) || !exceptionID.Contains(commandId))
                 {
@@ -534,7 +534,7 @@ namespace SuperButton.Models.ParserBlock
                     {
                         if(getSet == 1)
                             RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), transit.ToString(), true);
-                        else if(ParametarsWindow.ParametersWindowTabSelected == ParametarsWindowViewModel.DEBUG)
+                        else if(ParametarsWindow.ParametersWindowTabSelected == (int)eTab.DEBUG)
                             RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), newPropertyValuef.ToString(), false);
 #if(DEBUG && DEBUG_OPERATION)
 #if DEBUG_SET
@@ -559,7 +559,7 @@ namespace SuperButton.Models.ParserBlock
                         {
                             RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), newPropertyValuef.ToString(), false);
                         }
-                        else if(ParametarsWindow.ParametersWindowTabSelected == ParametarsWindowViewModel.DEBUG)
+                        else if(ParametarsWindow.ParametersWindowTabSelected == (int)eTab.DEBUG)
                             RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), newPropertyValuef.ToString(), false);
 
 #if(DEBUG && DEBUG_OPERATION)
