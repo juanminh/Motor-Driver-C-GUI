@@ -10,7 +10,7 @@ namespace SuperButton.ViewModels
 {
     enum eTab
     {
-        MOTOR = 0,
+        CONTROL = 0,
         FEED_BACKS = 1,
         PID = 2,
         DEVICE = 3,

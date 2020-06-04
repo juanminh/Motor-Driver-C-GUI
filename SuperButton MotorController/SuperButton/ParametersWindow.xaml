@@ -10,7 +10,7 @@
         x:Class="SuperButton.Views.ParametarsWindow"
         xmlns:UserControl="clr-namespace:SuperButton.Views"
         ResizeMode="CanMinimize"
-        Title="Driver Parameters" Height="500" Width="700"
+        Title="Driver Parameters" Height="500" Width="900"
         Closing="Window_Closing"
         Icon="./Themes/MotorController.png"
         WindowStartupLocation="CenterOwner"
@@ -54,7 +54,7 @@
             <TabControl.Background>
                 <ImageBrush ImageSource="pack://siteoforigin:,,,/Views/HomeBackground.jpg"/>
             </TabControl.Background>
-            <TabItem Name="Motor" Header="Motor" TabIndex="1" Background="Black" Foreground="White">
+            <TabItem Name="Motor" Header="Control" TabIndex="1" Background="Black" Foreground="White">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="50*"/>
@@ -103,12 +103,12 @@
                         <ColumnDefinition Width="210"/>
                         <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="210"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="210"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="20"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <GroupBox Grid.Row="0" Header="Hall" HorizontalContentAlignment="Center">
@@ -124,8 +124,6 @@
                     <Grid Grid.Column="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="10"/>
-                            <RowDefinition Height="160"/>
                         </Grid.RowDefinitions>
                         <GroupBox Grid.Row="0" Header="Qep1">
                             <Grid>
@@ -149,8 +147,13 @@
                                 <!--</ScrollViewer>-->
                             </Grid>
                         </GroupBox>
-                        <GroupBox Grid.Row="2" Header="Qep2"  Background="Transparent">
-                            <ScrollViewer VerticalScrollBarVisibility="Visible">
+                    </Grid>
+                    <Grid Grid.Column="4">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <GroupBox Grid.Row="0" Header="Qep2">
+                            <!--<ScrollViewer VerticalScrollBarVisibility="Visible">-->
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"></RowDefinition>
@@ -165,13 +168,11 @@
                                     <ItemsControl Grid.Row="1" ItemsSource="{Binding Qep2FdBckList}" ItemTemplate="{StaticResource EnumViewModel}"/>
 
                                 </Grid>
-                            </ScrollViewer>
+                            <!--</ScrollViewer>-->
                         </GroupBox>
                     </Grid>
-                    <Grid Grid.Column="4">
+                    <Grid Grid.Column="6">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="20"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <GroupBox Grid.Row="0" Header="SSI Feedback">

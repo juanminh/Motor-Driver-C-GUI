@@ -217,7 +217,7 @@ namespace SuperButton.CommandsDB
             DataCommandsListbySubGroup.Add("Qep2", new ObservableCollection<object>());
             DataCommandsListbySubGroup.Add("SSI_Feedback", new ObservableCollection<object>());
 
-            for(var i = 0; i < names.Length; i++)
+            for(var i = 1; i < names.Length; i++)
             {
                 var data = new DataViewModel();
                 data = new DataViewModel
@@ -275,12 +275,12 @@ namespace SuperButton.CommandsDB
 
             names = new[]
             {
-                "Enable", "Roll High", "Roll Low", "Direction", "Counts Per Rev", "Speed LPF Cut-Off", "BaudRate", "Packet Length", "Clk Phase", "Clk Polarity", "Data Shift", "Packet Delay", "Calibrate Angle", "Sample Period"
+                "Enable", "Roll High", "Roll Low", "Direction", "Counts Per Rev", "LPF Cut-Off", "Baud rate", "Encoder Bits", "Clock Phase", "Clock Polarity", "Tail Bits", "Packet Delay", "Calibrated Angle", "Head Bits", "Sample Period"
             };
-            var SubId = new[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "15" };
-            var type = new[] { false, false, false, false, false, true, false, false, false, false, false, false, true, false };
+            var SubId = new[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
+            var type = new[] { false, false, false, false, false, true, false, false, false, false, false, false, true, false, false };
 
-            for(int i = 0; i < names.Length; i++)
+            for(int i = 1; i < names.Length; i++)
             {
                 var data = new DataViewModel
                 {
@@ -302,7 +302,7 @@ namespace SuperButton.CommandsDB
                 "Speed LPF", "Index Mode", "Reset Value", "Set Position Value"
             };
             bool[] IsFloat = new[] { false, false, false, false, false, true, false, false, false };
-            for(int i = 0, k = 1; i < names.Length; i++, k++)
+            for(int i = 1, k = 1; i < names.Length; i++, k++)
             {
                 var data = new DataViewModel
                 {
@@ -442,6 +442,24 @@ namespace SuperButton.CommandsDB
                 CommandList = Enums["Electrical Commutation Type"]
             };
             EnumViewCommandsList.Add(new Tuple<int, int>(50, 2), enum2);
+            EnumCommandsListbySubGroup["Control"].Add(enum2);
+
+            tmp2 = new List<string>
+             {
+                "Disable",
+                "Enable"
+             };
+            Enums.Add("Motor Hall", tmp2);
+
+           enum2 = new EnumViewModel
+            {
+                CommandName = "Motor Hall",
+                CommandId = "70",
+                CommandSubId = "1",
+                CommandValue = "0", //first enum in list
+                CommandList = Enums["Motor Hall"]
+            };
+            EnumViewCommandsList.Add(new Tuple<int, int>(70, 1), enum2);
             EnumCommandsListbySubGroup["Control"].Add(enum2);
 
             var tmp6 = new List<string>

@@ -546,21 +546,23 @@ namespace SuperButton.ViewModels
             /*update SSI "Packet len" parameter*/
             if(EncoderFeedback == (int)eEncSel.Enc_Fdb_Ssi) //Motor feedback
             {
-                operation = new DataViewModel { CommandName = "PacketLenght", CommandId = "73", CommandSubId = "8", IsFloat = false, CommandValue = (Convert.ToInt32(EncoderBits) + 1).ToString() };
+                operation = new DataViewModel { CommandName = "PacketLenght", CommandId = "73", CommandSubId = "8", IsFloat = false, CommandValue = (Convert.ToInt32(EncoderBits)).ToString() };
                 Int32.TryParse(operation.CommandId, out commandId);
                 Int32.TryParse(operation.CommandSubId, out commandSubId);
                 GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
-
-            
+        
             }
 
             /*update  "Motor Encoder Resolution", "Roll High", "Roll Low" parameter*/
             if(id_fdbck_cmd_temp != "")
             {
-                operation = new DataViewModel { CommandName = "Resolution", CommandId = id_fdbck_cmd_temp, CommandSubId = "5", IsFloat = false, CommandValue = EncoderResolutionTemp };
-                Int32.TryParse(operation.CommandId, out commandId);
-                Int32.TryParse(operation.CommandSubId, out commandSubId);
-                GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
+                if(!(EncoderFeedback == (int)eEncSel.Enc_Fdb_Ssi))
+                {
+                    operation = new DataViewModel { CommandName = "Resolution", CommandId = id_fdbck_cmd_temp, CommandSubId = "5", IsFloat = false, CommandValue = EncoderResolutionTemp };
+                    Int32.TryParse(operation.CommandId, out commandId);
+                    Int32.TryParse(operation.CommandSubId, out commandSubId);
+                    GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
+                }
 
                 operation = new DataViewModel { CommandName = "Roll High", CommandId = id_fdbck_cmd_temp, CommandSubId = "2", IsFloat = false, CommandValue = (Convert.ToInt32(EncoderResolutionTemp) * 1000 - 1).ToString() };
                 Int32.TryParse(operation.CommandId, out commandId);
@@ -609,7 +611,7 @@ namespace SuperButton.ViewModels
                 case (int)eEncSel.Enc_Fdb_Ssi:
                     id_ext_fdbck_cmd_temp = "73";
                     EncoderBits = ExternalResolution;
-                    ExternalResolution = (Math.Pow(2, Convert.ToInt32(ExternalResolution))).ToString();
+                    EncoderResolutionTemp = (Math.Pow(2, Convert.ToInt32(ExternalResolution))).ToString();
                     break;
                 default:
                     id_ext_fdbck_cmd_temp = "";
@@ -617,7 +619,7 @@ namespace SuperButton.ViewModels
             }
             if(id_ext_fdbck_cmd_temp != "")
             {
-                EncoderResolutionTemp = ExternalResolution;
+                //EncoderResolutionTemp = ExternalResolution;
 
                 operation = new DataViewModel { CommandName = "External Encoder Resolution", CommandId = id_ext_fdbck_cmd_temp, CommandSubId = "5", IsFloat = false, CommandValue = EncoderResolutionTemp };
                 Int32.TryParse(operation.CommandId, out commandId);
@@ -637,7 +639,7 @@ namespace SuperButton.ViewModels
                 /*update SSI "Packet len" parameter*/
                 if(ExternalEncoder == (int)eEncSel.Enc_Fdb_Ssi) //Motor feedback
                 {
-                    operation = new DataViewModel { CommandName = "PacketLenght", CommandId = "73", CommandSubId = "8", IsFloat = false, CommandValue = (Convert.ToInt32(EncoderBits) + 1).ToString() };
+                    operation = new DataViewModel { CommandName = "PacketLenght", CommandId = "73", CommandSubId = "8", IsFloat = false, CommandValue = (Convert.ToInt32(EncoderBits)).ToString() };
                     Int32.TryParse(operation.CommandId, out commandId);
                     Int32.TryParse(operation.CommandSubId, out commandSubId);
                     GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
