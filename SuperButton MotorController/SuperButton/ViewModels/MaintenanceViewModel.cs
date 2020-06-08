@@ -332,7 +332,8 @@ namespace SuperButton.ViewModels
                 }
                 else if(!value)
                 {
-                    _saveToFile = value;
+                    if(PbarValueToFile == 0 || PbarValueToFile == 100)
+                        _saveToFile = value;
                 }
 
                 OnPropertyChanged();
@@ -458,8 +459,11 @@ namespace SuperButton.ViewModels
                 }
                 else if(!value)
                 {
-                    _loadFromFile = value;
-                    OnPropertyChanged("LoadFromFile");
+                    if(PbarValueFromFile == 0 || PbarValueFromFile == 100)
+                    {
+                        _loadFromFile = value;
+                        OnPropertyChanged("LoadFromFile");
+                    }
                 }
             }
         }

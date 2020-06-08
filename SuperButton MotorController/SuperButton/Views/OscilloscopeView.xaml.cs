@@ -20,35 +20,6 @@ namespace SuperButton.Views
         public OscilloscopeView()
         {
             InitializeComponent();
-
-            //Thread.Sleep(50);
-            //this.OscilloscopeChart.RenderSurface.RecreateSurface();
-            //Thread.Sleep(50);
-            //this.OscilloscopeChart.RenderSurface.RecreateSurface();
-            //Thread.Sleep(50);
-
-           // this.oscilloscopeChart.RenderSurface.Style
-
-            
-
-            //var type=this.OscilloscopeChart.RenderSurface;
-        }
-
-        private void FrameworkElement_OnInitialized(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void FrameworkElement_OnLoaded(object sender, RoutedEventArgs e)
-        {
-            //throw new NotImplementedException();
-           
-              var type = this.OscilloscopeChart.RenderSurface;
-        }
-
-        private void ComboBox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-
         }
     }
 }

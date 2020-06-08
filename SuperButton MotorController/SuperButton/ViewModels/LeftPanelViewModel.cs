@@ -206,34 +206,34 @@ namespace SuperButton.ViewModels
 
             if (RefreshManger.GetInstance.DisconnectedFlag)
             {
-                Thread.Sleep(10);
-                Rs232Interface.GetInstance.SendToParser(new PacketFields
-                {
-                    Data2Send = RefreshManger.GetInstance.ch1.ToString(),
-                    ID = Convert.ToInt16(60),
-                    SubID = Convert.ToInt16(1),
-                    IsSet = true,
-                    IsFloat = false
-                });
-                Thread.Sleep(10);
+                //Thread.Sleep(10);
+                //Rs232Interface.GetInstance.SendToParser(new PacketFields
+                //{
+                //    Data2Send = RefreshManger.GetInstance.ch1.ToString(),
+                //    ID = Convert.ToInt16(60),
+                //    SubID = Convert.ToInt16(1),
+                //    IsSet = true,
+                //    IsFloat = false
+                //});
+                //Thread.Sleep(10);
 
-                Rs232Interface.GetInstance.SendToParser(new PacketFields
-                {
-                    Data2Send = RefreshManger.GetInstance.ch2.ToString(),
-                    ID = Convert.ToInt16(60),
-                    SubID = Convert.ToInt16(2),
-                    IsSet = true,
-                    IsFloat = false
-                });
-                Thread.Sleep(10);
-                Rs232Interface.GetInstance.SendToParser(new PacketFields
-                {
-                    Data2Send = "1",
-                    ID = Convert.ToInt16(64),
-                    SubID = Convert.ToInt16(0),
-                    IsSet = true,
-                    IsFloat = false
-                });
+                //Rs232Interface.GetInstance.SendToParser(new PacketFields
+                //{
+                //    Data2Send = RefreshManger.GetInstance.ch2.ToString(),
+                //    ID = Convert.ToInt16(60),
+                //    SubID = Convert.ToInt16(2),
+                //    IsSet = true,
+                //    IsFloat = false
+                //});
+                //Thread.Sleep(10);
+                //Rs232Interface.GetInstance.SendToParser(new PacketFields
+                //{
+                //    Data2Send = "1",
+                //    ID = Convert.ToInt16(64),
+                //    SubID = Convert.ToInt16(0),
+                //    IsSet = true,
+                //    IsFloat = false
+                //});
             }
             Thread.Sleep(10);
             RefreshManger.GetInstance.DisconnectedFlag = false;
@@ -247,7 +247,7 @@ namespace SuperButton.ViewModels
 
             LeftPanelViewModel._app_running = true;
             StarterOperation(STOP);
-            OscilloscopeViewModel.GetInstance.ResetZoom();
+            //OscilloscopeViewModel.GetInstance.ResetZoom();
         }
         private String _connectTextBoxContent;
         public String ConnectTextBoxContent

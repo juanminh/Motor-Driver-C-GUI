@@ -12,6 +12,8 @@ using System.Windows.Shapes;
 using SuperButton.ViewModels;
 using SuperButton.Views;
 using System.Diagnostics;
+using System.Security.Permissions;
+using System.Security.Policy;
 
 namespace SuperButton
 {
@@ -20,9 +22,9 @@ namespace SuperButton
 	/// </summary>
 	public partial class MainWindow 
 	{
-		public MainWindow()
+        public MainWindow()
 		{
-			this.InitializeComponent();
+            this.InitializeComponent();
             this.DataContext = new MainViewModel();
 
 			// Insert code required on object creation below this point.

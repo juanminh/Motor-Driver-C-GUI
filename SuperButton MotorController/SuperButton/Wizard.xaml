@@ -28,8 +28,8 @@
     <Window.Resources>
         <!-- Variables -->
         <System:Double x:Key="MotorParametersWidth">150</System:Double>
-        <System:String x:Key="RegexFloat">^[0-9.]+$</System:String>
-        <System:String x:Key="RegexInt">^[0-9]+$</System:String>
+        <System:String x:Key="RegexFloat">^[0-9.\-]+$</System:String>
+        <System:String x:Key="RegexInt">^[0-9\-]+$</System:String>
 
         <!--  Vertical GridSplitter Handle  -->
         <Style x:Key="VerticalGridSplitterHandleStyle" TargetType="ToggleButton">

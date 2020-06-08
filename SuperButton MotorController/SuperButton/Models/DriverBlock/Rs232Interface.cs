@@ -100,41 +100,58 @@ namespace SuperButton.Models.DriverBlock
                     LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.STOP);
                     LeftPanelViewModel.GetInstance.RefreshParamsTick(LeftPanelViewModel.STOP);
                     LeftPanelViewModel.GetInstance.led = -1;
-                    if(_comPort.IsOpen)
+                    if(Rs232Interface._comPort != null)
                     {
-                        if(RxtoParser != null)
+                        if(_comPort.IsOpen)
                         {
-                            _isSynced = false;
-                            Thread.Sleep(100);
-                            DataViewModel temp = (DataViewModel)Commands.GetInstance.DataCommandsListbySubGroup["DeviceSynchCommand"][0];
-                            Commands.AssemblePacket(out RxPacket, Int16.Parse(temp.CommandId), Int16.Parse(temp.CommandSubId), true, false, 0);
-                            RxtoParser(this, new Rs232InterfaceEventArgs(RxPacket));
-
-                            ParserRayonM1.mre.WaitOne(1000);
-
-                            if(Rs232Interface.GetInstance.IsSynced == false)
+                            if(RxtoParser != null)
                             {
+                                _isSynced = false;
+                                Thread.Sleep(100);
+                                DataViewModel temp = (DataViewModel)Commands.GetInstance.DataCommandsListbySubGroup["DeviceSynchCommand"][0];
+                                Commands.AssemblePacket(out RxPacket, Int16.Parse(temp.CommandId), Int16.Parse(temp.CommandSubId), true, false, 0);
+                                RxtoParser(this, new Rs232InterfaceEventArgs(RxPacket));
 
-                                _comPort.DataReceived -= DataReceived;
-                                _comPort.Close();
-                                _comPort.Dispose();
+                                ParserRayonM1.mre.WaitOne(1000);
 
-                                if(Driver2Mainmodel != null)
+                                if(Rs232Interface.GetInstance.IsSynced == false)
                                 {
-                                    Driver2Mainmodel(this, new Rs232InterfaceEventArgs("Connect"));
+
+                                    _comPort.DataReceived -= DataReceived;
+                                    _comPort.Close();
+                                    _comPort.Dispose();
+
+                                    if(Driver2Mainmodel != null)
+                                    {
+                                        Driver2Mainmodel(this, new Rs232InterfaceEventArgs("Connect"));
+                                    }
+                                    else
+                                    {
+                                        throw new NullReferenceException("No Listeners to this event");
+                                    }
+                                    LeftPanelViewModel.busy = false;
                                 }
-                                else
-                                {
-                                    throw new NullReferenceException("No Listeners to this event");
-                                }
-                                LeftPanelViewModel.busy = false;
+                                LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
+
+                                LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.STOP);
+                                EventRiser.Instance.RiseEevent(string.Format($"Disconnected"));
                             }
-                            LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
-
-                            LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.STOP);
-                            EventRiser.Instance.RiseEevent(string.Format($"Disconnected"));
+                            LeftPanelViewModel.busy = false;
                         }
-                        LeftPanelViewModel.busy = false;
+                        else
+                        {
+                            LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
+                            EventRiser.Instance.RiseEevent(string.Format($"Disconnected"));
+
+                            _isSynced = false;
+                            _comPort.DataReceived -= DataReceived;
+                            _comPort.Close();
+                            _comPort.Dispose();
+                            Driver2Mainmodel(this, new Rs232InterfaceEventArgs("Connect"));
+                            LeftPanelViewModel.busy = false;
+                        }
+                        _comPort = null;
+                        OscilloscopeViewModel.GetInstance.ChComboEn = false;
                     }
                     else
                     {
@@ -147,9 +164,10 @@ namespace SuperButton.Models.DriverBlock
                         _comPort.Dispose();
                         Driver2Mainmodel(this, new Rs232InterfaceEventArgs("Connect"));
                         LeftPanelViewModel.busy = false;
+
+                        _comPort = null;
+                        OscilloscopeViewModel.GetInstance.ChComboEn = false;
                     }
-                    _comPort = null;
-                    OscilloscopeViewModel.GetInstance.ChComboEn = false;
                     break;
                 case 1:
                     LeftPanelViewModel.GetInstance.RefreshParamsTick(LeftPanelViewModel.STOP);

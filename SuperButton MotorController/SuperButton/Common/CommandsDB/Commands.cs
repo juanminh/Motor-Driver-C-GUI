@@ -302,7 +302,7 @@ namespace SuperButton.CommandsDB
                 "Speed LPF", "Index Mode", "Reset Value", "Set Position Value"
             };
             bool[] IsFloat = new[] { false, false, false, false, false, true, false, false, false };
-            for(int i = 1, k = 1; i < names.Length; i++, k++)
+            for(int i = 1, k = 2; i < names.Length; i++, k++)
             {
                 var data = new DataViewModel
                 {

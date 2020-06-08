@@ -131,8 +131,8 @@ namespace SuperButton.Models
                         return false;
                     break;
                 case "-":
-                    if(this.AssociatedObject.Text.Length != 0)
-                        return false;
+                    //if(this.AssociatedObject.Text.Length != 0)
+                    //   return false;
                     break;
             }
             
@@ -149,13 +149,17 @@ namespace SuperButton.Models
 
         private int LengthOfModifiedText(string newText, bool paste)
         {
-            if(newText == "-" || newText == ".")
-                if(this.AssociatedObject.Text.Contains(newText))
-                    return MaxLength + 1;
-
             var countOfSelectedChars = this.AssociatedObject.SelectedText.Length;
             var caretIndex = this.AssociatedObject.CaretIndex;
             string text = this.AssociatedObject.Text;
+
+            if(newText == "-" || newText == ".")
+            {
+                if(this.AssociatedObject.Text.Contains(newText))
+                    return MaxLength + 1; // to get a false value in "IsValid" function
+                else if(newText == "-" && text.Length > 0 && caretIndex > 0)
+                    return MaxLength + 1; // to get a false value in "IsValid" function
+            }
 
             if(countOfSelectedChars > 0 || paste)
             {

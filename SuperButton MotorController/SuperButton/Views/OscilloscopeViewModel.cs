@@ -24,6 +24,8 @@ using SuperButton.CommandsDB;
 using System.Windows.Input;
 using SuperButton.Models;
 using System.Windows.Data;
+using Abt.Controls.SciChart.Visuals.Axes;
+using Abt.Controls.SciChart.Visuals.Axes.LogarithmicAxis;
 
 //Cntl+M and Control+O for close regions
 namespace SuperButton.Views
@@ -32,12 +34,6 @@ namespace SuperButton.Views
     public class OscilloscopeViewModel : BaseViewModel
     {
         #region members
-        //    private const float _singleChanelFreq = 6600;
-        //Y axle title
-        //   private float step = (float) 0.151515;
-
-        // private float delta = (float) (1.0/_singleChanelFreq);
-
         private string _yaxeTitle;
         public readonly Dictionary<string, string> ChannelYtitles = new Dictionary<string, string>();
 
@@ -84,29 +80,12 @@ namespace SuperButton.Views
 
         private UInt16 plotActivationstate;
 
-
-        // private float dtx;
-
-        // private int count;
-        // private int countlimit;
-
-
-        //13.01
         private bool _isFull = false;
         private float[] xData;
-
-        // private int countert = 0;
-        // private int Aountert = 0;
-
-        // private static readonly object PointstoplotLOCK = new object();   //Semapophor;
-        // private int PlotFifoLenth = 0;
         private int pivot = 0;
 
         readonly List<float> AllYData = new List<float>(500000);//500000
         readonly List<float> AllYData2 = new List<float>(500000);
-
-        //Debug Vars
-        //private float Averadge = 0;
 
         private DoubleRange _xVisibleRange;
         private DoubleRange _yVisibleRange;
@@ -118,17 +97,6 @@ namespace SuperButton.Views
 
         private ResamplingMode _resamplingMode;
         private bool _canExecuteRollover;
-
-        //private Thread SciThread;
-        //  private int FlowControl = 500;
-
-        //  private int MinimumChank = 3300/10 ;
-        //  private int MinimumFillChank = 3300 / 5;
-        //  private double _duration = 500;
-        //  private int POintstoPlot = 3300; //0.5 sec - 1 channel
-
-        //private int MinimumChank = 33000;
-        //private int MinimumFillChank = 3300 / 5;
 
         private int POintstoPlot = 33000; //5 sec min
 
@@ -143,15 +111,84 @@ namespace SuperButton.Views
         private const double TimerIntervalMs = 100;
 
         private int ucarry;
-        //private int ustate = 0;
-
-
-        //Umprove
         private int State = 0;
 
         List<float> utemp3L = new List<float>();
         float[] utemp3;
 
+
+        #endregion
+        #region XYAxis
+        private LogarithmicNumericAxis _xAxisLog;
+        private LogarithmicNumericAxis _yAxisLog;
+        private NumericAxis _xAxisNum;
+        private NumericAxis _yAxisNum;
+
+        private IAxis _xAxis;
+        private IAxis _yAxis;
+        public IAxis XAxis
+        {
+            get { return _xAxis; }
+            set
+            {
+                _xAxis = value;
+                OnPropertyChanged("XAxis");
+            }
+        }
+
+        public IAxis YAxis
+        {
+            get { return _yAxis; }
+            set
+            {
+                _yAxis = value;
+                OnPropertyChanged("YAxis");
+            }
+        }
+        private void InitializeAxes()
+        {
+#if LOG
+            _xAxisLog = new LogarithmicNumericAxis
+            {
+                TextFormatting = "#.#E+0",
+                ScientificNotation = ScientificNotation.LogarithmicBase,
+                VisibleRange = new DoubleRange(0, 100),
+                GrowBy = new DoubleRange(0.1, 0.1),
+                DrawMajorBands = false
+            };
+#endif
+            _xAxisNum = new NumericAxis
+            {
+                TextFormatting = "#.#E+0",
+                ScientificNotation = ScientificNotation.Normalized,
+                VisibleRange = new DoubleRange(0, 100),
+                GrowBy = new DoubleRange(0.1, 0.1),
+            };
+#if LOG
+            _yAxisLog = new LogarithmicNumericAxis
+            {
+                TextFormatting = "#.#E+0",
+                ScientificNotation = ScientificNotation.LogarithmicBase,
+                AxisAlignment = AxisAlignment.Left,
+                GrowBy = new DoubleRange(0.1, 0.1),
+                DrawMajorBands = false
+            };
+#endif
+            _yAxisNum = new NumericAxis
+            {
+                TextFormatting = "#.#E+0",
+                ScientificNotation = ScientificNotation.Normalized,
+                AxisAlignment = AxisAlignment.Left,
+                GrowBy = new DoubleRange(0.1, 0.1)
+            };
+#if LOG
+            var converter = new LogarithmicBaseConverter();
+            var logBinding = new Binding("SelectedValue") { ElementName = "logBasesChbx", Converter = converter };
+
+            _xAxisLog.SetBinding(LogarithmicNumericAxis.LogarithmicBaseProperty, logBinding);
+            _yAxisLog.SetBinding(LogarithmicNumericAxis.LogarithmicBaseProperty, logBinding);
+#endif
+        }
 
         #endregion
         ~OscilloscopeViewModel()
@@ -372,7 +409,7 @@ namespace SuperButton.Views
                         break;
 
                     }
-                }
+            }
 
             XLimit = new DoubleRange(0, _duration); //ubdate visible limits        
             XVisibleRange = XLimit;
@@ -532,6 +569,7 @@ namespace SuperButton.Views
 
         public OscilloscopeViewModel()
         {
+            InitializeAxes();
             IsFreeze = RecFlag = false;
             //Initial frame duration is 5 seconds
             POintstoPlot = (int)(OscilloscopeParameters.SingleChanelFreqC * 5);//20Khz/3*5Seconds
@@ -541,6 +579,7 @@ namespace SuperButton.Views
             _yFloats2 = new float[0];
 
             BindingOperations.EnableCollectionSynchronization(_channel1SourceItems, _lock);
+
 
             Thread.Sleep(1);
             //ResetZoom();

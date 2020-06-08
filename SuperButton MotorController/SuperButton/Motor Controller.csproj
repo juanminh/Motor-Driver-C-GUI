@@ -30,16 +30,19 @@
     <UpdateIntervalUnits>Days</UpdateIntervalUnits>
     <UpdatePeriodically>false</UpdatePeriodically>
     <UpdateRequired>false</UpdateRequired>
-    <MapFileExtensions>true</MapFileExtensions>
+    <MapFileExtensions>false</MapFileExtensions>
     <SupportUrl>https://www.redler.co.il/</SupportUrl>
     <ErrorReportUrl>https://www.redler.co.il/contact</ErrorReportUrl>
     <TargetCulture>en-US</TargetCulture>
     <ProductName>Motor Controller</ProductName>
     <PublisherName>Redler Technologies</PublisherName>
     <SuiteName>Motor Controller</SuiteName>
+    <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+    <AutorunEnabled>true</AutorunEnabled>
     <ApplicationRevision>0</ApplicationRevision>
     <ApplicationVersion>1.2.4.0</ApplicationVersion>
-    <UseApplicationTrust>false</UseApplicationTrust>
+    <UseApplicationTrust>true</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <BootstrapperComponentsLocation>Absolute</BootstrapperComponentsLocation>
@@ -78,7 +81,7 @@
     <GenerateManifests>false</GenerateManifests>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -135,9 +138,9 @@
     <AssemblyOriginatorKeyFile>Motor Controller_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Abt.Controls.SciChart.Wpf, Version=3.21.0.5511, Culture=neutral, PublicKeyToken=b55dd9efe817e823, processorArchitecture=MSIL">
+    <Reference Include="Abt.Controls.SciChart.Wpf, Version=3.1.0.5077, Culture=neutral, PublicKeyToken=b55dd9efe817e823, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\net40\Abt.Controls.SciChart.Wpf.dll</HintPath>
+      <HintPath>..\SciChart\net40\Abt.Controls.SciChart.Wpf.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.6.4.0\lib\net45\EntityFramework.dll</HintPath>
@@ -148,6 +151,7 @@
     <Reference Include="MathNet.Numerics">
       <HintPath>..\packages\MathNet.Numerics.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Microsoft.Expression.Interactions, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Expression.Interaction.3.0.40218.0\lib\net45\Microsoft.Expression.Interactions.dll</HintPath>

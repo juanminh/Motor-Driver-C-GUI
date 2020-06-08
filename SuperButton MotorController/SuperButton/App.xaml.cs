@@ -30,8 +30,6 @@ namespace SuperButton
         // You can test the Runtime Key is installed correctly by Running your application 
         // OUTSIDE Of Visual Studio (no debugger attached). Trial watermarks should be removed. 
 
-
-
         public App()
         {
 #if LOAD_FROM_DB 
@@ -70,9 +68,14 @@ namespace SuperButton
         // Example 1 
         void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
         {
+            StackTrace stackTrace = new StackTrace();
+            //if(stackTrace.GetFrame(1).GetMethod().Name != "Send_Plot2" && stackTrace.GetFrame(1).GetMethod().Name != "UpdateModel")
+
+
             //MessageBox.Show("1. CurrentDomain_FirstChanceException");
             //ProcessError(e.Exception);   - This could be used here to log ALL errors, even those caught by a Try/Catch block 
-            EventRiser.Instance.RiseEevent(string.Format(e.Exception.Message));
+            if(e.Exception.Message != "Application identity is not set.")
+                EventRiser.Instance.RiseEevent(string.Format(e.Exception.Message));
         }
 
         // Example 2 

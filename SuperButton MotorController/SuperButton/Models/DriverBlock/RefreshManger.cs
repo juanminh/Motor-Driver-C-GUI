@@ -349,41 +349,48 @@ namespace SuperButton.Models.DriverBlock
         //public bool _oneSelected = false;
         public void VerifyConnection(object sender, EventArgs e)
         {
-            if(Rs232Interface._comPort.IsOpen)
+            if(Rs232Interface._comPort != null)
             {
-                /* Sync command */
-                Rs232Interface.GetInstance.SendToParser(new PacketFields
+                if(Rs232Interface._comPort.IsOpen)
                 {
-                    Data2Send = "1",
-                    ID = Convert.ToInt16(64),
-                    SubID = Convert.ToInt16(0),
-                    IsSet = true,
-                    IsFloat = false
-                });
+                    /* Sync command */
+                    Rs232Interface.GetInstance.SendToParser(new PacketFields
+                    {
+                        Data2Send = "1",
+                        ID = Convert.ToInt16(64),
+                        SubID = Convert.ToInt16(0),
+                        IsSet = true,
+                        IsFloat = false
+                    });
 
-                /* Motor Status */
-                Rs232Interface.GetInstance.SendToParser(new PacketFields
-                {
-                    Data2Send = "",
-                    ID = Convert.ToInt16(1),
-                    SubID = Convert.ToInt16(0),
-                    IsSet = false,
-                    IsFloat = false
-                });
-                ConnectionCount++;
-                //if(ConnectionCount > 0)
-                //Debug.WriteLine("Send: " + ConnectionCount + " " + DateTime.Now.ToString("h:mm:ss.fff"));
-                if(ConnectionCount > 5 && ConnectionCount < 7)
-                {
-                    EventRiser.Instance.RiseEevent(string.Format($"No communication with Driver"));
-                    Rs232Interface.GetInstance.Disconnect(1);
+                    /* Motor Status */
+                    Rs232Interface.GetInstance.SendToParser(new PacketFields
+                    {
+                        Data2Send = "",
+                        ID = Convert.ToInt16(1),
+                        SubID = Convert.ToInt16(0),
+                        IsSet = false,
+                        IsFloat = false
+                    });
+                    ConnectionCount++;
+                    //if(ConnectionCount > 0)
+                    //Debug.WriteLine("Send: " + ConnectionCount + " " + DateTime.Now.ToString("h:mm:ss.fff"));
+                    if(ConnectionCount > 5 && ConnectionCount < 7)
+                    {
+                        EventRiser.Instance.RiseEevent(string.Format($"No communication with Driver"));
+                        Rs232Interface.GetInstance.Disconnect(1);
+                    }
+                    else if(ConnectionCount > 7)
+                        Rs232Interface.GetInstance.Disconnect(1);
                 }
-                else if(ConnectionCount > 7)
-                    Rs232Interface.GetInstance.Disconnect(1);
+                else if(Rs232Interface.GetInstance.IsSynced)
+                {
+                    EventRiser.Instance.RiseEevent(string.Format($"Serial cable disconnected from PC"));
+                    Rs232Interface.GetInstance.Disconnect(0);
+                }
             }
-            else if(Rs232Interface.GetInstance.IsSynced)
-            {
-                EventRiser.Instance.RiseEevent(string.Format($"Serial cable disconnected from PC"));
+            else {
+                EventRiser.Instance.RiseEevent(string.Format($"Communication Lost"));
                 Rs232Interface.GetInstance.Disconnect(0);
             }
         }
@@ -444,38 +451,40 @@ namespace SuperButton.Models.DriverBlock
                 //uint16_t FetShort:1;            //0x8000 - 32768
                 case 0:
                     return "All OK !";
-                case 1:
-                    return "hall Feedl Err";
+                //case 1:
+                //    return "hall Feedl Err";
                 case 2:
-                    return "enc Phase Err";
+                    return "Encoder/Hall Sync";
                 case 4:
-                    return "encoder Hall Mismach";
+                    return "Over Temperature";
                 case 8:
-                    return "overTemperature";
+                    return "Over Voltage";
                 case 16:
-                    return "over Voltage";
-                case 32:
-                    return "under Voltage";
+                    return "Under Voltage";
+                //case 32:
+                //   return "under Voltage";
                 case 64:
-                    return "speed Range Err";
+                    return "Position Tracking";
                 case 128:
-                    return "position Err";
+                    return "Driver Power Init";
                 case 256:
-                    return "gate Driver Fault";
+                    return "Driver Power C/T";
                 case 512:
-                    return "nOCTW";
+                    return "Driver Power Fault";
                 case 1024:
-                    return "gate Driver Init";
+                    return "Motor Stall";
                 case 2048:
-                    return "motorStall";
+                    return "Gate Disable";
                 case 4096:
-                    return "Reserved3";
+                    return "Driver OSC";
                 case 8192:
-                    return "Reserved4";
+                    return "Driver ADC Offset";
                 case 16384:
-                    return "ADC offset";
+                    return "Driver Short Test";
                 case 32768:
-                    return "Fet Short";
+                    return "STO";
+                case 65536:
+                    return "SSI Clock Not Enabled";
                 default:
                     return "no info(" + returnedValue + ")";
             }
