@@ -49,15 +49,8 @@ namespace SuperButton
 
             System.Windows.Forms.Application.ThreadException += WinFormApplication_ThreadException; //Example 5 
 
-            //SciChartSurface.SetRuntimeLicenseKey(@"<LicenseContract>
-            //<Customer>Redler technologies</Customer>
-            //<OrderId>ABT141014-5754-30127</OrderId>
-            //<LicenseCount>1</LicenseCount>
-            //<IsTrialLicense>false</IsTrialLicense>
-            //<SupportExpires>01/12/2015 00:00:00</SupportExpires>
-            //<ProductCode>SC-WPF-BSC</ProductCode>
-            //<KeyCode>lwAAAAEAAAAYTULLhErUAXAAQ3VzdG9tZXI9UmVkbGVyIHRlY2hub2xvZ2llcztPcmRlcklkPUFCVDE0MTAxNC01NzU0LTMwMTI3O1N1YnNjcmlwdGlvblZhbGlkVG89MTItSmFuLTIwMTU7UHJvZHVjdENvZGU9U0MtV1BGLUJTQyu69TgpwVx+uxEH2B+6rKOQ/5YDD2Oh+vDxAZ3OzX+X05jc9xhuF7mPcAXFaqyfWA==</KeyCode>
-            //</LicenseContract>");
+            // Set this code once in App.xaml.cs or application startup
+            //SciChartSurface.SetRuntimeLicenseKey("KafZdgkcA9+Ifi1bhgZsHUFZdV3q8Im7/24zPuYBocl6MHWPIuvRttGMLrR4uRhR76kHRaEDObEssur+nFBNn1alOlG8LnLPUq9lIsJWyuy6B3Pww2t9fwqHKmuY6dAHCOrMmIA10v9tevW6fqe/E+uRBKmyYEQWJRsmNjktQ+iVqAAxVpn60rZomw2ibXd3QUt3z/cnjDIMbZWTyPmHpznWy4uxUXLq1oKjbnWN+pG+Dz7mQSbM9il73uT6EefifjG88NzNRHjYcReKBTsk1WwvirCH37/IEDN7Xgla3bew1huwtwNQjbAhL+fGw5DwWE4r4zcpJ/mCC63wCkbmEExgxCI5ElY0Rlv//+GJy62TP3pOPeWJotXpVVGgM3nCxdkuGNU0MFmymi0atLQ7rTnthIhyHZBmh6jE8rlxZo0LivTEjKHWawKKW2ZceSFOiBA7z00wFgHMCRdrszhuw3E7vc3ffAvotUuF1WhO");
         }
         void App_Startup(object sender, StartupEventArgs e)
         {

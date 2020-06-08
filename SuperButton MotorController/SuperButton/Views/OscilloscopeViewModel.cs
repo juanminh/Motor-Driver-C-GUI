@@ -1,5 +1,6 @@
 ﻿//#define DEBUG_PLOT
 //#define PLOT_CHUNKED
+//#define LOG
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -26,7 +27,6 @@ using SuperButton.Models;
 using System.Windows.Data;
 using Abt.Controls.SciChart.Visuals.Axes;
 using Abt.Controls.SciChart.Visuals.Axes.LogarithmicAxis;
-
 //Cntl+M and Control+O for close regions
 namespace SuperButton.Views
 {
@@ -145,6 +145,7 @@ namespace SuperButton.Views
                 OnPropertyChanged("YAxis");
             }
         }
+
         private void InitializeAxes()
         {
 #if LOG
@@ -154,48 +155,69 @@ namespace SuperButton.Views
                 ScientificNotation = ScientificNotation.LogarithmicBase,
                 VisibleRange = new DoubleRange(0, 100),
                 GrowBy = new DoubleRange(0.1, 0.1),
-                DrawMajorBands = false
+                DrawMajorBands = false,
+                AxisTitle = "Time (ms)",
+                DrawMinorGridLines = false,
+                DrawMajorTicks = false,
+                DrawMinorTicks = false,
+                StrokeThickness = 1,
+                LogarithmicBase = 10.0
+                
             };
-#endif
+#else
             _xAxisNum = new NumericAxis
             {
-                TextFormatting = "#.#E+0",
-                ScientificNotation = ScientificNotation.Normalized,
-                VisibleRange = new DoubleRange(0, 100),
-                GrowBy = new DoubleRange(0.1, 0.1),
-            };
-#if LOG
-            _yAxisLog = new LogarithmicNumericAxis
-            {
-                TextFormatting = "#.#E+0",
-                ScientificNotation = ScientificNotation.LogarithmicBase,
-                AxisAlignment = AxisAlignment.Left,
-                GrowBy = new DoubleRange(0.1, 0.1),
-                DrawMajorBands = false
+                //TextFormatting = "#.#E+0",
+                //ScientificNotation = ScientificNotation.Normalized,
+                //VisibleRange = new DoubleRange(0, 100),
+                //GrowBy = new DoubleRange(0.1, 0.1),
+                AnimatedVisibleRange = XVisibleRange,
+                VisibleRangeLimit = XLimit,
+                AxisTitle = "Time (ms)",
+                DrawMajorBands = false,
+                DrawMinorGridLines = false,
+                DrawMajorTicks = false,
+                DrawMinorTicks = false,
+                StrokeThickness = 1,
             };
 #endif
-            _yAxisNum = new NumericAxis
-            {
-                TextFormatting = "#.#E+0",
-                ScientificNotation = ScientificNotation.Normalized,
-                AxisAlignment = AxisAlignment.Left,
-                GrowBy = new DoubleRange(0.1, 0.1)
-            };
-#if LOG
-            var converter = new LogarithmicBaseConverter();
-            var logBinding = new Binding("SelectedValue") { ElementName = "logBasesChbx", Converter = converter };
+            //#if LOG
+            //            _yAxisLog = new LogarithmicNumericAxis
+            //            {
+            //                TextFormatting = "#.#E+0",
+            //                ScientificNotation = ScientificNotation.LogarithmicBase,
+            //                AxisAlignment = AxisAlignment.Left,
+            //                GrowBy = new DoubleRange(0.1, 0.1),
+            //                DrawMajorBands = false
+            //            };
+            //#endif
+            //            _yAxisNum = new NumericAxis
+            //            {
+            //                TextFormatting = "#.#E+0",
+            //                ScientificNotation = ScientificNotation.Normalized,
+            //                AxisAlignment = AxisAlignment.Left,
+            //                GrowBy = new DoubleRange(0.1, 0.1)
+            //            };
+            //#if LOG
+            //            var converter = new LogarithmicBaseConverter();
+            //            var logBinding = new Binding("SelectedValue") { ElementName = "logBasesChbx", Converter = converter };
 
-            _xAxisLog.SetBinding(LogarithmicNumericAxis.LogarithmicBaseProperty, logBinding);
-            _yAxisLog.SetBinding(LogarithmicNumericAxis.LogarithmicBaseProperty, logBinding);
+            //            _xAxisLog.SetBinding(LogarithmicNumericAxis.LogarithmicBaseProperty, logBinding);
+            //            _yAxisLog.SetBinding(LogarithmicNumericAxis.LogarithmicBaseProperty, logBinding);
+            //#endif
+#if LOG
+            XAxis = _xAxisLog;
+#else
+            XAxis = _xAxisNum;
 #endif
         }
 
-        #endregion
+#endregion
         ~OscilloscopeViewModel()
         {
 
         }
-        #region Yzoom
+#region Yzoom
         private double _yzoom = 0;
         public ActionCommand YPlus
         {
@@ -227,8 +249,8 @@ namespace SuperButton.Views
                 YVisibleRange = YLimit;
             }
         }
-        #endregion
-        #region Duration
+#endregion
+#region Duration
         private float _duration = 5000;
         public ActionCommand DirectionPlus
         {
@@ -549,8 +571,8 @@ namespace SuperButton.Views
 
         }
 
-        #endregion
-        #region Constractor
+#endregion
+#region Constractor
         private static OscilloscopeViewModel _instance;
         private static readonly object Synlock = new object(); //Single tone variable
         public static OscilloscopeViewModel GetInstance
@@ -658,8 +680,8 @@ namespace SuperButton.Views
             ChannelYtitles.Add("CurrentRefPI", ""); //36
 
         }
-        #endregion
-        #region ActionCommnds
+#endregion
+#region ActionCommnds
         public ActionCommand SetRolloverModifierCommand
         {
             get { return new ActionCommand(() => SetModifier(ModifierType.Rollover)); }
@@ -696,7 +718,7 @@ namespace SuperButton.Views
         {
             get { return new ActionCommand(() => isReset = true); }
         }
-        #endregion
+#endregion
 
         public bool IsRolloverSelected
         {
@@ -737,7 +759,7 @@ namespace SuperButton.Views
 
         private int ActChenCount = 0;
 
-        #region Channels
+#region Channels
         private int _chan1Counter = 0;
         private int _chan2Counter = 0;
 
@@ -746,7 +768,7 @@ namespace SuperButton.Views
 
         private int _ch1Index = 0, _ch2Index = 0;
 
-        #region detect_same_index_seleted_in_plot_combobox
+#region detect_same_index_seleted_in_plot_combobox
         public ICommand SelectedItemChanged_Plot1
         {
             get
@@ -808,7 +830,7 @@ namespace SuperButton.Views
             get { return _chComboEn; }
             set { if(_chComboEn == value) return; _chComboEn = value; OnPropertyChanged("ChComboEn"); }
         }
-        #endregion detect_same_index_seleted_in_plot_combobox
+#endregion detect_same_index_seleted_in_plot_combobox
         public int Ch1SelectedIndex
         {
             get { return _ch1Index; }
@@ -1071,7 +1093,7 @@ namespace SuperButton.Views
                     (float)(OscilloscopeParameters.SingleChanelFreqC * (1.0 / OscilloscopeParameters.ChanTotalCounter));
             }
         }
-        #endregion Channels
+#endregion Channels
 
 
         public IXyDataSeries<float, float> ChartData
@@ -1406,7 +1428,7 @@ namespace SuperButton.Views
 
                         if(OscilloscopeParameters.ChanTotalCounter == 1)
                         {
-                            #region SingleChan
+#region SingleChan
                             if(ParserRayonM1.GetInstanceofParser.FifoplotList.IsEmpty)
                             {
                                 if(AllYData.Count > 1 && _isFull)
@@ -1443,7 +1465,7 @@ namespace SuperButton.Views
                                     }
                                 }
                                 */
-                                #region RecordAray
+#region RecordAray
                                 if(RecFlag)
                                 {
                                     if(ch1 != 0)
@@ -1463,7 +1485,7 @@ namespace SuperButton.Views
                                         }
                                     }
                                 }
-                                #endregion RecordAray
+#endregion RecordAray
                                 else
                                 {
                                     if(ch1 != 0)
@@ -1492,7 +1514,7 @@ namespace SuperButton.Views
                                 }
                                 else
                                     return;
-                                #region Switch
+#region Switch
                                 switch(State)
                                 {
                                     case (2): //Fills y buffer
@@ -1667,13 +1689,13 @@ namespace SuperButton.Views
                                         }
                                         break;
                                 }
-                                #endregion Switch
+#endregion Switch
                             }
-                            #endregion
+#endregion
                         }
                         else if(OscilloscopeParameters.ChanTotalCounter == 2)// Two channels
                         {
-                            #region DoubleChan
+#region DoubleChan
                             if(ParserRayonM1.GetInstanceofParser.FifoplotList.IsEmpty)
                             {
                                 if(AllYData.Count > 1 && _isFull)
@@ -1700,7 +1722,7 @@ namespace SuperButton.Views
                             Debug.WriteLine("Plot 1: " + DateTime.Now.ToString("h:mm:ss.fff"));
 #endif
                                 //Collect data from first channel
-                                #region RecordAray
+#region RecordAray
                                 if(RecFlag)
                                 {
                                     while(ParserRayonM1.GetInstanceofParser.FifoplotList.TryDequeue(out item))
@@ -1713,7 +1735,7 @@ namespace SuperButton.Views
                                         RecList2.Add(calcFactor((item2 * OscilloscopeParameters.Gain2 * OscilloscopeParameters.FullScale2 * SubGain2), 2));
                                     }
                                 }
-                                #endregion RecordAray
+#endregion RecordAray
                                 else
                                 {
                                     while(ParserRayonM1.GetInstanceofParser.FifoplotList.TryDequeue(out item))
@@ -1735,7 +1757,7 @@ namespace SuperButton.Views
                                 }
                                 else
                                     return;
-                                #region Switch
+#region Switch
 #if(DEBUG && DEBUG_PLOT)
                             Debug.WriteLine(POintstoPlot);
                             Debug.WriteLine(State);
@@ -1743,7 +1765,7 @@ namespace SuperButton.Views
                                 switch(State)
                                 {
                                     case (2): //Fills y buffer
-                                        #region case2
+#region case2
                                         float[] temp;
                                         float[] temp2;
 
@@ -1803,7 +1825,7 @@ namespace SuperButton.Views
 
                                         AllYData.RemoveRange(0, temp.Length - 1);
                                         AllYData2.RemoveRange(0, temp2.Length - 1);
-                                        #endregion case2
+#endregion case2
                                         break;
                                     case (4):
                                         //_isFull = false;
@@ -1887,13 +1909,13 @@ namespace SuperButton.Views
                                         }
                                         break;
                                 }
-                                #endregion Switch
+#endregion Switch
 
 #if(DEBUG && DEBUG_PLOT)
                             Debug.WriteLine("Plot 2: " + DateTime.Now.ToString("h:mm:ss.fff"));
 #endif
                             }
-                            #endregion
+#endregion
                         }
                     }
                 }
@@ -2208,6 +2230,22 @@ namespace SuperButton.Views
                 }
                 OnPropertyChanged("IsFreeze");
             }
+        }
+    }
+    public class LogarithmicBaseConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            var str = (string)value;
+
+            var result = str.ToUpperInvariant().Equals("E") ? Math.E : Double.Parse(str, CultureInfo.InvariantCulture);
+
+            return result;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }
