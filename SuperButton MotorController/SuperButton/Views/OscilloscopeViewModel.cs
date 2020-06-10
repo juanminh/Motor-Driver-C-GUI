@@ -172,44 +172,49 @@ namespace SuperButton.Views
 
             return doubleSeries;
         }
+        private static readonly object _lockAxes = new object();
+        [STAThread]
         private void InitializeAxes()
         {
-            if(!LogNum)
+            lock(_lockAxes)
             {
-                _xAxisLog = new LogarithmicNumericAxis
+                if(!LogNum)
                 {
-                    TextFormatting = "#.#E+0",
-                    ScientificNotation = ScientificNotation.LogarithmicBase,
-                    VisibleRange = new DoubleRange(0, 100),
-                    GrowBy = new DoubleRange(0.1, 0.1),
-                    DrawMajorBands = false,
-                    AxisTitle = "Time (ms)",
-                    DrawMinorGridLines = true,
-                    DrawMajorTicks = true,
-                    DrawMinorTicks = true,
-                    StrokeThickness = 1,
-                    LogarithmicBase = 10.0
-                };
-                XAxis = _xAxisLog;
-                if(ChartData == null)
-                    ChartData = new XyDataSeries<float, float>();
-                Load();
-            }
-            else
-            {
-                _xAxisNum = new NumericAxis
+                    _xAxisLog = new LogarithmicNumericAxis
+                    {
+                        TextFormatting = "#.#E+0",
+                        ScientificNotation = ScientificNotation.LogarithmicBase,
+                        VisibleRange = new DoubleRange(0, 100),
+                        GrowBy = new DoubleRange(0.1, 0.1),
+                        DrawMajorBands = false,
+                        AxisTitle = "Time (ms)",
+                        DrawMinorGridLines = true,
+                        DrawMajorTicks = true,
+                        DrawMinorTicks = true,
+                        StrokeThickness = 1,
+                        LogarithmicBase = 10.0
+                    };
+                    XAxis = _xAxisLog;
+                    if(ChartData == null)
+                        ChartData = new XyDataSeries<float, float>();
+                    Load();
+                }
+                else
                 {
-                    ScientificNotation = ScientificNotation.Normalized,
-                    AnimatedVisibleRange = XVisibleRange,
-                    VisibleRangeLimit = XLimit,
-                    AxisTitle = "Time (ms)",
-                    DrawMajorBands = false,
-                    DrawMinorGridLines = false,
-                    DrawMajorTicks = false,
-                    DrawMinorTicks = false,
-                    StrokeThickness = 1,
-                };
-                XAxis = _xAxisNum;
+                    _xAxisNum = new NumericAxis
+                    {
+                        ScientificNotation = ScientificNotation.Normalized,
+                        AnimatedVisibleRange = XVisibleRange,
+                        VisibleRangeLimit = XLimit,
+                        AxisTitle = "Time (ms)",
+                        DrawMajorBands = false,
+                        DrawMinorGridLines = false,
+                        DrawMajorTicks = false,
+                        DrawMinorTicks = false,
+                        StrokeThickness = 1,
+                    };
+                    XAxis = _xAxisNum;
+                }
             }
             //#if LOG
             //            _yAxisLog = new LogarithmicNumericAxis
@@ -266,7 +271,7 @@ namespace SuperButton.Views
         {
             Debug.WriteLine("YDirMinus");
 
-            if(_yzoom > 0.0002)
+            if(_yzoom > 0.002)
             {
                 _yzoom = _yzoom / 2;
                 YLimit = new DoubleRange(-_yzoom, _yzoom); //ubdate visible limits        
@@ -353,10 +358,6 @@ namespace SuperButton.Views
                                 //  MinimumChank = 33000;
                                 _duration = 5000; //update x axe
                                 POintstoPlot = (int)OscilloscopeParameters.ChanelFreq * 5;  //update resolution
-
-                                //XLimit = new DoubleRange(0, _duration); //ubdate visible limits        
-                                //XVisibleRange = XLimit;
-                                //_isFull = false;
                             }
 
                         }
@@ -366,11 +367,6 @@ namespace SuperButton.Views
                             POintstoPlot = (int)OscilloscopeParameters.ChanelFreq * 5;  //update resolution
                             _yFloats = new float[0];
                             _yFloats2 = new float[0];
-
-                            //XLimit = new DoubleRange(0, _duration); //ubdate visible limits        
-                            //XVisibleRange = XLimit;
-                            //// pivot = (int) (_singleChanelFreq*5); //update pivote and move to initial state
-                            //_isFull = false;
                         }
 
                         break;
@@ -384,11 +380,6 @@ namespace SuperButton.Views
                             {
                                 _duration = _duration * 2; //update x axe           
                                 POintstoPlot = (int)OscilloscopeParameters.ChanelFreq * 10;  //update resolution
-
-                                //XLimit = new DoubleRange(0, _duration); //ubdate visible limits        
-                                //XVisibleRange = XLimit;
-                                //// pivot = (int) (_singleChanelFreq*5); //update pivote and move to initial state
-                                //_isFull = false;
                             }
 
                         }
@@ -398,10 +389,6 @@ namespace SuperButton.Views
                             POintstoPlot = (int)OscilloscopeParameters.ChanelFreq * 10;  //update resolution
                             _yFloats = new float[0];
                             _yFloats2 = new float[0];
-                            //XLimit = new DoubleRange(0, _duration); //ubdate visible limits        
-                            //XVisibleRange = XLimit;
-                            //// pivot = (int) (_singleChanelFreq*5); //update pivote and move to initial state
-                            //_isFull = false;
                         }
 
                         break;
@@ -415,11 +402,6 @@ namespace SuperButton.Views
                             {
                                 POintstoPlot = (int)OscilloscopeParameters.ChanelFreq * 30;  //update resolution                           
                                 _duration = _duration * 3; //update x axe
-
-                                //XLimit = new DoubleRange(0, _duration); //ubdate visible limits        
-                                //XVisibleRange = XLimit;                    
-                                //_isFull = false;
-
                             }
                         }
                         else
@@ -429,11 +411,6 @@ namespace SuperButton.Views
                                 _duration = _duration * 3; //update x axe
                                 _yFloats = new float[0];
                                 _yFloats2 = new float[0];
-                                //XLimit = new DoubleRange(0, _duration); //ubdate visible limits        
-                                //XVisibleRange = XLimit;
-                                //_undesampleCounter = 0;
-                                //_isFull = false;
-
                             }
                         }
 
@@ -448,11 +425,6 @@ namespace SuperButton.Views
                             {
                                 POintstoPlot = (int)OscilloscopeParameters.ChanelFreq * 90;  //update resolution   
                                 _duration = _duration * 3; //update x axe
-
-                                //XLimit = new DoubleRange(0, _duration); //ubdate visible limits        
-                                //XVisibleRange = XLimit;
-                                //_isFull = false;
-
                             }
                         }
                         else
@@ -471,7 +443,7 @@ namespace SuperButton.Views
             XLimit = new DoubleRange(0, _duration); //ubdate visible limits        
             XVisibleRange = XLimit;
             _isFull = false;
-
+            InitializeAxes();
         }
         public void DirMinus()
         {
@@ -594,6 +566,7 @@ namespace SuperButton.Views
             _undesample = 1;
             pivot = (int)0; //update pivote and move to initial state
             _isFull = false;
+            InitializeAxes();
             if(this.ChartData != null)
             {
                 using(this.ChartData.SuspendUpdates())
@@ -609,6 +582,7 @@ namespace SuperButton.Views
         #region Constractor
         private static OscilloscopeViewModel _instance;
         private static readonly object Synlock = new object(); //Single tone variable
+        
         public static OscilloscopeViewModel GetInstance
         {
             get
@@ -622,7 +596,7 @@ namespace SuperButton.Views
                 }
             }
         }
-
+        
         public OscilloscopeViewModel()
         {
             InitializeAxes();
@@ -943,11 +917,8 @@ namespace SuperButton.Views
             get { return _selectedCh2DataSource; }
             set
             {
-                StackTrace stackTrace = new StackTrace();
-                if(stackTrace.GetFrame(1).GetMethod().Name != "Send_Plot2" && stackTrace.GetFrame(1).GetMethod().Name != "UpdateModel" && _selectedCh2DataSource != null)
-                    return;
                 _selectedCh2DataSource = value;
-
+                StackTrace stackTrace = new StackTrace();
                 if(stackTrace.GetFrame(1).GetMethod().Name != "UpdateModel" || LeftPanelViewModel.GetInstance.StarterOperationFlag)
                 {
                     lock(ParserRayonM1.PlotListLock)
@@ -1058,15 +1029,11 @@ namespace SuperButton.Views
                     XLimit = new DoubleRange(0, _duration); //ubdate visible limits        
                     XVisibleRange = XLimit;
                     _undesample = 1;
+                    //InitializeAxes();
 
                     pivot = (int)0; //update pivote and move to initial state
                     _isFull = false;
 
-                    //using(this.ChartData.SuspendUpdates())
-                    //{
-                    //_series1.Clear();
-                    //_series0.Clear();
-                    //}
                     _yFloats = new float[0];
                     _yFloats2 = new float[0];
 
@@ -1169,6 +1136,7 @@ namespace SuperButton.Views
                 _yzoom = OscilloscopeParameters.FullScale;
                 XVisibleRange = XLimit;
                 YVisibleRange = YLimit;
+                InitializeAxes();
             }
             catch { }
         }

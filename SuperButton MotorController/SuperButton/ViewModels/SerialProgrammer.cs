@@ -402,7 +402,7 @@ namespace SuperButton.ViewModels
             if(LeftPanelViewModel._app_running)
                 foundBaudrate = Rs232Interface._comPort.BaudRate;
             MaintenanceViewModel.GetInstance.PbarValueFW = 0;
-            _filePath = MaintenanceViewModel.GetInstance.PathFW;
+            _filePath = MaintenanceViewModel.pathFWtemp;
 
             EventRiser.Instance.RiseEevent("Burn firmware process started");
             Thread.Sleep(50);

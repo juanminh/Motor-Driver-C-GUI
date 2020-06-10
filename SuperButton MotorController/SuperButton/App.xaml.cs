@@ -30,6 +30,7 @@ namespace SuperButton
         // You can test the Runtime Key is installed correctly by Running your application 
         // OUTSIDE Of Visual Studio (no debugger attached). Trial watermarks should be removed. 
 
+        
         public App()
         {
             SciChartSurface.SetRuntimeLicenseKey(@"<LicenseContract>

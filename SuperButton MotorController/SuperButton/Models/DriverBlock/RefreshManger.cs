@@ -670,7 +670,7 @@ namespace SuperButton.Models.DriverBlock
                             }
                             else*/ 
                             {
-                                if(Sel <= OscilloscopeViewModel.GetInstance.ChannelYtitles.Count)
+                                if(Sel <= OscilloscopeViewModel.GetInstance.ChannelYtitles.Count && OscilloscopeViewModel.GetInstance.ChannelYtitles.Count > 0)
                                 {
                                     if(commandidentifier.Item2 == 1)
                                     {
