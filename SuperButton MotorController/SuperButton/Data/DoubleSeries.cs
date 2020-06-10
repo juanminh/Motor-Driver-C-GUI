@@ -36,8 +36,9 @@ namespace SuperButton.Data
 
         public double[] XData { get { return this.Select(x => x.X).ToArray(); } }
         public double[] YData { get { return this.Select(x => x.Y).ToArray(); } }
-
-       // public IList<double> XData { get { return this.Select(x => x.X).ToArray(); } }
-       // public IList<double> YData { get { return this.Select(x => x.Y).ToArray(); } }
+        public float[] XData_f { get { return this.Select(x => x.X_f).ToArray(); } }
+        public float[] YData_f { get { return this.Select(x => x.Y_f).ToArray(); } }
+        // public IList<double> XData { get { return this.Select(x => x.X).ToArray(); } }
+        // public IList<double> YData { get { return this.Select(x => x.Y).ToArray(); } }
     }
 }

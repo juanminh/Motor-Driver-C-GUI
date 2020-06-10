@@ -32,6 +32,16 @@ namespace SuperButton
 
         public App()
         {
+            SciChartSurface.SetRuntimeLicenseKey(@"<LicenseContract>
+  <Customer>Redler technologies</Customer>
+  <OrderId>ABT141014-5754-30127</OrderId>
+  <LicenseCount>1</LicenseCount>
+  <IsTrialLicense>false</IsTrialLicense>
+  <SupportExpires>01/12/2015 00:00:00</SupportExpires>
+  <ProductCode>SC-WPF-BSC</ProductCode>
+  <KeyCode>lwAAAQEAAADYej6WZT7WAYsAQ3VzdG9tZXI9UmVkbGVyIHRlY2hub2xvZ2llcztPcmRlcklkPUFCVDE0MTAxNC01NzU0LTMwMTI3O1N1YnNjcmlwdGlvblZhbGlkVG89MTItSmFuLTIwMTU7UHJvZHVjdENvZGU9U0MtV1BGLUJTQztOdW1iZXJEZXZlbG9wZXJzT3ZlcnJpZGU9MYHBQsFtvhmNUsAF1tPpbfJI0MXhteDAzO1I1uzwGcNIr/3e8pkIaMWJiXsaX6Q0Ew==</KeyCode>
+</LicenseContract>");
+
 #if LOAD_FROM_DB 
             Operations Op = Operations.GetInstance;
             Operations.GetInstance.readDataBase();
@@ -48,9 +58,6 @@ namespace SuperButton
             TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException; //Example 4 
 
             System.Windows.Forms.Application.ThreadException += WinFormApplication_ThreadException; //Example 5 
-
-            // Set this code once in App.xaml.cs or application startup
-            //SciChartSurface.SetRuntimeLicenseKey("KafZdgkcA9+Ifi1bhgZsHUFZdV3q8Im7/24zPuYBocl6MHWPIuvRttGMLrR4uRhR76kHRaEDObEssur+nFBNn1alOlG8LnLPUq9lIsJWyuy6B3Pww2t9fwqHKmuY6dAHCOrMmIA10v9tevW6fqe/E+uRBKmyYEQWJRsmNjktQ+iVqAAxVpn60rZomw2ibXd3QUt3z/cnjDIMbZWTyPmHpznWy4uxUXLq1oKjbnWN+pG+Dz7mQSbM9il73uT6EefifjG88NzNRHjYcReKBTsk1WwvirCH37/IEDN7Xgla3bew1huwtwNQjbAhL+fGw5DwWE4r4zcpJ/mCC63wCkbmEExgxCI5ElY0Rlv//+GJy62TP3pOPeWJotXpVVGgM3nCxdkuGNU0MFmymi0atLQ7rTnthIhyHZBmh6jE8rlxZo0LivTEjKHWawKKW2ZceSFOiBA7z00wFgHMCRdrszhuw3E7vc3ffAvotUuF1WhO");
         }
         void App_Startup(object sender, StartupEventArgs e)
         {

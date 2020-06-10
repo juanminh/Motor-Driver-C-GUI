@@ -434,12 +434,15 @@ namespace SuperButton.Models.DriverBlock
             lock(Sendlock)
             {
                 var serialPort = comPort as SerialPort;
-                if(serialPort != null && serialPort.IsOpen)
+                if(serialPort != null)
                 {
                     try
                     {
                         //Debug.WriteLine(DateTime.Now + "." + DateTime.Now.Millisecond);
-                        Thread.Sleep(5);
+                        //Thread.Sleep(5);
+                        if(!serialPort.IsOpen)
+                            return;
+
                         serialPort.Write(packetToSend, 0, packetToSend.Length); // Send through RS232 cable
 #if DEBUG
                         if(packetToSend.Length == 11)

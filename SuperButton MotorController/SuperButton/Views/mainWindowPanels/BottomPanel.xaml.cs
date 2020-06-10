@@ -22,8 +22,6 @@ namespace SuperButton
 		public BottomPanel()
 		{
 			this.InitializeComponent();
-
-           GroupedExamplesViewModel GroupedStaus=new GroupedExamplesViewModel();         
 		}
     }
 }

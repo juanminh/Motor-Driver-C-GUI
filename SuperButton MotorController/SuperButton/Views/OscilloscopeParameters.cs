@@ -113,7 +113,7 @@ namespace SuperButton.Views
         public static List<string> plotType_ls = new List<string>();
 
         static string[] plotType = new[] { "Integer", "Float", "Iq24", "Iq15", "Int32", "Float32" };
-        static string[] plotUnit = new[] { "Amper", "Volt", "", "", "", "Elec Angle", "mechanical Angle", "", "", "", "RPM Per Volt", "Count Per Sec", "Round Per Minute", "Counts", "Deg C" };
+        static string[] plotUnit = new[] { "Amper", "Volt", "", "", "", "Elec Angle", "Mechanical Angle", "", "", "", "RPM Per Volt", "Count Per Sec", "Round Per Minute", "Counts", "Deg C" };
 
         static OscilloscopeParameters()
         {

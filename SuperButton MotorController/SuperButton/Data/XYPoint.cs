@@ -20,5 +20,7 @@ namespace Abt.Controls.SciChart.Example.Data
     {
         public double X { get; set; }
         public double Y { get; set; }
+        public float X_f { get; set; }
+        public float Y_f { get; set; }
     }
 }

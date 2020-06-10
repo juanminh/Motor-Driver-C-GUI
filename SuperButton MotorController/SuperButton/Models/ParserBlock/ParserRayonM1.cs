@@ -94,7 +94,7 @@ namespace SuperButton.Models.ParserBlock
 #if DEBUG_OPERATION
         int CurrentCmdCounterTx = 0;
 #endif
-        void parseOutdata(object sender, Rs232InterfaceEventArgs e)
+        public void parseOutdata(object sender, Rs232InterfaceEventArgs e)
         {
 #if DEBUG_OPERATION
             if(e.PacketRx.ID == DebugOutput.GetInstance.ID && e.PacketRx.SubID == DebugOutput.GetInstance.subID && e.PacketRx.IsSet == true)
@@ -130,7 +130,7 @@ namespace SuperButton.Models.ParserBlock
             }//Add Here aditional parsers...
         }
 
-        void parseIndata(object sender, Rs232InterfaceEventArgs e)
+        public void parseIndata(object sender, Rs232InterfaceEventArgs e)
         {
 
             if(sender is Rs232Interface)//RayonM3 Parser

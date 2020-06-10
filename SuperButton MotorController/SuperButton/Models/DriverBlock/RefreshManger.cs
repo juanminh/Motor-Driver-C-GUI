@@ -635,7 +635,7 @@ namespace SuperButton.Models.DriverBlock
                         {
                             Sel = Int32.Parse(newPropertyValue);
 
-                            if(LeftPanelViewModel.GetInstance.StarterOperationFlag && !DisconnectedFlag)
+                            /*if(LeftPanelViewModel.GetInstance.StarterOperationFlag && !DisconnectedFlag) // At first application run
                             {
                                 if(Sel <= OscilloscopeViewModel.GetInstance.Channel1SourceItems.Count && Sel <= OscilloscopeViewModel.GetInstance.Channel2SourceItems.Count && Sel >= 0)
                                 {
@@ -653,30 +653,36 @@ namespace SuperButton.Models.DriverBlock
                                     }
                                 }
                             }
-                            else if(DisconnectedFlag)
+                            elseif(DisconnectedFlag) // When user click on disconnect button or conncetion lost
                             {
                                 if(commandidentifier.Item2 == 1)
                                 {
                                     OscilloscopeViewModel.GetInstance.Ch1SelectedIndex = Sel;
+                                    if(OscilloscopeViewModel.GetInstance.Channel1SourceItems.Count > 0)
+                                        OscilloscopeViewModel.GetInstance.SelectedCh1DataSource = OscilloscopeViewModel.GetInstance.Channel1SourceItems.ElementAt(Sel);
                                 }
                                 else if(commandidentifier.Item2 == 2)
                                 {
                                     OscilloscopeViewModel.GetInstance.Ch2SelectedIndex = Sel;
+                                    if(OscilloscopeViewModel.GetInstance.Channel2SourceItems.Count > 0)
+                                        OscilloscopeViewModel.GetInstance.SelectedCh2DataSource = OscilloscopeViewModel.GetInstance.Channel2SourceItems.ElementAt(Sel);
                                 }
                             }
-                            else
+                            else*/ 
                             {
-                                if(Sel <= OscilloscopeViewModel.GetInstance.ChannelYtitles.Count && Sel >= 0)
+                                if(Sel <= OscilloscopeViewModel.GetInstance.ChannelYtitles.Count)
                                 {
                                     if(commandidentifier.Item2 == 1)
                                     {
                                         OscilloscopeViewModel.GetInstance.Ch1SelectedIndex = Sel;
+                                        OscilloscopeViewModel.GetInstance.SelectedCh1DataSource = OscilloscopeViewModel.GetInstance.Channel1SourceItems.ElementAt(Sel);
                                         if(!LeftPanelViewModel.GetInstance.StarterOperationFlag)
                                             ch1 = Sel;
                                     }
                                     else if(commandidentifier.Item2 == 2)
                                     {
                                         OscilloscopeViewModel.GetInstance.Ch2SelectedIndex = Sel;
+                                        OscilloscopeViewModel.GetInstance.SelectedCh2DataSource = OscilloscopeViewModel.GetInstance.Channel2SourceItems.ElementAt(Sel);
                                         if(!LeftPanelViewModel.GetInstance.StarterOperationFlag)
                                             ch2 = Sel;
                                     }

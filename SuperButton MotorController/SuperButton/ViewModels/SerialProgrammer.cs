@@ -171,9 +171,12 @@ namespace SuperButton.ViewModels
                     case (int)eSTAGE.BOOT_COMMAND:
                         if(LeftPanelViewModel._app_running)
                         {
-                            Rs232Interface._comPort.DataReceived -= Rs232Interface.GetInstance.DataReceived;
-                            Rs232Interface._comPort.Close();
-                            Rs232Interface._comPort.Dispose();
+                            if(Rs232Interface._comPort != null)
+                                Rs232Interface._comPort.DataReceived -= Rs232Interface.GetInstance.DataReceived;
+                            if(Rs232Interface._comPort != null)
+                                Rs232Interface._comPort.Close();
+                            if(Rs232Interface._comPort != null)
+                                Rs232Interface._comPort.Dispose();
                             PortChat.GetInstance.CloseComunication();
                             PortChat.GetInstance.Main(Configuration.SelectedCom, foundBaudrate);
                             PortChat.GetInstance.ReadTick((int)(eSTATE.START));
