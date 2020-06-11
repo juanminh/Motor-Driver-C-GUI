@@ -159,9 +159,12 @@ namespace SuperButton.Models.DriverBlock
                         EventRiser.Instance.RiseEevent(string.Format($"Disconnected"));
 
                         _isSynced = false;
-                        _comPort.DataReceived -= DataReceived;
-                        _comPort.Close();
-                        _comPort.Dispose();
+                        if(_comPort != null)
+                        {
+                            _comPort.DataReceived -= DataReceived;
+                            _comPort.Close();
+                            _comPort.Dispose();
+                        }
                         Driver2Mainmodel(this, new Rs232InterfaceEventArgs("Connect"));
                         LeftPanelViewModel.busy = false;
 
@@ -223,6 +226,8 @@ namespace SuperButton.Models.DriverBlock
                     try
                     {
                         var Cleaner = "";
+                        ComPort.Close();
+                        ComPort.Dispose();
                         ComPort.Open(); //Try to open
 
                         if(ComPort.IsOpen)
@@ -268,7 +273,7 @@ namespace SuperButton.Models.DriverBlock
                                     //Init synchronization packet, and rises event for parser
                                     if(RxtoParser != null)
                                     {
-                                        DataViewModel temp = (DataViewModel)Commands.GetInstance.DataCommandsListbySubGroup["DeviceSynchCommand"][1];
+                                        DataViewModel temp = (DataViewModel)Commands.GetInstance.DataCommandsListbySubGroup["DeviceSynchCommand"][2];
                                         Commands.AssemblePacket(out RxPacket, Int16.Parse(temp.CommandId), Int16.Parse(temp.CommandSubId), false, false, 0);
                                         RxtoParser(this, new Rs232InterfaceEventArgs(RxPacket));
                                     }

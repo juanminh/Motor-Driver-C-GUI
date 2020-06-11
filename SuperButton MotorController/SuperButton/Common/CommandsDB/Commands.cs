@@ -148,7 +148,17 @@ namespace SuperButton.CommandsDB
             {
                 CommandId = "64",
                 CommandSubId = "1",
-                CommandName = "AutoBaud",
+                CommandName = "AutoBaud_Sync",
+                IsFloat = false,
+                CommandValue = "0"
+            };
+            DataCommandsListbySubGroup["DeviceSynchCommand"].Add(Data);
+
+            Data = new DataViewModel
+            {
+                CommandId = "1",
+                CommandSubId = "0",
+                CommandName = "AutoBaud_Motor",
                 IsFloat = false,
                 CommandValue = "0"
             };
@@ -574,7 +584,7 @@ namespace SuperButton.CommandsDB
             DataViewCommandsList.Add(new Tuple<int, int>(51, 2), data2);
             DataCommandsListbySubGroup["Motor"].Add(data2);
 
-            string[] commandName = { "Max speed [CPS]", "Min Speed [CPS]", "Max position [C]", "Min position [C]", "Enable Position Limit", "Motor stuck current", "Motor stuck speed", "Motor stuck Duration" };
+            string[] commandName = { "Max speed [C/S]", "Min Speed [C/S]", "Max position [C]", "Min position [C]", "Enable Position Limit", "Motor stuck current", "Motor stuck speed", "Motor stuck Duration" };
             bool[] Type = { INT, INT, INT, INT, INT, FLOAT, INT, FLOAT };
 
             DataCommandsListbySubGroup.Add("Motion Limit", new ObservableCollection<object>());

@@ -80,7 +80,7 @@
                                 <Condition Binding="{Binding CalibStatus}" Value="2" />
                             </MultiDataTrigger.Conditions>
                             <MultiDataTrigger.Setters>
-                                <Setter Property="Text" Value="Failed" />
+                                <Setter Property="Text" Value="Failure" />
                             </MultiDataTrigger.Setters>
                         </MultiDataTrigger>
                         <MultiDataTrigger>
@@ -88,7 +88,7 @@
                                 <Condition Binding="{Binding CalibStatus}" Value="1" />
                             </MultiDataTrigger.Conditions>
                             <MultiDataTrigger.Setters>
-                                <Setter Property="Text" Value="Passed" />
+                                <Setter Property="Text" Value="Success" />
                             </MultiDataTrigger.Setters>
                         </MultiDataTrigger>
                     </Style.Triggers>

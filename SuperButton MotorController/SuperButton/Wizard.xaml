@@ -8,7 +8,7 @@
         xmlns:viewModels="clr-namespace:SuperButton.ViewModels"
         xmlns:models="clr-namespace:SuperButton.Models"
         mc:Ignorable="d"
-        Title="Wizard" Height="550" Width="600"
+        Title="Wizard" Height="560" Width="600"
         ResizeMode="NoResize"
         Closing="Window_Closing"
         Icon="./Themes/MotorController.png"
@@ -667,6 +667,18 @@
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto"/>
                                 <RowDefinition Height="Auto"/>
+                                <RowDefinition>
+                                    <RowDefinition.Style>
+                                        <Style TargetType="{x:Type RowDefinition}">
+                                            <Setter Property="Height" Value="Auto" />
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding ExternalCommandSource}" Value="0">
+                                                    <Setter Property="Height" Value="0" />
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </RowDefinition.Style>
+                                </RowDefinition>
                             </Grid.RowDefinitions>
                             <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">Drive Mode</TextBlock>
                             <ComboBox Grid.Row="0" HorizontalAlignment="Right"
@@ -685,6 +697,29 @@
                                 <ComboBoxItem Content="Digital"></ComboBoxItem>
                                 <ComboBoxItem Content="Analog"></ComboBoxItem>
                             </ComboBox>
+                            <TextBlock Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
+                                        <Setter Property="Text" Value="Value [Amper/Volt]" />
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding ExternalDriveMode}" Value="1">
+                                                <Setter Property="Text" Value="Value [RPM/Volt]" />
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding ExternalDriveMode}" Value="2">
+                                                <Setter Property="Text" Value="Value [Count/Volt]" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                            <TextBox Grid.Row="2" HorizontalAlignment="Right" BorderThickness="0"
+                              Width="{StaticResource MotorParametersWidth}" 
+                              FontSize="12" Text="{Binding AnalogCommandValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                <i:Interaction.Behaviors>
+                                    <models:AllowableCharactersTextBoxBehavior RegularExpression="{StaticResource RegexFloat}" MaxLength="12"/>
+                                </i:Interaction.Behaviors>
+                            </TextBox>
+
                         </Grid>
                     </GroupBox>
                     <!--#endregion Encoder-->

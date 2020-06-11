@@ -395,7 +395,7 @@ namespace SuperButton.ViewModels
             foreach(byte b in data)
                 hex.AppendFormat("{0:X2} ", b);
 
-            string operation = "Rx: 0x";
+            string operation = "Rx: 0x8B 3C ";
             operation += hex.ToString();
             DebugRx = operation;
         }

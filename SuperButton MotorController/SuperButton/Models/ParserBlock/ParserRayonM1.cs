@@ -473,8 +473,9 @@ namespace SuperButton.Models.ParserBlock
                 transit |= data[4];
                 transit <<= 8;
                 transit |= data[3];
-
-                if(transit == 0x8B3C8B3C) // 1
+                Debug.WriteLine("Synch: " + transit.ToString());
+                // if autobaud command is SYNCH 64[0] || 64[1] so transit will be 0x8B3C8B3C else 0
+                if(transit == 0x8B3C8B3C || transit == 0) // 1
                     Rs232Interface.GetInstance.IsSynced = true;
                 else
                     Rs232Interface.GetInstance.IsSynced = false;

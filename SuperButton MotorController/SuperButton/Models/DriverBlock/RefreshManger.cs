@@ -268,81 +268,84 @@ namespace SuperButton.Models.DriverBlock
         private int _iteratorRefresh = 0;
         public void StartRefresh()
         {
-            if(Rs232Interface._comPort.IsOpen)
+            if(Rs232Interface._comPort != null)
             {
-                tab = Views.ParametarsWindow.ParametersWindowTabSelected;
-                if(ParametarsWindow.WindowsOpen == false)
-                    tab = -1;
+                if(Rs232Interface._comPort.IsOpen)
+                {
+                    tab = Views.ParametarsWindow.ParametersWindowTabSelected;
+                    if(ParametarsWindow.WindowsOpen == false)
+                        tab = -1;
 #if REFRESH_MANAGER
                 Debug.WriteLine("StartRefresh: " + DateTime.Now.ToString("h:mm:ss.fff"));
 #endif
-                if(tab != TempTab || DebugViewModel.updateList)
-                {
-                    BuildList = new Dictionary<Tuple<int, int>, DataViewModel>();
-                    foreach(var list in BuildGroup)
+                    if(tab != TempTab || DebugViewModel.updateList)
                     {
-                        if(GroupToExecute(tab).Contains(list.Key))
+                        BuildList = new Dictionary<Tuple<int, int>, DataViewModel>();
+                        foreach(var list in BuildGroup)
                         {
-                            foreach(var sub_list in list.Value)
+                            if(GroupToExecute(tab).Contains(list.Key))
                             {
-                                var data = new DataViewModel
+                                foreach(var sub_list in list.Value)
                                 {
-                                    CommandName = ((DataViewModel)sub_list).CommandName,
-                                    CommandId = ((DataViewModel)sub_list).CommandId,
-                                    CommandSubId = ((DataViewModel)sub_list).CommandSubId,
-                                    CommandValue = ((DataViewModel)sub_list).CommandValue,
-                                    IsFloat = ((DataViewModel)sub_list).IsFloat,
-                                    IsSelected = ((DataViewModel)sub_list).IsSelected,
-                                };
-                                if(!BuildList.ContainsKey(new Tuple<int, int>(Int32.Parse(data.CommandId), Int32.Parse(data.CommandSubId))))
-                                {
-                                    BuildList.Add(new Tuple<int, int>(Int32.Parse(((DataViewModel)sub_list).CommandId), Int32.Parse(((DataViewModel)sub_list).CommandSubId)), data);
+                                    var data = new DataViewModel
+                                    {
+                                        CommandName = ((DataViewModel)sub_list).CommandName,
+                                        CommandId = ((DataViewModel)sub_list).CommandId,
+                                        CommandSubId = ((DataViewModel)sub_list).CommandSubId,
+                                        CommandValue = ((DataViewModel)sub_list).CommandValue,
+                                        IsFloat = ((DataViewModel)sub_list).IsFloat,
+                                        IsSelected = ((DataViewModel)sub_list).IsSelected,
+                                    };
+                                    if(!BuildList.ContainsKey(new Tuple<int, int>(Int32.Parse(data.CommandId), Int32.Parse(data.CommandSubId))))
+                                    {
+                                        BuildList.Add(new Tuple<int, int>(Int32.Parse(((DataViewModel)sub_list).CommandId), Int32.Parse(((DataViewModel)sub_list).CommandSubId)), data);
+                                    }
                                 }
                             }
                         }
-                    }
-                    TempTab = tab;
-                    if(DebugViewModel.updateList)
-                        DebugViewModel.updateList = false;
+                        TempTab = tab;
+                        if(DebugViewModel.updateList)
+                            DebugViewModel.updateList = false;
 #if REFRESH_MANAGER
                     Debug.WriteLine(" --- Tab --- ");
 #endif
-                }
-                if(BuildList.Count == 0)
-                {
-                    if(DebugViewModel.GetInstance.DebugRefresh)
-                        DebugViewModel.GetInstance.DebugRefresh = false;
-                    TempTab = -1;
-                    return;
-                }
-
-                if(_iteratorRefresh < 0)
-                    _iteratorRefresh = BuildList.Count - 1;
-
-                //foreach(var command in BuildList)
-                {
-                    int element = _iteratorRefresh--;
-                    //Debug.WriteLine("2: " + element);
-                    if(element < BuildList.Count && element > -1)
-                    {
-                        if(!BuildList.ElementAt(element).Value.IsSelected)
-                        {
-                            Rs232Interface.GetInstance.SendToParser(new PacketFields
-                            {
-                                Data2Send = BuildList.ElementAt(element).Value.CommandValue,
-                                ID = Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId),
-                                SubID = Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId),
-                                IsSet = false,
-                                IsFloat = BuildList.ElementAt(element).Value.IsFloat
-                            });
-                        }
                     }
-                    //Thread.Sleep(1);
-                }
+                    if(BuildList.Count == 0)
+                    {
+                        if(DebugViewModel.GetInstance.DebugRefresh)
+                            DebugViewModel.GetInstance.DebugRefresh = false;
+                        TempTab = -1;
+                        return;
+                    }
+
+                    if(_iteratorRefresh < 0)
+                        _iteratorRefresh = BuildList.Count - 1;
+
+                    //foreach(var command in BuildList)
+                    {
+                        int element = _iteratorRefresh--;
+                        //Debug.WriteLine("2: " + element);
+                        if(element < BuildList.Count && element > -1)
+                        {
+                            if(!BuildList.ElementAt(element).Value.IsSelected)
+                            {
+                                Rs232Interface.GetInstance.SendToParser(new PacketFields
+                                {
+                                    Data2Send = BuildList.ElementAt(element).Value.CommandValue,
+                                    ID = Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId),
+                                    SubID = Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId),
+                                    IsSet = false,
+                                    IsFloat = BuildList.ElementAt(element).Value.IsFloat
+                                });
+                            }
+                        }
+                        //Thread.Sleep(1);
+                    }
 
 #if REFRESH_MANAGER
                 Debug.WriteLine("EndRefresh: " + DateTime.Now.ToString("h:mm:ss.fff"));
 #endif
+                }
             }
         }
         public static int ConnectionCount = 0;
@@ -388,10 +391,12 @@ namespace SuperButton.Models.DriverBlock
                     EventRiser.Instance.RiseEevent(string.Format($"Serial cable disconnected from PC"));
                     Rs232Interface.GetInstance.Disconnect(0);
                 }
-            }
-            else {
-                EventRiser.Instance.RiseEevent(string.Format($"Communication Lost"));
-                Rs232Interface.GetInstance.Disconnect(0);
+
+                else
+                {
+                    EventRiser.Instance.RiseEevent(string.Format($"Communication Lost"));
+                    Rs232Interface.GetInstance.Disconnect(0);
+                }
             }
         }
         //private void MouseLeaveCommandFunc()
@@ -420,13 +425,13 @@ namespace SuperButton.Models.DriverBlock
                 case 0:
                     return "Idle";
                 case 1:
-                    return "in process";
+                    return "In Process";
                 case 2:
-                    return "failure";
+                    return "Failure";
                 case 3:
-                    return "success";
+                    return "Success";
                 default:
-                    return "no info(" + returnedValue + ")";
+                    return "No Info(" + returnedValue + ")";
             }
         }
         string CalibrationGetError(string returnedValue)
@@ -666,7 +671,7 @@ namespace SuperButton.Models.DriverBlock
                                         OscilloscopeViewModel.GetInstance.SelectedCh2DataSource = OscilloscopeViewModel.GetInstance.Channel2SourceItems.ElementAt(Sel);
                                 }
                             }
-                            else*/ 
+                            else*/
                             {
                                 if(Sel <= OscilloscopeViewModel.GetInstance.ChannelYtitles.Count && OscilloscopeViewModel.GetInstance.ChannelYtitles.Count > 0)
                                 {

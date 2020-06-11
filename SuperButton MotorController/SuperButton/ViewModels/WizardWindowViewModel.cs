@@ -411,7 +411,7 @@ namespace SuperButton.ViewModels
             GetInstance.OperationList.Clear();
 
             #region BuildOperationList
-            string id_fdbck_cmd_temp = "", id_ext_fdbck_cmd_temp = "", comutation_source = "";
+            string id_fdbck_cmd_temp = "", id_ext_fdbck_cmd_temp = "", comutation_source = "", index_analog_command_value = "";
             long max_speed, min_speed;
 
             /*Commutation select*/
@@ -689,6 +689,30 @@ namespace SuperButton.ViewModels
             Int32.TryParse(operation.CommandSubId, out commandSubId);
             GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
 
+            if(ExternalCommandSource == (int)eCommandSource.Analog)
+            {
+                switch(ExternalDriveMode)
+                {
+                    case (int)eDriveMode.Current_Control:
+                        index_analog_command_value = "0";
+                        break;
+                    case (int)eDriveMode.Speed_Control:
+                        index_analog_command_value = "1";
+                        break;
+                    case (int)eDriveMode.Position_Control:
+                        index_analog_command_value = "2";
+                        break;
+                    default:
+                        index_analog_command_value = "";
+                        break;
+                }
+                operation = new DataViewModel { CommandName = "Analog Command Value", CommandId = "110", CommandSubId = index_analog_command_value, IsFloat = true, CommandValue = AnalogCommandValue };
+                Int32.TryParse(operation.CommandId, out commandId);
+                Int32.TryParse(operation.CommandSubId, out commandSubId);
+                GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
+            }
+            
+
             operation = new DataViewModel { CommandName = "Save", CommandId = "63", CommandSubId = "0", IsFloat = false, CommandValue = "1" };
             Int32.TryParse(operation.CommandId, out commandId);
             Int32.TryParse(operation.CommandSubId, out commandSubId);
@@ -912,6 +936,16 @@ namespace SuperButton.ViewModels
             {
                 _externalCommandSource = value;
                 OnPropertyChanged("ExternalCommandSource");
+            }
+        }
+        private string _analogCommandValue = "";
+        public string AnalogCommandValue
+        {
+            get { return _analogCommandValue; }
+            set
+            {
+                _analogCommandValue = value;
+                OnPropertyChanged("AnalogCommandValue");
             }
         }
         #endregion AdvancedConfiguration
