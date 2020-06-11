@@ -268,9 +268,9 @@
                     <TextBlock Text="Clear Graph" FontSize="12" />
                 </Button>
                 <Line Grid.Column="19" Margin="2,0" Stroke="#FFD6D5D5" Y2="16" VerticalAlignment="Center" Fill="#FFC1C1C1" />
-                <TextBlock Grid.Column="20" Foreground="#FFF" Text="Num" FontSize="11" VerticalAlignment="Center" />
+                <!--<TextBlock Grid.Column="20" Foreground="#FFF" Text="Num" FontSize="11" VerticalAlignment="Center" />
                 <CheckBox Grid.Column="21" Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding LogNum}"/>
-                <TextBlock Grid.Column="22" Foreground="#FFF" Text="Log" FontSize="11" VerticalAlignment="Center" />
+                <TextBlock Grid.Column="22" Foreground="#FFF" Text="Log" FontSize="11" VerticalAlignment="Center" />-->
             </Grid>
         </ScrollViewer>
 

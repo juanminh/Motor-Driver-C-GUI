@@ -18,7 +18,6 @@
         xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:Helpers="clr-namespace:SuperButton.Helpers">
-
     <Window.Background>
         <ImageBrush ImageSource="pack://siteoforigin:,,,/Views/HomeBackground.jpg"/>
     </Window.Background>

@@ -451,39 +451,37 @@ namespace SuperButton.Models.DriverBlock
                 //uint16_t FetShort:1;            //0x8000 - 32768
                 case 0:
                     return "All OK !";
-                //case 1:
-                //    return "hall Feedl Err";
-                case 2:
-                    return "Encoder/Hall Sync";
+                case 1:
+                    return "Hall Error";
                 case 4:
-                    return "Over Temperature";
+                    return "Encoder/Hall Sync";
                 case 8:
-                    return "Over Voltage";
+                    return "Over Temperature";
                 case 16:
+                    return "Over Voltage";
+                case 32:
                     return "Under Voltage";
-                //case 32:
-                //   return "under Voltage";
-                case 64:
-                    return "Position Tracking";
                 case 128:
-                    return "Driver Power Init";
+                    return "Position Tracking";
                 case 256:
-                    return "Driver Power C/T";
+                    return "Driver Power Init";
                 case 512:
-                    return "Driver Power Fault";
+                    return "Driver Power C/T";
                 case 1024:
-                    return "Motor Stall";
+                    return "Driver Power Fault";
                 case 2048:
-                    return "Gate Disable";
+                    return "Motor Stall";
                 case 4096:
-                    return "Driver OSC";
+                    return "Gate Disable";
                 case 8192:
-                    return "Driver ADC Offset";
+                    return "Driver OSC";
                 case 16384:
-                    return "Driver Short Test";
+                    return "Driver ADC Offset";
                 case 32768:
-                    return "STO";
+                    return "Driver Short Test";
                 case 65536:
+                    return "STO";
+                case 131072:
                     return "SSI Clock Not Enabled";
                 default:
                     return "no info(" + returnedValue + ")";

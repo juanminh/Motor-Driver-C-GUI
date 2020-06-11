@@ -782,7 +782,7 @@
                     <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="MOTOR" VerticalAlignment="Bottom" Width="70" FontWeight="Bold" FontSize="15" Foreground="White"/>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <TextBlock HorizontalAlignment="Left" Text="Controller           Version 1.2.k" VerticalAlignment="Top" Width="Auto" Foreground="#FF5499D3" FontSize="12"/>
+                    <TextBlock HorizontalAlignment="Left" Text="Controller           Version 1.2.l" VerticalAlignment="Top" Width="Auto" Foreground="#FF5499D3" FontSize="12"/>
                 </Grid>
                 <Grid Grid.Row="2" Height="10">
                 </Grid>
