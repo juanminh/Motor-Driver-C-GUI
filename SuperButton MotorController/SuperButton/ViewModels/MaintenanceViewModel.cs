@@ -68,7 +68,7 @@ namespace SuperButton.ViewModels
             set
             {
 
-                if(value)
+                if(value && LeftPanelViewModel._app_running)
                 {
                     _save = value;
                     Rs232Interface.GetInstance.SendToParser(new PacketFields
@@ -104,7 +104,7 @@ namespace SuperButton.ViewModels
             get { return _manufacture; }
             set
             {
-                if(value)
+                if(value && LeftPanelViewModel._app_running)
                 {
                     _manufacture = value;
                     Rs232Interface.GetInstance.SendToParser(new PacketFields
@@ -132,9 +132,9 @@ namespace SuperButton.ViewModels
             get { return _reset; }
             set
             {
-                _reset = value;
-                if(value)
+                if(value && LeftPanelViewModel._app_running)
                 {
+                    _reset = value;
                     Rs232Interface.GetInstance.SendToParser(new PacketFields
                     {
                         Data2Send = 1,
@@ -184,16 +184,19 @@ namespace SuperButton.ViewModels
             get { return _enableWrite; }
             set
             {
-                _enableWrite = value;
-                Rs232Interface.GetInstance.SendToParser(new PacketFields
+                if(LeftPanelViewModel._app_running)
                 {
-                    Data2Send = true ? 1 : 0,
-                    ID = 63,
-                    SubID = Convert.ToInt16(10),
-                    IsSet = true,
-                    IsFloat = false
+                    _enableWrite = value;
+                    Rs232Interface.GetInstance.SendToParser(new PacketFields
+                    {
+                        Data2Send = true ? 1 : 0,
+                        ID = 63,
+                        SubID = Convert.ToInt16(10),
+                        IsSet = true,
+                        IsFloat = false
+                    }
+                    );
                 }
-                );
                 OnPropertyChanged();
             }
         }
@@ -203,16 +206,19 @@ namespace SuperButton.ViewModels
             get { return _enableLoder; }
             set
             {
-                _enableLoder = value;
-                Rs232Interface.GetInstance.SendToParser(new PacketFields
+                if(LeftPanelViewModel._app_running)
                 {
-                    Data2Send = true ? 1 : 0,
-                    ID = 65,
-                    SubID = Convert.ToInt16(0),
-                    IsSet = true,
-                    IsFloat = true
+                    _enableLoder = value;
+                    Rs232Interface.GetInstance.SendToParser(new PacketFields
+                    {
+                        Data2Send = true ? 1 : 0,
+                        ID = 65,
+                        SubID = Convert.ToInt16(0),
+                        IsSet = true,
+                        IsFloat = true
+                    }
+                    );
                 }
-                );
                 OnPropertyChanged();
             }
         }
@@ -401,7 +407,7 @@ namespace SuperButton.ViewModels
             get { return _saveToFile; }
             set
             {
-                if(value)
+                if(value && LeftPanelViewModel._app_running)
                 {
                     /*if(OscilloscopeParameters.ChanTotalCounter != 0 || DebugViewModel.GetInstance.EnRefresh == true)
                     {
@@ -528,7 +534,7 @@ namespace SuperButton.ViewModels
             get { return _loadFromFile; }
             set
             {
-                if(value)
+                if(value && LeftPanelViewModel._app_running)
                 {
                     /*if(OscilloscopeParameters.ChanTotalCounter != 0 || DebugViewModel.GetInstance.EnRefresh == true)
                     {

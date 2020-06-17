@@ -95,7 +95,6 @@ namespace SuperButton.Models.DriverBlock
             switch(mode)
             {
                 case 0:
-                    EventRiser.Instance.RiseEevent(string.Format($"Disconnecting..."));
                     LeftPanelViewModel.GetInstance.BlinkLedsTicks(LeftPanelViewModel.STOP);
                     LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.STOP);
                     LeftPanelViewModel.GetInstance.RefreshParamsTick(LeftPanelViewModel.STOP);
@@ -104,6 +103,8 @@ namespace SuperButton.Models.DriverBlock
                     {
                         if(_comPort.IsOpen)
                         {
+                            EventRiser.Instance.RiseEevent(string.Format($"Disconnecting..."));
+
                             if(RxtoParser != null)
                             {
                                 _isSynced = false;
@@ -133,7 +134,7 @@ namespace SuperButton.Models.DriverBlock
                                 }
                                 LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
 
-                                LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.STOP);
+                                //LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.STOP);
                                 EventRiser.Instance.RiseEevent(string.Format($"Disconnected"));
                             }
                             LeftPanelViewModel.busy = false;
@@ -197,6 +198,8 @@ namespace SuperButton.Models.DriverBlock
             get { return _comPortStr; }
             set { if(_comPortStr == value) return; _comPortStr = value; }
         }
+        SerialPort ComPort = new SerialPort();
+
         public override void AutoConnect()
         {
             if(_isSynced == false && LeftPanelViewModel.GetInstance.ConnectButtonContent == "Connect") //Driver is not synchronized
@@ -210,7 +213,7 @@ namespace SuperButton.Models.DriverBlock
                 {
                     // Add text to logger panel
                     EventRiser.Instance.RiseEevent(string.Format($"Connecting at {Configuration.SelectedCom}"));
-                    var ComPort = new SerialPort
+                    ComPort = new SerialPort
                     {
                         PortName = Configuration.SelectedCom,
                         Parity = Parity.None,
@@ -225,9 +228,7 @@ namespace SuperButton.Models.DriverBlock
                     };
                     try
                     {
-                        var Cleaner = "";
-                        ComPort.Close();
-                        ComPort.Dispose();
+                        //var Cleaner = "";
                         ComPort.Open(); //Try to open
 
                         if(ComPort.IsOpen)
@@ -252,10 +253,10 @@ namespace SuperButton.Models.DriverBlock
                                     EventRiser.Instance.RiseEevent(string.Format($"Baudrate: {_comPort.BaudRate}"));
                                     _baudRate = _comPort.BaudRate.ToString();
                                     _comPortStr = Configuration.SelectedCom;
+                                    ComPort = new SerialPort();
                                     LeftPanelViewModel.busy = false;
                                     LeftPanelViewModel.GetInstance.StarterOperation(LeftPanelViewModel.STOP);
                                     LeftPanelViewModel.GetInstance.StarterOperation(LeftPanelViewModel.START);
-                                    LeftPanelViewModel.GetInstance.ConnectButtonEnable = true;
                                     return;
                                 }
                                 else if(_isSynced == false)  // Looking for Baudrate
@@ -273,12 +274,13 @@ namespace SuperButton.Models.DriverBlock
                                     //Init synchronization packet, and rises event for parser
                                     if(RxtoParser != null)
                                     {
-                                        DataViewModel temp = (DataViewModel)Commands.GetInstance.DataCommandsListbySubGroup["DeviceSynchCommand"][2];
+                                        DataViewModel temp = (DataViewModel)Commands.GetInstance.DataCommandsListbySubGroup["DeviceSynchCommand"][2]; // [0]: 64[0], [1]: 64[1], [2]: 1[0]
                                         Commands.AssemblePacket(out RxPacket, Int16.Parse(temp.CommandId), Int16.Parse(temp.CommandSubId), false, false, 0);
                                         RxtoParser(this, new Rs232InterfaceEventArgs(RxPacket));
+                                        Debug.WriteLine("Baudrate Send: " + _comPort.BaudRate.ToString());
                                     }
-                                    Thread.Sleep(100);// while with timeout of 1 second
-                                    Cleaner = ComPort.ReadExisting();
+                                    Thread.Sleep(150);// while with timeout of 1 second
+                                    //Cleaner = ComPort.ReadExisting();
                                 }
                             }
                             EventRiser.Instance.RiseEevent(string.Format($"Failed"));
@@ -312,7 +314,7 @@ namespace SuperButton.Models.DriverBlock
                                 EventRiser.Instance.RiseEevent(string.Format($"Failed to communicate with unit"));
                             }
                             Thread.Sleep(100);// while with timeout of 1 second
-                            Cleaner = ComPort.ReadExisting();
+                            //Cleaner = ComPort.ReadExisting();
 #endif
                             _baudRate = _comPort.BaudRate.ToString();
                             _comPortStr = Configuration.SelectedCom;

@@ -473,23 +473,23 @@ namespace SuperButton.Models.ParserBlock
                 transit |= data[4];
                 transit <<= 8;
                 transit |= data[3];
-                Debug.WriteLine("Synch: " + transit.ToString());
+                //Debug.WriteLine("Synch: " + transit.ToString());
                 // if autobaud command is SYNCH 64[0] || 64[1] so transit will be 0x8B3C8B3C else 0
                 if(transit == 0x8B3C8B3C || transit == 0) // 1
                     Rs232Interface.GetInstance.IsSynced = true;
                 else
                     Rs232Interface.GetInstance.IsSynced = false;
+                Debug.WriteLine("Receive: " + transit.ToString());
+                Debug.WriteLine("Baudrate Receive: " + Rs232Interface._comPort.BaudRate.ToString());
 
+                if(Rs232Interface._comPort.BaudRate == 460800)
+                {
+
+                }
                 mre.Set();
             }
         }
-        //public void ParseStandartData(List<byte[]> dataList)
-        //{
-        //    for(int i = 0; i < dataList.Count; i++)
-        //    {
-        //        ParseInputPacket(dataList[i]);
-        //    }
-        //}
+        
         public static byte[] DebugData = { };
         public bool ParseInputPacket(byte[] data)
         {
