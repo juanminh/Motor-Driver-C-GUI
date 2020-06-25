@@ -52,16 +52,16 @@
             <Grid >
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition Width="Auto"/>
-                </Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
                 <CheckBox Grid.Column="0"     
                     Style="{StaticResource CheckBoxStyle3}"
                               VerticalAlignment="Center"
                               IsChecked="{Binding IntFloat}"
                               IsEnabled="False">
                 </CheckBox>
-                <Separator Grid.Column="1" Width="10" Background="Transparent" Visibility="Hidden"/>
-            </Grid>
+            <Separator Grid.Column="1" Width="10" Background="Transparent" Visibility="Hidden"/>
+        </Grid>
         </Border>
 
         <Border BorderBrush="White" BorderThickness="0,1,0,1" Grid.Column="3">
