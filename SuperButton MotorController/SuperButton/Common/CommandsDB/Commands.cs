@@ -47,6 +47,7 @@ namespace SuperButton.CommandsDB
             BuildErrorList();
             GenerateDebugListCommands();
             GenerateIOTabCommands();
+            GenerateBodeCommands();
         }
 
         static public void AssemblePacket(out PacketFields rxPacket, Int16 id, Int16 subId, bool isSet, bool isFloat, object data2Send)
@@ -1105,6 +1106,39 @@ namespace SuperButton.CommandsDB
                 DataViewCommandsList.Add(new Tuple<int, int>(110, i), data);
                 DataCommandsListbySubGroup["AnalogCommand List"].Add(data);
             }
+        }
+        private void GenerateBodeCommands()
+        {
+            DataCommandsListbySubGroup.Add("BodeList", new ObservableCollection<object>());
+
+            string[] names = { "Control Loop", "F_Start", "F_End", "Amplitude", "PointsDec", "Bode Fdbck"};
+            bool[] type = { false, true, true, true, false, false };
+
+            for(int i = 0; i < names.Length; i++)
+            {
+                var data = new DataViewModel
+                {
+                    CommandName = names[i],
+                    CommandId = "15",
+                    CommandSubId = (i+1).ToString(CultureInfo.InvariantCulture),
+                    CommandValue = "",
+                    IsFloat = type[i]
+                };
+
+                DataViewCommandsList.Add(new Tuple<int, int>(15, i+1), data);
+                DataCommandsListbySubGroup["BodeList"].Add(data);
+            }
+
+            //var data1 = new DataViewModel
+            //{
+            //    CommandName = "Status",
+            //    CommandId = "6",
+            //    CommandSubId = (15).ToString(CultureInfo.InvariantCulture),
+            //    CommandValue = "",
+            //    IsFloat = false
+            //};
+            //DataViewCommandsList.Add(new Tuple<int, int>(6, 15), data1);
+            //DataCommandsListbySubGroup["BodeList"].Add(data1);
         }
         private void GenerateMaintenanceList()
         {

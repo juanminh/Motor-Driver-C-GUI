@@ -220,24 +220,27 @@ namespace SuperButton.Models.DriverBlock
             {
                 switch(tabIndex)
                 {
-                    case 0:
+                    case (int)eTab.CONTROL:
                         arr = new string[] { "Motion Limit", "CurrentLimit List" }; // "Control", "Motor", already in PanelElements array
                         break;
-                    case 1:
+                    case (int)eTab.FEED_BACKS:
                         arr = new string[] { "Hall", "Qep1", "Qep2", "SSI_Feedback", "Qep1Bis", "Qep2Bis" };
                         break;
-                    case 2:
+                    case (int)eTab.PID:
                         arr = new string[] { "PIDCurrent", "PIDSpeed", "PIDPosition" };
                         break;
-                    case 3:
+                    case (int)eTab.DEVICE:
                         arr = new string[] { "DeviceSerial", "BaudrateList" };
                         break;
-                    case 4:
+                    case (int)eTab.I_O:
                         arr = new string[] { "AnalogCommand List" };
                         break;
-                    case 5:
+                    case (int)eTab.CALIBRATION:
                         if(WizardWindowViewModel.GetInstance.StartEnable)
                             arr = new string[] { "Calibration Result List", "Calibration List" };
+                        break;
+                    case (int)eTab.BODE:
+                        arr = new string[] { "BodeList" };
                         break;
                     //case 8:
                     //    arr = new string[] { "AnalogCommand List" };
@@ -621,7 +624,13 @@ namespace SuperButton.Models.DriverBlock
                         }
                         else if(Commands.GetInstance.DataViewCommandsList.ContainsKey(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)))
                             Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)].CommandValue = CalibrationGetStatus(newPropertyValue);
-
+                        else if(commandidentifier.Item1 == 6 && commandidentifier.Item2 == 15) // StartStop Bode
+                        {
+                            if(newPropertyValue == "1")
+                                BodeViewModel.GetInstance.BodeStartStop = true;
+                            else
+                                BodeViewModel.GetInstance.BodeStartStop = false;
+                        }
                         //if(!WizardWindowViewModel.GetInstance.StartEnable)
                         if(WizardWindowViewModel.GetInstance.CalibrationWizardList.ContainsKey(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)))
                             WizardWindowViewModel.GetInstance.updateCalibrationStatus(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2), newPropertyValue);

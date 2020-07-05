@@ -22,10 +22,13 @@ namespace SuperButton.Models.ParserBlock
     {
         public List<byte[]> StandartPacketsList = new List<byte[]>();
         public List<byte[]> PlotPacketsList = new List<byte[]>();
+        public List<byte[]> PlotBodePacketsList = new List<byte[]>();
         public List<byte[]> StandartPacketsListNew = new List<byte[]>();
         // private  int DEBCount;
         private byte[] pack = new byte[11];
+        private byte[] bode_pack = new byte[15];
         private int plotpacketState = 0;
+        private int plotbodepacketState = 0;
         private int standpacketState = 0;
         private int standpacketStateNew = 0;
         private int standpacketIndexCounter = 0;
@@ -91,6 +94,7 @@ namespace SuperButton.Models.ParserBlock
                     for(int i = 0; i < length; i++)
                     {
                         FiilsPlotPackets(data[i]); //Plot packets
+                        FiilsPlotBodePackets(data[i]); //Plot packets
                         //FiilsStandartPackets(data[i]);//Standart Packets                    
                         FiilsStandartPacketsNew(data[i]);//Standart Packets New Updeted
                     }
@@ -98,7 +102,14 @@ namespace SuperButton.Models.ParserBlock
                     {
                         ParserRayonM1.GetInstanceofParser.ParsePlot(PlotPacketsList);
                         //PlotPacketsList.Clear();
-                    }               //send to plot parser              
+                    }               //send to plot parser  
+                    if(PlotBodePacketsList.Count > 0)
+                    {
+                        Debug.WriteLine("Bode Count: " + PlotBodePacketsList.Count);
+                        BodeViewModel.GetInstance.ParseBodePlot(PlotBodePacketsList);
+                        PlotBodePacketsList.Clear();
+                        //PlotPacketsList.Clear();
+                    }
                     if(StandartPacketsListNew.Count > 0)
                     {
                         //ParserRayonM1.GetInstanceofParser.ParseStandartData(StandartPacketsListNew);
@@ -365,6 +376,105 @@ namespace SuperButton.Models.ParserBlock
 
                 default:
                     plotpacketState = 0;
+                    break;
+            }
+        }
+
+        private void FiilsPlotBodePackets(byte ch)
+        {
+
+            byte[] readypacket;
+
+
+            switch(plotbodepacketState)
+            {
+                case (0):   //First magic
+                    if(ch == 0xaf)
+                    {
+                        bode_pack[plotbodepacketState] = ch;
+                        plotbodepacketState++;
+                    }
+                    break;
+                case (1):   //Second magic
+                    if(ch == 0xfb)
+                    {
+                        bode_pack[plotbodepacketState] = ch;
+                        plotbodepacketState++;
+                    }
+                    else
+                        plotbodepacketState = 0;
+                    break;
+                case (2):
+                    bode_pack[plotbodepacketState] = ch;
+                    plotbodepacketState++;
+                    break;
+                case (3):
+                    bode_pack[plotbodepacketState] = ch;
+                    plotbodepacketState++;
+                    break;
+                case (4):
+                    bode_pack[plotbodepacketState] = ch;
+                    plotbodepacketState++;
+
+                    break;
+                case (5):
+                    bode_pack[plotbodepacketState] = ch;
+                    plotbodepacketState++;
+                    break;
+                case (6):
+                    bode_pack[plotbodepacketState] = ch;
+                    plotbodepacketState++;
+                    break;
+                case (7):
+                    bode_pack[plotbodepacketState] = ch;
+                    plotbodepacketState++;
+                    break;
+                case (8):
+                    bode_pack[plotbodepacketState] = ch;
+                    plotbodepacketState++;
+                    break;
+                case (9):
+                    bode_pack[plotbodepacketState] = ch;
+                    plotbodepacketState++;
+                    break;
+                case (10):
+                    bode_pack[plotbodepacketState] = ch;
+                    plotbodepacketState++;
+                    break;
+                case (11):
+                    bode_pack[plotbodepacketState] = ch;
+                    plotbodepacketState++;
+                    break;
+                case (12):
+                    bode_pack[plotbodepacketState] = ch;
+                    plotbodepacketState++;
+                    break;
+                case (13):
+                    bode_pack[plotbodepacketState] = ch;
+                    plotbodepacketState++;
+                    break;
+                case (14)://CheckSum
+
+                    byte chechSum = 0;
+
+                    for(int i = 2; i < 14; i++)
+                        chechSum += bode_pack[i];
+
+                    if(chechSum == ch)
+                    {
+                        bode_pack[plotbodepacketState] = ch;
+                        readypacket = new byte[15];
+                        Array.Copy(bode_pack, 0, readypacket, 0, 15);
+
+                        PlotBodePacketsList.Add(readypacket);
+                        //ParserRayonM1.GetInstanceofParser.ParsePlot(PlotPacketsList);
+                    }
+
+                    plotbodepacketState = 0;
+                    break;
+
+                default:
+                    plotbodepacketState = 0;
                     break;
             }
         }

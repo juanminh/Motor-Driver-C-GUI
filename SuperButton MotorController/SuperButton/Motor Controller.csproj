@@ -233,6 +233,7 @@
     <Compile Include="Helpers\RoundBoolLed.cs" />
     <Compile Include="Helpers\TransitioningFrame.cs" />
     <Compile Include="Helpers\TreeViewExtension.cs" />
+    <Compile Include="ViewModels\BodeViewModel.cs" />
     <Compile Include="ViewModels\BoolViewIndModel.cs" />
     <Compile Include="ViewModels\BottomPanelViewModel.cs" />
     <Compile Include="ViewModels\CalibrationButtonModel.cs" />

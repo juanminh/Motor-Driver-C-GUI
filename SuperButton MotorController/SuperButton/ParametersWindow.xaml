@@ -6,9 +6,14 @@
         xmlns:Behaviors="clr-namespace:SuperButton.Behaviors"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:s="http://schemas.abtsoftware.co.uk/scichart"         
+        xmlns:common="clr-namespace:SuperButton.Common"
+        xmlns:wpfSpark="clr-namespace:WPFSpark;assembly=WPFSpark"
+        xmlns:ToggleSwitch="clr-namespace:ToggleSwitch;assembly=ToggleSwitch"        
         mc:Ignorable="d" 
         x:Class="SuperButton.Views.ParametarsWindow"
         xmlns:UserControl="clr-namespace:SuperButton.Views"
+        xmlns:Helpers="clr-namespace:SuperButton.Helpers"
         ResizeMode="CanMinimize"
         Title="Driver Parameters" Height="500" Width="900"
         Closing="Window_Closing"
@@ -47,6 +52,59 @@
             <Setter Property="Width" Value="110" />
             <Setter Property="MaxHeight" Value="28" />
         </Style>
+
+        <common:IsModifierTypeConverter x:Key="IsModifierTypeConverter" />
+        <Style x:Key="LineSeriesStyle" TargetType="s:FastLineRenderableSeries">
+            <Setter Property="StrokeThickness" Value="2" />
+            <Setter Property="AntiAliasing" Value="True" />
+            <Setter Property="SeriesColor" Value="#FFA3FFC9" />
+            <Setter Property="RolloverMarkerTemplate">
+                <Setter.Value>
+                    <ControlTemplate>
+                        <Ellipse Width="9"
+                                 Height="9"
+                                 Fill="#7793F2C1"
+                                 Stroke="#FFA3FFC9"
+                                 StrokeThickness="2" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="TextBlockStyle" TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="FontFamily" Value="Arial" />
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="Margin" Value="3,2,2,2" />
+        </Style>
+        <Style x:Key="HintDataItemsStyle"
+               BasedOn="{StaticResource TextBlockStyle}"
+               TargetType="TextBlock">
+            <Setter Property="FontSize" Value="13" />
+        </Style>
+
+        <!--Template for the CursorModifier tooltip to display AxisInfo collection (result of hit test)-->
+        <ControlTemplate x:Key="CursorAxisLabelTemplate" TargetType="s:TemplatableControl">
+            <Border Background="#33FFFFFF"
+                    BorderBrush="#FFFFFFFF"
+                    BorderThickness="1"
+                    CornerRadius="5">
+                <TextBlock Style="{StaticResource HintDataItemsStyle}" Text="{Binding AxisFormattedDataValue}" />
+            </Border>
+        </ControlTemplate>
+
+        <!--Template for the RolloverModifier tooltip to display AxisInfo collection (result of hit test)-->
+        <ControlTemplate x:Key="RolloverLabelTemplate" TargetType="s:TemplatableControl">
+            <Border Background="#33FFFFFF"
+                    BorderBrush="#FFFFFFFF"
+                    BorderThickness="1"
+                    CornerRadius="5">
+                <StackPanel>
+                    <TextBlock Style="{StaticResource HintDataItemsStyle}" Text="{Binding SeriesName}" />
+                    <TextBlock Style="{StaticResource HintDataItemsStyle}" Text="{Binding Value}" />
+                </StackPanel>
+            </Border>
+        </ControlTemplate>
     </Window.Resources>
 
     <Grid >
@@ -154,20 +212,20 @@
                         </Grid.RowDefinitions>
                         <GroupBox Grid.Row="0" Header="Qep2">
                             <!--<ScrollViewer VerticalScrollBarVisibility="Visible">-->
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                    </Grid.RowDefinitions>
-                                    <!--<ScrollViewer Grid.Row="0" Background="Transparent" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">-->
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <!--<ScrollViewer Grid.Row="0" Background="Transparent" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">-->
 
 
-                                    <ItemsControl Grid.Row="0" ItemsSource="{Binding Qep2FeedBackList}" ItemTemplate="{StaticResource DataViewModel}"/>
+                                <ItemsControl Grid.Row="0" ItemsSource="{Binding Qep2FeedBackList}" ItemTemplate="{StaticResource DataViewModel}"/>
 
-                                    <!--</ScrollViewer>-->
-                                    <ItemsControl Grid.Row="1" ItemsSource="{Binding Qep2FdBckList}" ItemTemplate="{StaticResource EnumViewModel}"/>
+                                <!--</ScrollViewer>-->
+                                <ItemsControl Grid.Row="1" ItemsSource="{Binding Qep2FdBckList}" ItemTemplate="{StaticResource EnumViewModel}"/>
 
-                                </Grid>
+                            </Grid>
                             <!--</ScrollViewer>-->
                         </GroupBox>
                     </Grid>
@@ -749,7 +807,172 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Motion" TabIndex="9" DataContext="{Binding MotionViewModel}" Background="Black" Foreground="White" Margin="-1,0,1,0" Visibility="Hidden">
+            <TabItem Header="Bode" TabIndex="9" DataContext="{Binding BodeViewModel}" Background="Black" Foreground="White" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="170"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <!--http://support.scichart.com/index.php?/Knowledgebase/Article/View/17227/36/performance-tips-and-tricks-->
+
+                        <s:SciChartSurface Grid.Row="1"
+                                           Width="700"
+                                           Height="400"
+                                           MaxFrameRate="25"
+                           s:ThemeManager.Theme="Oscilloscope"
+                           XAxis="{Binding XAxis, Mode=OneWay}"
+                           YAxes="{Binding ChartYAxes, Mode=OneWay}">
+
+                            <!---->
+                            
+                            <s:SciChartSurface.RenderableSeries>
+                                <s:FastLineRenderableSeries DataSeries="{Binding ChartData}"
+                                            SeriesColor="Yellow"
+                                            AntiAliasing="False"
+                                            IsDigitalLine="False"
+                                            ResamplingMode="MinMax"
+                                            StrokeThickness="1"
+                                            Style="{StaticResource LineSeriesStyle}">
+                                    <s:FastLineRenderableSeries.PointMarker>
+                                        <s:EllipsePointMarker Width="5" Height="5" Fill="{Binding SeriesColor}"/>
+                                    </s:FastLineRenderableSeries.PointMarker>
+                                </s:FastLineRenderableSeries>
+                                <s:FastLineRenderableSeries DataSeries="{Binding ChartData1}"
+                                            SeriesColor="CornflowerBlue"
+                                            AntiAliasing="False"
+                                            IsDigitalLine="False"
+                                            ResamplingMode="MinMax"
+                                            StrokeThickness="1"
+                                            Style="{StaticResource LineSeriesStyle}">
+                                    <s:FastLineRenderableSeries.PointMarker>
+                                        <s:EllipsePointMarker Width="5" Height="5" Fill="{Binding SeriesColor}"/>
+                                    </s:FastLineRenderableSeries.PointMarker>
+                                </s:FastLineRenderableSeries>
+                                <s:FastLineRenderableSeries DataSeries="{Binding ChartData2}"
+                                            SeriesColor="Transparent"
+                                            AntiAliasing="False"
+                                            IsDigitalLine="False"
+                                            ResamplingMode="MinMax"
+                                            StrokeThickness="1"
+                                            Style="{StaticResource LineSeriesStyle}">
+                                </s:FastLineRenderableSeries>
+                            </s:SciChartSurface.RenderableSeries>
+                            <!--Create default X and Y axes. Optional bands give a cool look and feel for minimal performance impact-->
+                            <!--<s:SciChartSurface.XAxis>
+                <s:NumericAxis AnimatedVisibleRange="{Binding XVisibleRange, Mode=TwoWay}"
+                               VisibleRangeLimit="{Binding XLimit}"
+                               AxisTitle="Time (ms)"
+                               DrawMajorBands="False"
+                               DrawMinorGridLines="False"
+                               DrawMajorTicks="False"
+                               DrawMinorTicks="False"
+                               StrokeThickness="1"  />
+            </s:SciChartSurface.XAxis>-->
+
+                            <!--<s:SciChartSurface.YAxis>
+                                <s:NumericAxis AnimatedVisibleRange="{Binding YVisibleRange, Mode=TwoWay}"
+                               AxisAlignment="Left"
+                               DrawMajorBands="False"
+                               DrawMinorGridLines="False"
+                               DrawMinorTicks="False"
+                               DrawMajorTicks="False"
+                               StrokeThickness="1"/>
+                            </s:SciChartSurface.YAxis>-->
+
+                            <!--Create ChartModifiers, which are enabled or disabled from the ViewModel via the ChartModifier property and IsModifierTypeConverter-->
+                            <s:SciChartSurface.ChartModifier>
+                                <s:ModifierGroup>
+                                    <s:XAxisDragModifier ClipModeX="None"/>
+                                    <s:YAxisDragModifier/>
+                                    <s:CursorModifier AxisLabelTemplate="{StaticResource CursorAxisLabelTemplate}" 
+                                                      IsEnabled="{Binding ChartModifier, ConverterParameter=CrosshairsCursor, Converter={StaticResource IsModifierTypeConverter}, Mode=TwoWay}" />
+                                    <s:RubberBandXyZoomModifier x:Name="zoomModifier"/>
+                                    <s:ZoomExtentsModifier x:Name="zoomExtentsModifier" ExecuteOn="MouseDoubleClick" XyDirection="XYDirection" />
+                                </s:ModifierGroup>
+                            </s:SciChartSurface.ChartModifier>
+                        </s:SciChartSurface>
+                    </Grid>
+                    <Grid Grid.Column="3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0" HorizontalAlignment="Center">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <wpfSpark:ToggleSwitch Grid.Column="0" Width="55" Height="26" HorizontalAlignment="Right" VerticalAlignment="Top" 
+                                                    FontSize="9" UncheckedText="Start" CheckedText="Stop"
+                                                    IsChecked="{Binding BodeStartStop, Mode=TwoWay}"/>
+                            <Helpers:RoundBoolLed Grid.Column="2" Width="10" Height="10" VerticalAlignment="Stretch">
+                                <Helpers:RoundBoolLed.Style>
+                                    <Style TargetType="Helpers:RoundBoolLed">
+                                        <Setter Property="CurrStatus" Value="0" />
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding BodeStartStop}" Value="True" />
+                                                </MultiDataTrigger.Conditions>
+                                                <MultiDataTrigger.Setters>
+                                                    <Setter Property="CurrStatus" Value="4" />
+                                                </MultiDataTrigger.Setters>
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Helpers:RoundBoolLed.Style>
+                            </Helpers:RoundBoolLed>
+                        </Grid>
+                        <Grid Grid.Row="1"/>
+                        <Grid Grid.Row="2">
+                            <ItemsControl Grid.Row="1" ItemsSource="{Binding BodeList}" ItemTemplate="{StaticResource DataViewModel}" />
+                        </Grid>
+                        <Grid Grid.Row="3"/>
+                        <Grid Grid.Row="4" HorizontalAlignment="Center" Height="0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Border Grid.Column="0" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="1">
+                                <TextBlock Height="22" Foreground="White" Text="Mag. Gain" Background="#82F7E31D" FontSize="12"/>
+                            </Border>
+                            <Border Grid.Column="1" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="1">
+                                <TextBox Width="25" Text="{Binding Ch1Gain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="22" BorderThickness="0" >
+                                    <i:Interaction.Behaviors>
+                                        <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
+                                    </i:Interaction.Behaviors>
+                                </TextBox>
+                            </Border>
+                            <Border Grid.Column="3" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="1">
+                                <TextBlock Height="22" Foreground="White" Text="Phase Gain" Background="#7F1810D4" FontSize="12"/>
+                            </Border>
+                            <Border Grid.Column="4" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="1">
+                                <TextBox Width="25" Text="{Binding Ch2Gain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="22" BorderThickness="0" >
+                                    <i:Interaction.Behaviors>
+                                        <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
+                                    </i:Interaction.Behaviors>
+                                </TextBox>
+                            </Border>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Motion" TabIndex="10" DataContext="{Binding MotionViewModel}" Background="Black" Foreground="White" Margin="-1,0,1,0" Visibility="Hidden">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="300"/>
@@ -765,6 +988,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
+
             <!--<TabItem Header="Operations" TabIndex="7" DataContext="{Binding OperationViewModel}" Background="Black" Foreground="White" >
                 <Grid Background="#FF616161">
                     <Grid.ColumnDefinitions>

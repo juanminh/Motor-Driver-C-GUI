@@ -17,7 +17,8 @@ namespace SuperButton.ViewModels
         I_O = 4,
         CALIBRATION = 5,
         MAINTENANCE = 6,
-        DEBUG = 7
+        DEBUG = 7,
+        BODE = 8
     };
     internal class ParametarsWindowViewModel : ViewModelBase
     {
@@ -27,6 +28,7 @@ namespace SuperButton.ViewModels
         private FeedBackViewModel _feedBackViewModel;
         private DebugViewModel _debugViewModel;
         private IOViewModel _ioViewModel;
+        private BodeViewModel _bodeViewModel;
         //private LoadParamsViewModel _loadParamsViewModel;
         public ParametarsWindowViewModel()
         {
@@ -36,6 +38,7 @@ namespace SuperButton.ViewModels
             _feedBackViewModel = FeedBackViewModel.GetInstance;
             _debugViewModel = DebugViewModel.GetInstance;
             _ioViewModel = IOViewModel.GetInstance;
+            _bodeViewModel = BodeViewModel.GetInstance;
             //_loadParamsViewModel = LoadParamsViewModel.GetInstance;
         }
         ~ParametarsWindowViewModel() { }
@@ -211,7 +214,10 @@ namespace SuperButton.ViewModels
         {
             get { return _debugViewModel; }
         }
-
+        public BodeViewModel BodeViewModel
+        {
+            get { return _bodeViewModel; }
+        }
         private bool CheckValue()
         {
             return true;
