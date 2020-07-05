@@ -47,7 +47,8 @@ namespace SuperButton.ViewModels
         private BodeViewModel()
         {
             InitializeAxes();
-            Load();
+            
+            //Load();
         }
 
         private bool _bodeStartStop = false;
@@ -79,35 +80,44 @@ namespace SuperButton.ViewModels
                     {
                         ChartData = new XyDataSeries<float, float>();
                         ChartData1 = new XyDataSeries<float, float>();
-                        if(!String.IsNullOrEmpty(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue) &&
-                            !String.IsNullOrEmpty(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue))
-                            XAxisDoubleRange = new DoubleRange(Convert.ToInt32(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue), Convert.ToInt32(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue));
+                        //if(!String.IsNullOrEmpty(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue) &&
+                        //    !String.IsNullOrEmpty(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue))
+                        //    XAxisDoubleRange = new DoubleRange(Convert.ToInt32(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue), Convert.ToInt32(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue));
+                        
                         OnBodeStart();
                     }
                     else
                         OnBodeStop();
                 }
-
+                else if(!value)
+                {
+                    OnBodeStop();
+                }
                 OnPropertyChanged();
 
             }
         }
-        private IAxis _xAxis;
-        public IAxis XAxis
+        private IAxis _xAxis1;
+        public IAxis XAxis1
         {
-            get { return _xAxis; }
+            get { return _xAxis1; }
             set
             {
-                _xAxis = value;
-                OnPropertyChanged("XAxis");
+                _xAxis1 = value;
+                OnPropertyChanged("XAxis1");
             }
         }
-        private AxisCollection _chartYAxes = new AxisCollection() {
-            (new NumericAxis() {
-            Id = "DefaultAxisId",
-            Visibility = Visibility.Hidden
-        })
-        };
+        private IAxis _xAxis2;
+        public IAxis XAxis2
+        {
+            get { return _xAxis2; }
+            set
+            {
+                _xAxis2 = value;
+                OnPropertyChanged("XAxis2");
+            }
+        }
+        private AxisCollection _chartYAxes = new AxisCollection();
 
         public AxisCollection ChartYAxes
         {
@@ -148,15 +158,33 @@ namespace SuperButton.ViewModels
                     VisibleRange = XAxisDoubleRange,
                     GrowBy = new DoubleRange(0.2, 0.2),
                     DrawMajorBands = false,
+                    AutoRange = AutoRange.Always,
                     //AxisTitle = "Time (ms)",
                     DrawMinorGridLines = true,
                     DrawMajorTicks = true,
                     DrawMinorTicks = true,
                     StrokeThickness = 1,
-                    LogarithmicBase = 10.0
+                    LogarithmicBase = 10.0,
+                    FontSize = 5
                 };
-                XAxis = _xAxisLog;
-
+                XAxis1 = _xAxisLog;
+                _xAxisLog = new LogarithmicNumericAxis
+                {
+                    TextFormatting = "#.#E+0",
+                    ScientificNotation = ScientificNotation.LogarithmicBase,
+                    VisibleRange = XAxisDoubleRange,
+                    GrowBy = new DoubleRange(0.2, 0.2),
+                    DrawMajorBands = false,
+                    AutoRange = AutoRange.Always,
+                    //AxisTitle = "Time (ms)",
+                    DrawMinorGridLines = true,
+                    DrawMajorTicks = true,
+                    DrawMinorTicks = true,
+                    StrokeThickness = 1,
+                    LogarithmicBase = 10.0,
+                    FontSize = 5
+                };
+                XAxis2 = _xAxisLog;
                 //Load();
 
                 //_yAxisLog = new LogarithmicNumericAxis
@@ -168,39 +196,48 @@ namespace SuperButton.ViewModels
                 //    DrawMajorBands = false
                 //};
 
-                IAxis Y1 = new NumericAxis()
+                NumericAxis Y1 = new NumericAxis()
                 {
+                    
                     Id = "Y1_Magnitude",
-                    TextFormatting = "#",
+                    TextFormatting = "0.00",
                     ScientificNotation = ScientificNotation.Normalized,
                     AxisAlignment = AxisAlignment.Left,
                     GrowBy = new DoubleRange(0.2, 0.2),
-                    VisibleRange = new DoubleRange(-50, 20),
+                    AnimatedVisibleRange = new DoubleRange(-50, 20),
                     AxisTitle = "Magnitude (dB)",
                     TickTextBrush = new SolidColorBrush(Colors.White),
                     DrawMajorBands = false,
                     DrawMinorGridLines = false,
                     DrawMajorTicks = false,
-                    DrawMinorTicks = false
+                    DrawMinorTicks = false,
+                    StrokeThickness = 1
 
                 };
-                IAxis Y2 = new NumericAxis()
+                NumericAxis Y2 = new NumericAxis()
                 {
                     Id = "Y2_Phase",
-                    TextFormatting = "#",
+                    TextFormatting = "0.00",
                     ScientificNotation = ScientificNotation.Normalized,
                     AxisAlignment = AxisAlignment.Right,
                     GrowBy = new DoubleRange(0.2, 0.2),
                     VisibleRange = new DoubleRange(-200, 200),
+                    AutoRange = AutoRange.Always,
+                    AnimatedVisibleRange = new DoubleRange(-200, 200),
                     AxisTitle = "Phase (Degree)",
                     TickTextBrush = new SolidColorBrush(Colors.White),
                     DrawMajorBands = false,
                     DrawMinorGridLines = false,
                     DrawMajorTicks = false,
-                    DrawMinorTicks = false
+                    DrawMinorTicks = false,
+                    StrokeThickness = 1
                 };
-                ChartYAxes.Add(Y1);
-                ChartYAxes.Add(Y2);
+                //ChartYAxes.Add(new NumericAxis() {
+                    //Id = "DefaultAxisId",
+                    //Visibility = Visibility.Hidden
+                //});
+                //ChartYAxes.Add(Y1);
+                //ChartYAxes.Add(Y2);
             }
 
         }
@@ -365,7 +402,7 @@ namespace SuperButton.ViewModels
                         dataAray[j] = PlotList[i][k + 6];
                     }
                     newPropertyValuef = 20 * Math.Log10(System.BitConverter.ToSingle(dataAray, 0));
-                    newPropertyValuef = newPropertyValuef < -50 ? -50 : newPropertyValuef;
+                    newPropertyValuef = newPropertyValuef < -100 ? -100 : newPropertyValuef;
                     FifoplotBodeListY1.Enqueue((float)newPropertyValuef);
                     Debug.WriteLine("Y1: " + newPropertyValuef.ToString());
 
@@ -402,6 +439,10 @@ namespace SuperButton.ViewModels
         // Setup start condition when the example enters
         public void OnBodeStart()
         {
+            X_List.Clear();
+            Y1_List.Clear();
+            Y2_List.Clear();
+
             if(_timer == null)
             {
                 Task.Factory.StartNew(action: () =>
@@ -444,10 +485,8 @@ namespace SuperButton.ViewModels
                 {
                     using(this.ChartData1.SuspendUpdates())
                     {
-                        //_series0.Clear();
-                        //_series1.Clear();
-                        _series0.Append(X_arr, Y1_arr);
-                        _series1.Append(X_arr, Y2_arr);
+                        ChartData.Append(X_arr, Y1_arr);
+                        ChartData1.Append(X_arr, Y2_arr);
                     }
                 }
 
