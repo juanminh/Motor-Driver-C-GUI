@@ -1,4 +1,5 @@
 ﻿using Abt.Controls.SciChart;
+using Abt.Controls.SciChart.ChartModifiers;
 using Abt.Controls.SciChart.Example.Common;
 using Abt.Controls.SciChart.Example.Data;
 using Abt.Controls.SciChart.Model.DataSeries;
@@ -6,16 +7,21 @@ using Abt.Controls.SciChart.Visuals.Axes;
 using SuperButton.CommandsDB;
 using SuperButton.Data;
 using SuperButton.Models.DriverBlock;
+using SuperButton.ViewModels;
+using SuperButton.Views;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Media;
 using Timer = System.Timers.Timer;
 
@@ -46,8 +52,10 @@ namespace SuperButton.ViewModels
         }
         private BodeViewModel()
         {
+            ChartData = new XyDataSeries<float, float>();
+            ChartData1 = new XyDataSeries<float, float>();
             InitializeAxes();
-            
+
             //Load();
         }
 
@@ -134,7 +142,7 @@ namespace SuperButton.ViewModels
 
         private LogarithmicNumericAxis _xAxisLog;
         private static readonly object _lockAxes = new object();
-        private DoubleRange _xAxisDoubleRange = new DoubleRange(0, 1000);
+        private DoubleRange _xAxisDoubleRange = new DoubleRange(0.6, 1000);
         // new DoubleRange(Convert.ToInt32(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue), Convert.ToInt32(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue));
 
         public DoubleRange XAxisDoubleRange
@@ -146,22 +154,39 @@ namespace SuperButton.ViewModels
                 OnPropertyChanged("XAxisDoubleRange");
             }
         }
+        private DoubleRange _magVisibleRange = new DoubleRange(-50, 20);
+        public DoubleRange MagVisibleRange
+        {
+            get { return _magVisibleRange; }
+            set
+            {
+                _magVisibleRange = value;
+                OnPropertyChanged("MagVisibleRange");
+            }
+        }
+        private DoubleRange _phaseVisibleRange = new DoubleRange(-200, 200);
+        public DoubleRange PhaseVisibleRange
+        {
+            get { return _phaseVisibleRange; }
+            set
+            {
+                _phaseVisibleRange = value;
+                OnPropertyChanged("PhaseVisibleRange");
+            }
+        }
         [STAThread]
         private void InitializeAxes()
         {
             lock(_lockAxes)
             {
-                ChartData = new XyDataSeries<float, float>();
-                ChartData1 = new XyDataSeries<float, float>();
-
                 _xAxisLog = new LogarithmicNumericAxis
                 {
-                    TextFormatting = "#.#E+0",
-                    ScientificNotation = ScientificNotation.LogarithmicBase,
-                    VisibleRange = XAxisDoubleRange,
-                    GrowBy = new DoubleRange(0.2, 0.2),
+                    TextFormatting = "#0.#",
+                    ScientificNotation = ScientificNotation.Normalized,
+                    VisibleRange = _xAxisDoubleRange,
+                    GrowBy = new DoubleRange(0.1, 0.1),
                     DrawMajorBands = false,
-                    AutoRange = AutoRange.Always,
+                    //AutoRange = AutoRange.Always,
                     //AxisTitle = "Time (ms)",
                     DrawMinorGridLines = true,
                     DrawMajorTicks = true,
@@ -173,12 +198,12 @@ namespace SuperButton.ViewModels
                 XAxis1 = _xAxisLog;
                 _xAxisLog = new LogarithmicNumericAxis
                 {
-                    TextFormatting = "#.#E+0",
-                    ScientificNotation = ScientificNotation.LogarithmicBase,
-                    VisibleRange = XAxisDoubleRange,
-                    GrowBy = new DoubleRange(0.2, 0.2),
+                    TextFormatting = "#0.#",
+                    ScientificNotation = ScientificNotation.Normalized,
+                    VisibleRange = _xAxisDoubleRange,
+                    GrowBy = new DoubleRange(0.1, 0.1),
                     DrawMajorBands = false,
-                    AutoRange = AutoRange.Always,
+                    //AutoRange = AutoRange.Always,
                     //AxisTitle = "Time (ms)",
                     DrawMinorGridLines = true,
                     DrawMajorTicks = true,
@@ -188,6 +213,8 @@ namespace SuperButton.ViewModels
                     FontSize = 5
                 };
                 XAxis2 = _xAxisLog;
+                MagVisibleRange = _magVisibleRange;
+                PhaseVisibleRange = _phaseVisibleRange;
                 //Load();
 
                 //_yAxisLog = new LogarithmicNumericAxis
@@ -198,7 +225,7 @@ namespace SuperButton.ViewModels
                 //    GrowBy = new DoubleRange(0.1, 0.1),
                 //    DrawMajorBands = false
                 //};
-
+#if Yaxes
                 NumericAxis Y1 = new NumericAxis()
                 {
                     
@@ -207,6 +234,7 @@ namespace SuperButton.ViewModels
                     ScientificNotation = ScientificNotation.Normalized,
                     AxisAlignment = AxisAlignment.Left,
                     GrowBy = new DoubleRange(0.2, 0.2),
+                    VisibleRange = new DoubleRange(-50, 20),
                     AnimatedVisibleRange = new DoubleRange(-50, 20),
                     AxisTitle = "Magnitude (dB)",
                     TickTextBrush = new SolidColorBrush(Colors.White),
@@ -241,6 +269,7 @@ namespace SuperButton.ViewModels
                 //});
                 //ChartYAxes.Add(Y1);
                 //ChartYAxes.Add(Y2);
+#endif
             }
 
         }
@@ -387,6 +416,9 @@ namespace SuperButton.ViewModels
         private List<float> X_List = new List<float>();
         private List<float> Y1_List = new List<float>();
         private List<float> Y2_List = new List<float>();
+        private List<float> _excel_X_List = new List<float>();
+        private List<float> _excel_Y1_List = new List<float>();
+        private List<float> _excel_Y2_List = new List<float>();
         private float[] X_arr;
         private float[] Y1_arr;
         private float[] Y2_arr;
@@ -460,6 +492,10 @@ namespace SuperButton.ViewModels
         // Setup start condition when the example enters
         public void OnBodeStart()
         {
+            _excel_X_List.Clear();
+            _excel_Y1_List.Clear();
+            _excel_Y2_List.Clear();
+
             /*
             if(_timer == null)
             {
@@ -493,10 +529,13 @@ namespace SuperButton.ViewModels
             while(FifoplotBodeListX.TryDequeue(out item))
             {
                 X_List.Add(item);
+                _excel_X_List.Add(item);
                 FifoplotBodeListY1.TryDequeue(out item);
                 Y1_List.Add(item);
+                _excel_Y1_List.Add(item);
                 FifoplotBodeListY2.TryDequeue(out item);
                 Y2_List.Add(item);
+                _excel_Y2_List.Add(item);
             }
             if(X_List.Count > 0)
             {
@@ -520,6 +559,9 @@ namespace SuperButton.ViewModels
         }
         private bool _startBodeEnable = true;
         private bool _stopBodeEnable = false;
+        private string filePath;
+        string delimiter = ",";
+
         public bool StartBodeEnable
         {
             get { return _startBodeEnable; }
@@ -530,5 +572,99 @@ namespace SuperButton.ViewModels
             get { return _stopBodeEnable; }
             set { _stopBodeEnable = value; OnPropertyChanged(); }
         }
+        public ActionCommand ResetZoomBode
+        {
+            get { return new ActionCommand(ResetZoom); }
+        }
+        public void ResetZoom()
+        {
+            try
+            {
+                _magVisibleRange = new DoubleRange(-50, 20);
+                _phaseVisibleRange = new DoubleRange(-200, 200);
+                _xAxisDoubleRange = new DoubleRange(0.6, 1000);
+                InitializeAxes();
+            }
+            catch { }
+        }
+
+        public ActionCommand AutoScaleBode
+        {
+            get { return new ActionCommand(AutoScale); }
+        }
+        public void AutoScale()
+        {
+            try
+            {
+                if(_excel_X_List.Count > 1 && _excel_Y2_List.Count > 1 && _excel_Y1_List.Count > 1)
+                {
+                    _xAxisDoubleRange = new DoubleRange(_excel_X_List.Min() - 0.2 * (_excel_X_List.Max() - _excel_X_List.Min()), _excel_X_List.Max() + 0.2 * (_excel_X_List.Max() - _excel_X_List.Min()));
+                    _phaseVisibleRange = new DoubleRange(_excel_Y2_List.Min() - 0.2 * (_excel_Y2_List.Max() - _excel_Y2_List.Min()), _excel_Y2_List.Max() + 0.2 * (_excel_Y2_List.Max() - _excel_Y2_List.Min()));
+                    _magVisibleRange = new DoubleRange(_excel_Y1_List.Min() - 0.2 * (_excel_Y1_List.Max() - _excel_Y1_List.Min()), _excel_Y1_List.Max() + 0.2 * (_excel_Y1_List.Max() - _excel_Y1_List.Min()));
+                    InitializeAxes();
+                }
+            }
+            catch { }
+        }
+        public ActionCommand SaveBodeToExcel
+        {
+            get { return new ActionCommand(SaveBode); }
+        }
+        public void SaveBode()
+        {
+            string Date = OscilloscopeViewModel.Day(DateTime.Now.Day) + ' ' + OscilloscopeViewModel.MonthTrans(DateTime.Now.Month) + ' ' + DateTime.Now.Year.ToString();
+            string path = "\\MotorController\\Charts\\" + Date + ' ' + DateTime.Now.ToString("HH:mm:ss");
+            path = (path.Replace('-', ' ')).Replace(':', '_');
+            path += ".csv";
+            path = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + path;
+            filePath = path;
+
+            Thread.Sleep(100);
+            StringBuilder sb = new StringBuilder();
+
+            float[] yxls = _excel_Y1_List.ToArray();
+            float[] yxls2 = _excel_Y2_List.ToArray();
+
+            string[] xstring = new string[_excel_X_List.Count + 1];
+
+            string[] ystring = new string[_excel_Y1_List.Count + 1];
+
+            xstring = new string[_excel_X_List.Count + 1];
+            ystring[0] = "Y1 - Magnitude (dB)";
+
+
+            string[] ystring2 = new string[_excel_Y2_List.Count + 1];
+
+            xstring = new string[_excel_X_List.Count + 1];
+            ystring2[0] = "Y2 - Phase (Degree)";
+
+            xstring[0] = "Time";
+
+
+            for(int i = 1; i < _excel_X_List.Count; i++)
+            {
+                xstring[i] = (_excel_X_List.ElementAt(i)).ToString(CultureInfo.CurrentCulture);
+                ystring[i] = yxls[i - 1].ToString(CultureInfo.CurrentCulture);
+                ystring2[i] = yxls2[i - 1].ToString(CultureInfo.CurrentCulture);
+                sb.AppendLine(string.Join(delimiter, xstring[i - 1], ystring[i - 1], ystring2[i - 1]));
+            }
+            System.Windows.Forms.SaveFileDialog saveFile = new System.Windows.Forms.SaveFileDialog();
+            saveFile.Filter = "Excel (*.xlsx)|*.csv";
+            saveFile.FileName = path;
+            var t = new Thread((ThreadStart)(() =>
+            {
+                if(saveFile.ShowDialog() == DialogResult.OK)
+                {
+                    filePath = saveFile.FileName;
+                }
+                else
+                    return;
+                File.AppendAllText(filePath, sb.ToString());
+                sb.Clear();
+            }));
+            t.SetApartmentState(ApartmentState.STA);
+            t.Start();
+        }
+
     }
 }

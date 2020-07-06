@@ -373,7 +373,324 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Maintenance" TabIndex="7" DataContext="{Binding MaintenanceViewModel}" Background="Black" Foreground="White" >
+             <TabItem Header="Bode" TabIndex="7" DataContext="{Binding BodeViewModel}" Background="Black" Foreground="White" >
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="230"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="1"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <!--http://support.scichart.com/index.php?/Knowledgebase/Article/View/17227/36/performance-tips-and-tricks-->
+
+                        <s:SciChartSurface 
+                            Name="Y1_Magnitude"
+                            Grid.Row="1"
+                                           Width="550"
+                                           Height="245"
+                           RenderPriority="Normal" 
+                           MaxFrameRate="25"
+                           s:ThemeManager.Theme="Oscilloscope"
+                           ClipModifierSurface="True"
+                           XAxis="{Binding XAxis1, Mode=TwoWay}" FontSize="8"
+                           >
+
+                            <!-- YAxes="{Binding ChartYAxes, Mode=TwoWay}"-->
+                            <!--<s:SciChartSurface.YAxes>
+                                <s:NumericAxis 
+                                    x:Name="DefaultAxisId"
+                                    Id="DefaultAxisId"
+                                               x:Uid="DefaultAxisId"
+                                               Visibility="Hidden">
+
+                                </s:NumericAxis>
+                                <s:NumericAxis 
+                                    x:Name="Y1_Magnitude"
+                                    Id="Y1_Magnitude"
+                                               x:Uid="Y1_Magnitude"
+                                               
+                                               AxisTitle = "Magnitude (dB)"
+                               AxisAlignment="Left"
+                               DrawMajorBands="False"
+                               DrawMinorGridLines="False"
+                               DrawMinorTicks="False"
+                               DrawMajorTicks="False"
+                               StrokeThickness="1">
+                                    <s:NumericAxis.GrowBy>
+                                        <s:DoubleRange Max="0.2" Min="0.2"/>
+                                    </s:NumericAxis.GrowBy>
+                                    <s:NumericAxis.AnimatedVisibleRange>
+                                        <s:DoubleRange Max="50" Min="-20"/>
+                                    </s:NumericAxis.AnimatedVisibleRange>
+                                </s:NumericAxis>
+
+                                <s:NumericAxis x:Name="Y2_Phase"
+                                    x:Uid="Y2_Phase"
+                                               Id="Y2_Phase"
+                                               AxisTitle = "Phase (Degree)"
+                               AxisAlignment="Right"
+                               DrawMajorBands="False"
+                               DrawMinorGridLines="False"
+                               DrawMinorTicks="False"
+                               DrawMajorTicks="False"
+                               StrokeThickness="1">
+                                    <s:NumericAxis.GrowBy>
+                                        <s:DoubleRange Max="0.2" Min="0.2"/>
+                                    </s:NumericAxis.GrowBy>
+                                    <s:NumericAxis.AnimatedVisibleRange>
+                                        <s:DoubleRange Max="200" Min="-200"/>
+                                    </s:NumericAxis.AnimatedVisibleRange>
+                                </s:NumericAxis>
+                            </s:SciChartSurface.YAxes>-->
+                            <s:SciChartSurface.YAxis>
+                                <s:NumericAxis                                               
+                                               AxisTitle = "Magnitude (dB)"
+                               AxisAlignment="Left"
+                               DrawMajorBands="False"
+                               DrawMinorGridLines="False"
+                               DrawMinorTicks="False"
+                               DrawMajorTicks="False"
+                               StrokeThickness="1"
+                                    AnimatedVisibleRange="{Binding MagVisibleRange, Mode=TwoWay}">
+                                    <s:NumericAxis.GrowBy>
+                                        <s:DoubleRange Max="0.2" Min="0.2"/>
+                                    </s:NumericAxis.GrowBy>
+                                    <!--<s:NumericAxis.AnimatedVisibleRange>
+                                        <s:DoubleRange Max="20" Min="-50"/>
+                                    </s:NumericAxis.AnimatedVisibleRange>-->
+                                </s:NumericAxis>
+                            </s:SciChartSurface.YAxis>
+                            <s:SciChartSurface.RenderableSeries>
+                                <s:FastLineRenderableSeries DataSeries="{Binding ChartData}"
+                                            SeriesColor="Yellow"
+                                            AntiAliasing="False"
+                                            IsDigitalLine="False"
+                                            ResamplingMode="MinMax"
+                                            StrokeThickness="1"
+                                            Style="{StaticResource LineSeriesStyle}">
+                                    <s:FastLineRenderableSeries.PointMarker>
+                                        <s:EllipsePointMarker Width="5" Height="5" Fill="{Binding SeriesColor}"/>
+                                    </s:FastLineRenderableSeries.PointMarker>
+                                </s:FastLineRenderableSeries>
+                            </s:SciChartSurface.RenderableSeries>
+
+                            <!--Create ChartModifiers, which are enabled or disabled from the ViewModel via the ChartModifier property and IsModifierTypeConverter-->
+                            <s:SciChartSurface.ChartModifier>
+                                <s:ModifierGroup>
+                                    <s:CursorModifier AxisLabelTemplate="{StaticResource CursorAxisLabelTemplate}" 
+                                                      IsEnabled="{Binding ChartModifier, ConverterParameter=CrosshairsCursor, Converter={StaticResource IsModifierTypeConverter}, Mode=TwoWay}" />
+                                    <s:RubberBandXyZoomModifier IsEnabled="True" IsXAxisOnly="False" ZoomExtentsY="False" IsAnimated="True"/>
+                                    <s:ZoomExtentsModifier/>
+                                </s:ModifierGroup>
+                            </s:SciChartSurface.ChartModifier>
+                        </s:SciChartSurface>
+                        <s:SciChartSurface 
+                           Name="Y2_Phase"
+                            Grid.Row="3"
+                                           Width="550"
+                                           Height="245"
+                           RenderPriority="Normal" 
+                           MaxFrameRate="25"
+                           s:ThemeManager.Theme="Oscilloscope"
+                           ClipModifierSurface="True"
+                           XAxis="{Binding XAxis2, Mode=TwoWay}"
+                           >
+
+                            <!-- YAxes="{Binding ChartYAxes, Mode=TwoWay}" -->
+                            <s:SciChartSurface.YAxis>
+                                <s:NumericAxis 
+                                               AxisTitle = "Phase (Degree)"
+                               AxisAlignment="Left"
+                               DrawMajorBands="False"
+                               DrawMinorGridLines="False"
+                               DrawMinorTicks="False"
+                               DrawMajorTicks="False"
+                               StrokeThickness="1"
+                                    AnimatedVisibleRange="{Binding PhaseVisibleRange, Mode=TwoWay}">
+                                    <s:NumericAxis.GrowBy>
+                                        <s:DoubleRange Max="0.2" Min="0.2"/>
+                                    </s:NumericAxis.GrowBy>
+                                    <!--<s:NumericAxis.AnimatedVisibleRange>
+                                        <s:DoubleRange Max="20" Min="-180"/>
+                                    </s:NumericAxis.AnimatedVisibleRange>-->
+                                </s:NumericAxis>
+                            </s:SciChartSurface.YAxis>
+                            <s:SciChartSurface.RenderableSeries>
+                                <s:FastLineRenderableSeries DataSeries="{Binding ChartData1}"
+                                            SeriesColor="CornflowerBlue"
+                                            AntiAliasing="False"
+                                            IsDigitalLine="False"
+                                            ResamplingMode="MinMax"
+                                            StrokeThickness="1"
+                                            Style="{StaticResource LineSeriesStyle}">
+                                    <s:FastLineRenderableSeries.PointMarker>
+                                        <s:EllipsePointMarker Width="5" Height="5" Fill="{Binding SeriesColor}"/>
+                                    </s:FastLineRenderableSeries.PointMarker>
+                                </s:FastLineRenderableSeries>
+                            </s:SciChartSurface.RenderableSeries>
+
+                            <!--Create ChartModifiers, which are enabled or disabled from the ViewModel via the ChartModifier property and IsModifierTypeConverter-->
+                            <s:SciChartSurface.ChartModifier>
+                                <s:ModifierGroup>
+                                    <s:XAxisDragModifier />
+                                    <s:CursorModifier AxisLabelTemplate="{StaticResource CursorAxisLabelTemplate}" 
+                                                      IsEnabled="{Binding ChartModifier, ConverterParameter=CrosshairsCursor, Converter={StaticResource IsModifierTypeConverter}, Mode=TwoWay}" />
+                                    <s:RubberBandXyZoomModifier IsEnabled="True" IsXAxisOnly="False" ZoomExtentsY="False" IsAnimated="True"/>
+                                    <s:ZoomExtentsModifier/>
+                                </s:ModifierGroup>
+                            </s:SciChartSurface.ChartModifier>
+                        </s:SciChartSurface>
+                    </Grid>
+                    <Grid Grid.Column="3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="15"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition Height="auto"/>
+                        </Grid.RowDefinitions>
+                        <Border Grid.Row="0" BorderBrush="Gray" BorderThickness="1" CornerRadius="3" Width="230" HorizontalAlignment="Left">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+
+                                <TextBlock Grid.Row="0" Width="230" Text="Graph tools palette" Foreground="White" Background="Gray" HorizontalAlignment="Left"/>
+                                <Grid Grid.Row="1" HorizontalAlignment="Center">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="1"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="1"/>
+                                        <ColumnDefinition Width="auto"/>
+                                        <ColumnDefinition Width="auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Button Grid.Column="1" Width="75"
+                                                  Style="{StaticResource ExampleToolbarButtonStyle}" 
+                                                  Command="{Binding SaveBodeToExcel}" 
+                                            BorderThickness="0.5" 
+                                                 VerticalAlignment="Center">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Margin="3" FontSize="12">Save to Excel</TextBlock>
+                                        </StackPanel>
+                                    </Button>
+                                    <Line Grid.Column="3" Margin="2,2" Stroke="#FFD6D5D5" Y2="16" VerticalAlignment="Center" Fill="#FFC1C1C1"/>
+                                    <Button Grid.Column="5" Width="70"  
+                                            Command="{Binding ResetZoomBode}" 
+                                            Style="{StaticResource ExampleToolbarButtonStyle}" 
+                                            VerticalAlignment="Center" BorderThickness="0.5">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Margin="3" Text="Reset Zoom" FontSize="12"/>
+                                        </StackPanel>
+                                    </Button>
+                                    <Button Grid.Column="6" Width="65"  
+                                            Command="{Binding AutoScaleBode}" 
+                                            Style="{StaticResource ExampleToolbarButtonStyle}" 
+                                            VerticalAlignment="Center" BorderThickness="0.5">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Margin="3" Text="Auto Scale" FontSize="12"/>
+                                        </StackPanel>
+                                    </Button>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                        <Border Grid.Row="2" BorderBrush="Gray" BorderThickness="1" CornerRadius="3" Width="230" HorizontalAlignment="Center">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="0"/>
+                                    <RowDefinition Height="28"/>
+                                    <RowDefinition Height="0"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="5"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Width="230" Text="Parameters" Foreground="White" Background="Gray" HorizontalAlignment="Left" Margin="0,0,-1,0"/>
+                                <Grid Grid.Row="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="5"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="  Bode Operation" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    <wpfSpark:ToggleSwitch Grid.Column="2" Width="55" Height="25" HorizontalAlignment="Right" VerticalAlignment="Center" 
+                                                    FontSize="9" UncheckedText="Start" CheckedText="Stop"
+                                                    IsChecked="{Binding BodeStartStop, Mode=TwoWay}"/>
+                                    <Helpers:RoundBoolLed Grid.Column="4" Width="10" Height="10" VerticalAlignment="Stretch">
+                                        <Helpers:RoundBoolLed.Style>
+                                            <Style TargetType="Helpers:RoundBoolLed">
+                                                <Setter Property="CurrStatus" Value="0" />
+                                                <Style.Triggers>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding BodeStartStop}" Value="True" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <MultiDataTrigger.Setters>
+                                                            <Setter Property="CurrStatus" Value="4" />
+                                                        </MultiDataTrigger.Setters>
+                                                    </MultiDataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Helpers:RoundBoolLed.Style>
+                                    </Helpers:RoundBoolLed>
+                                </Grid>
+                                <Grid Grid.Row="3"/>
+                                <Grid Grid.Row="4">
+                                    <ItemsControl ItemsSource="{Binding DataBodeList}" ItemTemplate="{StaticResource DataViewModel}" />
+                                </Grid>
+                                <Grid Grid.Row="5">
+                                    <ItemsControl ItemsSource="{Binding EnumBodeList}" ItemTemplate="{StaticResource EnumViewModel}" />
+                                </Grid>
+                                <Grid Grid.Row="6"/>
+                                <Grid Grid.Row="7" HorizontalAlignment="Center" Height="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="5"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="1">
+                                        <TextBlock Height="22" Foreground="White" Text="Mag. Gain" Background="#82F7E31D" FontSize="12"/>
+                                    </Border>
+                                    <Border Grid.Column="1" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="1">
+                                        <TextBox Width="25" Text="{Binding Ch1Gain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="22" BorderThickness="0" >
+                                            <i:Interaction.Behaviors>
+                                                <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
+                                            </i:Interaction.Behaviors>
+                                        </TextBox>
+                                    </Border>
+                                    <Border Grid.Column="3" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="1">
+                                        <TextBlock Height="22" Foreground="White" Text="Phase Gain" Background="#7F1810D4" FontSize="12"/>
+                                    </Border>
+                                    <Border Grid.Column="4" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="1">
+                                        <TextBox Width="25" Text="{Binding Ch2Gain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="22" BorderThickness="0" >
+                                            <i:Interaction.Behaviors>
+                                                <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
+                                            </i:Interaction.Behaviors>
+                                        </TextBox>
+                                    </Border>
+                                </Grid>
+                            </Grid>
+                        </Border>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Maintenance" TabIndex="8" DataContext="{Binding MaintenanceViewModel}" Background="Black" Foreground="White" >
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -531,7 +848,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Debug" TabIndex="8" DataContext="{Binding DebugViewModel}" Background="Black" Foreground="White" >
+            <TabItem Header="Debug" TabIndex="9" DataContext="{Binding DebugViewModel}" Background="Black" Foreground="White" >
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -799,287 +1116,6 @@
                             Grid.Column="0">
                             <TextBlock Text="Clear All" VerticalAlignment="Center" Margin="0,-2,0,0"/>
                         </Button>
-                    </Grid>
-                </Grid>
-            </TabItem>
-            <TabItem Header="Bode" TabIndex="9" DataContext="{Binding BodeViewModel}" Background="Black" Foreground="White" >
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="5"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="5"/>
-                        <ColumnDefinition Width="230"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="1">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="0"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="1"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <!--http://support.scichart.com/index.php?/Knowledgebase/Article/View/17227/36/performance-tips-and-tricks-->
-
-                        <s:SciChartSurface 
-                            Name="Y1_Magnitude"
-                            Grid.Row="1"
-                                           Width="550"
-                                           Height="245"
-                           RenderPriority="Normal" 
-                           MaxFrameRate="25"
-                           s:ThemeManager.Theme="Oscilloscope"
-                           ClipModifierSurface="True"
-                           XAxis="{Binding XAxis1, Mode=TwoWay}" FontSize="8"
-                           >
-
-                            <!-- YAxes="{Binding ChartYAxes, Mode=TwoWay}"-->
-                            <!--<s:SciChartSurface.YAxes>
-                                <s:NumericAxis 
-                                    x:Name="DefaultAxisId"
-                                    Id="DefaultAxisId"
-                                               x:Uid="DefaultAxisId"
-                                               Visibility="Hidden">
-
-                                </s:NumericAxis>
-                                <s:NumericAxis 
-                                    x:Name="Y1_Magnitude"
-                                    Id="Y1_Magnitude"
-                                               x:Uid="Y1_Magnitude"
-                                               
-                                               AxisTitle = "Magnitude (dB)"
-                               AxisAlignment="Left"
-                               DrawMajorBands="False"
-                               DrawMinorGridLines="False"
-                               DrawMinorTicks="False"
-                               DrawMajorTicks="False"
-                               StrokeThickness="1">
-                                    <s:NumericAxis.GrowBy>
-                                        <s:DoubleRange Max="0.2" Min="0.2"/>
-                                    </s:NumericAxis.GrowBy>
-                                    <s:NumericAxis.AnimatedVisibleRange>
-                                        <s:DoubleRange Max="50" Min="-20"/>
-                                    </s:NumericAxis.AnimatedVisibleRange>
-                                </s:NumericAxis>
-
-                                <s:NumericAxis x:Name="Y2_Phase"
-                                    x:Uid="Y2_Phase"
-                                               Id="Y2_Phase"
-                                               AxisTitle = "Phase (Degree)"
-                               AxisAlignment="Right"
-                               DrawMajorBands="False"
-                               DrawMinorGridLines="False"
-                               DrawMinorTicks="False"
-                               DrawMajorTicks="False"
-                               StrokeThickness="1">
-                                    <s:NumericAxis.GrowBy>
-                                        <s:DoubleRange Max="0.2" Min="0.2"/>
-                                    </s:NumericAxis.GrowBy>
-                                    <s:NumericAxis.AnimatedVisibleRange>
-                                        <s:DoubleRange Max="200" Min="-200"/>
-                                    </s:NumericAxis.AnimatedVisibleRange>
-                                </s:NumericAxis>
-                            </s:SciChartSurface.YAxes>-->
-                            <s:SciChartSurface.YAxis>
-                                <s:NumericAxis                                               
-                                               AxisTitle = "Magnitude (dB)"
-                               AxisAlignment="Left"
-                               DrawMajorBands="False"
-                               DrawMinorGridLines="False"
-                               DrawMinorTicks="False"
-                               DrawMajorTicks="False"
-                               StrokeThickness="1">
-                                    <s:NumericAxis.GrowBy>
-                                        <s:DoubleRange Max="0.2" Min="0.2"/>
-                                    </s:NumericAxis.GrowBy>
-                                    <s:NumericAxis.AnimatedVisibleRange>
-                                        <s:DoubleRange Max="20" Min="-50"/>
-                                    </s:NumericAxis.AnimatedVisibleRange>
-                                </s:NumericAxis>
-                            </s:SciChartSurface.YAxis>
-                            <s:SciChartSurface.RenderableSeries>
-                                <s:FastLineRenderableSeries DataSeries="{Binding ChartData}"
-                                            SeriesColor="Yellow"
-                                            AntiAliasing="False"
-                                            IsDigitalLine="False"
-                                            ResamplingMode="MinMax"
-                                            StrokeThickness="1"
-                                            Style="{StaticResource LineSeriesStyle}">
-                                    <s:FastLineRenderableSeries.PointMarker>
-                                        <s:EllipsePointMarker Width="5" Height="5" Fill="{Binding SeriesColor}"/>
-                                    </s:FastLineRenderableSeries.PointMarker>
-                                </s:FastLineRenderableSeries>
-                            </s:SciChartSurface.RenderableSeries>
-
-                            <!--Create ChartModifiers, which are enabled or disabled from the ViewModel via the ChartModifier property and IsModifierTypeConverter-->
-                            <s:SciChartSurface.ChartModifier>
-                                <s:ModifierGroup>
-                                    <s:CursorModifier AxisLabelTemplate="{StaticResource CursorAxisLabelTemplate}" 
-                                                      IsEnabled="{Binding ChartModifier, ConverterParameter=CrosshairsCursor, Converter={StaticResource IsModifierTypeConverter}, Mode=TwoWay}" />
-                                    <s:RubberBandXyZoomModifier IsEnabled="True" IsXAxisOnly="False" ZoomExtentsY="False" IsAnimated="True"/>
-                                    <s:ZoomExtentsModifier/>
-                                </s:ModifierGroup>
-                            </s:SciChartSurface.ChartModifier>
-                        </s:SciChartSurface>
-                        <s:SciChartSurface 
-                           Name="Y2_Phase"
-                            Grid.Row="3"
-                                           Width="550"
-                                           Height="245"
-                           RenderPriority="Normal" 
-                           MaxFrameRate="25"
-                           s:ThemeManager.Theme="Oscilloscope"
-                           ClipModifierSurface="True"
-                           XAxis="{Binding XAxis2, Mode=TwoWay}"
-                           >
-
-                            <!-- YAxes="{Binding ChartYAxes, Mode=TwoWay}" -->
-                            <s:SciChartSurface.YAxis>
-                                <s:NumericAxis 
-                                               AxisTitle = "Phase (Degree)"
-                               AxisAlignment="Left"
-                               DrawMajorBands="False"
-                               DrawMinorGridLines="False"
-                               DrawMinorTicks="False"
-                               DrawMajorTicks="False"
-                               StrokeThickness="1">
-                                    <s:NumericAxis.GrowBy>
-                                        <s:DoubleRange Max="0.2" Min="0.2"/>
-                                    </s:NumericAxis.GrowBy>
-                                    <s:NumericAxis.AnimatedVisibleRange>
-                                        <s:DoubleRange Max="20" Min="-180"/>
-                                    </s:NumericAxis.AnimatedVisibleRange>
-                                </s:NumericAxis>
-                            </s:SciChartSurface.YAxis>
-                            <s:SciChartSurface.RenderableSeries>
-                                <s:FastLineRenderableSeries DataSeries="{Binding ChartData1}"
-                                            SeriesColor="CornflowerBlue"
-                                            AntiAliasing="False"
-                                            IsDigitalLine="False"
-                                            ResamplingMode="MinMax"
-                                            StrokeThickness="1"
-                                            Style="{StaticResource LineSeriesStyle}">
-                                    <s:FastLineRenderableSeries.PointMarker>
-                                        <s:EllipsePointMarker Width="5" Height="5" Fill="{Binding SeriesColor}"/>
-                                    </s:FastLineRenderableSeries.PointMarker>
-                                </s:FastLineRenderableSeries>
-                            </s:SciChartSurface.RenderableSeries>
-
-                            <!--Create ChartModifiers, which are enabled or disabled from the ViewModel via the ChartModifier property and IsModifierTypeConverter-->
-                            <s:SciChartSurface.ChartModifier>
-                                <s:ModifierGroup>
-                                    <s:CursorModifier AxisLabelTemplate="{StaticResource CursorAxisLabelTemplate}" 
-                                                      IsEnabled="{Binding ChartModifier, ConverterParameter=CrosshairsCursor, Converter={StaticResource IsModifierTypeConverter}, Mode=TwoWay}" />
-                                    <s:RubberBandXyZoomModifier IsEnabled="True" IsXAxisOnly="False" ZoomExtentsY="False" IsAnimated="True"/>
-                                    <s:ZoomExtentsModifier/>
-                                </s:ModifierGroup>
-                            </s:SciChartSurface.ChartModifier>
-                        </s:SciChartSurface>
-                    </Grid>
-                    <Grid Grid.Column="3">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="5"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="5"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
-                        <Border Grid.Row="0" BorderBrush="Gray" BorderThickness="1" CornerRadius="3" Width="230" HorizontalAlignment="Left">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="5"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="5"/>
-                                    <RowDefinition Height="auto"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Width="230" Text="Graph tools palette" Foreground="White" Background="Gray" HorizontalAlignment="Left"/>
-
-                            </Grid>
-                        </Border>
-                        <Border Grid.Row="2" BorderBrush="Gray" BorderThickness="1" CornerRadius="3" Width="230" HorizontalAlignment="Center">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="0"/>
-                                    <RowDefinition Height="28"/>
-                                    <RowDefinition Height="0"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="5"/>
-                                    <RowDefinition Height="auto"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Width="230" Text="Parameters" Foreground="White" Background="Gray" HorizontalAlignment="Left" Margin="0,0,-1,0"/>
-                                <Grid Grid.Row="2">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="60"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="5"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="  Bode Operation" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                    <wpfSpark:ToggleSwitch Grid.Column="2" Width="55" Height="25" HorizontalAlignment="Right" VerticalAlignment="Center" 
-                                                    FontSize="9" UncheckedText="Start" CheckedText="Stop"
-                                                    IsChecked="{Binding BodeStartStop, Mode=TwoWay}"/>
-                                    <Helpers:RoundBoolLed Grid.Column="4" Width="10" Height="10" VerticalAlignment="Stretch">
-                                        <Helpers:RoundBoolLed.Style>
-                                            <Style TargetType="Helpers:RoundBoolLed">
-                                                <Setter Property="CurrStatus" Value="0" />
-                                                <Style.Triggers>
-                                                    <MultiDataTrigger>
-                                                        <MultiDataTrigger.Conditions>
-                                                            <Condition Binding="{Binding BodeStartStop}" Value="True" />
-                                                        </MultiDataTrigger.Conditions>
-                                                        <MultiDataTrigger.Setters>
-                                                            <Setter Property="CurrStatus" Value="4" />
-                                                        </MultiDataTrigger.Setters>
-                                                    </MultiDataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Helpers:RoundBoolLed.Style>
-                                    </Helpers:RoundBoolLed>
-                                </Grid>
-                                <Grid Grid.Row="3"/>
-                                <Grid Grid.Row="4">
-                                    <ItemsControl ItemsSource="{Binding DataBodeList}" ItemTemplate="{StaticResource DataViewModel}" />
-                                </Grid>
-                                <Grid Grid.Row="5">
-                                    <ItemsControl ItemsSource="{Binding EnumBodeList}" ItemTemplate="{StaticResource EnumViewModel}" />
-                                </Grid>
-                                <Grid Grid.Row="6"/>
-                                <Grid Grid.Row="7" HorizontalAlignment="Center" Height="0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="5"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Border Grid.Column="0" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="1">
-                                        <TextBlock Height="22" Foreground="White" Text="Mag. Gain" Background="#82F7E31D" FontSize="12"/>
-                                    </Border>
-                                    <Border Grid.Column="1" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="1">
-                                        <TextBox Width="25" Text="{Binding Ch1Gain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="22" BorderThickness="0" >
-                                            <i:Interaction.Behaviors>
-                                                <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
-                                            </i:Interaction.Behaviors>
-                                        </TextBox>
-                                    </Border>
-                                    <Border Grid.Column="3" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="1">
-                                        <TextBlock Height="22" Foreground="White" Text="Phase Gain" Background="#7F1810D4" FontSize="12"/>
-                                    </Border>
-                                    <Border Grid.Column="4" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="1">
-                                        <TextBox Width="25" Text="{Binding Ch2Gain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="22" BorderThickness="0" >
-                                            <i:Interaction.Behaviors>
-                                                <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
-                                            </i:Interaction.Behaviors>
-                                        </TextBox>
-                                    </Border>
-                                </Grid>
-                            </Grid>
-                        </Border>
                     </Grid>
                 </Grid>
             </TabItem>

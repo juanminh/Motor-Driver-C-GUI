@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace SuperButton.ViewModels
 {
-    enum eTab
+    enum eTab // = tabIndex - 1
     {
         CONTROL = 0,
         FEED_BACKS = 1,
@@ -16,9 +16,9 @@ namespace SuperButton.ViewModels
         DEVICE = 3,
         I_O = 4,
         CALIBRATION = 5,
-        MAINTENANCE = 6,
-        DEBUG = 7,
-        BODE = 8
+        BODE = 6,
+        MAINTENANCE = 7,
+        DEBUG = 8
     };
     internal class ParametarsWindowViewModel : ViewModelBase
     {

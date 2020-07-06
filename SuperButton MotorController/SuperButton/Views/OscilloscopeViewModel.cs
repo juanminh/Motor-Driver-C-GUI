@@ -1119,7 +1119,6 @@ namespace SuperButton.Views
                 OnPropertyChanged("ChartData1");
             }
         }
-
         public void ResetZoom()
         {
             try
