@@ -23,6 +23,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
+using System.Windows.Threading;
 using Timer = System.Timers.Timer;
 
 namespace SuperButton.ViewModels
@@ -55,7 +56,6 @@ namespace SuperButton.ViewModels
             ChartData = new XyDataSeries<float, float>();
             ChartData1 = new XyDataSeries<float, float>();
             InitializeAxes();
-
             //Load();
         }
 
@@ -69,6 +69,8 @@ namespace SuperButton.ViewModels
             }
             set
             {
+                if(!LeftPanelViewModel._app_running)
+                    return;
                 _bodeStartStop = value;
 
                 // get call stack
@@ -91,10 +93,7 @@ namespace SuperButton.ViewModels
                         X_List.Clear();
                         Y1_List.Clear();
                         Y2_List.Clear();
-                        //if(!String.IsNullOrEmpty(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue) &&
-                        //    !String.IsNullOrEmpty(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue))
-                        //    XAxisDoubleRange = new DoubleRange(Convert.ToInt32(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue), Convert.ToInt32(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue));
-
+                        
                         OnBodeStart();
                     }
                     else
@@ -164,7 +163,7 @@ namespace SuperButton.ViewModels
                 OnPropertyChanged("MagVisibleRange");
             }
         }
-        private DoubleRange _phaseVisibleRange = new DoubleRange(-200, 200);
+        private DoubleRange _phaseVisibleRange = new DoubleRange(-200, 20);
         public DoubleRange PhaseVisibleRange
         {
             get { return _phaseVisibleRange; }
@@ -177,16 +176,20 @@ namespace SuperButton.ViewModels
         [STAThread]
         private void InitializeAxes()
         {
+            AutoRange _xAutorange = AutoRange.Never;
+            if(BodeStartStop)
+                _xAutorange = AutoRange.Always;
+
             lock(_lockAxes)
             {
                 _xAxisLog = new LogarithmicNumericAxis
                 {
-                    TextFormatting = "#0.#",
+                    TextFormatting = "#0.00#",
                     ScientificNotation = ScientificNotation.Normalized,
                     VisibleRange = _xAxisDoubleRange,
                     GrowBy = new DoubleRange(0.1, 0.1),
                     DrawMajorBands = false,
-                    //AutoRange = AutoRange.Always,
+                    AutoRange = _xAutorange,
                     //AxisTitle = "Time (ms)",
                     DrawMinorGridLines = true,
                     DrawMajorTicks = true,
@@ -198,12 +201,12 @@ namespace SuperButton.ViewModels
                 XAxis1 = _xAxisLog;
                 _xAxisLog = new LogarithmicNumericAxis
                 {
-                    TextFormatting = "#0.#",
+                    TextFormatting = "#0.00#",
                     ScientificNotation = ScientificNotation.Normalized,
                     VisibleRange = _xAxisDoubleRange,
                     GrowBy = new DoubleRange(0.1, 0.1),
                     DrawMajorBands = false,
-                    //AutoRange = AutoRange.Always,
+                    AutoRange = _xAutorange,
                     //AxisTitle = "Time (ms)",
                     DrawMinorGridLines = true,
                     DrawMajorTicks = true,
@@ -215,16 +218,17 @@ namespace SuperButton.ViewModels
                 XAxis2 = _xAxisLog;
                 MagVisibleRange = _magVisibleRange;
                 PhaseVisibleRange = _phaseVisibleRange;
-                //Load();
+            }
+            //Load();
 
-                //_yAxisLog = new LogarithmicNumericAxis
-                //{
-                //    TextFormatting = "#.#E+0",
-                //    ScientificNotation = ScientificNotation.LogarithmicBase,
-                //    AxisAlignment = AxisAlignment.Left,
-                //    GrowBy = new DoubleRange(0.1, 0.1),
-                //    DrawMajorBands = false
-                //};
+            //_yAxisLog = new LogarithmicNumericAxis
+            //{
+            //    TextFormatting = "#.#E+0",
+            //    ScientificNotation = ScientificNotation.LogarithmicBase,
+            //    AxisAlignment = AxisAlignment.Left,
+            //    GrowBy = new DoubleRange(0.1, 0.1),
+            //    DrawMajorBands = false
+            //};
 #if Yaxes
                 NumericAxis Y1 = new NumericAxis()
                 {
@@ -270,8 +274,6 @@ namespace SuperButton.ViewModels
                 //ChartYAxes.Add(Y1);
                 //ChartYAxes.Add(Y2);
 #endif
-            }
-
         }
         private void Load()
         {
@@ -464,6 +466,7 @@ namespace SuperButton.ViewModels
                 }
             }
             plotSubFunction();
+
             //PlotList.Clear();
             //Debug.WriteLine("ParsePlot 2" + DateTime.Now.ToString("h:mm:ss.fff"));
         }
@@ -495,7 +498,7 @@ namespace SuperButton.ViewModels
             _excel_X_List.Clear();
             _excel_Y1_List.Clear();
             _excel_Y2_List.Clear();
-
+            ResetZoom();
             /*
             if(_timer == null)
             {
@@ -581,8 +584,13 @@ namespace SuperButton.ViewModels
             try
             {
                 _magVisibleRange = new DoubleRange(-50, 20);
-                _phaseVisibleRange = new DoubleRange(-200, 200);
-                _xAxisDoubleRange = new DoubleRange(0.6, 1000);
+                _phaseVisibleRange = new DoubleRange(-200, 20);
+                _xAxisDoubleRange = new DoubleRange(0.5, 2000);
+
+                if(!String.IsNullOrEmpty(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue) &&
+                    !String.IsNullOrEmpty(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue))
+                    _xAxisDoubleRange = new DoubleRange(Convert.ToSingle(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue), Convert.ToSingle(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue));
+
                 InitializeAxes();
             }
             catch { }
@@ -592,15 +600,29 @@ namespace SuperButton.ViewModels
         {
             get { return new ActionCommand(AutoScale); }
         }
+
         public void AutoScale()
         {
             try
             {
                 if(_excel_X_List.Count > 1 && _excel_Y2_List.Count > 1 && _excel_Y1_List.Count > 1)
                 {
-                    _xAxisDoubleRange = new DoubleRange(_excel_X_List.Min() - 0.2 * (_excel_X_List.Max() - _excel_X_List.Min()), _excel_X_List.Max() + 0.2 * (_excel_X_List.Max() - _excel_X_List.Min()));
+                    //if(!String.IsNullOrEmpty(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue) &&
+                    //    !String.IsNullOrEmpty(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue))
+                    //    _xAxisDoubleRange = new DoubleRange(Convert.ToInt32(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue), Convert.ToInt32(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue));
+
+                    _xAxisDoubleRange = new DoubleRange(/*Math.Abs*/(_excel_X_List.Min() - 0.2 * (_excel_X_List.Min())), _excel_X_List.Max() + 0.2 * (_excel_X_List.Max()));
                     _phaseVisibleRange = new DoubleRange(_excel_Y2_List.Min() - 0.2 * (_excel_Y2_List.Max() - _excel_Y2_List.Min()), _excel_Y2_List.Max() + 0.2 * (_excel_Y2_List.Max() - _excel_Y2_List.Min()));
-                    _magVisibleRange = new DoubleRange(_excel_Y1_List.Min() - 0.2 * (_excel_Y1_List.Max() - _excel_Y1_List.Min()), _excel_Y1_List.Max() + 0.2 * (_excel_Y1_List.Max() - _excel_Y1_List.Min()));
+                    if(_excel_Y1_List.Min() != _excel_Y1_List.Max())
+                        _magVisibleRange = new DoubleRange(_excel_Y1_List.Min() - 0.2 * (_excel_Y1_List.Max() - _excel_Y1_List.Min()), _excel_Y1_List.Max() + 0.2 * (_excel_Y1_List.Max() - _excel_Y1_List.Min()));
+                    else
+                    {
+                        if(_excel_Y1_List.Min() < 0 && _excel_Y1_List.Max() < 0)
+                            _magVisibleRange = new DoubleRange(_excel_Y1_List.Min() + 0.2 * (_excel_Y1_List.Min()), _excel_Y1_List.Max() - 0.2 * (_excel_Y1_List.Max()));
+                        else
+                            _magVisibleRange = new DoubleRange(_excel_Y1_List.Min() - 0.2 * (_excel_Y1_List.Min()), _excel_Y1_List.Max() + 0.2 * (_excel_Y1_List.Max()));
+
+                    }
                     InitializeAxes();
                 }
             }

@@ -488,6 +488,8 @@
                                                       IsEnabled="{Binding ChartModifier, ConverterParameter=CrosshairsCursor, Converter={StaticResource IsModifierTypeConverter}, Mode=TwoWay}" />
                                     <s:RubberBandXyZoomModifier IsEnabled="True" IsXAxisOnly="False" ZoomExtentsY="False" IsAnimated="True"/>
                                     <s:ZoomExtentsModifier/>
+                                    <s:XAxisDragModifier/>
+                                    <s:YAxisDragModifier />
                                 </s:ModifierGroup>
                             </s:SciChartSurface.ChartModifier>
                         </s:SciChartSurface>
@@ -540,6 +542,7 @@
                             <s:SciChartSurface.ChartModifier>
                                 <s:ModifierGroup>
                                     <s:XAxisDragModifier />
+                                    <s:YAxisDragModifier />
                                     <s:CursorModifier AxisLabelTemplate="{StaticResource CursorAxisLabelTemplate}" 
                                                       IsEnabled="{Binding ChartModifier, ConverterParameter=CrosshairsCursor, Converter={StaticResource IsModifierTypeConverter}, Mode=TwoWay}" />
                                     <s:RubberBandXyZoomModifier IsEnabled="True" IsXAxisOnly="False" ZoomExtentsY="False" IsAnimated="True"/>

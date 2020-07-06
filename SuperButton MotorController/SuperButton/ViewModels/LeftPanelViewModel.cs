@@ -185,7 +185,7 @@ namespace SuperButton.ViewModels
                 });
                 Thread.Sleep(50);
             }
-
+            
             #endregion  Operations
 
             int timeOutReadParam = 0;
@@ -194,8 +194,25 @@ namespace SuperButton.ViewModels
                 Thread.Sleep(100);
                 timeOutReadParam++;
             } while(StarterOperationFlag && timeOutReadParam <= 20);
-
-            if(StarterCount == param.Length)
+            int _freqCount = 0;
+            if(!String.IsNullOrEmpty(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(62, 3)].CommandValue))
+                if(Convert.ToInt32(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(62, 3)].CommandValue) > 20257)
+                {
+                    StarterOperationFlag = true;
+                    // Get Frequency 
+                    Rs232Interface.GetInstance.SendToParser(new PacketFields 
+                    {
+                        Data2Send = "",
+                        ID = 34,
+                        SubID = 2,
+                        IsSet = false,
+                        IsFloat = false
+                    });
+                    EventRiser.Instance.RiseEevent(string.Format($"Read Plot Freq..."));
+                    _freqCount = 1;
+                }
+            Thread.Sleep(100);
+            if(StarterCount == param.Length + _freqCount)
                 EventRiser.Instance.RiseEevent(string.Format($"Connected successfully with unit"));
             else
             {

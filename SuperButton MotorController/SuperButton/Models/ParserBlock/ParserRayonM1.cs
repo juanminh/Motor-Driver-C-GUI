@@ -489,7 +489,7 @@ namespace SuperButton.Models.ParserBlock
                 mre.Set();
             }
         }
-        
+
         public static byte[] DebugData = { };
         public bool ParseInputPacket(byte[] data)
         {
@@ -710,7 +710,7 @@ namespace SuperButton.Models.ParserBlock
                         });
                     }
                 }
-                else if(commandId == 34 && LeftPanelViewModel.GetInstance.StarterPlotFlag)
+                else if(commandId == 34 && LeftPanelViewModel.GetInstance.StarterPlotFlag && commandSubId != 2)
                 {
                     EventRiser.Instance.RiseEevent(string.Format($"Reading plots..."));
                     OscilloscopeParameters.plotCount_temp = transit;
@@ -737,9 +737,13 @@ namespace SuperButton.Models.ParserBlock
                     else
                         LeftPanelViewModel.GetInstance.StarterPlotFlag = false;
                 }
-                else if(commandId == 65 && commandSubId == 0)
+                else if(commandId == 34 && commandSubId == 2)
                 {
-
+                    OscilloscopeParameters.SingleChanelFreqC = Convert.ToSingle(transit);
+                    OscilloscopeParameters.ChanelFreq = OscilloscopeParameters.SingleChanelFreqC;
+                    OscilloscopeParameters.Step = 1 / OscilloscopeParameters.SingleChanelFreqC;
+                    LeftPanelViewModel.GetInstance.StarterCount += 1;
+                    LeftPanelViewModel.GetInstance.StarterOperationFlag = false;
                 }
                 else
                 {   // Error ID 100
@@ -805,7 +809,7 @@ namespace SuperButton.Models.ParserBlock
             //Debug.WriteLine("ParsePlot 1" + DateTime.Now.ToString("h:mm:ss.fff"));
             string plotType_ch1 = "", plotType_ch2 = "";
             if(OscilloscopeParameters.plotType_ls.Count != 0)
-            { 
+            {
                 plotType_ch1 = OscilloscopeParameters.plotType_ls.ElementAt(OscilloscopeViewModel.GetInstance.Ch1SelectedIndex);
                 plotType_ch2 = OscilloscopeParameters.plotType_ls.ElementAt(OscilloscopeViewModel.GetInstance.Ch2SelectedIndex);
 
