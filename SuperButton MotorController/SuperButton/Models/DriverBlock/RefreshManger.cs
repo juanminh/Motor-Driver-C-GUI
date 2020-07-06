@@ -240,7 +240,8 @@ namespace SuperButton.Models.DriverBlock
                             arr = new string[] { "Calibration Result List", "Calibration List" };
                         break;
                     case (int)eTab.BODE:
-                        arr = new string[] { "BodeList" };
+                        arr = new string[] { "DataBodeList", "BodeListBackGround", "EnumBodeList" };
+
                         break;
                     //case 8:
                     //    arr = new string[] { "AnalogCommand List" };

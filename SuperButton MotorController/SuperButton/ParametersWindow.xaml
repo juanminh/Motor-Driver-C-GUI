@@ -15,7 +15,7 @@
         xmlns:UserControl="clr-namespace:SuperButton.Views"
         xmlns:Helpers="clr-namespace:SuperButton.Helpers"
         ResizeMode="CanMinimize"
-        Title="Driver Parameters" Height="500" Width="900"
+        Title="Driver Parameters" Height="560" Width="810"
         Closing="Window_Closing"
         Icon="./Themes/MotorController.png"
         WindowStartupLocation="CenterOwner"
@@ -161,8 +161,6 @@
                         <ColumnDefinition Width="210"/>
                         <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="210"/>
-                        <ColumnDefinition Width="10"/>
-                        <ColumnDefinition Width="210"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
@@ -181,6 +179,8 @@
                     </Grid>
                     <Grid Grid.Column="2">
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="5"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <GroupBox Grid.Row="0" Header="Qep1">
@@ -205,12 +205,7 @@
                                 <!--</ScrollViewer>-->
                             </Grid>
                         </GroupBox>
-                    </Grid>
-                    <Grid Grid.Column="4">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <GroupBox Grid.Row="0" Header="Qep2">
+                        <GroupBox Grid.Row="2" Header="Qep2">
                             <!--<ScrollViewer VerticalScrollBarVisibility="Visible">-->
                             <Grid>
                                 <Grid.RowDefinitions>
@@ -229,7 +224,7 @@
                             <!--</ScrollViewer>-->
                         </GroupBox>
                     </Grid>
-                    <Grid Grid.Column="6">
+                    <Grid Grid.Column="4">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
@@ -813,7 +808,7 @@
                         <ColumnDefinition Width="5"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="5"/>
-                        <ColumnDefinition Width="170"/>
+                        <ColumnDefinition Width="230"/>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
@@ -828,12 +823,12 @@
                             Name="Y1_Magnitude"
                             Grid.Row="1"
                                            Width="550"
-                                           Height="220"
+                                           Height="245"
                            RenderPriority="Normal" 
                            MaxFrameRate="25"
                            s:ThemeManager.Theme="Oscilloscope"
                            ClipModifierSurface="True"
-                           XAxis="{Binding XAxis1, Mode=TwoWay}"
+                           XAxis="{Binding XAxis1, Mode=TwoWay}" FontSize="8"
                            >
 
                             <!-- YAxes="{Binding ChartYAxes, Mode=TwoWay}"-->
@@ -901,18 +896,18 @@
                                 </s:NumericAxis>
                             </s:SciChartSurface.YAxis>
                             <s:SciChartSurface.RenderableSeries>
-                                    <s:FastLineRenderableSeries DataSeries="{Binding ChartData}"
+                                <s:FastLineRenderableSeries DataSeries="{Binding ChartData}"
                                             SeriesColor="Yellow"
                                             AntiAliasing="False"
                                             IsDigitalLine="False"
                                             ResamplingMode="MinMax"
                                             StrokeThickness="1"
                                             Style="{StaticResource LineSeriesStyle}">
-                                        <s:FastLineRenderableSeries.PointMarker>
-                                            <s:EllipsePointMarker Width="5" Height="5" Fill="{Binding SeriesColor}"/>
-                                        </s:FastLineRenderableSeries.PointMarker>
-                                    </s:FastLineRenderableSeries>
-                                </s:SciChartSurface.RenderableSeries>
+                                    <s:FastLineRenderableSeries.PointMarker>
+                                        <s:EllipsePointMarker Width="5" Height="5" Fill="{Binding SeriesColor}"/>
+                                    </s:FastLineRenderableSeries.PointMarker>
+                                </s:FastLineRenderableSeries>
+                            </s:SciChartSurface.RenderableSeries>
 
                             <!--Create ChartModifiers, which are enabled or disabled from the ViewModel via the ChartModifier property and IsModifierTypeConverter-->
                             <s:SciChartSurface.ChartModifier>
@@ -928,7 +923,7 @@
                            Name="Y2_Phase"
                             Grid.Row="3"
                                            Width="550"
-                                           Height="220"
+                                           Height="245"
                            RenderPriority="Normal" 
                            MaxFrameRate="25"
                            s:ThemeManager.Theme="Oscilloscope"
@@ -984,70 +979,107 @@
                             <RowDefinition Height="auto"/>
                             <RowDefinition Height="5"/>
                             <RowDefinition Height="auto"/>
+                            <RowDefinition Height="auto"/>
                             <RowDefinition Height="5"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        <Grid Grid.Row="0" HorizontalAlignment="Center">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="5"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <wpfSpark:ToggleSwitch Grid.Column="0" Width="55" Height="26" HorizontalAlignment="Right" VerticalAlignment="Top" 
+                        <Border Grid.Row="0" BorderBrush="Gray" BorderThickness="1" CornerRadius="3" Width="230" HorizontalAlignment="Left">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="5"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="5"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Width="230" Text="Graph tools palette" Foreground="White" Background="Gray" HorizontalAlignment="Left"/>
+
+                            </Grid>
+                        </Border>
+                        <Border Grid.Row="2" BorderBrush="Gray" BorderThickness="1" CornerRadius="3" Width="230" HorizontalAlignment="Center">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="0"/>
+                                    <RowDefinition Height="28"/>
+                                    <RowDefinition Height="0"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="auto"/>
+                                    <RowDefinition Height="5"/>
+                                    <RowDefinition Height="auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Width="230" Text="Parameters" Foreground="White" Background="Gray" HorizontalAlignment="Left" Margin="0,0,-1,0"/>
+                                <Grid Grid.Row="2">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="60"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="5"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="  Bode Operation" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    <wpfSpark:ToggleSwitch Grid.Column="2" Width="55" Height="25" HorizontalAlignment="Right" VerticalAlignment="Center" 
                                                     FontSize="9" UncheckedText="Start" CheckedText="Stop"
                                                     IsChecked="{Binding BodeStartStop, Mode=TwoWay}"/>
-                            <Helpers:RoundBoolLed Grid.Column="2" Width="10" Height="10" VerticalAlignment="Stretch">
-                                <Helpers:RoundBoolLed.Style>
-                                    <Style TargetType="Helpers:RoundBoolLed">
-                                        <Setter Property="CurrStatus" Value="0" />
-                                        <Style.Triggers>
-                                            <MultiDataTrigger>
-                                                <MultiDataTrigger.Conditions>
-                                                    <Condition Binding="{Binding BodeStartStop}" Value="True" />
-                                                </MultiDataTrigger.Conditions>
-                                                <MultiDataTrigger.Setters>
-                                                    <Setter Property="CurrStatus" Value="4" />
-                                                </MultiDataTrigger.Setters>
-                                            </MultiDataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Helpers:RoundBoolLed.Style>
-                            </Helpers:RoundBoolLed>
-                        </Grid>
-                        <Grid Grid.Row="1"/>
-                        <Grid Grid.Row="2">
-                            <ItemsControl Grid.Row="1" ItemsSource="{Binding BodeList}" ItemTemplate="{StaticResource DataViewModel}" />
-                        </Grid>
-                        <Grid Grid.Row="3"/>
-                        <Grid Grid.Row="4" HorizontalAlignment="Center" Height="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="5"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Border Grid.Column="0" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="1">
-                                <TextBlock Height="22" Foreground="White" Text="Mag. Gain" Background="#82F7E31D" FontSize="12"/>
-                            </Border>
-                            <Border Grid.Column="1" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="1">
-                                <TextBox Width="25" Text="{Binding Ch1Gain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="22" BorderThickness="0" >
-                                    <i:Interaction.Behaviors>
-                                        <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
-                                    </i:Interaction.Behaviors>
-                                </TextBox>
-                            </Border>
-                            <Border Grid.Column="3" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="1">
-                                <TextBlock Height="22" Foreground="White" Text="Phase Gain" Background="#7F1810D4" FontSize="12"/>
-                            </Border>
-                            <Border Grid.Column="4" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="1">
-                                <TextBox Width="25" Text="{Binding Ch2Gain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="22" BorderThickness="0" >
-                                    <i:Interaction.Behaviors>
-                                        <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
-                                    </i:Interaction.Behaviors>
-                                </TextBox>
-                            </Border>
-                        </Grid>
+                                    <Helpers:RoundBoolLed Grid.Column="4" Width="10" Height="10" VerticalAlignment="Stretch">
+                                        <Helpers:RoundBoolLed.Style>
+                                            <Style TargetType="Helpers:RoundBoolLed">
+                                                <Setter Property="CurrStatus" Value="0" />
+                                                <Style.Triggers>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding BodeStartStop}" Value="True" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <MultiDataTrigger.Setters>
+                                                            <Setter Property="CurrStatus" Value="4" />
+                                                        </MultiDataTrigger.Setters>
+                                                    </MultiDataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Helpers:RoundBoolLed.Style>
+                                    </Helpers:RoundBoolLed>
+                                </Grid>
+                                <Grid Grid.Row="3"/>
+                                <Grid Grid.Row="4">
+                                    <ItemsControl ItemsSource="{Binding DataBodeList}" ItemTemplate="{StaticResource DataViewModel}" />
+                                </Grid>
+                                <Grid Grid.Row="5">
+                                    <ItemsControl ItemsSource="{Binding EnumBodeList}" ItemTemplate="{StaticResource EnumViewModel}" />
+                                </Grid>
+                                <Grid Grid.Row="6"/>
+                                <Grid Grid.Row="7" HorizontalAlignment="Center" Height="0">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="5"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="1">
+                                        <TextBlock Height="22" Foreground="White" Text="Mag. Gain" Background="#82F7E31D" FontSize="12"/>
+                                    </Border>
+                                    <Border Grid.Column="1" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="1">
+                                        <TextBox Width="25" Text="{Binding Ch1Gain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="22" BorderThickness="0" >
+                                            <i:Interaction.Behaviors>
+                                                <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
+                                            </i:Interaction.Behaviors>
+                                        </TextBox>
+                                    </Border>
+                                    <Border Grid.Column="3" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="1">
+                                        <TextBlock Height="22" Foreground="White" Text="Phase Gain" Background="#7F1810D4" FontSize="12"/>
+                                    </Border>
+                                    <Border Grid.Column="4" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="1">
+                                        <TextBox Width="25" Text="{Binding Ch2Gain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="22" BorderThickness="0" >
+                                            <i:Interaction.Behaviors>
+                                                <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
+                                            </i:Interaction.Behaviors>
+                                        </TextBox>
+                                    </Border>
+                                </Grid>
+                            </Grid>
+                        </Border>
                     </Grid>
                 </Grid>
             </TabItem>

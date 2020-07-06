@@ -80,19 +80,22 @@ namespace SuperButton.ViewModels
                     {
                         ChartData = new XyDataSeries<float, float>();
                         ChartData1 = new XyDataSeries<float, float>();
+                        X_List.Clear();
+                        Y1_List.Clear();
+                        Y2_List.Clear();
                         //if(!String.IsNullOrEmpty(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue) &&
                         //    !String.IsNullOrEmpty(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue))
                         //    XAxisDoubleRange = new DoubleRange(Convert.ToInt32(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue), Convert.ToInt32(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue));
-                        
+
                         OnBodeStart();
                     }
                     else
                         OnBodeStop();
                 }
-                else if(!value)
-                {
-                    OnBodeStop();
-                }
+                //else if(!value)
+                //{
+                //    OnBodeStop();
+                //}
                 OnPropertyChanged();
 
             }
@@ -348,17 +351,32 @@ namespace SuperButton.ViewModels
             }
         }
 
-        private ObservableCollection<object> _bodeList;
-        public ObservableCollection<object> BodeList
+        private ObservableCollection<object> _dataBodeList;
+        public ObservableCollection<object> DataBodeList
         {
 
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["BodeList"];
+                return Commands.GetInstance.DataCommandsListbySubGroup["DataBodeList"];
             }
             set
             {
-                _bodeList = value;
+                _dataBodeList = value;
+                OnPropertyChanged();
+            }
+
+        }
+        private ObservableCollection<object> _enumBodeList;
+        public ObservableCollection<object> EnumBodeList
+        {
+
+            get
+            {
+                return Commands.GetInstance.EnumCommandsListbySubGroup["EnumBodeList"];
+            }
+            set
+            {
+                _enumBodeList = value;
                 OnPropertyChanged();
             }
 
@@ -413,6 +431,7 @@ namespace SuperButton.ViewModels
 
                 }
             }
+            plotSubFunction();
             //PlotList.Clear();
             //Debug.WriteLine("ParsePlot 2" + DateTime.Now.ToString("h:mm:ss.fff"));
         }
@@ -421,6 +440,7 @@ namespace SuperButton.ViewModels
         public static bool _chartRunning = false;
         public void OnBodeStop()
         {
+            /*
             lock(this)
             {
                 if(_timer != null)
@@ -435,14 +455,12 @@ namespace SuperButton.ViewModels
                     }
                 }
             }
+            */
         }
         // Setup start condition when the example enters
         public void OnBodeStart()
         {
-            X_List.Clear();
-            Y1_List.Clear();
-            Y2_List.Clear();
-
+            /*
             if(_timer == null)
             {
                 Task.Factory.StartNew(action: () =>
@@ -454,18 +472,23 @@ namespace SuperButton.ViewModels
                     _timer.Start();
                 });
             }
+            */
         }
         private void OnTick(object sender, EventArgs e)
         {
-            Rs232Interface.GetInstance.SendToParser(new PacketFields
-            {
-                Data2Send = "0",
-                ID = 6,
-                SubID = 15,
-                IsSet = false,
-                IsFloat = false
-            });
+            //Rs232Interface.GetInstance.SendToParser(new PacketFields
+            //{
+            //    Data2Send = "0",
+            //    ID = 6,
+            //    SubID = 15,
+            //    IsSet = false,
+            //    IsFloat = false
+            //});
 
+            plotSubFunction();
+        }
+        private void plotSubFunction()
+        {
             float item;
             while(FifoplotBodeListX.TryDequeue(out item))
             {

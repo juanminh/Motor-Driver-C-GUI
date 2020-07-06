@@ -443,7 +443,7 @@ namespace SuperButton.CommandsDB
                 "BL Stepper Sensorless"
              };
             Enums.Add("Electrical Commutation Type", tmp2);
-            
+
             var enum2 = new EnumViewModel
             {
                 CommandName = "Electrical Commutation Type",
@@ -462,7 +462,7 @@ namespace SuperButton.CommandsDB
              };
             Enums.Add("Motor Hall", tmp2);
 
-           enum2 = new EnumViewModel
+            enum2 = new EnumViewModel
             {
                 CommandName = "Motor Hall",
                 CommandId = "70",
@@ -1109,36 +1109,81 @@ namespace SuperButton.CommandsDB
         }
         private void GenerateBodeCommands()
         {
-            DataCommandsListbySubGroup.Add("BodeList", new ObservableCollection<object>());
+            DataCommandsListbySubGroup.Add("DataBodeList", new ObservableCollection<object>());
+            DataCommandsListbySubGroup.Add("BodeListBackGround", new ObservableCollection<object>());
 
-            string[] names = { "Control Loop", "F_Start", "F_End", "Amplitude", "PointsDec", "Bode Fdbck"};
+            string[] names = { "Control Loop", "Frequency Start", "Frequency End", "Amplitude", "PointsDec" };
             bool[] type = { false, true, true, true, false, false };
 
-            for(int i = 0; i < names.Length; i++)
+            for(int i = 1; i < names.Length; i++)
             {
                 var data = new DataViewModel
                 {
                     CommandName = names[i],
                     CommandId = "15",
-                    CommandSubId = (i+1).ToString(CultureInfo.InvariantCulture),
+                    CommandSubId = (i + 1).ToString(CultureInfo.InvariantCulture),
                     CommandValue = "",
                     IsFloat = type[i]
                 };
 
-                DataViewCommandsList.Add(new Tuple<int, int>(15, i+1), data);
-                DataCommandsListbySubGroup["BodeList"].Add(data);
+                DataViewCommandsList.Add(new Tuple<int, int>(15, i + 1), data);
+                DataCommandsListbySubGroup["DataBodeList"].Add(data);
             }
 
-            //var data1 = new DataViewModel
-            //{
-            //    CommandName = "Status",
-            //    CommandId = "6",
-            //    CommandSubId = (15).ToString(CultureInfo.InvariantCulture),
-            //    CommandValue = "",
-            //    IsFloat = false
-            //};
+            var data1 = new DataViewModel
+            {
+                CommandName = "Status",
+                CommandId = "6",
+                CommandSubId = (15).ToString(CultureInfo.InvariantCulture),
+                CommandValue = "",
+                IsFloat = false
+            };
             //DataViewCommandsList.Add(new Tuple<int, int>(6, 15), data1);
-            //DataCommandsListbySubGroup["BodeList"].Add(data1);
+            DataCommandsListbySubGroup["BodeListBackGround"].Add(data1);
+
+            
+            var tmp1 = new List<string>
+              {
+                  "Current Control",
+                  "Speed Control",
+                  "Position Control",
+                  "Position Speed Control",
+                  "ST Position Time Control",
+                  "ST Position Control"
+            };
+            Enums.Add("Control Loop", tmp1);
+
+            var enum1 = new EnumViewModel
+            {
+                CommandName = "Control Loop",
+                CommandId = "15",
+                CommandSubId = "1",
+                CommandList = Enums["Control Loop"],
+                CommandValue = "1",//first enum in list
+            };
+
+            EnumViewCommandsList.Add(new Tuple<int, int>(15, 1), enum1);
+            EnumCommandsListbySubGroup.Add("EnumBodeList", new ObservableCollection<object>{ enum1 });
+
+            tmp1 = new List<string>
+              {
+                "Bode Current",
+                "Bode Speed",
+                "Bode Position"
+            };
+            Enums.Add("Bode Fdbck", tmp1);
+
+            enum1 = new EnumViewModel
+            {
+                CommandName = "Bode Fdbck",
+                CommandId = "15",
+                CommandSubId = "6",
+                CommandList = Enums["Bode Fdbck"],
+                CommandValue = "0",//first enum in list
+            };
+
+            EnumViewCommandsList.Add(new Tuple<int, int>(15, 6), enum1);
+            EnumCommandsListbySubGroup["EnumBodeList"].Add(enum1);
         }
         private void GenerateMaintenanceList()
         {

@@ -55,7 +55,7 @@ namespace SuperButton.ViewModels
         Baud115200 = 115200,
         Baud230400 = 230400,
         Baud460800 = 460800,
-        Baud912600 = 912600
+        Baud921600 = 921600
     }
     public class SerialProgrammer
     {

@@ -111,7 +111,7 @@
                               Content="Set">
                 </Button>
                 <!-- Set data-->
-                <TextBox   Grid.Column="1" Width="100"
+            <TextBox   Grid.Column="1" Width="100"
                            Text="{Binding SetData,UpdateSourceTrigger=PropertyChanged}" 
                            Foreground="White" FontSize="12"
                            VerticalContentAlignment="Center">
