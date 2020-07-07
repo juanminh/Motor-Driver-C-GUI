@@ -739,12 +739,12 @@ namespace SuperButton.ViewModels
             if(!cancellationTokenCalib.IsCancellationRequested)
             {
                 int timeout = 0;
-                while(_save_cmd_success == false && timeout < 10)
+                while(_save_cmd_success == false && timeout < 20)
                 {
                     Thread.Sleep(200);
                     timeout++;
                 }
-                if(timeout >= 10)
+                if(timeout >= 20)
                 {
                     GetInstance.CalibrationWizardList[new Tuple<int, int>(6, -1)].CalibStatus = RoundBoolLed.FAILED;
                     return;

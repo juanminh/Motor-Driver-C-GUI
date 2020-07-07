@@ -177,9 +177,9 @@ namespace SuperButton.ViewModels
         private void InitializeAxes()
         {
             AutoRange _xAutorange = AutoRange.Never;
-            if(BodeStartStop)
-                _xAutorange = AutoRange.Always;
-
+            //if(BodeStartStop)
+            //    _xAutorange = AutoRange.Always;
+            
             lock(_lockAxes)
             {
                 _xAxisLog = new LogarithmicNumericAxis
@@ -589,7 +589,10 @@ namespace SuperButton.ViewModels
 
                 if(!String.IsNullOrEmpty(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue) &&
                     !String.IsNullOrEmpty(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue))
-                    _xAxisDoubleRange = new DoubleRange(Convert.ToSingle(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue), Convert.ToSingle(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue));
+                    _xAxisDoubleRange = new DoubleRange(Convert.ToSingle(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue) - 
+                        0.1 * Convert.ToSingle(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue), 
+                        Convert.ToSingle(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue) - 
+                        0.1 * Convert.ToSingle(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue));
 
                 InitializeAxes();
             }
@@ -612,16 +615,32 @@ namespace SuperButton.ViewModels
                     //    _xAxisDoubleRange = new DoubleRange(Convert.ToInt32(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue), Convert.ToInt32(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue));
 
                     _xAxisDoubleRange = new DoubleRange(/*Math.Abs*/(_excel_X_List.Min() - 0.2 * (_excel_X_List.Min())), _excel_X_List.Max() + 0.2 * (_excel_X_List.Max()));
-                    _phaseVisibleRange = new DoubleRange(_excel_Y2_List.Min() - 0.2 * (_excel_Y2_List.Max() - _excel_Y2_List.Min()), _excel_Y2_List.Max() + 0.2 * (_excel_Y2_List.Max() - _excel_Y2_List.Min()));
+                    //_phaseVisibleRange = new DoubleRange(_excel_Y2_List.Min() - 0.2 * (_excel_Y2_List.Max() - _excel_Y2_List.Min()), _excel_Y2_List.Max() + 0.2 * (_excel_Y2_List.Max() - _excel_Y2_List.Min()));
+                    if(_excel_Y2_List.Min() != _excel_Y2_List.Max())
+                        _phaseVisibleRange = new DoubleRange(_excel_Y2_List.Min() - 0.2 * (_excel_Y2_List.Max() - _excel_Y2_List.Min()), _excel_Y2_List.Max() + 0.2 * (_excel_Y2_List.Max() - _excel_Y2_List.Min()));
+                    else if(_excel_Y2_List.Min() == _excel_Y2_List.Max() && _excel_Y2_List.Max() == 0)
+                    {
+                        _phaseVisibleRange = new DoubleRange(-1.5, + 1.5);
+                    }
+                    else
+                    {
+                        if(_excel_Y2_List.Min() < 0 && _excel_Y2_List.Max() < 0)
+                            _phaseVisibleRange = new DoubleRange(_excel_Y2_List.Min() + 0.2 * (_excel_Y2_List.Min()), _excel_Y2_List.Max() - 0.2 * (_excel_Y2_List.Max()));
+                        else
+                            _phaseVisibleRange = new DoubleRange(_excel_Y2_List.Min() - 0.2 * (_excel_Y2_List.Min()), _excel_Y2_List.Max() + 0.2 * (_excel_Y2_List.Max()));
+                    }
                     if(_excel_Y1_List.Min() != _excel_Y1_List.Max())
                         _magVisibleRange = new DoubleRange(_excel_Y1_List.Min() - 0.2 * (_excel_Y1_List.Max() - _excel_Y1_List.Min()), _excel_Y1_List.Max() + 0.2 * (_excel_Y1_List.Max() - _excel_Y1_List.Min()));
+                    else if(_excel_Y1_List.Min() == _excel_Y1_List.Max() && _excel_Y1_List.Max() == 0)
+                    {
+                        _magVisibleRange = new DoubleRange(-1.5, +1.5);
+                    }
                     else
                     {
                         if(_excel_Y1_List.Min() < 0 && _excel_Y1_List.Max() < 0)
                             _magVisibleRange = new DoubleRange(_excel_Y1_List.Min() + 0.2 * (_excel_Y1_List.Min()), _excel_Y1_List.Max() - 0.2 * (_excel_Y1_List.Max()));
                         else
                             _magVisibleRange = new DoubleRange(_excel_Y1_List.Min() - 0.2 * (_excel_Y1_List.Min()), _excel_Y1_List.Max() + 0.2 * (_excel_Y1_List.Max()));
-
                     }
                     InitializeAxes();
                 }

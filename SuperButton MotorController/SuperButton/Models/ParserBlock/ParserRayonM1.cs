@@ -749,13 +749,15 @@ namespace SuperButton.Models.ParserBlock
                 {   // Error ID 100
                     string result;
                     if(Commands.GetInstance.ErrorList.TryGetValue(transit, out result))
+                    {
                         EventRiser.Instance.RiseEevent(string.Format($"Com. Error: " + result));
+                        if(WizardWindowViewModel.GetInstance.StartEnable == false)
+                        {
+                            WizardWindowViewModel.GetInstance._save_cmd_success = true;
+                        }
+                    }
                     else
                         EventRiser.Instance.RiseEevent(string.Format($"Error: " + commandId.ToString() + "[" + commandSubId.ToString() + "] = " + transit.ToString()));
-                    if(WizardWindowViewModel.GetInstance.StartEnable == false)
-                    {
-                        WizardWindowViewModel.GetInstance._save_cmd_success = true;
-                    }
                 }
                 return true;
             }
