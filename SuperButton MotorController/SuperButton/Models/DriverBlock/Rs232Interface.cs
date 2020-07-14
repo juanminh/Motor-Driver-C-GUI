@@ -226,6 +226,7 @@ namespace SuperButton.Models.DriverBlock
 
                         ReadBufferSize = 8192
                     };
+                    ;
                     try
                     {
                         //var Cleaner = "";
@@ -274,12 +275,13 @@ namespace SuperButton.Models.DriverBlock
                                     //Init synchronization packet, and rises event for parser
                                     if(RxtoParser != null)
                                     {
+                                        _comPort.DiscardInBuffer();        //Reset internal rx buffer
                                         DataViewModel temp = (DataViewModel)Commands.GetInstance.DataCommandsListbySubGroup["DeviceSynchCommand"][2]; // [0]: 64[0], [1]: 64[1], [2]: 1[0]
                                         Commands.AssemblePacket(out RxPacket, Int16.Parse(temp.CommandId), Int16.Parse(temp.CommandSubId), false, false, 0);
                                         RxtoParser(this, new Rs232InterfaceEventArgs(RxPacket));
                                         Debug.WriteLine("Baudrate Send: " + _comPort.BaudRate.ToString());
                                     }
-                                    Thread.Sleep(150);// while with timeout of 1 second
+                                    Thread.Sleep(250);// while with timeout of 1 second
                                     //Cleaner = ComPort.ReadExisting();
                                 }
                             }

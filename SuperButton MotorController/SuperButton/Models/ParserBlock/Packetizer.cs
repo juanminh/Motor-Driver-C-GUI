@@ -81,9 +81,9 @@ namespace SuperButton.Models.ParserBlock
                 Rs232Interface.GetInstance.AutoBaudEcho -= Rs232Interface.GetInstance.SendDataHendler;
                 return;
             }
-            if(sender is Rs232Interface) //RayonM3 Parser
+            else if(sender is Rs232Interface) //RayonM3 Parser
             {
-                if(Rs232Interface.GetInstance.IsSynced)//Already Synchronized
+                if(Rs232Interface.GetInstance.IsSynced || DebugViewModel.GetInstance._forceConnectMode)//Already Synchronized
                 {
                     if(e.DataChunk.Length == 0)
                         return;
@@ -130,6 +130,12 @@ namespace SuperButton.Models.ParserBlock
 
                     length = e.DataChunk.Length;
                     data = e.DataChunk;
+                    StringBuilder hex = new StringBuilder(length * 2);
+                    foreach(byte b in data)
+                        hex.AppendFormat("{0:X2} ", b);
+                    Debug.WriteLine(hex.ToString());
+
+
                     for(int i = 0; i < length; i++)
                     {
                         AproveSynchronization(data[i]); //Plot packets

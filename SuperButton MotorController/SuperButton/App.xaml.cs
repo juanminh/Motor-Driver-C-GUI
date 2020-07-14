@@ -15,6 +15,7 @@ using System.IO;
 using System.Security.Principal;
 using SuperButton.Helpers;
 using System.Threading.Tasks;
+using SuperButton.Views;
 
 namespace SuperButton
 {
@@ -70,11 +71,7 @@ namespace SuperButton
         void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
         {
             StackTrace stackTrace = new StackTrace();
-            //if(stackTrace.GetFrame(1).GetMethod().Name != "Send_Plot2" && stackTrace.GetFrame(1).GetMethod().Name != "UpdateModel")
-
-
-            //MessageBox.Show("1. CurrentDomain_FirstChanceException");
-            //ProcessError(e.Exception);   - This could be used here to log ALL errors, even those caught by a Try/Catch block 
+            ErrorLog(stackTrace, e.Exception, "void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)");
             if(e.Exception.Message != "Application identity is not set.")
                 EventRiser.Instance.RiseEevent(string.Format(e.Exception.Message));
         }
@@ -82,8 +79,8 @@ namespace SuperButton
         // Example 2 
         void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            //MessageBox.Show("2. App_DispatcherUnhandledException");
-            //log.ProcessError(e.Exception);
+            StackTrace stackTrace = new StackTrace();
+            ErrorLog(stackTrace, e.Exception, "void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)");
             EventRiser.Instance.RiseEevent(string.Format(e.Exception.Message));
 
             e.Handled = true;
@@ -92,9 +89,11 @@ namespace SuperButton
         // Example 3 
         void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            //MessageBox.Show("3. CurrentDomain_UnhandledException");
             var exception = e.ExceptionObject as Exception;
-            //log.ProcessError(exception);
+
+            StackTrace stackTrace = new StackTrace();
+            ErrorLog(stackTrace, exception, "void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)");
+
             EventRiser.Instance.RiseEevent(string.Format(exception.Message));
 
             //if(e.IsTerminating)
@@ -107,8 +106,8 @@ namespace SuperButton
         // Example 4 
         void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
         {
-            //MessageBox.Show("4. TaskScheduler_UnobservedTaskException");
-            //log.ProcessError(e.Exception);
+            StackTrace stackTrace = new StackTrace();
+            ErrorLog(stackTrace, e.Exception, "void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)");
             EventRiser.Instance.RiseEevent(string.Format(e.Exception.Message));
 
             e.SetObserved();
@@ -117,8 +116,8 @@ namespace SuperButton
         // Example 5 
         void WinFormApplication_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
-            //.Show("5. WinFormApplication_ThreadException");
-            //log.ProcessError(e.Exception);
+            StackTrace stackTrace = new StackTrace();
+            ErrorLog(stackTrace, e.Exception, "void App_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)");
             EventRiser.Instance.RiseEevent(string.Format(e.Exception.Message));
 
         }
@@ -177,6 +176,28 @@ namespace SuperButton
                 }
             }
             */
+        }
+
+        private void ErrorLog(StackTrace _stackTrace, Exception _exception, String _functionName)
+        {
+            string Date = OscilloscopeViewModel.Day(DateTime.Now.Day) + ' ' + OscilloscopeViewModel.MonthTrans(DateTime.Now.Month) + ' ' + DateTime.Now.Year.ToString();
+            string path = "\\ErrorLog\\" + Date + ' ' + DateTime.Now.ToString("HH:mm:ss");
+            path = (path.Replace('-', ' ')).Replace(':', '_');
+            path += ".txt";
+            path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + path;
+
+            using(StreamWriter writer = new StreamWriter(path))
+            {
+                writer.WriteLine("***  Function Name ***");
+                writer.WriteLine(_functionName);
+                writer.WriteLine(_exception.Message);
+                writer.WriteLine("***  Function Name ***");
+
+                for(int i = _stackTrace.FrameCount - 1; i >= 0; i--)
+                {
+                    writer.WriteLine(_stackTrace.GetFrame(i).GetMethod().Name);
+                }
+            }
         }
     }
 }

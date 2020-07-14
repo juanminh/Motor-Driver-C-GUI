@@ -810,6 +810,40 @@ namespace SuperButton.ViewModels
             LeftPanelViewModel.GetInstance.RefreshParamsTick(STOP);
             LeftPanelViewModel.GetInstance.RefreshParamsTick(START);
         }
+        private bool _save = false;
+        public bool Save
+        {
+            get { return _save; }
+            set
+            {
+
+                if(value && LeftPanelViewModel._app_running)
+                {
+                    _save = value;
+                    Rs232Interface.GetInstance.SendToParser(new PacketFields
+                    {
+                        Data2Send = 1,
+                        ID = 63,
+                        SubID = Convert.ToInt16(0),
+                        IsSet = true,
+                        IsFloat = false
+                    }
+                    );
+                    Task WaitSave = Task.Run((Action)GetInstance.Wait);
+                }
+                else if(!value)
+                {
+                    _save = value;
+                }
+
+                OnPropertyChanged();
+            }
+        }
+        private void Wait()
+        {
+            Thread.Sleep(1000);
+            Save = false;
+        }
         #endregion Calibration
         #region AdvancedConfiguration
         private bool _calibrationAdvancedMode = false;

@@ -665,6 +665,69 @@ namespace SuperButton.ViewModels
             }
         }
         #endregion Simulation
+
+        #region ForceConnect
+        public bool _forceConnectMode = false;
+        public ObservableCollection<string> FlashBaudrateList
+        {
+
+            get
+            {
+                return MaintenanceViewModel.GetInstance.FlashBaudrateList;
+            }
+        }
+        private string _flashBaudRate = "230400";
+        public string FlashBaudRate
+        {
+            get
+            {
+                return _flashBaudRate;
+            }
+            set
+            {
+                _flashBaudRate = value;
+                OnPropertyChanged();
+            }
+        }
+        public ActionCommand ForceConnect { get { return new ActionCommand(ForceConnectCmd); } }
+        private void ForceConnectCmd()
+        {
+            PortChat.GetInstance.Main(LeftPanelViewModel.GetInstance.ComboBoxCOM.ComString, Convert.ToInt32(FlashBaudRate));
+            PortChat.GetInstance._serialPort.DataReceived -= Rs232Interface.GetInstance.DataReceived;
+            PortChat.GetInstance._serialPort.DataReceived += Rs232Interface.GetInstance.DataReceived;
+
+            ParserRayonM1.GetInstanceofParser.Parser2Send -= Rs232Interface.GetInstance.SendDataHendler;
+            ParserRayonM1.GetInstanceofParser.Parser2Send += Rs232Interface.GetInstance.SendDataHendler;
+            Rs232Interface._comPort = PortChat.GetInstance._serialPort;
+
+            ForceConnectEnable = false;
+            EnPing = false;
+            EnRefresh = false;
+            DebugRefresh = false;
+            _forceConnectMode = true;
+        }
+        public ActionCommand Disconnect { get { return new ActionCommand(DisconnectCmd); } }
+        private void DisconnectCmd()
+        {
+            PortChat.GetInstance.CloseComunication();
+            ForceConnectEnable = true;
+            _forceConnectMode = false;
+        }
+        private bool _forceConnectEnable = true;
+        public bool ForceConnectEnable
+        {
+            get
+            {
+                return _forceConnectEnable;
+            }
+            set
+            {
+                _forceConnectEnable = value;
+                OnPropertyChanged();
+            }
+        }
+
+        #endregion ForceConnect
     }
 }
 

@@ -75,8 +75,11 @@ namespace SuperButton.ViewModels
 
                 // get call stack
                 StackTrace stackTrace = new StackTrace();
+                if(stackTrace.GetFrame(1).GetMethod().Name == "Wait")
+                {
 
-                if(stackTrace.GetFrame(1).GetMethod().Name != "UpdateModel")
+                }
+                else if(stackTrace.GetFrame(1).GetMethod().Name != "UpdateModel")
                 {
                     Rs232Interface.GetInstance.SendToParser(new PacketFields
                     {
@@ -93,19 +96,22 @@ namespace SuperButton.ViewModels
                         X_List.Clear();
                         Y1_List.Clear();
                         Y2_List.Clear();
-                        
+                        Task WaitSave = Task.Run((Action)GetInstance.Wait);
                         OnBodeStart();
                     }
                     else
+                    {
+                        Task WaitSave = Task.Run((Action)GetInstance.Wait);
                         OnBodeStop();
+                    }
                 }
-                //else if(!value)
-                //{
-                //    OnBodeStop();
-                //}
                 OnPropertyChanged();
-
             }
+        }
+        private void Wait()
+        {
+            Thread.Sleep(100);
+            BodeStartStop = !_bodeStartStop;
         }
         private IAxis _xAxis1;
         public IAxis XAxis1
@@ -591,7 +597,7 @@ namespace SuperButton.ViewModels
                     !String.IsNullOrEmpty(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue))
                     _xAxisDoubleRange = new DoubleRange(Convert.ToSingle(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue) - 
                         0.1 * Convert.ToSingle(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue), 
-                        Convert.ToSingle(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue) - 
+                        Convert.ToSingle(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue) + 
                         0.1 * Convert.ToSingle(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue));
 
                 InitializeAxes();

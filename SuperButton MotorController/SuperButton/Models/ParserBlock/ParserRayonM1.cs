@@ -466,6 +466,21 @@ namespace SuperButton.Models.ParserBlock
 
             if(crcBytes[0] == crclsb && crcBytes[1] == crcmsb)//CHECK
             {
+                var cmdlIdLsb = data[0];
+                var cmdIdlMsb = data[1] & 0x3F;
+                var subIdLsb = (data[1] >> 6) & 0x03;
+                var subIdMsb = data[2] & 0x07;
+                var getSet = (data[2] >> 4) & 0x01;//ASK
+                var intFloat = (data[2] >> 5) & 0x01;
+                var farmeColor = (data[3] >> 6) & 0x03;
+                bool isInt = (intFloat == 0);//Answer Int=0/////to need check what doing!!!
+                                             //Cmd ID
+                int commandId = Convert.ToInt16(cmdlIdLsb);
+                commandId = commandId + Convert.ToInt16(cmdIdlMsb << 8);
+                //Cmd SubID
+                int commandSubId = Convert.ToInt16(subIdLsb);
+                commandSubId = commandSubId + Convert.ToInt16(subIdMsb << 2);
+
                 UInt32 transit = data[6];
                 transit <<= 8;
                 transit |= data[5];
@@ -475,7 +490,9 @@ namespace SuperButton.Models.ParserBlock
                 transit |= data[3];
                 //Debug.WriteLine("Synch: " + transit.ToString());
                 // if autobaud command is SYNCH 64[0] || 64[1] so transit will be 0x8B3C8B3C else 0
-                if(transit == 0x8B3C8B3C || transit == 0) // 1
+                if(transit == 0x8B3C8B3C) // 1
+                    Rs232Interface.GetInstance.IsSynced = true;
+                else if(transit == 0 && commandId == 1 && commandSubId == 0)
                     Rs232Interface.GetInstance.IsSynced = true;
                 else
                     Rs232Interface.GetInstance.IsSynced = false;

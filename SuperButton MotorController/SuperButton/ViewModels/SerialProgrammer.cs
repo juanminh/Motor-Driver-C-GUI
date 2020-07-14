@@ -503,6 +503,8 @@ namespace SuperButton.ViewModels
         }
         public bool boot_command()
         {
+            Rs232Interface.GetInstance.Disconnect();
+
             EventRiser.Instance.RiseEevent("Sending loader command");
             PortChat.GetInstance._packetsList.Clear();
             ParseOutputData(1, 65, 0, true, false);

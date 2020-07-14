@@ -763,6 +763,9 @@
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="10"/>
                         <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="10"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <Helpers:RoundBoolLed Grid.Column="1" Width="10" Height="10" VerticalAlignment="Stretch"
                                               CurrStatus="{Binding ValidOperations}">
@@ -831,6 +834,8 @@
                         </Button.Style>
                         <TextBlock Text="Abort" VerticalAlignment="Center" Margin="0,-2,0,0"/>
                     </Button>
+                    <TextBlock Grid.Column="7" Foreground="White">Save</TextBlock>
+                    <CheckBox Grid.Column="8" Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding Save}"/>
                 </Grid>
             </Grid>
         </Border>

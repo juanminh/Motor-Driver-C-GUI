@@ -373,7 +373,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
-             <TabItem Header="Bode" TabIndex="7" DataContext="{Binding BodeViewModel}" Background="Black" Foreground="White" >
+            <TabItem Header="Bode" TabIndex="7" DataContext="{Binding BodeViewModel}" Background="Black" Foreground="White" >
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="5"/>
@@ -703,6 +703,7 @@
                     <Grid Grid.Column="0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="20"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
@@ -722,7 +723,7 @@
                             <TextBlock Grid.Column="0">Save Parameters To Driver</TextBlock>
                             <CheckBox Grid.Column="1" Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding Save}"/>
                         </Grid>
-                        <Grid Grid.Row="1">
+                        <Grid Grid.Row="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="140"/>
                                 <ColumnDefinition Width="Auto"/>
@@ -730,8 +731,8 @@
                             <TextBlock Grid.Column="0">Load Manufacturer defaults</TextBlock>
                             <CheckBox Grid.Column="1" Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding Manufacture}"/>
                         </Grid>
-                        <Grid Grid.Row="2" Height="15"/>
-                        <Grid Grid.Row="3">
+                        <Grid Grid.Row="3" Height="15"/>
+                        <Grid Grid.Row="4">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="140"/>
                                 <ColumnDefinition Width="Auto"/>
@@ -739,7 +740,7 @@
                             <TextBlock Grid.Column="0">Load Parameters From File</TextBlock>
                             <CheckBox Grid.Column="1" Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding LoadFromFile}"/>
                         </Grid>
-                        <Grid Grid.Row="4">
+                        <Grid Grid.Row="5">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="140"/>
                                 <ColumnDefinition Width="Auto"/>
@@ -747,8 +748,8 @@
                             <TextBlock Grid.Column="0">Save Parameters To File</TextBlock>
                             <CheckBox Grid.Column="1" Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding SaveToFile}"/>
                         </Grid>
-                        <Grid Grid.Row="5" Height="15"/>
-                        <Grid Grid.Row="6">
+                        <Grid Grid.Row="6" Height="15"/>
+                        <Grid Grid.Row="7">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="140"/>
                                 <ColumnDefinition Width="Auto"/>
@@ -756,7 +757,7 @@
                             <TextBlock Grid.Column="0">Reset</TextBlock>
                             <CheckBox Grid.Column="1" Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding Reset}"/>
                         </Grid>
-                        <Grid Grid.Row="7">
+                        <Grid Grid.Row="8">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="140"/>
                                 <ColumnDefinition Width="Auto"/>
@@ -764,8 +765,8 @@
                             <TextBlock Grid.Column="0">Protected Params</TextBlock>
                             <CheckBox Grid.Column="1" Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding EnableWrite}"/>
                         </Grid>
-                        <Separator Grid.Row="8" Height="10" Background="Transparent" Visibility="Hidden"/>
-                        <Grid Grid.Row="9">
+                        <Separator Grid.Row="9" Height="10" Background="Transparent" Visibility="Hidden"/>
+                        <Grid Grid.Row="10">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="140"/>
                                 <ColumnDefinition Width="Auto"/>
@@ -790,7 +791,7 @@
                     </Grid>
                     <Grid Grid.Column="2">
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="47"/>
+                            <RowDefinition Height="67"/>
                             <RowDefinition Height="17"/>
                             <RowDefinition Height="17"/>
                             <RowDefinition Height="60"/>
@@ -982,6 +983,11 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Border Grid.Row="0" BorderBrush="Gray" BorderThickness="1" CornerRadius="3" Width="170" HorizontalAlignment="Left">
                             <Grid>
@@ -1119,6 +1125,60 @@
                             Grid.Column="0">
                             <TextBlock Text="Clear All" VerticalAlignment="Center" Margin="0,-2,0,0"/>
                         </Button>
+                        <Grid Grid.Row="9">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="5"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Button FontSize="10" Grid.Column="0"
+                            Command="{Binding ForceConnect}" 
+                            Style="{StaticResource ExampleToolbarButtonStyle}" 
+                            VerticalAlignment="Top" HorizontalAlignment="Left" 
+                            BorderThickness="0.5" 
+                            Width="80" Height="15"
+                            IsEnabled="{Binding ForceConnectEnable, Mode=TwoWay}">
+                                <TextBlock Text="Force Connect" VerticalAlignment="Center" Margin="0,-2,0,0"/>
+                            </Button>
+                            <ComboBox   Grid.Column="2"
+            	                        ItemsSource="{Binding FlashBaudrateList}"
+            	                        SelectedValue="{Binding FlashBaudRate, Mode=TwoWay}"
+                                        Height="18" 
+                                        Width="70"
+                                        FontSize="11">
+                            </ComboBox>
+                            <Button FontSize="10" Grid.Column="4"
+                            Command="{Binding Disconnect}"
+                            VerticalAlignment="Top" HorizontalAlignment="Left" 
+                            BorderThickness="0.5" 
+                            Width="60" Height="15">
+                                <Button.Style>
+                                    <Style TargetType="Button" BasedOn="{StaticResource ExampleToolbarButtonStyle}">
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding ForceConnectEnable}" Value="False"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <MultiDataTrigger.Setters>
+                                                    <Setter Property="IsEnabled" Value="True"/>
+                                                </MultiDataTrigger.Setters>
+                                            </MultiDataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding ForceConnectEnable}" Value="True"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <MultiDataTrigger.Setters>
+                                                    <Setter Property="IsEnabled" Value="False"/>
+                                                </MultiDataTrigger.Setters>
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                                <TextBlock Text="Disconnect" VerticalAlignment="Center" Margin="0,-2,0,0"/>
+                            </Button>
+                        </Grid>
                     </Grid>
                 </Grid>
             </TabItem>

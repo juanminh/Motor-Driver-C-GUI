@@ -610,7 +610,7 @@ namespace SuperButton.Models.DriverBlock
                     }
                 }
                 LeftPanelViewModel.GetInstance.ValueChange = false;
-                if(DebugViewModel.GetInstance.EnRefresh || LeftPanelViewModel.GetInstance.StarterOperationFlag || true)
+                if(/*DebugViewModel.GetInstance.EnRefresh || LeftPanelViewModel.GetInstance.StarterOperationFlag ||*/ true)
                 {
                     #region Calibration
                     if(commandidentifier.Item1 == 6)
@@ -718,7 +718,7 @@ namespace SuperButton.Models.DriverBlock
                             BottomPanelViewModel.GetInstance.PowerOutputChecked = false;
 
                     }
-                    else if(commandidentifier.Item1 == 1 && commandidentifier.Item2 == 0) // MotorStatus
+                    else if(commandidentifier.Item1 == 1 && commandidentifier.Item2 == 0 && !DebugViewModel.GetInstance._forceConnectMode) // MotorStatus
                     {
                         updateConnectionStatus(commandidentifier, newPropertyValue);
                     }
@@ -754,7 +754,7 @@ namespace SuperButton.Models.DriverBlock
                     }
                     #endregion DigitalInput
                 }
-                else if(commandidentifier.Item1 == 1 && commandidentifier.Item2 == 0) // MotorStatus
+                else if(commandidentifier.Item1 == 1 && commandidentifier.Item2 == 0 && !DebugViewModel.GetInstance._forceConnectMode) // MotorStatus
                 {
                     updateConnectionStatus(commandidentifier, newPropertyValue);
                 }
