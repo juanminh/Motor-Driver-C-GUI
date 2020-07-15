@@ -181,10 +181,18 @@ namespace SuperButton
         private void ErrorLog(StackTrace _stackTrace, Exception _exception, String _functionName)
         {
             string Date = OscilloscopeViewModel.Day(DateTime.Now.Day) + ' ' + OscilloscopeViewModel.MonthTrans(DateTime.Now.Month) + ' ' + DateTime.Now.Year.ToString();
-            string path = "\\ErrorLog\\" + Date + ' ' + DateTime.Now.ToString("HH:mm:ss");
-            path = (path.Replace('-', ' ')).Replace(':', '_');
-            path += ".txt";
+            string path = "\\ErrorLog\\";
             path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + path;
+
+            if(!Directory.Exists(path))
+                Directory.CreateDirectory(path);
+            path = "\\ErrorLog\\";
+            path += Date + ' ' + DateTime.Now.ToString("HH:mm:ss");
+            path = (path.Replace('-', ' ')).Replace(':', '_');
+            path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + path;
+            path += ".txt";
+
+            
 
             using(StreamWriter writer = new StreamWriter(path))
             {

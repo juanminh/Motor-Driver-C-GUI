@@ -467,18 +467,18 @@ namespace SuperButton.ViewModels
                 {
                     if(udIDSim.Data != null && udIndexSim.Data != null)
                     {
-                        if(Convert.ToDouble(SimData) >= 0 && Convert.ToUInt32(SimCount) >= 0)
+                        //if(Convert.ToDouble(SimData) >= 0 && Convert.ToUInt32(SimCount) >= 0)
                         {
-                            if(Convert.ToUInt32(SimStep) > 0)
+                            //if(Convert.ToUInt32(SimStep) > 0)
                             {
                                 SimulationTicks(LeftPanelViewModel.START);
                                 _simulation = true;
                             }
-                            else
-                                _simulation = false;
+                            //else
+                                //_simulation = false;
                         }
-                        else
-                            _simulation = false;
+                        //else
+                            //_simulation = false;
                     }
                     else
                         _simulation = false;
