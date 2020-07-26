@@ -71,7 +71,7 @@ namespace SuperButton.ViewModels
             {
                 if(!LeftPanelViewModel._app_running)
                     return;
-
+                _bodeStartStop = value;
                 // get call stack
                 StackTrace stackTrace = new StackTrace();
                 if(stackTrace.GetFrame(1).GetMethod().Name == "Wait")
@@ -79,7 +79,10 @@ namespace SuperButton.ViewModels
 
                 }
                 else if(stackTrace.GetFrame(1).GetMethod().Name == "UpdateModel")
+                {
                     _bodeStartStop = value;
+                    OnPropertyChanged();
+                }
                 else if(stackTrace.GetFrame(1).GetMethod().Name != "UpdateModel")
                 {
                     Rs232Interface.GetInstance.SendToParser(new PacketFields
@@ -106,7 +109,6 @@ namespace SuperButton.ViewModels
                         OnBodeStop();
                     }
                 }
-                OnPropertyChanged();
             }
         }
         private void Wait()
