@@ -239,28 +239,8 @@ namespace SuperButton.Models.DriverBlock
 
                             foreach(var baudRate in BaudRates) //Iterate though baud rates
                             {
-                                if(_isSynced) // Baudrate found
-                                {
-                                    if(Driver2Mainmodel != null)
-                                    {
-                                        Driver2Mainmodel(this, new Rs232InterfaceEventArgs("Disconnect"));
-                                    }
-                                    else
-                                    {
-                                        throw new NullReferenceException("No Listeners on this event");
-                                    }
-                                    _comPort.DiscardInBuffer();        //Reset internal rx buffer
-                                    EventRiser.Instance.RiseEevent(string.Format($"Success"));
-                                    EventRiser.Instance.RiseEevent(string.Format($"Baudrate: {_comPort.BaudRate}"));
-                                    _baudRate = _comPort.BaudRate.ToString();
-                                    _comPortStr = Configuration.SelectedCom;
-                                    ComPort = new SerialPort();
-                                    LeftPanelViewModel.busy = false;
-                                    LeftPanelViewModel.GetInstance.StarterOperation(LeftPanelViewModel.STOP);
-                                    LeftPanelViewModel.GetInstance.StarterOperation(LeftPanelViewModel.START);
-                                    return;
-                                }
-                                else if(_isSynced == false)  // Looking for Baudrate
+
+                                if(_isSynced == false)  // Looking for Baudrate
                                 {
                                     ComPort.BaudRate = baudRate;
 
@@ -281,8 +261,30 @@ namespace SuperButton.Models.DriverBlock
                                         RxtoParser(this, new Rs232InterfaceEventArgs(RxPacket));
                                         Debug.WriteLine("Baudrate Send: " + _comPort.BaudRate.ToString());
                                     }
-                                    Thread.Sleep(250);// while with timeout of 1 second
+                                    //Thread.Sleep(250);// while with timeout of 1 second
                                     //Cleaner = ComPort.ReadExisting();
+                                }
+                                Thread.Sleep(250);// while with timeout of 1 second
+                                if(_isSynced) // Baudrate found
+                                {
+                                    if(Driver2Mainmodel != null)
+                                    {
+                                        Driver2Mainmodel(this, new Rs232InterfaceEventArgs("Disconnect"));
+                                    }
+                                    else
+                                    {
+                                        throw new NullReferenceException("No Listeners on this event");
+                                    }
+                                    _comPort.DiscardInBuffer();        //Reset internal rx buffer
+                                    EventRiser.Instance.RiseEevent(string.Format($"Success"));
+                                    EventRiser.Instance.RiseEevent(string.Format($"Baudrate: {_comPort.BaudRate}"));
+                                    _baudRate = _comPort.BaudRate.ToString();
+                                    _comPortStr = Configuration.SelectedCom;
+                                    ComPort = new SerialPort();
+                                    LeftPanelViewModel.busy = false;
+                                    LeftPanelViewModel.GetInstance.StarterOperation(LeftPanelViewModel.STOP);
+                                    LeftPanelViewModel.GetInstance.StarterOperation(LeftPanelViewModel.START);
+                                    return;
                                 }
                             }
                             EventRiser.Instance.RiseEevent(string.Format($"Failed"));
