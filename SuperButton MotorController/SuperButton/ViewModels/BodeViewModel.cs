@@ -71,14 +71,10 @@ namespace SuperButton.ViewModels
             {
                 if(!LeftPanelViewModel._app_running)
                     return;
-                _bodeStartStop = value;
+                //_bodeStartStop = value;
                 // get call stack
                 StackTrace stackTrace = new StackTrace();
-                if(stackTrace.GetFrame(1).GetMethod().Name == "Wait")
-                {
-
-                }
-                else if(stackTrace.GetFrame(1).GetMethod().Name == "UpdateModel")
+                if(stackTrace.GetFrame(1).GetMethod().Name == "UpdateModel")
                 {
                     _bodeStartStop = value;
                     OnPropertyChanged();
@@ -87,7 +83,7 @@ namespace SuperButton.ViewModels
                 {
                     Rs232Interface.GetInstance.SendToParser(new PacketFields
                     {
-                        Data2Send = _bodeStartStop ? 1 : 0,
+                        Data2Send = value ? 1 : 0,
                         ID = Convert.ToInt16(6),
                         SubID = Convert.ToInt16(15),
                         IsSet = true,
@@ -106,7 +102,7 @@ namespace SuperButton.ViewModels
                     else
                     {
                         //Task WaitSave = Task.Run((Action)GetInstance.Wait);
-                        OnBodeStop();
+                        //OnBodeStop();
                     }
                 }
             }

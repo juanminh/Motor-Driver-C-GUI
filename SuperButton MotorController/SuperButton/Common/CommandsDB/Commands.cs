@@ -37,6 +37,7 @@ namespace SuperButton.CommandsDB
             GenerateMotionCommands();
             GenerateFeedBakcCommands();
             GeneratePidCommands();
+            GenerateFilterCommands();
             GenerateDeviceCommands();
             GenerateBPCommands();
             GenerateLPCommands();
@@ -171,12 +172,73 @@ namespace SuperButton.CommandsDB
         {
             var names = new[]
             {
+                "Kp", "Ki", "Kd", "kp range", "Range"
+            };
+            DataCommandsListbySubGroup.Add("PIDSpeed", new ObservableCollection<object>());
+            DataCommandsListbySubGroup.Add("PIDPosition", new ObservableCollection<object>());
+            DataCommandsListbySubGroup.Add("PIDListBackGround", new ObservableCollection<object>());
+
+            for(int i = 0; i < names.Length; i++)
+            {
+                Data = new DataViewModel
+                {
+                    CommandName = names[i],
+                    CommandId = "82",
+                    CommandSubId = (i + 1).ToString(CultureInfo.InvariantCulture),
+                    CommandValue = "",
+                    IsFloat = names[i] == "Range" ? false : true
+                };
+                DataViewCommandsList.Add(new Tuple<int, int>(Convert.ToInt16(Data.CommandId), Convert.ToInt16(Data.CommandSubId)), Data);
+                DataCommandsListbySubGroup["PIDSpeed"].Add(Data);
+
+
+                Data = new DataViewModel
+                {
+                    CommandName = names[i],
+                    CommandId = "83",
+                    CommandSubId = (i + 1).ToString(CultureInfo.InvariantCulture),
+                    CommandValue = "",
+                    IsFloat = names[i] == "Range" ? false : true
+                };
+                DataViewCommandsList.Add(new Tuple<int, int>(Convert.ToInt16(Data.CommandId), Convert.ToInt16(Data.CommandSubId)), Data);
+                DataCommandsListbySubGroup["PIDPosition"].Add(Data);
+            }
+            var data1 = new DataViewModel
+            {
+                CommandName = "close loop",
+                CommandId = "82",
+                CommandSubId = (10).ToString(CultureInfo.InvariantCulture),
+                CommandValue = "",
+                IsFloat = false
+            };
+            DataCommandsListbySubGroup["PIDListBackGround"].Add(data1);
+
+            data1 = new DataViewModel
+            {
+                CommandName = "close loop",
+                CommandId = "83",
+                CommandSubId = (10).ToString(CultureInfo.InvariantCulture),
+                CommandValue = "",
+                IsFloat = false
+            };
+            DataCommandsListbySubGroup["PIDListBackGround"].Add(data1);
+
+            data1 = new DataViewModel
+            {
+                CommandName = "close loop",
+                CommandId = "81",
+                CommandSubId = (10).ToString(CultureInfo.InvariantCulture),
+                CommandValue = "",
+                IsFloat = false
+            };
+            DataCommandsListbySubGroup["PIDListBackGround"].Add(data1);
+
+            names = new[]
+            {
                 "Kp", "Ki"
             };
 
             DataCommandsListbySubGroup.Add("PIDCurrent", new ObservableCollection<object>());
-            DataCommandsListbySubGroup.Add("PIDSpeed", new ObservableCollection<object>());
-            DataCommandsListbySubGroup.Add("PIDPosition", new ObservableCollection<object>());
 
             for(int i = 0; i < names.Length; i++)
             {
@@ -190,30 +252,42 @@ namespace SuperButton.CommandsDB
                 };
                 DataViewCommandsList.Add(new Tuple<int, int>(Convert.ToInt16(Data.CommandId), Convert.ToInt16(Data.CommandSubId)), Data);
                 DataCommandsListbySubGroup["PIDCurrent"].Add(Data);
-
-                Data = new DataViewModel
-                {
-                    CommandName = names[i],
-                    CommandId = "82",
-                    CommandSubId = (i + 1).ToString(CultureInfo.InvariantCulture),
-                    CommandValue = "",
-                    IsFloat = true
-                };
-                DataViewCommandsList.Add(new Tuple<int, int>(Convert.ToInt16(Data.CommandId), Convert.ToInt16(Data.CommandSubId)), Data);
-                DataCommandsListbySubGroup["PIDSpeed"].Add(Data);
-
-
-                Data = new DataViewModel
-                {
-                    CommandName = names[i],
-                    CommandId = "83",
-                    CommandSubId = (i + 1).ToString(CultureInfo.InvariantCulture),
-                    CommandValue = "",
-                    IsFloat = true
-                };
-                DataViewCommandsList.Add(new Tuple<int, int>(Convert.ToInt16(Data.CommandId), Convert.ToInt16(Data.CommandSubId)), Data);
-                DataCommandsListbySubGroup["PIDPosition"].Add(Data);
             }
+        }
+        private void GenerateFilterCommands()
+        {
+            var names = new[]
+            {
+                "Number of sections", "section 0 a[0]", "section 0 a[1]", "section 0 a[2]",
+                "section 0 b[0]", "section 0 b[1]", "section 0 b[2]"
+            };
+            DataCommandsListbySubGroup.Add("FilterList", new ObservableCollection<object>());
+            DataCommandsListbySubGroup.Add("FilterBackGround", new ObservableCollection<object>());
+
+            for(int i = 0; i < names.Length; i++)
+            {
+                Data = new DataViewModel
+                {
+                    CommandName = names[i],
+                    CommandId = "101",
+                    CommandSubId = (i + 1).ToString(CultureInfo.InvariantCulture),
+                    CommandValue = "",
+                    IsFloat = i == 0 ? false : true
+                };
+                DataViewCommandsList.Add(new Tuple<int, int>(Convert.ToInt16(Data.CommandId), Convert.ToInt16(Data.CommandSubId)), Data);
+                DataCommandsListbySubGroup["FilterList"].Add(Data);
+               
+            }
+            var data1 = new DataViewModel
+            {
+                CommandName = "Enable",
+                CommandId = "101",
+                CommandSubId = (0).ToString(CultureInfo.InvariantCulture),
+                CommandValue = "",
+                IsFloat = false
+            };
+            DataCommandsListbySubGroup["FilterBackGround"].Add(data1);
+            
         }
         private void GenerateFeedBakcCommands()
         {
@@ -1090,7 +1164,7 @@ namespace SuperButton.CommandsDB
 
             var names = new[]
             {
-                "Ampere/Volt", "RPM/Volt", "Counts/Volt", "Offset", "Dead Zone", "Direction"
+                "Ampere/Volt", "RPM/Volt", "Counts/Volt", "Offset", "Dead Zone", "Direction", "LPF Cut-Off"
             };
             for(int i = 0; i < names.Length; i++)
             {

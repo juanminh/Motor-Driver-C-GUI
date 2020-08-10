@@ -266,7 +266,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="PID" TabIndex="3" Background="Black" Foreground="White">
+            <TabItem Header="PID" TabIndex="3" Background="Black" Foreground="White" DataContext="{Binding PIDViewModel}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="250"/>
@@ -279,12 +279,28 @@
                         </Grid.RowDefinitions>
                         <GroupBox  Grid.Row="0" Header="Current">
                             <StackPanel  Background="Transparent" Orientation="Vertical" >
-                                <ItemsControl ItemsSource="{Binding Path= PidCurrentList, UpdateSourceTrigger=PropertyChanged}" ItemTemplate="{StaticResource DataViewModel}" Margin="0,4,0,-4"/>
+                                <ItemsControl ItemsSource="{Binding PidCurrentList, UpdateSourceTrigger=PropertyChanged}" ItemTemplate="{StaticResource DataViewModel}" Margin="0,4,0,0"/>
+                                <Border BorderThickness="1" BorderBrush="White" CornerRadius="4">
+                                    <Grid>
+                                        <TextBlock Text="              Close Loop"/>
+                                        <wpfSpark:ToggleSwitch Width="80" Height="22" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                    FontSize="9" UncheckedText="Off" CheckedText="On"
+                                                    IsChecked="{Binding PID_current_loop, Mode=TwoWay}"/>
+                                    </Grid>
+                                </Border>
                             </StackPanel>
                         </GroupBox>
                         <GroupBox Grid.Row="1" Header="Speed" Margin="0,10,0,0">
                             <StackPanel Background="Transparent" Orientation="Vertical">
-                                <ItemsControl ItemsSource="{Binding PidSpeedList}" ItemTemplate="{StaticResource DataViewModel}" Margin="0,4,0,-4"/>
+                                <ItemsControl ItemsSource="{Binding PidSpeedList}" ItemTemplate="{StaticResource DataViewModel}" Margin="0,4,0,0"/>
+                                <Border BorderThickness="1" BorderBrush="White" CornerRadius="4">
+                                    <Grid>
+                                        <TextBlock Text="              Close Loop"/>
+                                        <wpfSpark:ToggleSwitch Width="80" Height="22" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                    FontSize="9" UncheckedText="Off" CheckedText="On"
+                                                    IsChecked="{Binding PID_speed_loop, Mode=TwoWay}"/>
+                                    </Grid>
+                                </Border>
                             </StackPanel>
                         </GroupBox>
                     </Grid>
@@ -295,13 +311,49 @@
                         </Grid.RowDefinitions>
                         <GroupBox Grid.Row="0"    Header="Possition"  Background="Transparent" Margin="30,0,0,0">
                             <StackPanel  Background="Transparent" Orientation="Vertical" >
-                                <ItemsControl   ItemsSource="{Binding PidPositionList}" ItemTemplate="{StaticResource DataViewModel}" Margin="0,4,0,-4"/>
+                                <ItemsControl   ItemsSource="{Binding PidPositionList}" ItemTemplate="{StaticResource DataViewModel}" Margin="0,4,0,0"/>
+                                <Border BorderThickness="1" BorderBrush="White" CornerRadius="4">
+                                    <Grid>
+                                        <TextBlock Text="           Close Loop"/>
+                                        <wpfSpark:ToggleSwitch Width="70" Height="22" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                    FontSize="9" UncheckedText="Off" CheckedText="On"
+                                                    IsChecked="{Binding PID_position_loop, Mode=TwoWay}"/>
+                                    </Grid>
+                                </Border>
                             </StackPanel>
                         </GroupBox>
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Device" TabIndex="4" Background="Black" Foreground="White">
+            <TabItem Header="Filter" TabIndex="4" Background="Black" Foreground="White" DataContext="{Binding FilterViewModel}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition Width="250"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <GroupBox  Grid.Row="0" Header="Current Reference IIR Filter">
+                            <StackPanel  Background="Transparent" Orientation="Vertical" >
+                                <Border BorderThickness="1" BorderBrush="White" CornerRadius="4" Margin="0,4,0,0">
+                                    <Grid>
+                                        <TextBlock Text="              Enable"/>
+                                        <wpfSpark:ToggleSwitch Width="80" Height="22" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                    FontSize="9" UncheckedText="Off" CheckedText="On"
+                                                    IsChecked="{Binding Filter_Enable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                    </Grid>
+                                </Border>
+                                <ItemsControl ItemsSource="{Binding FilterList, UpdateSourceTrigger=PropertyChanged}" 
+                                              ItemTemplate="{StaticResource DataViewModel}" />
+                            </StackPanel>
+                        </GroupBox>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Device" TabIndex="5" Background="Black" Foreground="White">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="190"/>
@@ -322,7 +374,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="I/O" TabIndex="5" DataContext="{Binding IOViewModel}" Background="Black" Foreground="White" >
+            <TabItem Header="I/O" TabIndex="6" DataContext="{Binding IOViewModel}" Background="Black" Foreground="White" >
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="300"/>
@@ -338,7 +390,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Calibration" TabIndex="6" DataContext="{Binding CalibrationViewModel}" Foreground="White">
+            <TabItem Header="Calibration" TabIndex="7" DataContext="{Binding CalibrationViewModel}" Foreground="White">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -373,7 +425,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Bode" TabIndex="7" DataContext="{Binding BodeViewModel}" Background="Black" Foreground="White" >
+            <TabItem Header="Bode" TabIndex="8" DataContext="{Binding BodeViewModel}" Background="Black" Foreground="White" >
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="5"/>
@@ -396,7 +448,6 @@
                                            Width="550"
                                            Height="245"
                            RenderPriority="Normal" 
-                           MaxFrameRate="25"
                            s:ThemeManager.Theme="Oscilloscope"
                            ClipModifierSurface="True"
                            XAxis="{Binding XAxis1, Mode=TwoWay}" FontSize="8"
@@ -499,7 +550,6 @@
                                            Width="550"
                                            Height="245"
                            RenderPriority="Normal" 
-                           MaxFrameRate="25"
                            s:ThemeManager.Theme="Oscilloscope"
                            ClipModifierSurface="True"
                            XAxis="{Binding XAxis2, Mode=TwoWay}"
@@ -693,7 +743,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Maintenance" TabIndex="8" DataContext="{Binding MaintenanceViewModel}" Background="Black" Foreground="White" >
+            <TabItem Header="Maintenance" TabIndex="9" DataContext="{Binding MaintenanceViewModel}" Background="Black" Foreground="White" >
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -852,7 +902,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Debug" TabIndex="9" DataContext="{Binding DebugViewModel}" Background="Black" Foreground="White" >
+            <TabItem Header="Debug" TabIndex="10" DataContext="{Binding DebugViewModel}" Background="Black" Foreground="White" >
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -1182,7 +1232,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Motion" TabIndex="10" DataContext="{Binding MotionViewModel}" Background="Black" Foreground="White" Margin="-1,0,1,0" Visibility="Hidden">
+            <TabItem Header="Motion" TabIndex="11" DataContext="{Binding MotionViewModel}" Background="Black" Foreground="White" Margin="-1,0,1,0" Visibility="Hidden">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="300"/>

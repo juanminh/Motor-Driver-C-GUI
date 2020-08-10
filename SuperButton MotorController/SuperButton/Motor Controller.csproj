@@ -202,17 +202,14 @@
     <Reference Include="TextBoxBehaivior">
       <HintPath>..\packages\TextBoxBehaivior.dll</HintPath>
     </Reference>
-    <Reference Include="ToggleSwitch">
+    <Reference Include="ToggleSwitch, Version=1.1.2.0, Culture=neutral, PublicKeyToken=8637099990568f75, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\ToggleSwitch.1.1.2\lib\net40-client\ToggleSwitch.dll</HintPath>
     </Reference>
     <Reference Include="UserControlLibrary">
       <HintPath>..\packages\UserControlLibrary.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
-    <Reference Include="WPFSpark, Version=1.1.0.0, Culture=neutral, processorArchitecture=AMD64">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\WPFSpark_v1.1\WPFSpark\WPFSpark\bin\x64\Release\WPFSpark.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -244,6 +241,7 @@
     <Compile Include="Models\DebugModel.cs" />
     <Compile Include="ViewModels\CalibrationViewModel.cs" />
     <Compile Include="ViewModels\ComboBox.cs" />
+    <Compile Include="ViewModels\FilterViewModel.cs" />
     <Compile Include="ViewModels\LoadParamsViewModel.cs" />
     <Compile Include="ViewModels\IOViewModel.cs" />
     <Compile Include="ViewModels\FeedBackViewModel.cs" />
@@ -251,6 +249,7 @@
     <Compile Include="ViewModels\MessageBoxVM.cs" />
     <Compile Include="ViewModels\MotionViewModel.cs" />
     <Compile Include="ViewModels\Operations.cs" />
+    <Compile Include="ViewModels\PIDViewModel.cs" />
     <Compile Include="ViewModels\SerialProgrammer.cs" />
     <Compile Include="ViewModels\UpDownControlModel.cs" />
     <Compile Include="ViewModels\WizardWindowViewModel.cs" />
@@ -697,7 +696,12 @@
   <ItemGroup>
     <Resource Include="Themes\MotorController.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\WPFSpark_v1.1\WPFSpark\WPFSpark\WPFSpark.csproj">
+      <Project>{98be1309-ceb4-45ee-b4ad-28baf0570fab}</Project>
+      <Name>WPFSpark</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\1452207982_settings.png" />
     <Resource Include="Images\Backgrounds\black1.jpg" />
@@ -708,9 +712,6 @@
     <Resource Include="Images\zoomPlus_2.png" />
     <Resource Include="Images\zoomPlus_3.png" />
     <Content Include="NDP451-KB2858728-x86-x64-AllOS-ENU.exe" />
-    <Content Include="SerialProgrammer\Serial Programmer.exe">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
     <None Include="WizardMotorImages\Motor.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

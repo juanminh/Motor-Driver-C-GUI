@@ -5,6 +5,9 @@ using SuperButton.Models;
 using System.Windows.Controls;
 using System;
 using System.Threading;
+using SuperButton.Models.DriverBlock;
+using System.Diagnostics;
+using MotorController.ViewModels;
 
 namespace SuperButton.ViewModels
 {
@@ -13,12 +16,13 @@ namespace SuperButton.ViewModels
         CONTROL = 0,
         FEED_BACKS = 1,
         PID = 2,
-        DEVICE = 3,
-        I_O = 4,
-        CALIBRATION = 5,
-        BODE = 6,
-        MAINTENANCE = 7,
-        DEBUG = 8
+        FILTER = 3,
+        DEVICE = 4,
+        I_O = 5,
+        CALIBRATION = 6,
+        BODE = 7,
+        MAINTENANCE = 8,
+        DEBUG = 9
     };
     internal class ParametarsWindowViewModel : ViewModelBase
     {
@@ -29,16 +33,42 @@ namespace SuperButton.ViewModels
         private DebugViewModel _debugViewModel;
         private IOViewModel _ioViewModel;
         private BodeViewModel _bodeViewModel;
+        private FilterViewModel _filterViewModel;
+        private PIDViewModel _pidViewModel;
         //private LoadParamsViewModel _loadParamsViewModel;
+
+        private static readonly object Synlock = new object();
+        public static readonly object PlotBodeListLock = new object();             //Singletone variable
+
+        private static ParametarsWindowViewModel _instance;
+        public static ParametarsWindowViewModel GetInstance
+        {
+            get
+            {
+                lock(Synlock)
+                {
+                    if(_instance != null)
+                        return _instance;
+                    _instance = new ParametarsWindowViewModel();
+                    return _instance;
+                }
+            }
+            set
+            {
+                _instance = value;
+            }
+        }
         public ParametarsWindowViewModel()
         {
             _calibrationViewModel = CalibrationViewModel.GetInstance;
             _motionViewModel = MotionViewModel.GetInstance;
             _maintenanceViewModel = MaintenanceViewModel.GetInstance;
+            _filterViewModel = FilterViewModel.GetInstance;
             _feedBackViewModel = FeedBackViewModel.GetInstance;
             _debugViewModel = DebugViewModel.GetInstance;
             _ioViewModel = IOViewModel.GetInstance;
             _bodeViewModel = BodeViewModel.GetInstance;
+            _pidViewModel = PIDViewModel.GetInstance;
             //_loadParamsViewModel = LoadParamsViewModel.GetInstance;
         }
         ~ParametarsWindowViewModel() { }
@@ -107,50 +137,8 @@ namespace SuperButton.ViewModels
             }
 
         }
-        private ObservableCollection<object> _pidCurrentList;
-        public ObservableCollection<object> PidCurrentList
-        {
 
-            get
-            {
-                return Commands.GetInstance.DataCommandsListbySubGroup["PIDCurrent"];
-            }
-            set
-            {
-                _pidCurrentList = value;
-                OnPropertyChanged();
-            }
-        }
-        private ObservableCollection<object> _pidSpeedList;
-        public ObservableCollection<object> PidSpeedList
-        {
-
-            get
-            {
-                return Commands.GetInstance.DataCommandsListbySubGroup["PIDSpeed"];
-            }
-            set
-            {
-                _pidSpeedList = value;
-                OnPropertyChanged();
-            }
-
-        }
-        private ObservableCollection<object> _pidPositionList;
-        public ObservableCollection<object> PidPositionList
-        {
-
-            get
-            {
-                return Commands.GetInstance.DataCommandsListbySubGroup["PIDPosition"];
-            }
-            set
-            {
-                _pidPositionList = value;
-                OnPropertyChanged();
-            }
-
-        }
+     
         private ObservableCollection<object> _baudrateList;
         public ObservableCollection<object> DeviceSerialList
         {
@@ -205,6 +193,14 @@ namespace SuperButton.ViewModels
         public FeedBackViewModel FeedBackViewModel
         {
             get { return _feedBackViewModel; }
+        }
+        public PIDViewModel PIDViewModel
+        {
+            get { return _pidViewModel; }
+        }
+        public FilterViewModel FilterViewModel
+        {
+            get { return _filterViewModel; }
         }
         //public LoadParamsViewModel LoadParamsViewModel
         //{

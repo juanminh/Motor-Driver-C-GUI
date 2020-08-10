@@ -227,7 +227,10 @@ namespace SuperButton.Models.DriverBlock
                         arr = new string[] { "Hall", "Qep1", "Qep2", "SSI_Feedback", "Qep1Bis", "Qep2Bis" };
                         break;
                     case (int)eTab.PID:
-                        arr = new string[] { "PIDCurrent", "PIDSpeed", "PIDPosition" };
+                        arr = new string[] { "PIDCurrent", "PIDSpeed", "PIDPosition", "PIDListBackGround" };
+                        break;
+                    case (int)eTab.FILTER:
+                        arr = new string[] { "FilterList", "FilterBackGround" };
                         break;
                     case (int)eTab.DEVICE:
                         arr = new string[] { "DeviceSerial", "BaudrateList" };
@@ -753,11 +756,32 @@ namespace SuperButton.Models.DriverBlock
                         Commands.GetInstance.DigitalInputList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)].CommandValue = Convert.ToInt16(newPropertyValue) == 1 ? 1 : 0;
                     }
                     #endregion DigitalInput
+                    #region PID
+                    else if((commandidentifier.Item1 == 81 || commandidentifier.Item1 == 82 || commandidentifier.Item1 == 83) && commandidentifier.Item2 == 10) // PID
+                    {
+                        switch(commandidentifier.Item1)
+                        {
+                            case 81:
+                                PIDViewModel.GetInstance.PID_current_loop = newPropertyValue == "1" ? true : false;
+                                break;
+                            case 82:
+                                PIDViewModel.GetInstance.PID_speed_loop = newPropertyValue == "1" ? true : false;
+                                break;
+                            case 83:
+                                PIDViewModel.GetInstance.PID_position_loop = newPropertyValue == "1" ? true : false;
+                                break;
+                        }
+                    }
+                    else if(commandidentifier.Item1 == 101 && commandidentifier.Item2 == 0) // Filter Enable
+                    {
+                        FilterViewModel.GetInstance.Filter_Enable = newPropertyValue == "1" ? true : false;
+                    }
+                    #endregion PID
                 }
-                else if(commandidentifier.Item1 == 1 && commandidentifier.Item2 == 0 && !DebugViewModel.GetInstance._forceConnectMode) // MotorStatus
-                {
-                    updateConnectionStatus(commandidentifier, newPropertyValue);
-                }
+                //else if(commandidentifier.Item1 == 1 && commandidentifier.Item2 == 0 && !DebugViewModel.GetInstance._forceConnectMode) // MotorStatus
+                //{
+                //    updateConnectionStatus(commandidentifier, newPropertyValue);
+                //}
                 /*
                 #region StartUpAPP
                 else if(commandidentifier.Item1 == 62)

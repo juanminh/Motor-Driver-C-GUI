@@ -13,7 +13,8 @@
 	x:Class="SuperButton.App"
 	StartupUri="MainWindow.xaml">
     <Application.Resources>
-		<!-- Resources scoped at the Application level should be defined here. -->
+		<!-- Resources scoped at the Application level should be defined here.
+        C:\Projects\Motor Driver C# GUI\SuperButton MotorController\packages\ToggleSwitch.1.1.2\lib\net40-client\ToggleSwitch.dll-->
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/Dictionary1.xaml" />
@@ -427,7 +428,7 @@
         			</Setter.Value>
         		</Setter>
         	</Style>
-            <Style x:Key="MetroToggleSwitchStyle" TargetType="{x:Type ToggleSwitch:HorizontalToggleSwitch}">
+            <!--<Style x:Key="MetroToggleSwitchStyle" TargetType="{x:Type ToggleSwitch:HorizontalToggleSwitch}">
                 <Setter Property="Foreground" Value="White"/>
                 <Setter Property="Width" Value="88"/>
                 <Setter Property="Height" Value="28"/>
@@ -524,7 +525,7 @@
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
-            </Style>
+            </Style>-->
             <ControlTemplate x:Key="ThumbControlTemplateMotorOn" TargetType="{x:Type Thumb}">
                 <Grid Background="Transparent">
                     <VisualStateManager.VisualStateGroups>
@@ -593,7 +594,7 @@
                     </Setter.Value>
                 </Setter>
             </Style>
-            <Style x:Key="MotorOnStyleofTumb" TargetType="{x:Type ToggleSwitch:HorizontalToggleSwitch}">
+            <!--<Style x:Key="MotorOnStyleofTumb" TargetType="{x:Type ToggleSwitch:HorizontalToggleSwitch}">
             	<Setter Property="Foreground" Value="White"/>
             	<Setter Property="Width" Value="88"/>
             	<Setter Property="Height" Value="28"/>
@@ -690,7 +691,7 @@
             			</ControlTemplate>
             		</Setter.Value>
             	</Setter>
-            </Style>
+            </Style>-->
             <Style x:Key="EnumUCStyleLeftPanel" TargetType="{x:Type views:EnumUC}">
             	<Setter Property="Template">
             		<Setter.Value>
