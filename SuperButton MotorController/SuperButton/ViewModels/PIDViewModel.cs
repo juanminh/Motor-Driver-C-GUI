@@ -109,8 +109,8 @@ namespace SuperButton.ViewModels
                     Rs232Interface.GetInstance.SendToParser(new PacketFields
                     {
                         Data2Send = value ? 1 : 0,
-                        ID = Convert.ToInt16(10),
-                        SubID = Convert.ToInt16(81),
+                        ID = Convert.ToInt16(81),
+                        SubID = Convert.ToInt16(10),
                         IsSet = true,
                         IsFloat = false
                     });
@@ -141,8 +141,8 @@ namespace SuperButton.ViewModels
                     Rs232Interface.GetInstance.SendToParser(new PacketFields
                     {
                         Data2Send = value ? 1 : 0,
-                        ID = Convert.ToInt16(10),
-                        SubID = Convert.ToInt16(82),
+                        ID = Convert.ToInt16(82),
+                        SubID = Convert.ToInt16(10),
                         IsSet = true,
                         IsFloat = false
                     });
@@ -173,8 +173,8 @@ namespace SuperButton.ViewModels
                     Rs232Interface.GetInstance.SendToParser(new PacketFields
                     {
                         Data2Send = value ? 1 : 0,
-                        ID = Convert.ToInt16(10),
-                        SubID = Convert.ToInt16(83),
+                        ID = Convert.ToInt16(83),
+                        SubID = Convert.ToInt16(10),
                         IsSet = true,
                         IsFloat = false
                     });

@@ -1433,6 +1433,7 @@ namespace SuperButton.Views
 
                         if(OscilloscopeParameters.ChanTotalCounter == 1)
                         {
+                            //Debug.WriteLine("1: OscilloscopeParameters.Gain - OscilloscopeParameters.FullScale - SubGain1: " + OscilloscopeParameters.Gain.ToString() + " - " + OscilloscopeParameters.FullScale.ToString() + " - " + SubGain1.ToString());
                             #region SingleChan
                             if(ParserRayonM1.GetInstanceofParser.FifoplotList.IsEmpty)
                             {
@@ -1700,6 +1701,8 @@ namespace SuperButton.Views
                         }
                         else if(OscilloscopeParameters.ChanTotalCounter == 2)// Two channels
                         {
+                            //Debug.WriteLine("2: OscilloscopeParameters.Gain - OscilloscopeParameters.FullScale - SubGain1: " + OscilloscopeParameters.Gain.ToString() + " - " + OscilloscopeParameters.FullScale.ToString() + " - " + SubGain1.ToString());
+
                             #region DoubleChan
                             if(ParserRayonM1.GetInstanceofParser.FifoplotList.IsEmpty)
                             {

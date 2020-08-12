@@ -839,10 +839,10 @@ namespace SuperButton.Models.ParserBlock
                 lock(PlotListLock)
                 {
 #if New_Packet_Plot
-                    if(PlotList[i][2] == 0 && PlotList[i][3] == 0 && PlotList[i][4] == 0 && PlotList[i][5] == 0 && PlotList[i][6] == 0 && PlotList[i][7] == 0 && PlotList[i][8] == 0 && PlotList[i][9] == 0)
-                    {
+                    //if(PlotList[i][2] == 0 && PlotList[i][3] == 0 && PlotList[i][4] == 0 && PlotList[i][5] == 0 && PlotList[i][6] == 0 && PlotList[i][7] == 0 && PlotList[i][8] == 0 && PlotList[i][9] == 0)
+                    //{
 
-                    }
+                    //}
                     #region New_Packet_Plot
                     if(OscilloscopeParameters.ChanTotalCounter == 1)
                     {
