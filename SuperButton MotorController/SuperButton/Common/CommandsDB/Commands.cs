@@ -144,7 +144,7 @@ namespace SuperButton.CommandsDB
                 IsFloat = false,
                 CommandValue = "0"
             };
-            DataCommandsListbySubGroup["DeviceSynchCommand"].Add(Data);
+            DataCommandsListbySubGroup["DeviceSynchCommand"].Add(Data); // 0
 
             Data = new DataViewModel
             {
@@ -154,7 +154,7 @@ namespace SuperButton.CommandsDB
                 IsFloat = false,
                 CommandValue = "0"
             };
-            DataCommandsListbySubGroup["DeviceSynchCommand"].Add(Data);
+            DataCommandsListbySubGroup["DeviceSynchCommand"].Add(Data); // 1
 
             Data = new DataViewModel
             {
@@ -164,7 +164,17 @@ namespace SuperButton.CommandsDB
                 IsFloat = false,
                 CommandValue = "0"
             };
-            DataCommandsListbySubGroup["DeviceSynchCommand"].Add(Data);
+            DataCommandsListbySubGroup["DeviceSynchCommand"].Add(Data); // 2
+
+            Data = new DataViewModel
+            {
+                CommandId = "61",
+                CommandSubId = "1",
+                CommandName = "AutoBaud_Baudrate",
+                IsFloat = false,
+                CommandValue = "0"
+            };
+            DataCommandsListbySubGroup["DeviceSynchCommand"].Add(Data); // 3
             #endregion
 
         }

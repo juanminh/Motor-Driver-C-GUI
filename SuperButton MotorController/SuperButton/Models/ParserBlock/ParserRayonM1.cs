@@ -490,9 +490,12 @@ namespace SuperButton.Models.ParserBlock
                 transit |= data[3];
                 //Debug.WriteLine("Synch: " + transit.ToString());
                 // if autobaud command is SYNCH 64[0] || 64[1] so transit will be 0x8B3C8B3C else 0
-                if(transit == 0x8B3C8B3C) // 1
-                    Rs232Interface.GetInstance.IsSynced = true;
-                else if(transit == 0 && commandId == 1 && commandSubId == 0)
+                //if(transit == 0x8B3C8B3C) // 1
+                //    Rs232Interface.GetInstance.IsSynced = true;
+                //else if(transit == 0 && commandId == 1 && commandSubId == 0)
+                //    Rs232Interface.GetInstance.IsSynced = true;
+                //else 
+                if(commandId == 61 && commandSubId == 1 && Rs232Interface._comPort.BaudRate == ConnectionBase.BaudRates[transit - 1])
                     Rs232Interface.GetInstance.IsSynced = true;
                 else
                     Rs232Interface.GetInstance.IsSynced = false;

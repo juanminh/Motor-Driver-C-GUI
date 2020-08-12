@@ -256,10 +256,18 @@ namespace SuperButton.Models.DriverBlock
                                     if(RxtoParser != null)
                                     {
                                         _comPort.DiscardInBuffer();        //Reset internal rx buffer
-                                        DataViewModel temp = (DataViewModel)Commands.GetInstance.DataCommandsListbySubGroup["DeviceSynchCommand"][2]; // [0]: 64[0], [1]: 64[1], [2]: 1[0]
+                                        DataViewModel temp = (DataViewModel)Commands.GetInstance.DataCommandsListbySubGroup["DeviceSynchCommand"][3]; // [0]: 64[0], [1]: 64[1], [2]: 1[0], [3]: 61[1]
                                         Commands.AssemblePacket(out RxPacket, Int16.Parse(temp.CommandId), Int16.Parse(temp.CommandSubId), false, false, 0);
-                                        RxtoParser(this, new Rs232InterfaceEventArgs(RxPacket));
-                                        Debug.WriteLine("Baudrate Send: " + _comPort.BaudRate.ToString());
+                                        for(int i = 0; i < 3; i++)
+                                        {
+                                            RxtoParser(this, new Rs232InterfaceEventArgs(RxPacket));
+                                            Debug.WriteLine("Baudrate Send: " + _comPort.BaudRate.ToString());
+                                            Thread.Sleep(10);
+                                            if(_isSynced)
+                                            {
+                                                break;
+                                            }
+                                        }
                                     }
                                     //Thread.Sleep(250);// while with timeout of 1 second
                                     //Cleaner = ComPort.ReadExisting();
