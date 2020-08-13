@@ -277,20 +277,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <GroupBox  Grid.Row="0" Header="Current">
-                            <StackPanel  Background="Transparent" Orientation="Vertical" >
-                                <ItemsControl ItemsSource="{Binding PidCurrentList, UpdateSourceTrigger=PropertyChanged}" ItemTemplate="{StaticResource DataViewModel}" Margin="0,4,0,0"/>
-                                <Border BorderThickness="1" BorderBrush="White" CornerRadius="4">
-                                    <Grid>
-                                        <TextBlock Text="              Close Loop"/>
-                                        <wpfSpark:ToggleSwitch Width="80" Height="22" HorizontalAlignment="Right" VerticalAlignment="Center"
-                                                    FontSize="9" UncheckedText="Off" CheckedText="On"
-                                                    IsChecked="{Binding PID_current_loop, Mode=TwoWay}"/>
-                                    </Grid>
-                                </Border>
-                            </StackPanel>
-                        </GroupBox>
-                        <GroupBox Grid.Row="1" Header="Speed" Margin="0,10,0,0">
+                        <GroupBox Grid.Row="0" Header="Speed">
                             <StackPanel Background="Transparent" Orientation="Vertical">
                                 <ItemsControl ItemsSource="{Binding PidSpeedList}" ItemTemplate="{StaticResource DataViewModel}" Margin="0,4,0,0"/>
                                 <Border BorderThickness="1" BorderBrush="White" CornerRadius="4">
@@ -299,6 +286,19 @@
                                         <wpfSpark:ToggleSwitch Width="80" Height="22" HorizontalAlignment="Right" VerticalAlignment="Center"
                                                     FontSize="9" UncheckedText="Off" CheckedText="On"
                                                     IsChecked="{Binding PID_speed_loop, Mode=TwoWay}"/>
+                                    </Grid>
+                                </Border>
+                            </StackPanel>
+                        </GroupBox>
+                        <GroupBox  Grid.Row="1" Header="Current" Margin="0,10,0,0">
+                            <StackPanel  Background="Transparent" Orientation="Vertical" >
+                                <ItemsControl ItemsSource="{Binding PidCurrentList, UpdateSourceTrigger=PropertyChanged}" ItemTemplate="{StaticResource DataViewModel}" Margin="0,4,0,0"/>
+                                <Border BorderThickness="1" BorderBrush="White" CornerRadius="4">
+                                    <Grid>
+                                        <TextBlock Text="              Close Loop"/>
+                                        <wpfSpark:ToggleSwitch Width="80" Height="22" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                                    FontSize="9" UncheckedText="Off" CheckedText="On"
+                                                    IsChecked="{Binding PID_current_loop, Mode=TwoWay}"/>
                                     </Grid>
                                 </Border>
                             </StackPanel>

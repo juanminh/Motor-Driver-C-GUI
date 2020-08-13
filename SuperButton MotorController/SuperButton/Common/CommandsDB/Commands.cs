@@ -184,6 +184,10 @@ namespace SuperButton.CommandsDB
             {
                 "Kp", "Ki", "Kd", "kp range", "Range"
             };
+            string[] index = new[]
+            {
+                "1", "2", "4", "5", "6"
+            };
             DataCommandsListbySubGroup.Add("PIDSpeed", new ObservableCollection<object>());
             DataCommandsListbySubGroup.Add("PIDPosition", new ObservableCollection<object>());
             DataCommandsListbySubGroup.Add("PIDListBackGround", new ObservableCollection<object>());
@@ -194,7 +198,7 @@ namespace SuperButton.CommandsDB
                 {
                     CommandName = names[i],
                     CommandId = "82",
-                    CommandSubId = (i + 1).ToString(CultureInfo.InvariantCulture),
+                    CommandSubId = index[i],
                     CommandValue = "",
                     IsFloat = names[i] == "Range" ? false : true
                 };
@@ -206,7 +210,7 @@ namespace SuperButton.CommandsDB
                 {
                     CommandName = names[i],
                     CommandId = "83",
-                    CommandSubId = (i + 1).ToString(CultureInfo.InvariantCulture),
+                    CommandSubId = index[i],
                     CommandValue = "",
                     IsFloat = names[i] == "Range" ? false : true
                 };
