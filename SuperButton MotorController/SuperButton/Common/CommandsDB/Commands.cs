@@ -182,11 +182,11 @@ namespace SuperButton.CommandsDB
         {
             var names = new[]
             {
-                "Kp", "Ki", "Kd", "kp range", "Range"
+                "Kp", "Ki", "Kc", "Kd", "kp range", "Range"
             };
             string[] index = new[]
             {
-                "1", "2", "4", "5", "6"
+                "1", "2", "3", "4", "5", "6"
             };
             DataCommandsListbySubGroup.Add("PIDSpeed", new ObservableCollection<object>());
             DataCommandsListbySubGroup.Add("PIDPosition", new ObservableCollection<object>());
