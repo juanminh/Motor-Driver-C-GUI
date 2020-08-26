@@ -6,7 +6,7 @@
         xmlns:uc="MotorController.Views"
         xmlns:views="clr-namespace:MotorController.Views"
         xmlns:ucTB="clr-namespace:UserControlLibrary;assembly=UserControlLibrary"
-        xmlns:superButton="clr-namespace:MotorController"
+        xmlns:motorController="clr-namespace:MotorController"
         xmlns:common="clr-namespace:MotorController.Common"
         xmlns:mainWindowPanels="clr-namespace:MotorController.Views.mainWindowPanels"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
@@ -58,7 +58,7 @@
 
             <!-- Bottom Panel   -->
 
-            <superButton:BottomPanel Grid.Row="1"
+            <motorController:BottomPanel Grid.Row="1"
                                  Visibility="Visible"  
                                  VerticalContentAlignment="Top" 
                                  MaxHeight="Infinity"

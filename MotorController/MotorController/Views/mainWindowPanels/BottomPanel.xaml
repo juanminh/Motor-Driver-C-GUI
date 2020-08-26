@@ -4,7 +4,7 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:common="clr-namespace:MotorController.Common"
-	xmlns:superButton="clr-namespace:MotorController"
+	xmlns:motorController="clr-namespace:MotorController"
     xmlns:wpfSpark="clr-namespace:WPFSpark;assembly=WPFSpark"
     xmlns:ToggleSwitch="clr-namespace:ToggleSwitch;assembly=ToggleSwitch" 
 	xmlns:views="clr-namespace:MotorController.Views"

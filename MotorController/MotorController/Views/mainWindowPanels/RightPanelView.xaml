@@ -1,24 +1,87 @@
 ﻿<UserControl
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"           
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:common="clr-namespace:MotorController.Common"
-             xmlns:System="clr-namespace:System;assembly=mscorlib"
-             xmlns:Borders="clr-namespace:ToggleSwitch.Borders;assembly=ToggleSwitch" 
-             xmlns:ToggleSwitch="clr-namespace:ToggleSwitch;assembly=ToggleSwitch" 
-             xmlns:Views="clr-namespace:MotorController.Views"  
-             xmlns:Helpers="clr-namespace:MotorController.Helpers"
-             xmlns:wpfSpark="clr-namespace:WPFSpark;assembly=WPFSpark"
-             x:Class="MotorController.Views.mainWindowPanels.LeftPanelView"
-             x:Name="GsUserControl"
-             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             DataContext="{Binding LeftPanelViewModel}"
-             d:DesignHeight="800"
-             d:DesignWidth="1380"
-             mc:Ignorable="d" Height="700" MaxWidth="180" Focusable="True"
-             >
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:common="clr-namespace:MotorController.Common"
+    xmlns:motorController="clr-namespace:MotorController.Views"
+    xmlns:toggleSwitch="clr-namespace:ToggleSwitch;assembly=ToggleSwitch"
+    xmlns:System="clr-namespace:System;assembly=mscorlib" 
+    xmlns:Borders="clr-namespace:ToggleSwitch.Borders;assembly=ToggleSwitch"
+    mc:Ignorable="d"
+	x:Class="MotorController.Views.mainWindowPanels.RightPanel"
+	x:Name="UserControl" d:DesignHeight="480" MaxWidth="189">
+
+
     <UserControl.Resources>
+
+        <!--Glass Button control template-->
+
+
+        <ControlTemplate x:Key="GlassButton" TargetType="{x:Type Button}">
+            <ControlTemplate.Resources>
+                <Storyboard x:Key="Timeline1">
+                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="glow" Storyboard.TargetProperty="(UIElement.Opacity)">
+                        <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="1"/>
+                    </DoubleAnimationUsingKeyFrames>
+                </Storyboard>
+                <Storyboard x:Key="Timeline2">
+                    <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="glow" Storyboard.TargetProperty="(UIElement.Opacity)">
+                        <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="0"/>
+                    </DoubleAnimationUsingKeyFrames>
+                </Storyboard>
+            </ControlTemplate.Resources>
+            <Border BorderBrush="#FFFFFFFF" BorderThickness="1,1,1,1" CornerRadius="4,4,4,4" Background="{x:Null}" Opacity="1">
+                <Border x:Name="border" Background="#7F060606" BorderBrush="#FF000000" BorderThickness="1,1,1,1" CornerRadius="4,4,4,4">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="0.507*"/>
+                            <RowDefinition Height="0.493*"/>
+                        </Grid.RowDefinitions>
+                        <Border Opacity="0" HorizontalAlignment="Stretch" x:Name="glow" Width="Auto" Grid.RowSpan="2" CornerRadius="4,4,4,4">
+                            <Border.Background>
+                                <RadialGradientBrush>
+                                    <RadialGradientBrush.RelativeTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform ScaleX="1.702" ScaleY="2.243"/>
+                                            <SkewTransform AngleX="0" AngleY="0"/>
+                                            <RotateTransform Angle="0"/>
+                                            <TranslateTransform X="-0.368" Y="-0.152"/>
+                                        </TransformGroup>
+                                    </RadialGradientBrush.RelativeTransform>
+                                    <GradientStop Color="#B28DBDFF" Offset="0"/>
+                                    <GradientStop Color="#008DBDFF" Offset="1"/>
+                                </RadialGradientBrush>
+                            </Border.Background>
+                        </Border>
+                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Width="Auto" Grid.RowSpan="2"/>
+                        <Border HorizontalAlignment="Stretch" Margin="0,0,0,0" x:Name="shine" Width="Auto" CornerRadius="4,4,0,0">
+                            <Border.Background>
+                                <LinearGradientBrush EndPoint="0.494,0.889" StartPoint="0.494,0.028">
+                                    <GradientStop Color="#99FFFFFF" Offset="0"/>
+                                    <GradientStop Color="#33FFFFFF" Offset="1"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                        </Border>
+                    </Grid>
+                </Border>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Opacity" TargetName="shine" Value="0.4"/>
+                    <Setter Property="Background" TargetName="border" Value="#CC000000"/>
+                    <Setter Property="Visibility" TargetName="glow" Value="Hidden"/>
+                </Trigger>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Trigger.EnterActions>
+                        <BeginStoryboard Storyboard="{StaticResource Timeline1}"/>
+                    </Trigger.EnterActions>
+                    <Trigger.ExitActions>
+                        <BeginStoryboard x:Name="Timeline2_BeginStoryboard" Storyboard="{StaticResource Timeline2}"/>
+                    </Trigger.ExitActions>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
 
         <!--  BackgroundBrush  -->
         <SolidColorBrush x:Key="ControlBackgroundBrush" Color="#FF333333" />
@@ -274,7 +337,7 @@
             <Setter Property="Foreground" Value="#FF000000" />
             <Setter Property="Padding" Value="3" />
             <Setter Property="BorderThickness" Value="2" />
-            <Setter Property="BorderBrush" Value="{StaticResource NormalBorderBrush}" />
+
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ToggleButton}">
@@ -401,7 +464,7 @@
                                 IsHitTestVisible="false"
                                 Opacity="0" />
                             <Border x:Name="FocusVisualElement"
-                                BorderBrush="{StaticResource HoverShineBrush}"
+                                
                                 BorderThickness="1"
                                 CornerRadius="3"
                                 IsHitTestVisible="false"
@@ -410,16 +473,6 @@
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>
-
-        <!--  ClearLog Button Model  -->
-        <Style x:Key="ExampleToolbarButtonStyle"
-           BasedOn="{StaticResource DefaultButtonStyle}"
-           TargetType="Button">
-            <Setter Property="Padding" Value="1" />
-            <Setter Property="Margin" Value="2" />
-            <Setter Property="Width" Value="110" />
-            <Setter Property="MaxHeight" Value="28" />
         </Style>
 
         <!--  Horizontal GridSplitter Handle  -->
@@ -514,15 +567,13 @@
                             <Rectangle Fill="{TemplateBinding Background}" />
 
                             <!--  Horizontal Template  -->
-                            <Grid x:Name="HorizontalTemplate" Height="6">
+                            <Grid x:Name="HorizontalTemplate" Height="6" Visibility="Collapsed">
                                 <!--  Just show the faint gray grid splitter rectangle with no other details  -->
                             </Grid>
 
                             <!--  Vertical Template  -->
-                            <Grid x:Name="VerticalTemplate"
-        						Width="6"
-        						Visibility="Collapsed">
-                                <!--  Just show the faint gray grid splitter rectangle with no other details  -->
+                            <Grid x:Name="VerticalTemplate" Width="6">
+                                <!--  Visibility="Collapsed" Just show the faint gray grid splitter rectangle with no other details  -->
                             </Grid>
 
                         </Grid>
@@ -530,6 +581,9 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+
+
 
         <!--  ExtendedGridSplitter  -->
         <Style TargetType="{x:Type common:CollapsableGridSplitter}">
@@ -599,13 +653,13 @@
                             <!--  Horizontal Template  -->
                             <Grid x:Name="HorizontalTemplate" Visibility="Collapsed">
                                 <Grid.ColumnDefinitions>
-                                    <!--<ColumnDefinition Width="*" />-->
+                                    <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="50" />
-                                    <!--<ColumnDefinition Width="*" />-->
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
                                 <!--  Horizontal GridSplitter Handle  -->
                                 <ToggleButton x:Name="HorizontalGridSplitterHandle"
-                        			Grid.Column="0"
+                        			Grid.Column="1"
                         			IsHitTestVisible="True"
                         			RenderTransformOrigin="0.5,0.5"
                         			Style="{TemplateBinding HorizontalHandleStyle}">
@@ -650,12 +704,13 @@
             <Setter Property="RadiusX" Value="2" />
             <Setter Property="RadiusY" Value="2" />
             <Setter Property="Opacity" Value="1.0" />
+            <Setter Property="Fill" Value="#BB222222" />
             <Setter Property="Margin" Value="10,10,10,5" />
             <Setter Property="Stroke" Value="#616161" />
             <Setter Property="StrokeThickness" Value="1" />
         </Style>
 
-        <ControlTemplate x:Key="ThumbControlTemplateMotorOn2" TargetType="{x:Type Thumb}">
+        <ControlTemplate x:Key="ThumbControlTemplateMotorOn" TargetType="{x:Type Thumb}">
             <ControlTemplate.Resources>
                 <Storyboard x:Key="OnLoaded1">
                     <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Glow">
@@ -715,11 +770,11 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <Border BorderBrush="#FFEBEBEB" BorderThickness="1" CornerRadius="1" Background="#FC150E0E" Opacity="1" Margin="0,0,0.6,0.6" Grid.RowSpan="2"/>
-                        <Border x:Name="Glow" BorderBrush="{x:Null}" BorderThickness="1.4" HorizontalAlignment="Stretch" Height="28" Grid.RowSpan="2" VerticalAlignment="Top" Width="Auto" Opacity="0" Margin="-1,0,0,0">
+                        <Border x:Name="Glow" BorderBrush="{x:Null}" BorderThickness="1.4" HorizontalAlignment="Left" Height="28" Grid.RowSpan="2" VerticalAlignment="Top" Width="23" Opacity="0">
                             <Border.Background>
                                 <RadialGradientBrush RadiusX="0.685" RadiusY="0.938" Center="0.505,0.939" GradientOrigin="0.505,0.939">
                                     <GradientStop Color="#B28DBDFF"/>
-                                    <GradientStop Color="#B2BFD5F1" Offset="1"/>
+                                    <GradientStop Color="#B28DBDFF" Offset="1"/>
                                 </RadialGradientBrush>
                             </Border.Background>
                         </Border>
@@ -730,7 +785,7 @@
                                 </Path.RenderTransform>
                             </Path>
                         </Border>
-                        <Border x:Name="Shine" Margin="0,0,0.5,0" Grid.RowSpan="1" CornerRadius="1,0,0,0" Width="Auto">
+                        <Border x:Name="Shine" Margin="0,0,0.5,0" Grid.RowSpan="1" CornerRadius="1,0,0,0" Width="20.3">
                             <Border.Background>
                                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                                     <GradientStop Color="#99F0EBEB" Offset="0"/>
@@ -738,8 +793,8 @@
                                 </LinearGradientBrush>
                             </Border.Background>
                         </Border>
-                        <Borders:ClippingBorder x:Name="BackgroundAnimation" BorderBrush="Black" BorderThickness="{TemplateBinding BorderThickness}" Background="Black" CornerRadius="0.5" Opacity="0" Grid.RowSpan="2"/>
-                        <Rectangle x:Name="DisabledVisualElement" Fill="White" IsHitTestVisible="False" Opacity="0" RadiusY="4" RadiusX="4" Grid.RowSpan="2"/>
+                        <Borders:ClippingBorder x:Name="BackgroundAnimation" BorderBrush="Black" BorderThickness="{TemplateBinding BorderThickness}" Background="Black" CornerRadius="0.5" Opacity="0" Grid.RowSpan="2" d:IsHidden="True"/>
+                        <Rectangle x:Name="DisabledVisualElement" Fill="White" IsHitTestVisible="False" Opacity="0" RadiusY="4" RadiusX="4" Grid.RowSpan="2" d:IsHidden="True"/>
                     </Grid>
                 </Borders:OuterGlowBorder>
             </Grid>
@@ -747,266 +802,95 @@
 
     </UserControl.Resources>
 
-    <Grid MaxWidth="170">
+    <!--LayOutRoot-->
 
+    <Grid x:Name="LayoutRoot" MaxWidth="189">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="161" MaxWidth="161"/>
-            <ColumnDefinition Width="9"/>
+            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="179"  />
+            <!--<ColumnDefinition/>
+            <ColumnDefinition Width="Auto" MaxWidth="180"/>-->
         </Grid.ColumnDefinitions>
-        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Grid.Column="0">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                    <RowDefinition Height="auto"></RowDefinition>
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0"><!--(&#x3B2;)-->
-                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="MOTOR" VerticalAlignment="Bottom" Width="70" FontWeight="Bold" FontSize="15" Foreground="White"/>
-                </Grid>
-                <Grid Grid.Row="1">
-                    <TextBlock HorizontalAlignment="Left" Text="Controller           Version 1.3.a" VerticalAlignment="Top" Width="Auto" Foreground="#FF5499D3" FontSize="12"/>
-                </Grid>
-                <Grid Grid.Row="2" Height="10">
-                </Grid>
-                <Grid Grid.Row="3">
-                    <TextBlock Text="Communication" HorizontalAlignment="Center" Foreground="White" FontSize="12"></TextBlock>
-                </Grid>
-                <Grid Grid.Row="4">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="32"></ColumnDefinition>
-                        <ColumnDefinition Width="128"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <TextBox Grid.Column="0" Text="PORT" FontSize="11"
-                         HorizontalContentAlignment="Left" 
-                         VerticalContentAlignment="Center"
-                         TextWrapping="NoWrap"
-                         IsReadOnly="True"
-                         BorderBrush="Transparent"
-                         SelectionLength="0"></TextBox>
-                    <ComboBox Grid.Column="1"
-                    x:Name="ComboboxCOM"
-                    SelectedIndex="1"
-                    ToolTip="Please Choose Com Port"
-                    DataContext="{Binding ComboBoxCOM}"
-            	    ItemsSource="{Binding ComList}"
-            	    SelectedValue="{Binding ComString, Mode=TwoWay}"
-                    Height="24" 
-                    Width="Auto"
-                    HorizontalContentAlignment="Center"
-                    FontSize="12"
-                    IsEnabled="{Binding ComPortComboboxEn}">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="DropDownOpened">
-                                <i:InvokeCommandAction Command="{Binding DropDownOpenedCommand}"/>
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </ComboBox>
-                </Grid>
-                <Grid Grid.Row="5" Width="161" HorizontalAlignment="Left">
-                    <!--Connect superButton-->
-                    <Button
-                Content="{Binding ConnectButtonContent, Mode=TwoWay}"
-                Name="ConnectButton"
+        
+        <Rectangle  Style="{StaticResource rectangleStyle}" Grid.Column="1" Margin="0" Width="180" Opacity="0.3" >
+            <Rectangle.Fill>
+                <ImageBrush  ImageSource="pack://application:,,,/Views/HomeBackground.jpg"   Stretch="UniformToFill"/>
+            </Rectangle.Fill>
+        </Rectangle>
+       
+        <!--<StackPanel Grid.Column="1" Margin="0" Width="180">
+			<toggleSwitch:HorizontalToggleSwitch x:Name="horizontalToggleSwitch"
+				BorderBrush="White"
+				Width="164" 
+				UncheckedBackground="#B2F9F9F9" 
+				UncheckedForeground="#FF333330" 
+				ThumbSize="23" HorizontalAlignment="Center" Margin="0,7,0,0" CheckedContent="DRIVE ON" UncheckedContent="DRIVE OFF" BorderThickness="0.5" Elasticity="6" CheckedBackground="#7F000000" CheckedForeground="#FFF7F6F6"
+				Style="{DynamicResource MotorOnStyleofTumb}" ThumbTemplate="{DynamicResource ThumbControlTemplateMotorOn}">
+				<toggleSwitch:HorizontalToggleSwitch.ThumbBrush>
+					<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+						<GradientStop Color="#FF4D4E48"/>
+						<GradientStop Color="#FF333430" Offset="1"/>
+						<GradientStop Color="#FF333330" Offset="0.021"/>
+					</LinearGradientBrush>
+				</toggleSwitch:HorizontalToggleSwitch.ThumbBrush>
+			</toggleSwitch:HorizontalToggleSwitch>
+			<TextBlock HorizontalAlignment="Center" TextWrapping="Wrap" Text="Loger:" VerticalAlignment="Center" Margin="0,10,0,0" Foreground="#FFF1F0F0"/>
+			<RichTextBox HorizontalAlignment="Center" Height="200" VerticalAlignment="Center" Width="164" Margin="0,2,0,10">
+				<FlowDocument>
+					<Paragraph><Run Text="RichTextBox"/></Paragraph>
+				</FlowDocument>
+			</RichTextBox>
+			-->
+        <!--Connect motorController-->
+        <!--
+			<Button Content="{Binding ConnectButtonContent, Mode=TwoWay}"
 				BorderThickness="5,1" 
-				Command="{Binding SetAutoConnectActionCommandCommand}"
-				Template="{DynamicResource GlassButton}"  
-                Height="30" 
+				Command="{Binding SetAutoConnectActionCommandCommand}" 
+				Template="{DynamicResource GlassButton}" 
+				Foreground="White" 
+				Height="30" 
+				Margin="8,10,8,1" 
 				FontFamily="Bell MT" 
-				FontSize="12" Width="70" 
-                HorizontalAlignment="Left" Margin="0,2,0,0" VerticalAlignment="Top"
-                        IsEnabled="{Binding ConnectButtonEnable}">
-                        <Button.Style>
-                            <Style TargetType="Button">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Path=Content, ElementName=ConnectButton}" Value="Connect">
-                                        <Setter Property="Foreground" Value="White"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding Path=Content, ElementName=ConnectButton}" Value="Disconnect">
-                                        <Setter Property="Foreground" Value="Red"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
-                    </Button>
-                    <Helpers:RoundBoolLed Width="10" Height="10" CurrStatus="{Binding LedStatusTx}" VerticalAlignment="Top" Margin="70,2,81,0"/>
-                    <TextBlock HorizontalAlignment="Center" Text="Tx" VerticalAlignment="Top" FontSize="10" Margin="80,0,72,0" Foreground="White"></TextBlock>
-                    <Border BorderBrush="Transparent" 
-                        BorderThickness="1" 
-                        CornerRadius="3" 
-                        Width="90" Height="20" 
-                        VerticalAlignment="Center" 
-                        HorizontalAlignment="Right">
-                        <TextBox 
-                        Text="{Binding ConnectTextBoxContent, Mode=TwoWay}"  
-                        Background="Transparent" 
-                        BorderBrush="Transparent" 
-                        Width="89" Height="19"
-                        Foreground="White" 
-                        HorizontalContentAlignment="Center" 
-                        VerticalContentAlignment="Center"
-                        TextWrapping="NoWrap"
-                        IsHitTestVisible="False"
-                        IsReadOnly="True"
-                            FontSize="11">
-                        </TextBox>
-                    </Border>
-                    <Helpers:RoundBoolLed Width="10" Height="10" CurrStatus="{Binding LedStatusRx}" VerticalAlignment="Bottom" Margin="70,0,81,2"/>
-                    <TextBlock HorizontalAlignment="Center" Text="Rx" VerticalAlignment="Bottom" FontSize="10" Margin="80,0,70,1" Foreground="White"></TextBlock>
-                </Grid>
-                <Grid Grid.Row="6">
-                    <ItemsControl Height="auto"
-                              ItemsSource="{Binding LPCommandsList}" 
-                              ItemTemplate="{StaticResource DataViewSmallFontInd}"/>
-                </Grid>
-                <Grid Grid.Row="7" Height="10">
-                </Grid>
-                <Grid Grid.Row="8">
-                    <Separator Width="65" Height="1"></Separator>
-                </Grid>
-                <Grid Grid.Row="9">
-                    <TextBlock Height="17" Text="Log" HorizontalAlignment="Center" Foreground="White" FontSize="12"></TextBlock>
-                </Grid>
-                <Grid Grid.Row="10" Width="161" HorizontalAlignment="Left" MaxHeight="190" MinHeight="190">
-                    <!-- Log -->
-                    <TextBox Width="auto" IsReadOnly="True" Foreground="White" BorderBrush="White" TextWrapping="Wrap"  Text="{Binding LogText}"
-                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                 ScrollViewer.CanContentScroll="True" FontSize="11"/>
-                </Grid>
-                <Grid Grid.Row="11" Height="auto" >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="33*"/>
-                        <ColumnDefinition Width="33*"/>
-                        <ColumnDefinition Width="33*"/>
-                    </Grid.ColumnDefinitions>
-                    <Button FontSize="10" 
-                            Command="{Binding ClearLogCommand}" 
-                            Style="{StaticResource ExampleToolbarButtonStyle}" 
-                            VerticalAlignment="Top" HorizontalAlignment="Left" 
-                            BorderThickness="0.5" 
-                            Width="50" Height="15"
-                            Grid.Column="0">
-                        <TextBlock Text="Clear Log" VerticalAlignment="Center" Margin="0,-2,0,0"/>
-                    </Button>
-                </Grid>
-                <Grid Grid.Row="12" Height="10">
-                </Grid>
-                <Grid Grid.Row="13" Height="50">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="30*"/>
-                        <ColumnDefinition Width="5*"/>
-                        <ColumnDefinition Width="30*"/>
-                        <ColumnDefinition Width="5*"/>
-                        <ColumnDefinition Width="30*"/>
-                    </Grid.ColumnDefinitions>
-                    <!-- Wizard -->
-                    <Border Grid.Column="0" CornerRadius="1" BorderBrush="Gray" BorderThickness="1" Width="50">
-                        <Button Grid.Column="0" Command ="{Binding ShowWizard}"
-                            Background="Transparent" 
-                            Foreground="Transparent"
-                            BorderThickness="0"
-                            Padding="0">
-                            <Image Source="pack://application:,,,/Images/Wizard.png"/>
-                        </Button>
-                    </Border>
-                    <!-- Param And Action -->
-                    <Border Grid.Column="2" CornerRadius="2" BorderBrush="Gray" BorderThickness="1" Width="50">
-                        <Button Command ="{Binding Showwindow}"
-                            Background="Transparent" 
-                            Foreground="Transparent"
-                            BorderThickness="0"
-                            Padding="0">
-                            <Image Source="pack://application:,,,/Images/alt-parameters-icone-9469-64.png"/>
-                        </Button>
-                    </Border>
-                    <!-- Monitor -->
-                    <!--<Border Grid.Column="5" CornerRadius="15" BorderBrush="Gray" BorderThickness="1" Width="50">
-                        <Button Grid.Column="5" Command ="{Binding Showwindow}"
-                            Background="Transparent" 
-                            Foreground="Transparent"
-                            BorderThickness="0"
-                            Padding="0">
-                            <Image Source="pack://application:,,,/Images/monitor.png"></Image>
-                        </Button>
-                    </Border>-->
-                </Grid>
-                <Grid Grid.Row="14" Height="10">
-                    <TextBlock Text="     Wizard           Parameters" Foreground="White" FontSize="8" FontWeight="Bold"/>
-                </Grid>
-                <Grid Grid.Row="15">
-                    <Separator Width="65"></Separator>
-                </Grid>
-                <Grid Grid.Row="16" Height="5">
-                </Grid>
-                <Grid Grid.Row="17">
-                    <TextBlock Foreground="White" HorizontalAlignment="Center" FontWeight="Bold" FontSize="13">Driver Status</TextBlock>
-                </Grid>
-                <Grid Grid.Row="18" HorizontalAlignment="Center">
-                    <!--<ItemsControl ItemsSource="{Binding DriverStatusList}" ItemTemplate="{StaticResource DataViewSmallFontInd}" FontSize="20"/>-->
-                    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="0.5">
-                        <TextBlock Name="DrvSt" Width="130" HorizontalAlignment="Center" Margin="0,0,1,0" Text="{Binding DriverStat}" FontSize="13" FontWeight="Bold">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="Red" />
-                                    <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding DriverStat}" Value="All OK !" />
-                                            </MultiDataTrigger.Conditions>
-                                            <MultiDataTrigger.Setters>
-                                                <Setter Property="Foreground" Value="Green" />
-                                            </MultiDataTrigger.Setters>
-                                        </MultiDataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </Border>
-                </Grid>
-                <Grid Grid.Row="19" Height="5">
-                </Grid>
-                <Grid Grid.Row="20">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="25*"></ColumnDefinition>
-                        <ColumnDefinition Width="5*"></ColumnDefinition>
-                        <ColumnDefinition Width="45*"></ColumnDefinition>
-                        <ColumnDefinition Width="25*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" TextDecorations="Underline" FontWeight="Bold" FontSize="13" VerticalAlignment="Center" Foreground="White" Margin="0,0,0,3">Motor</TextBlock>
-                    <wpfSpark:ToggleSwitch Grid.Column="2" Width="100" Height="25"  VerticalAlignment="Center" IsChecked="{Binding MotorOnToggleChecked, Mode=TwoWay}"  />
-                    <Helpers:RoundBoolLed Grid.Column="3" Width="16" Height="16" CurrStatus="{Binding LedMotorStatus}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-                </Grid>
-            </Grid>
-        </ScrollViewer>
+				FontSize="18.667"/>
+			-->
+        <!--ComboTest-->
+        <!--
+			<Button Content="{Binding SendButtonContent, Mode=TwoWay}"
+				BorderThickness="5,1" 
+				Command="{Binding SendActionCommand}" 
+				Template="{DynamicResource GlassButton}" 
+				Foreground="White" 
+				Height="30" 
+				Margin="8,2,8,0" 
+				FontFamily="Bell MT" 
+				FontSize="18.667"/>
+			<motorController:EnumUC Height="30" Margin="5,2,5,5" Width="164"/>
+		</StackPanel>-->
 
-        <common:CollapsableGridSplitter Grid.Column="1"              
+        <common:CollapsableGridSplitter Grid.Column="0"
 			Width="9"
-			Margin="3,0,0,0"
-			HorizontalAlignment="Left"
+			Margin="0"
+			HorizontalAlignment="Right"
 			VerticalAlignment="Stretch"
-			CollapseMode="Previous"
+			CollapseMode="Next"
 			IsCollapsed="False"
 			IsTabStop="False" 
-            ResizeDirection="Columns"
+            ResizeDirection="Columns" 
             Cursor="Hand"
-            ResizeBehavior="PreviousAndNext"/>
+            ResizeBehavior="PreviousAndNext">
+            
+        </common:CollapsableGridSplitter>
+
+        <StackPanel Orientation="Vertical" MaxWidth="179" Grid.Column="1" Grid.ColumnSpan="2" Margin="0">
+            <Grid HorizontalAlignment="Center" Width="179" Margin="0,1,0,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="480"></RowDefinition>
+                    <!--<RowDefinition Height="100"></RowDefinition>-->
+                </Grid.RowDefinitions>
+                <GroupBox Header="Commands" HorizontalContentAlignment="Center" Grid.Row="0" VerticalAlignment="Top">
+                    <ItemsControl ItemsSource="{Binding RPCommandsList}" ItemTemplate="{StaticResource DataViewModel}"/>
+                </GroupBox>
+            </Grid>
+        </StackPanel>
     </Grid>
 </UserControl>
-
