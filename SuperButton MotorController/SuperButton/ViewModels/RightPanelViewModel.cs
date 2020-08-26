@@ -1,7 +1,7 @@
-﻿using SuperButton.CommandsDB;
+﻿using MotorController.CommandsDB;
 using System.Collections.ObjectModel;
 
-namespace SuperButton.ViewModels
+namespace MotorController.ViewModels
 {
     public class RightPanelViewModel : ViewModelBase
     {

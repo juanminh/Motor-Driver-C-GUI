@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SuperButton.Data;
+using MotorController.Data;
 
-namespace SuperButton.Models.ParserBlock
+namespace MotorController.Models.ParserBlock
 {
     class Parser2SendEventArgs
     {

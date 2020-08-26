@@ -11,13 +11,13 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using SuperButton.ViewModels;
-using SuperButton.Models.DriverBlock;
+using MotorController.ViewModels;
+using MotorController.Models.DriverBlock;
 using System.Windows.Controls.Primitives;
 using System.Diagnostics;
 using System.Windows.Interop;
 
-namespace SuperButton.Views
+namespace MotorController.Views
 {
     /// <summary>
     /// Interaction logic for ParametarsWindow.xaml

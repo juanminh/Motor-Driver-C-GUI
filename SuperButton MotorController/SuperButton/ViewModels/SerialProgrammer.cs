@@ -1,6 +1,6 @@
 ﻿//#define SerialProgrammerLabVIEW
 #define Learning
-using SuperButton.Models.DriverBlock;
+using MotorController.Models.DriverBlock;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,15 +8,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO.Ports;
 using System.Threading;
-using SuperButton.Models.ParserBlock;
+using MotorController.Models.ParserBlock;
 using System.Diagnostics;
 using Timer = System.Timers.Timer;
 using System.Windows.Forms;
 using System.IO;
-using SuperButton.Helpers;
-using SuperButton.Common;
+using MotorController.Helpers;
+using MotorController.Common;
 
-namespace SuperButton.ViewModels
+namespace MotorController.ViewModels
 {
     enum eInput
     {

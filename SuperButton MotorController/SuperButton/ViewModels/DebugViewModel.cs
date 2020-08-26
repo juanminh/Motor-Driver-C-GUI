@@ -1,7 +1,7 @@
 ﻿#define RELEASE_MODE
 using Abt.Controls.SciChart;
-using SuperButton.Models.DriverBlock;
-using SuperButton.Models;
+using MotorController.Models.DriverBlock;
+using MotorController.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,15 +9,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Collections.ObjectModel;
-using SuperButton.CommandsDB;
+using MotorController.CommandsDB;
 using System.Threading;
 using System.Collections.Specialized;
 using System.ComponentModel;
-using SuperButton.Models.ParserBlock;
-using SuperButton.Views;
+using MotorController.Models.ParserBlock;
+using MotorController.Views;
 using Timer = System.Timers.Timer;
 
-namespace SuperButton.ViewModels
+namespace MotorController.ViewModels
 {
     internal class DebugViewModel : ViewModelBase
     {

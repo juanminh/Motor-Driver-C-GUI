@@ -19,7 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Abt.Controls.SciChart.Example.Data;
 
-namespace SuperButton.Data
+namespace MotorController.Data
 {
     /// <summary>
     /// A data-structure to contain a list of X,Y double-precision points

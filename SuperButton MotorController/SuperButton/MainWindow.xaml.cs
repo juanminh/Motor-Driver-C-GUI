@@ -9,13 +9,13 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using SuperButton.ViewModels;
-using SuperButton.Views;
+using MotorController.ViewModels;
+using MotorController.Views;
 using System.Diagnostics;
 using System.Security.Permissions;
 using System.Security.Policy;
 
-namespace SuperButton
+namespace MotorController
 {
 	/// <summary>
 	/// Interaction logic for MainWindow.xaml

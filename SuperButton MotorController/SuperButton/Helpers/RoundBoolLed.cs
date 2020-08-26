@@ -10,10 +10,10 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using SuperButton.Annotations;
-using SuperButton.Common;
+using MotorController.Annotations;
+using MotorController.Common;
 
-namespace SuperButton.Helpers
+namespace MotorController.Helpers
 {
     /// <summary>
     /// Represents any of 5 states: Iddle, Pass, Fail, Disabled or Running.

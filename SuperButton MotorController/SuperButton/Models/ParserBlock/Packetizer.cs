@@ -7,13 +7,13 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using SuperButton.Models.DriverBlock;
-using SuperButton.ViewModels;
-using SuperButton.Helpers;
-using SuperButton.Views;
+using MotorController.Models.DriverBlock;
+using MotorController.ViewModels;
+using MotorController.Helpers;
+using MotorController.Views;
 using System.Diagnostics;
 
-namespace SuperButton.Models.ParserBlock
+namespace MotorController.Models.ParserBlock
 {
 
     internal delegate void PacketizerEventHandler(object sender, PacketizerEventArgs e);//Event declaration, when parser will finish operation. Rise event

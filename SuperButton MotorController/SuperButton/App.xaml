@@ -3,18 +3,18 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-    xmlns:views="clr-namespace:SuperButton.Views"
+    xmlns:views="clr-namespace:MotorController.Views"
     xmlns:borders="clr-namespace:ToggleSwitch.Borders;assembly=ToggleSwitch"
     xmlns:utils="clr-namespace:ToggleSwitch.Utils;assembly=ToggleSwitch"
     xmlns:ToggleSwitch="clr-namespace:ToggleSwitch;assembly=ToggleSwitch"
-    xmlns:behaviors="clr-namespace:SuperButton.Behaviors"
-    xmlns:helpers="clr-namespace:SuperButton.Helpers"
+    xmlns:behaviors="clr-namespace:MotorController.Behaviors"
+    xmlns:helpers="clr-namespace:MotorController.Helpers"
     mc:Ignorable="d"
-	x:Class="SuperButton.App"
+	x:Class="MotorController.App"
 	StartupUri="MainWindow.xaml">
     <Application.Resources>
 		<!-- Resources scoped at the Application level should be defined here.
-        C:\Projects\Motor Driver C# GUI\SuperButton MotorController\packages\ToggleSwitch.1.1.2\lib\net40-client\ToggleSwitch.dll-->
+        C:\Projects\Motor Driver C# GUI\MotorController MotorController\packages\ToggleSwitch.1.1.2\lib\net40-client\ToggleSwitch.dll-->
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/Dictionary1.xaml" />

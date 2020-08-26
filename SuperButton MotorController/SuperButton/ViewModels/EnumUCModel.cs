@@ -5,9 +5,9 @@ using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using Abt.Controls.SciChart.Common.Extensions;
-using SuperButton.Views;
+using MotorController.Views;
 
-namespace SuperButton.ViewModels
+namespace MotorController.ViewModels
 {
     public class EnumUCModel : INotifyPropertyChanged
     {

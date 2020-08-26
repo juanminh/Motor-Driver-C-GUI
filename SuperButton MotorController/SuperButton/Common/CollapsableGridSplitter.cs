@@ -24,7 +24,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
-namespace SuperButton.Common
+namespace MotorController.Common
 {
     /// <summary>
     /// Specifies different collapse modes of a ExtendedGridSplitter.

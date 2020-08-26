@@ -7,7 +7,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 
-namespace SuperButton.Behaviors
+namespace MotorController.Behaviors
 {
     public static class InputBindingsManager
     {

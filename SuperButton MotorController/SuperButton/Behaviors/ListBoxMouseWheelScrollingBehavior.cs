@@ -4,7 +4,7 @@ using System.Windows.Input;
 using System.Windows.Interactivity;
 using Abt.Controls.SciChart.Common.Extensions;
 
-namespace SuperButton.Behaviors
+namespace MotorController.Behaviors
 {
     class ListBoxMouseWheelScrollingBehavior: Behavior<ListBox>
     {

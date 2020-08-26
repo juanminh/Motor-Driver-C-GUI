@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using SuperButton.ViewModels;
+using MotorController.ViewModels;
 
-namespace SuperButton.Views
+namespace MotorController.Views
 {
 	/// <summary>
 	/// Interaction logic for IntegerUC.xaml

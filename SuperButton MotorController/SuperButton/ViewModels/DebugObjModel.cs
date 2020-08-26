@@ -1,8 +1,8 @@
 ﻿using Abt.Controls.SciChart;
-using SuperButton.CommandsDB;
-using SuperButton.Models;
-using SuperButton.Models.DriverBlock;
-using SuperButton.ViewModels;
+using MotorController.CommandsDB;
+using MotorController.Models;
+using MotorController.Models.DriverBlock;
+using MotorController.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,8 +14,9 @@ using System.Threading.Tasks;
 using System.Collections.Specialized;
 using System.Collections;
 using System.Runtime.CompilerServices;
+using System.Windows.Controls;
 
-namespace SuperButton.ViewModels
+namespace MotorController.ViewModels
 {
     public class DebugObjModel : ViewModelBase
     {
@@ -68,6 +69,7 @@ namespace SuperButton.ViewModels
 
         public ActionCommand Get { get { return new ActionCommand(GetCmd); } }
         public ActionCommand Set { get { return new ActionCommand(SetCmd); } }
+
         public static bool DebugOperationPending = false;
 
         private void GetCmd()
@@ -110,6 +112,13 @@ namespace SuperButton.ViewModels
                 }
                 catch { }
             }
+        }
+
+        private System.Windows.Visibility _addButtonVisibility = System.Windows.Visibility.Visible;
+        public System.Windows.Visibility AddButtonVisibility
+        {
+            get { return _addButtonVisibility; }
+            set { _addButtonVisibility = value;  OnPropertyChanged(); }
         }
     }
 }

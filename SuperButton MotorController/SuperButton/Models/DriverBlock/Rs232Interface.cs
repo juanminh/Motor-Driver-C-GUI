@@ -11,22 +11,22 @@ using System.Threading.Tasks;
 using Abt.Controls.SciChart;
 using Abt.Controls.SciChart.Example.Common;
 using Abt.Controls.SciChart.Example.Data;
-using SuperButton.CommandsDB;
-using SuperButton.Data;
-using SuperButton.Models.DriverBlock;
-using SuperButton.Models.ParserBlock;
-using SuperButton.Models.SataticClaass;
-using SuperButton.ViewModels;
-using SuperButton.Views;
+using MotorController.CommandsDB;
+using MotorController.Data;
+using MotorController.Models.DriverBlock;
+using MotorController.Models.ParserBlock;
+using MotorController.Models.SataticClaass;
+using MotorController.ViewModels;
+using MotorController.Views;
 using System.Globalization;
-using SuperButton.Common;
+using MotorController.Common;
 using System.Windows;
-using SuperButton.Helpers;
+using MotorController.Helpers;
 using System.ComponentModel;
-using SuperButton.Annotations;
+using MotorController.Annotations;
 using MotorController.ViewModels;
 
-namespace SuperButton.Models.DriverBlock
+namespace MotorController.Models.DriverBlock
 {
 
     internal delegate void Rs232RxHandler(object sender, Rs232InterfaceEventArgs e);

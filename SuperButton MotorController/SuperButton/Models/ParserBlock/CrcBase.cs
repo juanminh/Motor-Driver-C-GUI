@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-using SuperButton.Models.ParserBlock;
+using MotorController.Models.ParserBlock;
 
-namespace SuperButton.Models.ParserBlock
+namespace MotorController.Models.ParserBlock
 {
     class CrcBase
     {

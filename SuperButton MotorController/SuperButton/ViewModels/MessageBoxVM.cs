@@ -1,4 +1,4 @@
-﻿using SuperButton.Models;
+﻿using MotorController.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace SuperButton.ViewModels
+namespace MotorController.ViewModels
 {
     public class MessageBoxVM : ViewModelBase
     {
@@ -25,14 +25,14 @@ namespace SuperButton.ViewModels
         private void OnCollectionChange(object param)
         {
             MaintenanceViewModel.CurrentButton = true;
-            SuperButton.Views.MesageBox t = param as SuperButton.Views.MesageBox;
+            MotorController.Views.MesageBox t = param as MotorController.Views.MesageBox;
             t.Close();
         }
 
         private void OnCollectionChangeDefault(object param)
         {
             MaintenanceViewModel.DefaultButton = true;
-            SuperButton.Views.MesageBox t = param as SuperButton.Views.MesageBox;
+            MotorController.Views.MesageBox t = param as MotorController.Views.MesageBox;
             t.Close();
         }
 

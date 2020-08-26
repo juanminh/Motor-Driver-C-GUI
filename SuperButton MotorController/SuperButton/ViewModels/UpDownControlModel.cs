@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SuperButton.Models;
+using MotorController.Models;
 using Abt.Controls.SciChart;
 
-namespace SuperButton.ViewModels
+namespace MotorController.ViewModels
 {
     public class UpDownControlModel : ViewModelBase
     {

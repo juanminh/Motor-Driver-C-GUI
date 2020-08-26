@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Controls;
 
-namespace SuperButton.Models
+namespace MotorController.Models
 {
     public class RelayCommand : ICommand
     {

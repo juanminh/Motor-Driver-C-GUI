@@ -1,5 +1,5 @@
-﻿using SuperButton.Common;
-using SuperButton.ViewModels;
+﻿using MotorController.Common;
+using MotorController.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,7 +17,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace SuperButton.Views
+namespace MotorController.Views
 {
     /// <summary>
     /// Interaction logic for Wizard.xaml

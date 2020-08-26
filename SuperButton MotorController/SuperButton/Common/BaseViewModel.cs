@@ -16,11 +16,11 @@
 // *************************************************************************************
 
 using System.ComponentModel;
-using SuperButton.Views;
+using MotorController.Views;
 using System.Runtime.CompilerServices;
 using System;
 
-namespace SuperButton.Common
+namespace MotorController.Common
 {
     public class BaseViewModel : INotifyPropertyChanged
     {        

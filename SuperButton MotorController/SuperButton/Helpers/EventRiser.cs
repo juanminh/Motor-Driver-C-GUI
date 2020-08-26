@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SuperButton.Helpers
+namespace MotorController.Helpers
 {
     public sealed class EventRiser
     {

@@ -1,4 +1,4 @@
-﻿using SuperButton.ViewModels;
+﻿using MotorController.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -12,7 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SuperButton
+namespace MotorController
 {
 	/// <summary>
 	/// Interaction logic for BottomPanel.xaml

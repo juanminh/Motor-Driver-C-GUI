@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SuperButton.Models.ParserBlock
+namespace MotorController.Models.ParserBlock
 {
     class PacketizerEventArgs
     {

@@ -1,14 +1,14 @@
-﻿using SuperButton.CommandsDB;
+﻿using MotorController.CommandsDB;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using SuperButton.Models;
+using MotorController.Models;
 using Abt.Controls.SciChart;
-using SuperButton.Models.DriverBlock;
+using MotorController.Models.DriverBlock;
 using System;
 using System.Threading;
 using System.Diagnostics;
 
-namespace SuperButton.ViewModels
+namespace MotorController.ViewModels
 {
     public class BottomPanelViewModel : ViewModelBase
     {

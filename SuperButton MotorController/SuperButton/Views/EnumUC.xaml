@@ -4,9 +4,9 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	mc:Ignorable="d"
-	xmlns:local="clr-namespace:SuperButton.ViewModels"
+	xmlns:local="clr-namespace:MotorController.ViewModels"
 	xmlns:system="clr-namespace:System;assembly=mscorlib"
-	x:Class="SuperButton.Views.EnumUC"
+	x:Class="MotorController.Views.EnumUC"
     x:Name="parent"
 	d:DesignWidth="160" d:DesignHeight="40">
 

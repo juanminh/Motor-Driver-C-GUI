@@ -1,5 +1,5 @@
-﻿using SuperButton.Common;
-using SuperButton.Models;
+﻿using MotorController.Common;
+using MotorController.Models;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 
-namespace SuperButton.ViewModels
+namespace MotorController.ViewModels
 {
     public class ComboBox : ViewModelBase
     {

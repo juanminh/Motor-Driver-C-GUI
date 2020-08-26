@@ -1,4 +1,4 @@
-﻿using SuperButton.ViewModels;
+﻿using MotorController.ViewModels;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -8,7 +8,7 @@ using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media;
 
-namespace SuperButton.Models
+namespace MotorController.Models
 {
     class AllowableCharactersTextBoxBehavior : Behavior<TextBox>
     {

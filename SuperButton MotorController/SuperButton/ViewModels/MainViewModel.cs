@@ -2,14 +2,14 @@
 using System.Threading.Tasks;
 using System.Windows;
 using Abt.Controls.SciChart;
-using SuperButton.Models.DriverBlock;
-using SuperButton.Views;
-using BaseViewModel = SuperButton.Common.BaseViewModel;
-using SuperButton.Helpers;
+using MotorController.Models.DriverBlock;
+using MotorController.Views;
+using BaseViewModel = MotorController.Common.BaseViewModel;
+using MotorController.Helpers;
 using System.Diagnostics;
 //using SharpDX.Design;
 
-namespace SuperButton.ViewModels
+namespace MotorController.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {

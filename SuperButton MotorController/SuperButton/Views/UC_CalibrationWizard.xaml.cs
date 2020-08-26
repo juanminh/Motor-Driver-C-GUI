@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace SuperButton.Views
+namespace MotorController.Views
 {
     /// <summary>
     /// Interaction logic for UC_CalibrationWizard.xaml

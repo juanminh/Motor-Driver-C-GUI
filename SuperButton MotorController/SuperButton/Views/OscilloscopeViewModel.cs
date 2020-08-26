@@ -12,24 +12,24 @@ using Abt.Controls.SciChart;
 using Abt.Controls.SciChart.Example.Common;
 using Abt.Controls.SciChart.Model.DataSeries;
 using Abt.Controls.SciChart.Numerics;
-using SuperButton.Common;
-using SuperButton.Models.DriverBlock;
-using SuperButton.ViewModels;
+using MotorController.Common;
+using MotorController.Models.DriverBlock;
+using MotorController.ViewModels;
 using Timer = System.Timers.Timer;
-using SuperButton.Models.ParserBlock;
+using MotorController.Models.ParserBlock;
 using System.Diagnostics;
-using SuperButton.Helpers;
+using MotorController.Helpers;
 using System.Collections.ObjectModel;
-using SuperButton.CommandsDB;
+using MotorController.CommandsDB;
 using System.Windows.Input;
-using SuperButton.Models;
+using MotorController.Models;
 using System.Windows.Data;
 using Abt.Controls.SciChart.Visuals.Axes;
-using SuperButton.Data;
+using MotorController.Data;
 using Abt.Controls.SciChart.Example.Data;
 
 //Cntl+M and Control+O for close regions
-namespace SuperButton.Views
+namespace MotorController.Views
 {
 
     public class OscilloscopeViewModel : BaseViewModel

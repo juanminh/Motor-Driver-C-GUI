@@ -5,9 +5,9 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:TB="clr-namespace:TextBoxBehaivior;assembly=TextBoxBehaivior"
 	mc:Ignorable="d"
-	xmlns:local="clr-namespace:SuperButton"
-	xmlns:behaviors="clr-namespace:SuperButton.Behaviors"
-	x:Class="SuperButton.Views.IntegerUC"
+	xmlns:local="clr-namespace:MotorController"
+	xmlns:behaviors="clr-namespace:MotorController.Behaviors"
+	x:Class="MotorController.Views.IntegerUC"
 	x:Name="parent"	
     d:DesignWidth="300" d:DesignHeight="30">
 

@@ -1,6 +1,6 @@
 ﻿using Abt.Controls.SciChart;
-using SuperButton.Helpers;
-using SuperButton.Models.DriverBlock;
+using MotorController.Helpers;
+using MotorController.Models.DriverBlock;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,7 +13,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.IO;
 
-namespace SuperButton.ViewModels
+namespace MotorController.ViewModels
 {
     enum eMODE
     {
@@ -713,15 +713,15 @@ namespace SuperButton.ViewModels
             }
             
 
-            operation = new DataViewModel { CommandName = "Save", CommandId = "63", CommandSubId = "0", IsFloat = false, CommandValue = "1" };
-            Int32.TryParse(operation.CommandId, out commandId);
-            Int32.TryParse(operation.CommandSubId, out commandSubId);
-            GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
+            //operation = new DataViewModel { CommandName = "Save", CommandId = "63", CommandSubId = "0", IsFloat = false, CommandValue = "1" };
+            //Int32.TryParse(operation.CommandId, out commandId);
+            //Int32.TryParse(operation.CommandSubId, out commandSubId);
+            //GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
 
-            operation = new DataViewModel { CommandName = "Reset", CommandId = "63", CommandSubId = "9", IsFloat = false, CommandValue = "1" };
-            Int32.TryParse(operation.CommandId, out commandId);
-            Int32.TryParse(operation.CommandSubId, out commandSubId);
-            GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
+            //operation = new DataViewModel { CommandName = "Reset", CommandId = "63", CommandSubId = "9", IsFloat = false, CommandValue = "1" };
+            //Int32.TryParse(operation.CommandId, out commandId);
+            //Int32.TryParse(operation.CommandSubId, out commandSubId);
+            //GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
 
             operation = new DataViewModel { CommandName = "Synchronisation Command", CommandId = "64", CommandSubId = "0", IsFloat = false, CommandValue = "1" };
             Int32.TryParse(operation.CommandId, out commandId);

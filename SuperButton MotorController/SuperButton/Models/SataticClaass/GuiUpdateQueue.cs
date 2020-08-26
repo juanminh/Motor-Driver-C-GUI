@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SuperButton.Models.SataticClaass
+namespace MotorController.Models.SataticClaass
 {
    
     internal class GuiUpdateQueue

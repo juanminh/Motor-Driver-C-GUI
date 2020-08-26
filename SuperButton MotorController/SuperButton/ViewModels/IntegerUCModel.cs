@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 
-namespace SuperButton.ViewModels
+namespace MotorController.ViewModels
 {
 	public class IntegerUCModel : INotifyPropertyChanged
 	{

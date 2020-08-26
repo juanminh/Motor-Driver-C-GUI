@@ -8,7 +8,7 @@ using System.Data.SQLite;
 using System.Data;
 using System.Diagnostics;
 
-namespace SuperButton.ViewModels
+namespace MotorController.ViewModels
 {
     public enum eSTATE
     {

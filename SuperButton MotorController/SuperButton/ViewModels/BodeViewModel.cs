@@ -4,11 +4,11 @@ using Abt.Controls.SciChart.Example.Common;
 using Abt.Controls.SciChart.Example.Data;
 using Abt.Controls.SciChart.Model.DataSeries;
 using Abt.Controls.SciChart.Visuals.Axes;
-using SuperButton.CommandsDB;
-using SuperButton.Data;
-using SuperButton.Models.DriverBlock;
-using SuperButton.ViewModels;
-using SuperButton.Views;
+using MotorController.CommandsDB;
+using MotorController.Data;
+using MotorController.Models.DriverBlock;
+using MotorController.ViewModels;
+using MotorController.Views;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -26,7 +26,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using Timer = System.Timers.Timer;
 
-namespace SuperButton.ViewModels
+namespace MotorController.ViewModels
 {
     class BodeViewModel : ViewModelBase
     {

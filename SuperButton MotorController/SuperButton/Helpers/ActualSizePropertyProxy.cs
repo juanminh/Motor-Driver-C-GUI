@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows;
 
-namespace SuperButton.Helpers
+namespace MotorController.Helpers
 {
     public class ActualSizePropertyProxy : FrameworkElement, INotifyPropertyChanged
     {

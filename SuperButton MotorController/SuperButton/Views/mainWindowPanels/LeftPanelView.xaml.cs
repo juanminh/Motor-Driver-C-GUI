@@ -17,12 +17,12 @@
 
 using System;
 using System.Windows.Controls;
-using SuperButton.ViewModels;
+using MotorController.ViewModels;
 using System.IO.Ports;
 using System.Linq;
 using System.Windows.Documents;
 
-namespace SuperButton.Views.mainWindowPanels
+namespace MotorController.Views.mainWindowPanels
 {
     /// <summary>
     /// Interaction logic for ExamplesTreeViewControl.xaml mother fucker

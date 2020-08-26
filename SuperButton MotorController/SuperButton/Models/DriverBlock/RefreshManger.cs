@@ -5,19 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using SuperButton.CommandsDB;
-using SuperButton.ViewModels;
+using MotorController.CommandsDB;
+using MotorController.ViewModels;
 using System.Collections.ObjectModel;
-using SuperButton.Views;
+using MotorController.Views;
 using System.Collections;
-using SuperButton.Helpers;
+using MotorController.Helpers;
 using System.Diagnostics;
 using System.Windows.Threading; // For Dispatcher.
 using System.Windows;
 using System.Windows.Media;
-using SuperButton.Models.ParserBlock;
+using MotorController.Models.ParserBlock;
 
-namespace SuperButton.Models.DriverBlock
+namespace MotorController.Models.DriverBlock
 {
 
     public class RefreshManger
@@ -423,7 +423,7 @@ namespace SuperButton.Models.DriverBlock
         //        }
         //    }
 
-        //    SuperButton.Models.DriverBlock.RefreshManger.GetInstance._oneSelected = false;
+        //    MotorController.Models.DriverBlock.RefreshManger.GetInstance._oneSelected = false;
         //}
         string CalibrationGetStatus(string returnedValue)
         {

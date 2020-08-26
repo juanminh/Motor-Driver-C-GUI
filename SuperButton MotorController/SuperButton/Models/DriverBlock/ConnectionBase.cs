@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 //todo add interpase
-namespace SuperButton.Models.DriverBlock
+namespace MotorController.Models.DriverBlock
 {
     abstract class ConnectionBase
     {

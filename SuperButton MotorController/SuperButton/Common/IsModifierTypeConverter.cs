@@ -20,7 +20,7 @@ using System.Globalization;
 using System.Windows.Data;
 using Abt.Controls.SciChart.Example.Common;
 
-namespace SuperButton.Common
+namespace MotorController.Common
 {
     public class IsModifierTypeConverter : IValueConverter
     {

@@ -8,17 +8,17 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Abt.Controls.SciChart;
-using SuperButton.CommandsDB;
-using SuperButton.Models.DriverBlock;
-using SuperButton.Views;
-using SuperButton.Helpers;
+using MotorController.CommandsDB;
+using MotorController.Models.DriverBlock;
+using MotorController.Views;
+using MotorController.Helpers;
 using System.Collections.ObjectModel;
 using System.Windows.Media;
 using Timer = System.Timers.Timer;
 using System.Collections.Generic;
 using System.Windows.Threading;
 
-namespace SuperButton.ViewModels
+namespace MotorController.ViewModels
 {
 
     public partial class LeftPanelViewModel : ViewModelBase

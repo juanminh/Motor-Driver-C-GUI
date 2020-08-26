@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 
 
-namespace SuperButton.Models.ParserBlock
+namespace MotorController.Models.ParserBlock
 {
     abstract class ParserBase
     {

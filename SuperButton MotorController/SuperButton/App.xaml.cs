@@ -1,6 +1,6 @@
 ﻿//#define LOAD_FROM_DB
 using Abt.Controls.SciChart.Visuals;
-using SuperButton.ViewModels;
+using MotorController.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -13,11 +13,11 @@ using System.Windows.Input;
 using System.Security.AccessControl;
 using System.IO;
 using System.Security.Principal;
-using SuperButton.Helpers;
+using MotorController.Helpers;
 using System.Threading.Tasks;
-using SuperButton.Views;
+using MotorController.Views;
 
-namespace SuperButton
+namespace MotorController
 {
     /// <summary>
     /// Interaction logic for App.xaml

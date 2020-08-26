@@ -19,14 +19,14 @@ using System.Windows.Media.Animation;
 using System.Xml.Schema;
 using Abt.Controls.SciChart.Example.Data;
 using Abt.Controls.SciChart.Model.DataSeries;
-using SuperButton.CommandsDB;
-using SuperButton.Data;
-using SuperButton.Models.DriverBlock;
-using SuperButton.Models.ParserBlock;
-using SuperButton.Models.SataticClaass;
-using SuperButton.Views;
-using SuperButton.Helpers;
-using SuperButton.ViewModels;
+using MotorController.CommandsDB;
+using MotorController.Data;
+using MotorController.Models.DriverBlock;
+using MotorController.Models.ParserBlock;
+using MotorController.Models.SataticClaass;
+using MotorController.Views;
+using MotorController.Helpers;
+using MotorController.ViewModels;
 using MotorController.ViewModels;
 
 public struct PacketFields
@@ -41,7 +41,7 @@ public struct PacketFields
 //Inter connection between CRC and Parser classes performed by using simple delegates
 public delegate ushort CrcEventhandlerCalcHostFrameCrc(IEnumerable<byte> data, int offset);
 
-namespace SuperButton.Models.ParserBlock
+namespace MotorController.Models.ParserBlock
 {
     internal delegate void Parser2SendHandler(object sender, Parser2SendEventArgs e);//Event declaration, when parser will finish operation. Rise event
     class ParserRayonM1

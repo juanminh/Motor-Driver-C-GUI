@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Diagnostics;
 
-namespace SuperButton.ViewModels
+namespace MotorController.ViewModels
 {
     public class ViewModelBase: INotifyPropertyChanged
     {

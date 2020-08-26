@@ -1,11 +1,11 @@
-﻿using SuperButton.Models.DriverBlock;
+﻿using MotorController.Models.DriverBlock;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Windows.Media.Animation;
 
-namespace SuperButton.Views
+namespace MotorController.Views
 {
     public static class OscilloscopeParameters
     {

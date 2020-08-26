@@ -1,15 +1,15 @@
 ﻿using System.Collections.ObjectModel;
-using SuperButton.CommandsDB;
+using MotorController.CommandsDB;
 using System.Windows.Input;
-using SuperButton.Models;
+using MotorController.Models;
 using System.Windows.Controls;
 using System;
 using System.Threading;
-using SuperButton.Models.DriverBlock;
+using MotorController.Models.DriverBlock;
 using System.Diagnostics;
 using MotorController.ViewModels;
 
-namespace SuperButton.ViewModels
+namespace MotorController.ViewModels
 {
     enum eTab // = tabIndex - 1
     {

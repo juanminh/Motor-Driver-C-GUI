@@ -1,6 +1,6 @@
-﻿using SuperButton.CommandsDB;
-using SuperButton.Models.DriverBlock;
-using SuperButton.ViewModels;
+﻿using MotorController.CommandsDB;
+using MotorController.Models.DriverBlock;
+using MotorController.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SuperButton.ViewModels
+namespace MotorController.ViewModels
 {
     public class FilterViewModel : ViewModelBase
     {

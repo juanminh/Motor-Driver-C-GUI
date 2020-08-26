@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Interactivity;
 
-namespace SuperButton.Helpers
+namespace MotorController.Helpers
 {
     public class AttachableInteractionClasses
     {

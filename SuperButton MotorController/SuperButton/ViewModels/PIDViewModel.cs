@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
-using SuperButton.CommandsDB;
+using MotorController.CommandsDB;
 using System.Diagnostics;
-using SuperButton.Models.DriverBlock;
+using MotorController.Models.DriverBlock;
 
-namespace SuperButton.ViewModels
+namespace MotorController.ViewModels
 {
     public class PIDViewModel : ViewModelBase
     {

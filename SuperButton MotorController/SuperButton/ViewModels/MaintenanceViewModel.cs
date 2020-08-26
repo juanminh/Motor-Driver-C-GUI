@@ -1,24 +1,24 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using SuperButton.CommandsDB;
-using SuperButton.Models.DriverBlock;
+using MotorController.CommandsDB;
+using MotorController.Models.DriverBlock;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.IO;
-using SuperButton.Common;
-using SuperButton.Helpers;
+using MotorController.Common;
+using MotorController.Helpers;
 using System.Linq;
-using SuperButton.Views;
+using MotorController.Views;
 using Microsoft.Win32;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
 using Abt.Controls.SciChart;
-using SuperButton.ViewModels;
+using MotorController.ViewModels;
 using System.Runtime.InteropServices;
 
-namespace SuperButton.ViewModels
+namespace MotorController.ViewModels
 {
     class MaintenanceViewModel : ViewModelBase
     {

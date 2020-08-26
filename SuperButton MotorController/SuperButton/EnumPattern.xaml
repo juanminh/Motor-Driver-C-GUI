@@ -5,7 +5,7 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:system="clr-namespace:System;assembly=mscorlib"
 	mc:Ignorable="d"
-	x:Class="SuperButton.EnumPattern"
+	x:Class="MotorController.EnumPattern"
 	x:Name="UserControl"
 	d:DesignWidth="640" d:DesignHeight="480">
 

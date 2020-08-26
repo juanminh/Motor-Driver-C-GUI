@@ -10,7 +10,7 @@ using System.Windows.Documents;
 
 // https://stackoverflow.com/questions/217902/reading-writing-an-ini-file
 
-namespace SuperButton.Helpers
+namespace MotorController.Helpers
 {
     public class iniFile
     {

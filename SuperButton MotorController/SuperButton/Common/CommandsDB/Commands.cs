@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using SuperButton.ViewModels;
+using MotorController.ViewModels;
 using System.Windows.Media;
 using System.Linq;
-using SuperButton.Helpers;
+using MotorController.Helpers;
 
-namespace SuperButton.CommandsDB
+namespace MotorController.CommandsDB
 {
     enum eDeviceInfo
     {

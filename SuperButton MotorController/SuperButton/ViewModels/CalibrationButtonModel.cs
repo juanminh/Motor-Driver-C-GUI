@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
-using SuperButton.Models;
-using SuperButton.Models.DriverBlock;
+using MotorController.Models;
+using MotorController.Models.DriverBlock;
 using MathNet.Numerics;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,11 +9,11 @@ using System.Diagnostics;
 using System.Windows.Media;
 using System.Threading.Tasks;
 using System.Linq;
-using SuperButton.CommandsDB;
+using MotorController.CommandsDB;
 using Abt.Controls.SciChart;
-using SuperButton.Views;
+using MotorController.Views;
 
-namespace SuperButton.ViewModels
+namespace MotorController.ViewModels
 {
     public class CalibrationButtonModel : ViewModelBase
     {

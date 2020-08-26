@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
-using SuperButton.Models;
-using SuperButton.Models.DriverBlock;
+using MotorController.Models;
+using MotorController.Models.DriverBlock;
 using MathNet.Numerics;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -9,9 +9,9 @@ using System.Diagnostics;
 using System.Windows.Media;
 using System.Threading.Tasks;
 using System.Linq;
-using SuperButton.CommandsDB;
+using MotorController.CommandsDB;
 
-namespace SuperButton.ViewModels
+namespace MotorController.ViewModels
 {
     public class BoolViewIndModel : ViewModelBase
     {

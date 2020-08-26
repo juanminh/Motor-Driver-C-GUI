@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
-using SuperButton.CommandsDB;
+using MotorController.CommandsDB;
 
-namespace SuperButton.ViewModels
+namespace MotorController.ViewModels
 {
     internal class FeedBackViewModel : ViewModelBase
     {

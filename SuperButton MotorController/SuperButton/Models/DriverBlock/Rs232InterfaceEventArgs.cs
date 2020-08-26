@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using Abt.Controls.SciChart.Example.Data;
-using SuperButton.Data;
-using SuperButton.ViewModels;
-using SuperButton.Helpers;
+using MotorController.Data;
+using MotorController.ViewModels;
+using MotorController.Helpers;
 using System.Threading;
 
-namespace SuperButton.Models.DriverBlock
+namespace MotorController.Models.DriverBlock
 {
     public class Rs232InterfaceEventArgs : EventArgs
     {

@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace SuperButton.Views.mainWindowPanels
+namespace MotorController.Views.mainWindowPanels
 {
 	/// <summary>
 	/// Interaction logic for RightPanel.xaml

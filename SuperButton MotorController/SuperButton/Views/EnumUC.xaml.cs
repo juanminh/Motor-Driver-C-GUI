@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using SuperButton.ViewModels;
+using MotorController.ViewModels;
 using System.Windows.Input;
 using System.ComponentModel;
 using MS.Internal.PresentationFramework;
 
-namespace SuperButton.Views
+namespace MotorController.Views
 {
 
 

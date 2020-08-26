@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using SuperButton.Models;
-using SuperButton.Models.DriverBlock;
+using MotorController.Models;
+using MotorController.Models.DriverBlock;
 using System.Diagnostics;
 using System.Windows.Controls;
 
-namespace SuperButton.ViewModels
+namespace MotorController.ViewModels
 {
     class EnumViewModel : DataViewModel
     {
@@ -83,7 +83,7 @@ namespace SuperButton.ViewModels
                 {
                     int StartIndex = 0;
                     int ListIndex = Convert.ToInt16(SelectedIndex); //SelectedValue
-                    foreach(var List in SuperButton.CommandsDB.Commands.GetInstance.EnumViewCommandsList)
+                    foreach(var List in MotorController.CommandsDB.Commands.GetInstance.EnumViewCommandsList)
                     {
                         if((ListIndex < List.Value.CommandList.Count() && List.Value.CommandList[ListIndex] == CommandList[Convert.ToInt16(SelectedIndex)]) || (ListIndex == 0 && List.Value.CommandList[ListIndex] == SelectedItem)) // SelectedValue SelectedValue
                         {

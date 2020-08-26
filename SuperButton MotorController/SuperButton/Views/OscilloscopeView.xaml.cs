@@ -10,7 +10,7 @@ using Application = System.Windows.Application;
 using UserControl = System.Windows.Controls.UserControl;
 
 
-namespace SuperButton.Views
+namespace MotorController.Views
 {
     /// <summary>
     /// Interaction logic for OscilloscopeView.xaml
