@@ -38,12 +38,7 @@
                     VerticalAlignment="Center" 
                     HorizontalAlignment="Center"
                     Text="{Binding CalibrationName}"/>
-        <Helpers:RoundBoolLed Grid.Column="5"
-                              Width="20" Height="20" 
-                              CurrStatus="{Binding CalibStatus}"
-                              VerticalAlignment="Center" 
-                              HorizontalAlignment="Center"/>
-        <TextBox Grid.Column="7" Height="22" Width="100"
+        <TextBox Grid.Column="5" Height="22" Width="100"
                  IsHitTestVisible="False"
                  IsReadOnly="True"
                  HorizontalContentAlignment="Center">
@@ -95,6 +90,11 @@
                 </Style>
             </TextBox.Style>
         </TextBox>
+        <Helpers:RoundBoolLed Grid.Column="7"
+                              Width="20" Height="20" 
+                              CurrStatus="{Binding CalibStatus}"
+                              VerticalAlignment="Center" 
+                              HorizontalAlignment="Center"/>
     </Grid>
 </UserControl>
 

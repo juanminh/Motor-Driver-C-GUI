@@ -290,7 +290,7 @@ namespace MotorController.CommandsDB
                 };
                 DataViewCommandsList.Add(new Tuple<int, int>(Convert.ToInt16(Data.CommandId), Convert.ToInt16(Data.CommandSubId)), Data);
                 DataCommandsListbySubGroup["FilterList"].Add(Data);
-               
+
             }
             var data1 = new DataViewModel
             {
@@ -301,7 +301,7 @@ namespace MotorController.CommandsDB
                 IsFloat = false
             };
             DataCommandsListbySubGroup["FilterBackGround"].Add(data1);
-            
+
         }
         private void GenerateFeedBakcCommands()
         {
@@ -370,14 +370,50 @@ namespace MotorController.CommandsDB
             DataViewCommandsList.Add(new Tuple<int, int>(70, 15), data2);
             DataCommandsListbySubGroup["Hall"].Add(data2);
             #endregion Hall
+            #region  FeedbackSyncList
+            DataCommandsListbySubGroup.Add("FeedbackSync", new ObservableCollection<object>());
+            data2 = new DataViewModel
+            {
+                CommandName = "Interpolation Gear",
+                CommandId = "78",
+                CommandSubId = "2",
+                CommandValue = "",
+                IsFloat = true
+            };
+            DataViewCommandsList.Add(new Tuple<int, int>(78, 2), data2);
+            DataCommandsListbySubGroup["FeedbackSync"].Add(data2);
+
+            data2 = new DataViewModel
+            {
+                CommandName = "Encoder-Hall Sync [C]",
+                CommandId = "78",
+                CommandSubId = "3",
+                CommandValue = "",
+                IsFloat = true
+            };
+            DataViewCommandsList.Add(new Tuple<int, int>(78, 3), data2);
+            DataCommandsListbySubGroup["FeedbackSync"].Add(data2);
+
+            DataCommandsListbySubGroup.Add("FeedbackSyncBackGround", new ObservableCollection<object>());
+
+            data2 = new DataViewModel
+            {
+                CommandId = "78",
+                CommandSubId = "1",
+                CommandValue = "",
+                IsFloat = false
+            };
+            DataCommandsListbySubGroup["FeedbackSyncBackGround"].Add(data2);
+
+            #endregion
             #region SSI
 
             names = new[]
             {
-                "Enable", "Roll High", "Roll Low", "Direction", "Counts Per Rev", "LPF Cut-Off", "Baud rate", "Encoder Bits", "Clock Phase", "Clock Polarity", "Tail Bits", "Packet Delay", "Calibrated Angle", "Head Bits", "Sample Period"
+                "Enable", "Roll High", "Roll Low", "Direction", "LPF Cut-Off", "Baud rate", "Encoder Bits", "Clock Phase", "Clock Polarity", "Tail Bits", "Packet Delay", "Calibrated Angle", "Head Bits", "Sample Period"
             };
-            var SubId = new[] { "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
-            var type = new[] { false, false, false, false, false, true, false, false, false, false, false, false, true, false, false };
+            var SubId = new[] { "1", "2", "3", "4", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15" };
+            var type = new[] { false, false, false, false, true, false, false, false, false, false, false, true, false, false };
 
             for(int i = 1; i < names.Length; i++)
             {
@@ -394,10 +430,10 @@ namespace MotorController.CommandsDB
                 DataCommandsListbySubGroup["SSI_Feedback"].Add(data);
             }
             #endregion SSI
-            #region Qep1Qep2
+            #region EncderInput_1/2
             names = new[]
             {
-                "Enable", "Roll High", "Roll Low", "Direction", "Counts Per Rev",
+                "Enable", "Roll High", "Roll Low", "Direction", "Lines Per Rev",
                 "Speed LPF", "Index Mode", "Reset Value", "Set Position Value"
             };
             bool[] IsFloat = new[] { false, false, false, false, false, true, false, false, false };
@@ -1229,7 +1265,7 @@ namespace MotorController.CommandsDB
             //DataViewCommandsList.Add(new Tuple<int, int>(6, 15), data1);
             DataCommandsListbySubGroup["BodeListBackGround"].Add(data1);
 
-            
+
             var tmp1 = new List<string>
               {
                   "Current Control",
@@ -1251,7 +1287,7 @@ namespace MotorController.CommandsDB
             };
 
             EnumViewCommandsList.Add(new Tuple<int, int>(15, 1), enum1);
-            EnumCommandsListbySubGroup.Add("EnumBodeList", new ObservableCollection<object>{ enum1 });
+            EnumCommandsListbySubGroup.Add("EnumBodeList", new ObservableCollection<object> { enum1 });
 
             tmp1 = new List<string>
               {
@@ -1416,6 +1452,22 @@ namespace MotorController.CommandsDB
             DataCommandsListbySubGroup["InternalParam List"].Add(data_b);
 
             #endregion Operation
+        }
+
+        public void driver_error_occured(int commandId, int commandSubId, Int32 transit)
+        {
+            string result;
+            if(ErrorList.TryGetValue(transit, out result))
+            {
+                EventRiser.Instance.RiseEevent(string.Format($"Com. Error: " + result));
+                if(WizardWindowViewModel.GetInstance.StartEnable == false)
+                {
+                    WizardWindowViewModel.GetInstance._save_cmd_success = true;
+                }
+            }
+            else
+                EventRiser.Instance.RiseEevent(string.Format($"Error: " + commandId.ToString() + "[" + commandSubId.ToString() + "] = " + transit.ToString()));
+
         }
     }
 }

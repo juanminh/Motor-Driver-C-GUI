@@ -483,7 +483,7 @@ namespace MotorController.ViewModels
             else
                 return;// don't start when start clicked
 
-            if(ShortMode) //change to LoadDefault
+            if(LoadDefault) //change to LoadDefault
             {
                 operation = new DataViewModel { CommandName = "Load Default", CommandId = "63", CommandSubId = "1", IsFloat = false, CommandValue = "1" };
                 Int32.TryParse(operation.CommandId, out commandId);
@@ -735,6 +735,9 @@ namespace MotorController.ViewModels
             #endregion Save_parameters_to_ini_file
 
             sendPreStartOperation();
+
+            _save_cmd_success = true;
+
             GetInstance.OperationList.Clear();
             if(!cancellationTokenCalib.IsCancellationRequested)
             {
@@ -839,10 +842,40 @@ namespace MotorController.ViewModels
                 OnPropertyChanged();
             }
         }
+        private bool _restore = false;
+        public bool Restore
+        {
+            get { return _restore; }
+            set
+            {
+
+                if(value && LeftPanelViewModel._app_running)
+                {
+                    _restore = value;
+                    Rs232Interface.GetInstance.SendToParser(new PacketFields
+                    {
+                        Data2Send = 1,
+                        ID = 63,
+                        SubID = Convert.ToInt16(9),
+                        IsSet = true,
+                        IsFloat = false
+                    }
+                    );
+                    Task WaitSave = Task.Run((Action)GetInstance.Wait);
+                }
+                else if(!value)
+                {
+                    _restore = value;
+                }
+
+                OnPropertyChanged();
+            }
+        }
         private void Wait()
         {
             Thread.Sleep(1000);
             Save = false;
+            Restore = false;
         }
         #endregion Calibration
         #region AdvancedConfiguration
@@ -869,14 +902,14 @@ namespace MotorController.ViewModels
                 OnPropertyChanged("AdvancedConfig");
             }
         }
-        private bool _shortMode = true;
-        public bool ShortMode
+        private bool _loadDefault = false;
+        public bool LoadDefault
         {
-            get { return _shortMode; }
+            get { return _loadDefault; }
             set
             {
-                _shortMode = value;
-                OnPropertyChanged("ShortMode");
+                _loadDefault = value;
+                OnPropertyChanged("LoadDefault");
             }
         }
         private int _externalEncoder = (int)eEncSel.Enc_Fdb_None;

@@ -1,4 +1,6 @@
-﻿using MotorController.Models.DriverBlock;
+﻿using MotorController.Helpers;
+using MotorController.Models.DriverBlock;
+using MotorController.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -113,7 +115,7 @@ namespace MotorController.Views
         public static List<string> plotType_ls = new List<string>();
 
         static string[] plotType = new[] { "Integer", "Float", "Iq24", "Iq15", "Int32", "Float32" };
-        static string[] plotUnit = new[] { "Amper", "Volt", "", "", "", "Elec Angle", "Mechanical Angle", "", "", "", "RPM Per Volt", "Count Per Sec", "Round Per Minute", "Counts", "Deg C" };
+        static string[] plotUnit = new[] { "Amper", "", "", "", "", "Elec Angle", "Volt", "Mechanical Angle", "", "", "RPM Per Volt", "Count Per Sec", "Round Per Minute", "Counts", "Deg C" };
 
         static OscilloscopeParameters()
         {
@@ -221,6 +223,48 @@ namespace MotorController.Views
 
             OscilloscopeViewModel.GetInstance.FillDictionary();
         }
+
+        public static void plot_transfert(int commandId, int commandSubId, int getSet, Int32 transit, byte[] data)
+        {
+            if(LeftPanelViewModel.GetInstance.StarterPlotFlag)
+            {
+                if(commandId == 34 && commandSubId != 2)
+                {
+                    EventRiser.Instance.RiseEevent(string.Format($"Reading plots..."));
+                    plotCount_temp = transit;
+                    plotCount = transit;
+                    EventRiser.Instance.RiseEevent(string.Format($"Plots count: " + transit.ToString()));
+                    if(transit > 0)
+                        fillPlotList();
+                }
+                else if(commandId == 35)
+                {
+                    plotGeneral.Add(transit);
+                }
+                else if(commandId == 36)
+                {
+                    var dataAray = new byte[4];
+                    for(int i = 0; i < 4; i++)
+                        dataAray[i] = data[i + 3];
+
+                    float newPropertyValuef = System.BitConverter.ToSingle(dataAray, 0);
+                    plotFullScale.Add(newPropertyValuef);
+                    if(plotCount_temp > 0)
+                        fillPlotList();
+                    else
+                        LeftPanelViewModel.GetInstance.StarterPlotFlag = false;
+                }
+            }
+            else if(commandId == 34 && commandSubId == 2)
+            {
+                SingleChanelFreqC = Convert.ToSingle(transit);
+                ChanelFreq = SingleChanelFreqC;
+                Step = 1 / SingleChanelFreqC;
+                LeftPanelViewModel.GetInstance.StarterCount += 1;
+                LeftPanelViewModel.GetInstance.StarterOperationFlag = false;
+            }
+        }
+
     }
 
 }

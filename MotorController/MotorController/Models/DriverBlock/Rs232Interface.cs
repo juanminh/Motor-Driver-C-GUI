@@ -22,9 +22,6 @@ using System.Globalization;
 using MotorController.Common;
 using System.Windows;
 using MotorController.Helpers;
-using System.ComponentModel;
-using MotorController.Annotations;
-using MotorController.ViewModels;
 
 namespace MotorController.Models.DriverBlock
 {

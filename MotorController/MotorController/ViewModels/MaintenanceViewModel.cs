@@ -223,15 +223,14 @@ namespace MotorController.ViewModels
             }
         }
 
+        #region DriverParameters
+
         public static List<UInt32> ParamsToFile = new List<UInt32>();
         public static List<UInt32> FileToParams = new List<UInt32>();
-
         private bool _saveToFile = false;
-        public static bool CurrentButton = false;
-        public static bool DefaultButton = false;
         public static UInt32 ParamsCount = 0;
         public static UInt32 PbarParamsCount = 0;
-        private string _pathToFile, _pathFromFile, _pathFW = "";
+        private string _pathToFile, _pathFromFile;
         public string PathToFile
         {
             get { return _pathToFile; }
@@ -242,11 +241,6 @@ namespace MotorController.ViewModels
             get { return _pathFromFile; }
             set { _pathFromFile = value; OnPropertyChanged("PathFromFile"); }
         }
-        public string PathFW
-        {
-            get { return _pathFW; }
-            set { _pathFW = value; OnPropertyChanged("PathFW"); }
-        }
         public ActionCommand OpenToFileCmd
         {
             get { return new ActionCommand(OpenToFile); }
@@ -254,10 +248,6 @@ namespace MotorController.ViewModels
         public ActionCommand OpenFromFileCmd
         {
             get { return new ActionCommand(OpenFromFile); }
-        }
-        public ActionCommand OpenPathFWCmd
-        {
-            get { return new ActionCommand(OpenPathFW); }
         }
         public void OpenToFile()
         {
@@ -294,114 +284,6 @@ namespace MotorController.ViewModels
                 PathFromFile = ShortenPath(ChooseFile.FileName);
             }
         }
-        public static string pathFWtemp = "";
-        public void OpenPathFW()
-        {
-            System.Windows.Forms.OpenFileDialog ChooseFile = new System.Windows.Forms.OpenFileDialog();
-            ChooseFile.Filter = "All Files (*.*)|*.*";
-            ChooseFile.FilterIndex = 1;
-
-            ChooseFile.Multiselect = false;
-            string[] words = pathFWtemp.Split('\\');
-
-            pathFWtemp = "";
-            for(int i = 0; i < words.Length - 1; i++)
-                pathFWtemp += words[i] + '\\';
-            if(String.IsNullOrEmpty(pathFWtemp))
-                ChooseFile.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\MotorController\\FirmwareUpdate\\";
-            else
-                ChooseFile.InitialDirectory = pathFWtemp;
-
-            if(!Directory.Exists(ChooseFile.InitialDirectory))
-                Directory.CreateDirectory(ChooseFile.InitialDirectory);
-            if(ChooseFile.ShowDialog() == DialogResult.OK)
-            {
-                pathFWtemp = ChooseFile.FileName;
-                PathFW = ShortenPath(ChooseFile.FileName);
-            }
-        }
-        public static string ShortenPath(string path, int maxLength = 35)
-        {
-            string ellipsisChars = "...";
-            char dirSeperatorChar = Path.DirectorySeparatorChar;
-            string directorySeperator = dirSeperatorChar.ToString();
-
-            //simple guards
-            if(path.Length <= maxLength)
-            {
-                return path;
-            }
-            int ellipsisLength = ellipsisChars.Length;
-            if(maxLength <= ellipsisLength)
-            {
-                return ellipsisChars;
-            }
-
-
-            //alternate between taking a section from the start (firstPart) or the path and the end (lastPart)
-            bool isFirstPartsTurn = true; //drive letter has first priority, so start with that and see what else there is room for
-
-            //vars for accumulating the first and last parts of the final shortened path
-            string firstPart = "";
-            string lastPart = "";
-            //keeping track of how many first/last parts have already been added to the shortened path
-            int firstPartsUsed = 0;
-            int lastPartsUsed = 0;
-
-            string[] pathParts = path.Split(dirSeperatorChar);
-            for(int i = 0; i < pathParts.Length; i++)
-            {
-                if(isFirstPartsTurn)
-                {
-                    string partToAdd = pathParts[firstPartsUsed] + directorySeperator;
-                    if((firstPart.Length + lastPart.Length + partToAdd.Length + ellipsisLength) > maxLength)
-                    {
-                        break;
-                    }
-                    firstPart = firstPart + partToAdd;
-                    if(partToAdd == directorySeperator)
-                    {
-                        //this is most likely the first part of and UNC or relative path 
-                        //do not switch to lastpart, as these are not "true" directory seperators
-                        //otherwise "\\myserver\theshare\outproject\www_project\file.txt" becomes "\\...\www_project\file.txt" instead of the intended "\\myserver\...\file.txt")
-                    }
-                    else
-                    {
-                        isFirstPartsTurn = false;
-                    }
-                    firstPartsUsed++;
-                }
-                else
-                {
-                    int index = pathParts.Length - lastPartsUsed - 1; //-1 because of length vs. zero-based indexing
-                    string partToAdd = directorySeperator + pathParts[index];
-                    if((firstPart.Length + lastPart.Length + partToAdd.Length + ellipsisLength) > maxLength)
-                    {
-                        break;
-                    }
-                    lastPart = partToAdd + lastPart;
-                    if(partToAdd == directorySeperator)
-                    {
-                        //this is most likely the last part of a relative path (e.g. "\websites\myproject\www_myproj\App_Data\")
-                        //do not proceed to processing firstPart yet
-                    }
-                    else
-                    {
-                        isFirstPartsTurn = true;
-                    }
-                    lastPartsUsed++;
-                }
-            }
-
-            if(lastPart == "")
-            {
-                //the filename (and root path) in itself was longer than maxLength, shorten it
-                lastPart = pathParts[pathParts.Length - 1];//"pathParts[pathParts.Length -1]" is the equivalent of "Path.GetFileName(pathToShorten)"
-                lastPart = lastPart.Substring(lastPart.Length + ellipsisLength + firstPart.Length - maxLength, maxLength - ellipsisLength - firstPart.Length);
-            }
-
-            return firstPart + ellipsisChars + lastPart;
-        }
         public bool SaveToFile
         {
             get { return _saveToFile; }
@@ -409,23 +291,12 @@ namespace MotorController.ViewModels
             {
                 if(value && LeftPanelViewModel._app_running)
                 {
-                    /*if(OscilloscopeParameters.ChanTotalCounter != 0 || DebugViewModel.GetInstance.EnRefresh == true)
-                    {
-                        EventRiser.Instance.RiseEevent(string.Format($"Please disable plot and Refresh option and retry!"));
-                        _saveToFile = !value;
-                    }
-                    else*/
                     PbarValueToFile = 0;
                     _redoState = PreRedoState(OscilloscopeParameters.ChanTotalCounter, DebugViewModel.GetInstance.EnRefresh);
                     {
                         _saveToFile = value;
-                        //CurrentButton = false;
-                        //DefaultButton = false;
                         ParamsToFile.Clear();
-                        //ParamsToFile.Add(1000);
-                        //ParamsToFile.Add(5);
-
-                        //SaveToFileFunc(ParamsToFile);
+                        
                         Rs232Interface.GetInstance.SendToParser(new PacketFields
                         {
                             Data2Send = 0,
@@ -434,11 +305,11 @@ namespace MotorController.ViewModels
                             IsSet = false,
                             IsFloat = false
                         });
-                        var task1 = Task.Factory.StartNew(action: () =>
-                        {
+                        //var task1 = Task.Factory.StartNew(action: () =>
+                        //{
                             CheckPBar("ToFile");
-                        });
-                        Task.WaitAll(task1);
+                        //});
+                        //Task.WaitAll(task1);
                     }
                 }
                 else if(!value)
@@ -450,84 +321,6 @@ namespace MotorController.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public string PreRedoState(int plot, bool refresh)
-        {
-            LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.STOP);
-            if(plot > 0 && refresh)
-            {
-                Rs232Interface.GetInstance.SendToParser(new PacketFields
-                {
-                    Data2Send = 0,
-                    ID = 64,
-                    SubID = Convert.ToInt16(0),
-                    IsSet = true,
-                    IsFloat = false
-                });
-                Thread.Sleep(10);
-                DebugViewModel.GetInstance.EnRefresh = false;
-                Thread.Sleep(10);
-                return "both";
-            }
-            else if(plot > 0)
-            {
-                Rs232Interface.GetInstance.SendToParser(new PacketFields
-                {
-                    Data2Send = 0,
-                    ID = 64,
-                    SubID = Convert.ToInt16(0),
-                    IsSet = true,
-                    IsFloat = false
-                });
-                return "plot";
-            }
-            else if(refresh)
-            {
-                Thread.Sleep(10);
-                DebugViewModel.GetInstance.EnRefresh = false;
-                Thread.Sleep(10);
-                return "refresh";
-            }
-            else
-                return "nothing";
-
-        }
-        public void PostRedoState(string state)
-        {
-            LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.START);
-            if(state == "both")
-            {
-                Rs232Interface.GetInstance.SendToParser(new PacketFields
-                {
-                    Data2Send = 1,
-                    ID = 64,
-                    SubID = Convert.ToInt16(0),
-                    IsSet = true,
-                    IsFloat = false
-                });
-                Thread.Sleep(10);
-                DebugViewModel.GetInstance.EnRefresh = true;
-                Thread.Sleep(10);
-            }
-            else if(state == "refresh")
-            {
-                Thread.Sleep(10);
-                DebugViewModel.GetInstance.EnRefresh = true;
-                Thread.Sleep(10);
-            }
-            else if(state == "plot")
-            {
-                Rs232Interface.GetInstance.SendToParser(new PacketFields
-                {
-                    Data2Send = 1,
-                    ID = 64,
-                    SubID = Convert.ToInt16(0),
-                    IsSet = true,
-                    IsFloat = false
-                });
-            }
-        }
-        public static string _redoState = "";
         private bool _loadFromFile = false;
         public bool LoadFromFile
         {
@@ -536,18 +329,10 @@ namespace MotorController.ViewModels
             {
                 if(value && LeftPanelViewModel._app_running)
                 {
-                    /*if(OscilloscopeParameters.ChanTotalCounter != 0 || DebugViewModel.GetInstance.EnRefresh == true)
-                    {
-                        EventRiser.Instance.RiseEevent(string.Format($"Please disable plot and Refresh option and retry!"));
-                        _loadFromFile = !value;
-                        OnPropertyChanged("LoadFromFile");
-                    }
-                    else */
                     _redoState = PreRedoState(OscilloscopeParameters.ChanTotalCounter, DebugViewModel.GetInstance.EnRefresh);
                     PbarValueFromFile = 0;
                     if(String.IsNullOrWhiteSpace(PathFromFile))
                     {
-                        //OpenToFile();
                         EventRiser.Instance.RiseEevent(string.Format($"Please choose a file and retry!"));
                         _loadFromFile = !value;
                         OnPropertyChanged("LoadFromFile");
@@ -578,7 +363,6 @@ namespace MotorController.ViewModels
                 }
             }
         }
-
         public void DataToList(UInt32 data)
         {
             if(ParamsCount > 0)
@@ -634,8 +418,6 @@ namespace MotorController.ViewModels
                 }
             }
         }
-
-        //private string filePath;
         public static string pathToFiletemp = "";
         public void SaveToFileFunc(List<UInt32> ListToSave)
         {
@@ -743,7 +525,6 @@ namespace MotorController.ViewModels
             }
             //LoadFromFile = false;
         }
-
         private long _pbarValueFromFile = 0;
         public long PbarValueFromFile
         {
@@ -755,12 +536,6 @@ namespace MotorController.ViewModels
         {
             get { return _pbarValueToFile; }
             set { _pbarValueToFile = value; OnPropertyChanged("PbarValueToFile"); }
-        }
-        private long _pbarValueFW = 0;
-        public long PbarValueFW
-        {
-            get { return _pbarValueFW; }
-            set { _pbarValueFW = value; OnPropertyChanged("PbarValueFW"); }
         }
         private void CheckPBar(string way)
         {
@@ -790,9 +565,9 @@ namespace MotorController.ViewModels
                             SaveToFile = false;
                             PbarValueToFile = 0;
                             EventRiser.Instance.RiseEevent(string.Format($"Load Parameters Failed"));
-                            MaintenanceViewModel.GetInstance.SaveToFile = false;
-                            MaintenanceViewModel.GetInstance.LoadFromFile = false;
-                            MaintenanceViewModel.GetInstance.PostRedoState(MaintenanceViewModel._redoState);
+                            SaveToFile = false;
+                            LoadFromFile = false;
+                            PostRedoState(_redoState);
                         }
                     }
                 });
@@ -819,15 +594,184 @@ namespace MotorController.ViewModels
                             SaveToFile = false;
                             PbarValueFromFile = 0;
                             EventRiser.Instance.RiseEevent(string.Format($"Load Parameters Failed"));
-                            MaintenanceViewModel.GetInstance.SaveToFile = false;
-                            MaintenanceViewModel.GetInstance.LoadFromFile = false;
-                            MaintenanceViewModel.GetInstance.PostRedoState(MaintenanceViewModel._redoState);
+                            SaveToFile = false;
+                            LoadFromFile = false;
+                            PostRedoState(_redoState);
                         }
                     }
                 });
             }
         }
 
+        public void data_transfert(int commandId, int commandSubId, int getSet, Int32 transit)
+        {
+            if(commandSubId == 1)
+            {
+                PbarParamsCount = Convert.ToUInt32(transit);
+                if(SaveToFile == true)
+                {
+                    ParamsCount = Convert.ToUInt32(transit);
+                    Rs232Interface.GetInstance.SendToParser(new PacketFields
+                    {
+                        Data2Send = 1,
+                        ID = 67,
+                        SubID = Convert.ToInt16(12),
+                        IsSet = true,
+                        IsFloat = false
+                    }
+                    );
+                }
+                else if(LoadFromFile == true)
+                {
+                    if(SelectFile(Convert.ToUInt32(transit)))
+                    {
+                        Rs232Interface.GetInstance.SendToParser(new PacketFields
+                        {
+                            Data2Send = 1,
+                            ID = 67,
+                            SubID = Convert.ToInt16(2),
+                            IsSet = true,
+                            IsFloat = false
+                        });
+                    }
+                    else
+                        LoadFromFile = false;
+                }
+            }
+            else if(commandSubId == 12 && getSet == 0)
+            {
+                if(ParamsToFile.Count == 0)
+                {
+                    Rs232Interface.GetInstance.SendToParser(new PacketFields
+                    {
+                        Data2Send = 1,
+                        ID = 67,
+                        SubID = Convert.ToInt16(13),
+                        IsSet = false,
+                        IsFloat = false
+                    }
+                    );
+                }
+                else
+                    SaveToFile = false;
+            }
+            else if(commandSubId == 13)
+                DataToList(Convert.ToUInt32((uint)transit));
+            else if(commandSubId == 2 && getSet == 0)
+            {
+                if(LoadFromFile && FileToParams.Count > 1)
+                {
+                    Rs232Interface.GetInstance.SendToParser(new PacketFields
+                    {
+                        Data2Send = FileToParams.ElementAt(0),
+                        ID = 67,
+                        SubID = Convert.ToInt16(3),
+                        IsSet = true,
+                        IsFloat = false
+                    });
+                    FileToParams.RemoveAt(0);
+                }
+                else if(!LoadFromFile && FileToParams.Count > 1)
+                    LoadFromFile = false;
+            }
+            else if(commandSubId == 3 && getSet == 0)
+            {
+                if(FileToParams.Count > 1)
+                {
+                    Rs232Interface.GetInstance.SendToParser(new PacketFields
+                    {
+                        Data2Send = (int)(FileToParams.ElementAt(0)),
+                        ID = 67,
+                        SubID = Convert.ToInt16(3),
+                        IsSet = true,
+                        IsFloat = false
+                    });
+                    FileToParams.RemoveAt(0);
+                    PbarValueFromFile = 100 - ((FileToParams.Count) * 100 / PbarParamsCount);
+                }
+                else if(FileToParams.Count == 1)
+                {
+                    Rs232Interface.GetInstance.SendToParser(new PacketFields
+                    {
+                        Data2Send = (int)(FileToParams.ElementAt(0)),
+                        ID = 67,
+                        SubID = Convert.ToInt16(4),
+                        IsSet = true,
+                        IsFloat = false
+                    });
+                }
+            }
+            else if(commandSubId == 4 && getSet == 0)
+            {
+                if(transit == 1)
+                {
+                    EventRiser.Instance.RiseEevent(string.Format($"Load Parameters succeed"));
+                    PostRedoState(_redoState);
+                }
+                else
+                {
+                    EventRiser.Instance.RiseEevent(string.Format($"Load Parameters Failed"));
+                    SaveToFile = false;
+                    LoadFromFile = false;
+                    PostRedoState(_redoState);
+                }
+                LoadFromFile = false;
+
+                Rs232Interface.GetInstance.SendToParser(new PacketFields
+                {
+                    Data2Send = 0,
+                    ID = 67,
+                    SubID = Convert.ToInt16(2),
+                    IsSet = true,
+                    IsFloat = false
+                });
+            }
+        }
+        #endregion DriverParameters
+        
+        #region SerialProgrammer
+        private string _pathFW = "";
+        public string PathFW
+        {
+            get { return _pathFW; }
+            set { _pathFW = value; OnPropertyChanged("PathFW"); }
+        }
+        public ActionCommand OpenPathFWCmd
+        {
+            get { return new ActionCommand(OpenPathFW); }
+        }
+        public static string pathFWtemp = "";
+        public void OpenPathFW()
+        {
+            System.Windows.Forms.OpenFileDialog ChooseFile = new System.Windows.Forms.OpenFileDialog();
+            ChooseFile.Filter = "All Files (*.*)|*.*";
+            ChooseFile.FilterIndex = 1;
+
+            ChooseFile.Multiselect = false;
+            string[] words = pathFWtemp.Split('\\');
+
+            pathFWtemp = "";
+            for(int i = 0; i < words.Length - 1; i++)
+                pathFWtemp += words[i] + '\\';
+            if(String.IsNullOrEmpty(pathFWtemp))
+                ChooseFile.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\MotorController\\FirmwareUpdate\\";
+            else
+                ChooseFile.InitialDirectory = pathFWtemp;
+
+            if(!Directory.Exists(ChooseFile.InitialDirectory))
+                Directory.CreateDirectory(ChooseFile.InitialDirectory);
+            if(ChooseFile.ShowDialog() == DialogResult.OK)
+            {
+                pathFWtemp = ChooseFile.FileName;
+                PathFW = ShortenPath(ChooseFile.FileName);
+            }
+        }
+        private long _pbarValueFW = 0;
+        public long PbarValueFW
+        {
+            get { return _pbarValueFW; }
+            set { _pbarValueFW = value; OnPropertyChanged("PbarValueFW"); }
+        }
         public CancellationToken cancellationTokenSerialProgrammer;
         private bool _serialProgrammer;
         public bool SerialProgrammerCheck
@@ -866,7 +810,6 @@ namespace MotorController.ViewModels
             _serial_programmer_parameters.Write("Firmware Path", pathFWtemp, "Programmer");
             _serial_programmer_parameters.Write("FlashBaud", FlashBaudRate, "Programmer");
         }
-
         public void SerialProgrammerApp()
         {
             Process[] Proc = Process.GetProcessesByName("Serial Programmer");
@@ -879,9 +822,7 @@ namespace MotorController.ViewModels
             Debug.WriteLine("app closed");
             LeftPanelViewModel.GetInstance.AutoConnectCommand();
         }
-
         private ObservableCollection<string> _flashBaudrateList = new ObservableCollection<string>();
-
         public ObservableCollection<string> FlashBaudrateList
         {
 
@@ -909,5 +850,169 @@ namespace MotorController.ViewModels
                 OnPropertyChanged();
             }
         }
+        #endregion SerialProgrammer        
+
+        public static bool CurrentButton = false;
+        public static bool DefaultButton = false;
+
+        public static string ShortenPath(string path, int maxLength = 35)
+        {
+            string ellipsisChars = "...";
+            char dirSeperatorChar = Path.DirectorySeparatorChar;
+            string directorySeperator = dirSeperatorChar.ToString();
+
+            //simple guards
+            if(path.Length <= maxLength)
+            {
+                return path;
+            }
+            int ellipsisLength = ellipsisChars.Length;
+            if(maxLength <= ellipsisLength)
+            {
+                return ellipsisChars;
+            }
+
+
+            //alternate between taking a section from the start (firstPart) or the path and the end (lastPart)
+            bool isFirstPartsTurn = true; //drive letter has first priority, so start with that and see what else there is room for
+
+            //vars for accumulating the first and last parts of the final shortened path
+            string firstPart = "";
+            string lastPart = "";
+            //keeping track of how many first/last parts have already been added to the shortened path
+            int firstPartsUsed = 0;
+            int lastPartsUsed = 0;
+
+            string[] pathParts = path.Split(dirSeperatorChar);
+            for(int i = 0; i < pathParts.Length; i++)
+            {
+                if(isFirstPartsTurn)
+                {
+                    string partToAdd = pathParts[firstPartsUsed] + directorySeperator;
+                    if((firstPart.Length + lastPart.Length + partToAdd.Length + ellipsisLength) > maxLength)
+                    {
+                        break;
+                    }
+                    firstPart = firstPart + partToAdd;
+                    if(partToAdd == directorySeperator)
+                    {
+                        //this is most likely the first part of and UNC or relative path 
+                        //do not switch to lastpart, as these are not "true" directory seperators
+                        //otherwise "\\myserver\theshare\outproject\www_project\file.txt" becomes "\\...\www_project\file.txt" instead of the intended "\\myserver\...\file.txt")
+                    }
+                    else
+                    {
+                        isFirstPartsTurn = false;
+                    }
+                    firstPartsUsed++;
+                }
+                else
+                {
+                    int index = pathParts.Length - lastPartsUsed - 1; //-1 because of length vs. zero-based indexing
+                    string partToAdd = directorySeperator + pathParts[index];
+                    if((firstPart.Length + lastPart.Length + partToAdd.Length + ellipsisLength) > maxLength)
+                    {
+                        break;
+                    }
+                    lastPart = partToAdd + lastPart;
+                    if(partToAdd == directorySeperator)
+                    {
+                        //this is most likely the last part of a relative path (e.g. "\websites\myproject\www_myproj\App_Data\")
+                        //do not proceed to processing firstPart yet
+                    }
+                    else
+                    {
+                        isFirstPartsTurn = true;
+                    }
+                    lastPartsUsed++;
+                }
+            }
+
+            if(lastPart == "")
+            {
+                //the filename (and root path) in itself was longer than maxLength, shorten it
+                lastPart = pathParts[pathParts.Length - 1];//"pathParts[pathParts.Length -1]" is the equivalent of "Path.GetFileName(pathToShorten)"
+                lastPart = lastPart.Substring(lastPart.Length + ellipsisLength + firstPart.Length - maxLength, maxLength - ellipsisLength - firstPart.Length);
+            }
+
+            return firstPart + ellipsisChars + lastPart;
+        }
+        public string PreRedoState(int plot, bool refresh)
+        {
+            LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.STOP);
+            if(plot > 0 && refresh)
+            {
+                Rs232Interface.GetInstance.SendToParser(new PacketFields
+                {
+                    Data2Send = 0,
+                    ID = 64,
+                    SubID = Convert.ToInt16(0),
+                    IsSet = true,
+                    IsFloat = false
+                });
+                Thread.Sleep(10);
+                DebugViewModel.GetInstance.EnRefresh = false;
+                Thread.Sleep(10);
+                return "both";
+            }
+            else if(plot > 0)
+            {
+                Rs232Interface.GetInstance.SendToParser(new PacketFields
+                {
+                    Data2Send = 0,
+                    ID = 64,
+                    SubID = Convert.ToInt16(0),
+                    IsSet = true,
+                    IsFloat = false
+                });
+                return "plot";
+            }
+            else if(refresh)
+            {
+                Thread.Sleep(10);
+                DebugViewModel.GetInstance.EnRefresh = false;
+                Thread.Sleep(10);
+                return "refresh";
+            }
+            else
+                return "nothing";
+
+        }
+        public void PostRedoState(string state)
+        {
+            LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.START);
+            if(state == "both")
+            {
+                Rs232Interface.GetInstance.SendToParser(new PacketFields
+                {
+                    Data2Send = 1,
+                    ID = 64,
+                    SubID = Convert.ToInt16(0),
+                    IsSet = true,
+                    IsFloat = false
+                });
+                Thread.Sleep(10);
+                DebugViewModel.GetInstance.EnRefresh = true;
+                Thread.Sleep(10);
+            }
+            else if(state == "refresh")
+            {
+                Thread.Sleep(10);
+                DebugViewModel.GetInstance.EnRefresh = true;
+                Thread.Sleep(10);
+            }
+            else if(state == "plot")
+            {
+                Rs232Interface.GetInstance.SendToParser(new PacketFields
+                {
+                    Data2Send = 1,
+                    ID = 64,
+                    SubID = Convert.ToInt16(0),
+                    IsSet = true,
+                    IsFloat = false
+                });
+            }
+        }
+        public static string _redoState = "";
     }
 }

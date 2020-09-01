@@ -726,7 +726,7 @@
                     <TextBlock Grid.Row="4" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">Calibration Advanced Mode</TextBlock>
                     <CheckBox  Grid.Row="4" HorizontalAlignment="Right" IsChecked="{Binding CalibrationAdvancedMode}" Grid.ColumnSpan="2"/>
                     <TextBlock Grid.Row="5" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">Load Default</TextBlock>
-                    <CheckBox  Grid.Row="5" HorizontalAlignment="Right" IsChecked="{Binding ShortMode}" Grid.ColumnSpan="2"/>
+                    <CheckBox  Grid.Row="5" HorizontalAlignment="Right" IsChecked="{Binding LoadDefault}" Grid.ColumnSpan="2"/>
                 </Grid>
         </Grid>
         </Border>
@@ -737,8 +737,9 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
+            <RowDefinition Height="5"/>
             <RowDefinition Height="auto"/>
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="15"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
         <Grid Grid.Row="0" Height="15"/>
@@ -834,13 +835,38 @@
                         </Button.Style>
                         <TextBlock Text="Abort" VerticalAlignment="Center" Margin="0,-2,0,0"/>
                     </Button>
-                    <TextBlock Grid.Column="7" Foreground="White">Save</TextBlock>
-                    <CheckBox Grid.Column="8" Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding Save}"/>
                 </Grid>
             </Grid>
         </Border>
-        <Grid Grid.Row="2" Height="15"/>
-        <Image Grid.Row="3" Stretch="Uniform" Source="pack://siteoforigin:,,,/WizardMotorImages/Motor.png" Height="80" Width="auto"></Image>
+        <Border Grid.Row="3" Width="auto" Height="auto" BorderBrush="Gray" BorderThickness="1" CornerRadius="4" VerticalAlignment="Top">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="5"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Width="Auto" Text="Commands" Foreground="White" Background="Gray" FontWeight="Bold"/>
+                <Grid Grid.Row="3" HorizontalAlignment="Left">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="220"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Foreground="White">Save Parameters</TextBlock>
+                    <CheckBox Grid.Column="1" Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding Save}"/>
+                </Grid>
+                <Grid Grid.Row="4" HorizontalAlignment="Left">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="220"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Foreground="White">Restore Previous Parameters</TextBlock>
+                    <CheckBox Grid.Column="1" Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding Restore}"/>
+                </Grid>
+            </Grid>
+        </Border>
+        <Image Grid.Row="5" Stretch="Uniform" Source="pack://siteoforigin:,,,/WizardMotorImages/Motor.png" Height="80" Width="auto"></Image>
     </Grid>
 
 

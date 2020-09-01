@@ -212,7 +212,7 @@ namespace MotorController.Models.DriverBlock
         public string[] GroupToExecute(int tabIndex)//
         {
             string[] PanelElements = new string[] { "DriverStatus List", "Channel List", "MotionCommand List2", "MotionCommand List",
-                                                    "Profiler Mode", "S.G.List", "S.G.Type", "PowerOut List", "Control", "Motor",
+                                                    "Profiler Mode", "S.G.List", "S.G.Type", "PowerOut List",
                                                     "MotionStatus List", "Digital Input List", "Position counters List",
                                                     "UpperMainPan List" };// , "Driver Type" ,
             string[] arr = new string[] { };
@@ -221,10 +221,10 @@ namespace MotorController.Models.DriverBlock
                 switch(tabIndex)
                 {
                     case (int)eTab.CONTROL:
-                        arr = new string[] { "Motion Limit", "CurrentLimit List" }; // "Control", "Motor", already in PanelElements array
+                        arr = new string[] {"Control", "Motor", "Motion Limit", "CurrentLimit List" };
                         break;
                     case (int)eTab.FEED_BACKS:
-                        arr = new string[] { "Hall", "Qep1", "Qep2", "SSI_Feedback", "Qep1Bis", "Qep2Bis" };
+                        arr = new string[] { "Hall", "FeedbackSync", "FeedbackSyncBackGround", "Qep1", "Qep2", "SSI_Feedback", "Qep1Bis", "Qep2Bis" };
                         break;
                     case (int)eTab.PID:
                         arr = new string[] { "PIDCurrent", "PIDSpeed", "PIDPosition", "PIDListBackGround" };
@@ -771,6 +771,10 @@ namespace MotorController.Models.DriverBlock
                                 PIDViewModel.GetInstance.PID_position_loop = newPropertyValue == "1" ? true : false;
                                 break;
                         }
+                    }
+                    else if(commandidentifier.Item1 == 78 && commandidentifier.Item2 == 1)
+                    {
+                        FeedBackViewModel.GetInstance.External_interpolation = newPropertyValue == "1" ? true : false;
                     }
                     else if(commandidentifier.Item1 == 101 && commandidentifier.Item2 == 0) // Filter Enable
                     {

@@ -10,23 +10,14 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Security.RightsManagement;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Documents;
-using System.Windows.Media.Animation;
-using System.Xml.Schema;
 using Abt.Controls.SciChart.Example.Data;
-using Abt.Controls.SciChart.Model.DataSeries;
 using MotorController.CommandsDB;
 using MotorController.Data;
 using MotorController.Models.DriverBlock;
-using MotorController.Models.ParserBlock;
 using MotorController.Models.SataticClaass;
 using MotorController.Views;
 using MotorController.Helpers;
-using MotorController.ViewModels;
 using MotorController.ViewModels;
 
 public struct PacketFields
@@ -78,7 +69,7 @@ namespace MotorController.Models.ParserBlock
         public UInt32 TickerC = 1;
 
         private List<int> exceptionID = new List<int>(); // Contains all the ID that dont need to be descripted by refersh manager class.
-        int[] exceptionID_Arr = { 100, 67, 34, 35, 36, 65 }; // 100: Error, 67: Load To/From file params started, 34, 35, 36: Init plots table. , 34, 35, 36
+        int[] exceptionID_Arr = { 100, 67, 34, 35, 36, 65 }; // 100: Error, 67: Load To/From file params started, 34, 35, 36: Init plots table.
         public ParserRayonM1()
         {
             Rs232Interface.GetInstance.RxtoParser += parseOutdata;
@@ -455,7 +446,6 @@ namespace MotorController.Models.ParserBlock
             {
                 ParsesynchAckMessege(dataList[i]);
             }
-
         }
         private void ParsesynchAckMessege(byte[] data) // Autobaud Check Response.
         {
@@ -546,10 +536,21 @@ namespace MotorController.Models.ParserBlock
                 transit |= data[4];
                 transit <<= 8;
                 transit |= data[3];
-
-                if(ParametarsWindow.ParametersWindowTabSelected == (int)eTab.DEBUG &&
-                    !LeftPanelViewModel.GetInstance.StarterOperationFlag && !LeftPanelViewModel.GetInstance.StarterPlotFlag &&
-                    !exceptionID.Contains(commandId) || !exceptionID.Contains(commandId))
+                if(LeftPanelViewModel.GetInstance.StarterOperationFlag ||
+                    LeftPanelViewModel.GetInstance.StarterPlotFlag)
+                {
+                    Debug.WriteLine("StarterOperationFlag: " + LeftPanelViewModel.GetInstance.StarterOperationFlag);
+                    Debug.WriteLine("StarterPlotFlag: " + LeftPanelViewModel.GetInstance.StarterPlotFlag);
+                    Debug.WriteLine("commandId: " + commandId);
+                    Debug.WriteLine("commandSubId: " + commandSubId);
+                }
+                if(LeftPanelViewModel.GetInstance.StarterPlotFlag || commandId == 34 || commandId == 35 || commandId == 36) // build plot list
+                {
+                    OscilloscopeParameters.plot_transfert(commandId, commandSubId, getSet, transit, data);
+                }
+                else if(LeftPanelViewModel.GetInstance.StarterOperationFlag &&
+                    !exceptionID.Contains(commandId) ||
+                    !exceptionID.Contains(commandId))
                 {
                     if(isInt)
                     {
@@ -571,11 +572,9 @@ namespace MotorController.Models.ParserBlock
                     else
                     {
                         var dataAray = new byte[4];
-                        for(int i = 0; i < 4; i++)
-                        {
-                            dataAray[i] = data[i + 3];
-                        }
-                        newPropertyValuef = System.BitConverter.ToSingle(dataAray, 0);
+                        Array.Copy(data, 3, dataAray, 0, 4);
+
+                        newPropertyValuef = BitConverter.ToSingle(dataAray, 0);
                         if(getSet == 1)
                         {
                             RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), newPropertyValuef.ToString(), false);
@@ -595,189 +594,16 @@ namespace MotorController.Models.ParserBlock
 #endif
                     }
                 }
-                else if(commandId == 67)
+                else if(commandId == 67) // Save driver parameters to file, Load parameters to driver from file
                 {
 #if(DEBUG && DEBUG_OPERATION)
                     Debug.WriteLine("{0} {1}[{2}]={3} {4} {5}.", "Drv", commandId, commandSubId, transit, "I", getSet == 0 ? "Set" : "Get");
 #endif
-                    if(commandSubId == 1)
-                    {
-                        MaintenanceViewModel.PbarParamsCount = Convert.ToUInt32(transit);
-                        if(MaintenanceViewModel.GetInstance.SaveToFile == true)
-                        {
-                            MaintenanceViewModel.ParamsCount = Convert.ToUInt32(transit);
-                            Rs232Interface.GetInstance.SendToParser(new PacketFields
-                            {
-                                Data2Send = 1,
-                                ID = 67,
-                                SubID = Convert.ToInt16(12),
-                                IsSet = true,
-                                IsFloat = false
-                            }
-                            );
-                        }
-                        else if(MaintenanceViewModel.GetInstance.LoadFromFile == true)
-                        {
-                            if(MaintenanceViewModel.GetInstance.SelectFile(Convert.ToUInt32(transit)))
-                            {
-                                Rs232Interface.GetInstance.SendToParser(new PacketFields
-                                {
-                                    Data2Send = 1,
-                                    ID = 67,
-                                    SubID = Convert.ToInt16(2),
-                                    IsSet = true,
-                                    IsFloat = false
-                                });
-                            }
-                            else
-                            {
-                                MaintenanceViewModel.GetInstance.LoadFromFile = false;
-                            }
-                        }
-                    }
-                    else if(commandSubId == 12 && getSet == 0)
-                    {
-                        if(MaintenanceViewModel.ParamsToFile.Count == 0)
-                        {
-                            Rs232Interface.GetInstance.SendToParser(new PacketFields
-                            {
-                                Data2Send = 1,
-                                ID = 67,
-                                SubID = Convert.ToInt16(13),
-                                IsSet = false,
-                                IsFloat = false
-                            }
-                            );
-                        }
-                        else
-                        {
-                            MaintenanceViewModel.GetInstance.SaveToFile = false;
-                        }
-                    }
-                    else if(commandSubId == 13)
-                    {
-                        MaintenanceViewModel.GetInstance.DataToList(Convert.ToUInt32((uint)transit));
-                    }
-                    else if(commandSubId == 2 && getSet == 0)
-                    {
-                        if(MaintenanceViewModel.GetInstance.LoadFromFile && MaintenanceViewModel.FileToParams.Count > 1)
-                        {
-                            Rs232Interface.GetInstance.SendToParser(new PacketFields
-                            {
-                                Data2Send = MaintenanceViewModel.FileToParams.ElementAt(0),
-                                ID = 67,
-                                SubID = Convert.ToInt16(3),
-                                IsSet = true,
-                                IsFloat = false
-                            });
-                            MaintenanceViewModel.FileToParams.RemoveAt(0);
-                        }
-                        else if(!MaintenanceViewModel.GetInstance.LoadFromFile && MaintenanceViewModel.FileToParams.Count > 1)
-                        {
-                            MaintenanceViewModel.GetInstance.LoadFromFile = false;
-                        }
-                    }
-                    else if(commandSubId == 3 && getSet == 0)
-                    {
-                        if(MaintenanceViewModel.FileToParams.Count > 1)
-                        {
-                            Rs232Interface.GetInstance.SendToParser(new PacketFields
-                            {
-                                Data2Send = (int)(MaintenanceViewModel.FileToParams.ElementAt(0)),
-                                ID = 67,
-                                SubID = Convert.ToInt16(3),
-                                IsSet = true,
-                                IsFloat = false
-                            });
-                            MaintenanceViewModel.FileToParams.RemoveAt(0);
-                            MaintenanceViewModel.GetInstance.PbarValueFromFile = 100 - ((MaintenanceViewModel.FileToParams.Count) * 100 / MaintenanceViewModel.PbarParamsCount);
-                        }
-                        else if(MaintenanceViewModel.FileToParams.Count == 1)
-                        {
-                            Rs232Interface.GetInstance.SendToParser(new PacketFields
-                            {
-                                Data2Send = (int)(MaintenanceViewModel.FileToParams.ElementAt(0)),
-                                ID = 67,
-                                SubID = Convert.ToInt16(4),
-                                IsSet = true,
-                                IsFloat = false
-                            });
-                        }
-                    }
-                    else if(commandSubId == 4 && getSet == 0)
-                    {
-                        if(transit == 1)
-                        {
-                            EventRiser.Instance.RiseEevent(string.Format($"Load Parameters succeed"));
-                            MaintenanceViewModel.GetInstance.PostRedoState(MaintenanceViewModel._redoState);
-                        }
-                        else
-                        {
-                            EventRiser.Instance.RiseEevent(string.Format($"Load Parameters Failed"));
-                            MaintenanceViewModel.GetInstance.SaveToFile = false;
-                            MaintenanceViewModel.GetInstance.LoadFromFile = false;
-                            MaintenanceViewModel.GetInstance.PostRedoState(MaintenanceViewModel._redoState);
-                        }
-                        MaintenanceViewModel.GetInstance.LoadFromFile = false;
-
-                        Rs232Interface.GetInstance.SendToParser(new PacketFields
-                        {
-                            Data2Send = 0,
-                            ID = 67,
-                            SubID = Convert.ToInt16(2),
-                            IsSet = true,
-                            IsFloat = false
-                        });
-                    }
-                }
-                else if(commandId == 34 && LeftPanelViewModel.GetInstance.StarterPlotFlag && commandSubId != 2)
-                {
-                    EventRiser.Instance.RiseEevent(string.Format($"Reading plots..."));
-                    OscilloscopeParameters.plotCount_temp = transit;
-                    OscilloscopeParameters.plotCount = transit;
-                    EventRiser.Instance.RiseEevent(string.Format($"Plots count: " + transit.ToString()));
-                    if(transit > 0)
-                        OscilloscopeParameters.fillPlotList();
-                }
-                else if(commandId == 35 && LeftPanelViewModel.GetInstance.StarterPlotFlag)
-                {
-                    OscilloscopeParameters.plotGeneral.Add(transit);
-                }
-                else if(commandId == 36 && LeftPanelViewModel.GetInstance.StarterPlotFlag)
-                {
-                    var dataAray = new byte[4];
-                    for(int i = 0; i < 4; i++)
-                    {
-                        dataAray[i] = data[i + 3];
-                    }
-                    newPropertyValuef = System.BitConverter.ToSingle(dataAray, 0);
-                    OscilloscopeParameters.plotFullScale.Add(newPropertyValuef);
-                    if(OscilloscopeParameters.plotCount_temp > 0)
-                        OscilloscopeParameters.fillPlotList();
-                    else
-                        LeftPanelViewModel.GetInstance.StarterPlotFlag = false;
-                }
-                else if(commandId == 34 && commandSubId == 2)
-                {
-                    OscilloscopeParameters.SingleChanelFreqC = Convert.ToSingle(transit);
-                    OscilloscopeParameters.ChanelFreq = OscilloscopeParameters.SingleChanelFreqC;
-                    OscilloscopeParameters.Step = 1 / OscilloscopeParameters.SingleChanelFreqC;
-                    LeftPanelViewModel.GetInstance.StarterCount += 1;
-                    LeftPanelViewModel.GetInstance.StarterOperationFlag = false;
+                    MaintenanceViewModel.GetInstance.data_transfert(commandId, commandSubId, getSet, transit);
                 }
                 else
                 {   // Error ID 100
-                    string result;
-                    if(Commands.GetInstance.ErrorList.TryGetValue(transit, out result))
-                    {
-                        EventRiser.Instance.RiseEevent(string.Format($"Com. Error: " + result));
-                        if(WizardWindowViewModel.GetInstance.StartEnable == false)
-                        {
-                            WizardWindowViewModel.GetInstance._save_cmd_success = true;
-                        }
-                    }
-                    else
-                        EventRiser.Instance.RiseEevent(string.Format($"Error: " + commandId.ToString() + "[" + commandSubId.ToString() + "] = " + transit.ToString()));
+                    Commands.GetInstance.driver_error_occured(commandId, commandSubId, transit);
                 }
                 return true;
             }
