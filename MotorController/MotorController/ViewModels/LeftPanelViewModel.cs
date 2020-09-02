@@ -162,6 +162,7 @@ namespace MotorController.ViewModels
             StarterOperationFlag = true;
             StarterCount = 0;
             RefreshManger.ConnectionCount = 0;
+            Thread.Sleep(100);
 
             if(!plotList())
                 plotList();

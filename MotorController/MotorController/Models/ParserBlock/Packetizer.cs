@@ -78,6 +78,7 @@ namespace MotorController.Models.ParserBlock
             {
                 EventRiser.Instance.RiseEevent(string.Format($"Unit is at loader mode"));
                 EventRiser.Instance.RiseEevent(string.Format($"Ready for FW update"));
+                SerialProgrammer.GetInstance.is_in_boot_mode = true;
                 Rs232Interface.GetInstance.AutoBaudEcho -= Rs232Interface.GetInstance.SendDataHendler;
                 return;
             }

@@ -53,12 +53,10 @@ namespace MotorController.ViewModels
         }
         private BodeViewModel()
         {
-            ChartData = new XyDataSeries<float, float>();
-            ChartData1 = new XyDataSeries<float, float>();
             InitializeAxes();
+
             //Load();
         }
-
         private bool _bodeStartStop = false;
 
         public bool BodeStartStop
@@ -181,49 +179,52 @@ namespace MotorController.ViewModels
         [STAThread]
         private void InitializeAxes()
         {
-            AutoRange _xAutorange = AutoRange.Never;
-            //if(BodeStartStop)
-            //    _xAutorange = AutoRange.Always;
-            
-            lock(_lockAxes)
+            try
             {
-                _xAxisLog = new LogarithmicNumericAxis
+                System.Windows.Application.Current.Dispatcher.Invoke((Action)delegate
                 {
-                    TextFormatting = "#0.00#",
-                    ScientificNotation = ScientificNotation.Normalized,
-                    VisibleRange = _xAxisDoubleRange,
-                    GrowBy = new DoubleRange(0.1, 0.1),
-                    DrawMajorBands = false,
-                    AutoRange = _xAutorange,
-                    //AxisTitle = "Time (ms)",
-                    DrawMinorGridLines = true,
-                    DrawMajorTicks = true,
-                    DrawMinorTicks = true,
-                    StrokeThickness = 1,
-                    LogarithmicBase = 10.0,
-                    FontSize = 5
-                };
-                XAxis1 = _xAxisLog;
-                _xAxisLog = new LogarithmicNumericAxis
-                {
-                    TextFormatting = "#0.00#",
-                    ScientificNotation = ScientificNotation.Normalized,
-                    VisibleRange = _xAxisDoubleRange,
-                    GrowBy = new DoubleRange(0.1, 0.1),
-                    DrawMajorBands = false,
-                    AutoRange = _xAutorange,
-                    //AxisTitle = "Time (ms)",
-                    DrawMinorGridLines = true,
-                    DrawMajorTicks = true,
-                    DrawMinorTicks = true,
-                    StrokeThickness = 1,
-                    LogarithmicBase = 10.0,
-                    FontSize = 5
-                };
-                XAxis2 = _xAxisLog;
-                MagVisibleRange = _magVisibleRange;
-                PhaseVisibleRange = _phaseVisibleRange;
+                    AutoRange _xAutorange = AutoRange.Never;
+                    lock(_lockAxes)
+                    {
+
+                        _xAxisLog = new LogarithmicNumericAxis
+                        {
+                            TextFormatting = "#0.00#",
+                            ScientificNotation = ScientificNotation.Normalized,
+                            VisibleRange = _xAxisDoubleRange,
+                            GrowBy = new DoubleRange(0.1, 0.1),
+                            DrawMajorBands = false,
+                            AutoRange = _xAutorange,
+                            DrawMinorGridLines = true,
+                            DrawMajorTicks = true,
+                            DrawMinorTicks = true,
+                            StrokeThickness = 1,
+                            LogarithmicBase = 10.0,
+                            FontSize = 5
+                        };
+                        XAxis1 = _xAxisLog;
+                        _xAxisLog = new LogarithmicNumericAxis
+                        {
+                            TextFormatting = "#0.00#",
+                            ScientificNotation = ScientificNotation.Normalized,
+                            VisibleRange = _xAxisDoubleRange,
+                            GrowBy = new DoubleRange(0.1, 0.1),
+                            DrawMajorBands = false,
+                            AutoRange = _xAutorange,
+                            DrawMinorGridLines = true,
+                            DrawMajorTicks = true,
+                            DrawMinorTicks = true,
+                            StrokeThickness = 1,
+                            LogarithmicBase = 10.0,
+                            FontSize = 5
+                        };
+                        XAxis2 = _xAxisLog;
+                        MagVisibleRange = _magVisibleRange;
+                        PhaseVisibleRange = _phaseVisibleRange;
+                    }
+                });
             }
+            catch { }
             //Load();
 
             //_yAxisLog = new LogarithmicNumericAxis
@@ -306,9 +307,9 @@ namespace MotorController.ViewModels
 
             return doubleSeries;
         }
-        private IXyDataSeries<float, float> _series0;
-        private IXyDataSeries<float, float> _series1;
-        private IXyDataSeries<float, float> _series2;
+        private IXyDataSeries<float, float> _series0 = new XyDataSeries<float, float>();
+        private IXyDataSeries<float, float> _series1 = new XyDataSeries<float, float>();
+        private IXyDataSeries<float, float> _series2 = new XyDataSeries<float, float>();
 
         public IXyDataSeries<float, float> ChartData
         {
@@ -594,9 +595,9 @@ namespace MotorController.ViewModels
 
                 if(!String.IsNullOrEmpty(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue) &&
                     !String.IsNullOrEmpty(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue))
-                    _xAxisDoubleRange = new DoubleRange(Convert.ToSingle(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue) - 
-                        0.1 * Convert.ToSingle(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue), 
-                        Convert.ToSingle(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue) + 
+                    _xAxisDoubleRange = new DoubleRange(Convert.ToSingle(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue) -
+                        0.1 * Convert.ToSingle(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue),
+                        Convert.ToSingle(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue) +
                         0.1 * Convert.ToSingle(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue));
 
                 InitializeAxes();
@@ -625,7 +626,7 @@ namespace MotorController.ViewModels
                         _phaseVisibleRange = new DoubleRange(_excel_Y2_List.Min() - 0.2 * (_excel_Y2_List.Max() - _excel_Y2_List.Min()), _excel_Y2_List.Max() + 0.2 * (_excel_Y2_List.Max() - _excel_Y2_List.Min()));
                     else if(_excel_Y2_List.Min() == _excel_Y2_List.Max() && _excel_Y2_List.Max() == 0)
                     {
-                        _phaseVisibleRange = new DoubleRange(-1.5, + 1.5);
+                        _phaseVisibleRange = new DoubleRange(-1.5, +1.5);
                     }
                     else
                     {
@@ -647,6 +648,7 @@ namespace MotorController.ViewModels
                         else
                             _magVisibleRange = new DoubleRange(_excel_Y1_List.Min() - 0.2 * (_excel_Y1_List.Min()), _excel_Y1_List.Max() + 0.2 * (_excel_Y1_List.Max()));
                     }
+
                     InitializeAxes();
                 }
             }

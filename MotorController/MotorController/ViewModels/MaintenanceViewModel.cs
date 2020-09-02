@@ -728,7 +728,7 @@ namespace MotorController.ViewModels
             }
         }
         #endregion DriverParameters
-        
+
         #region SerialProgrammer
         private string _pathFW = "";
         public string PathFW

@@ -67,6 +67,7 @@ namespace MotorController.ViewModels
         public int _currentState = (int)eSTAGE.IDLE;
         private string _filePath = "";
         private static List<Byte> _dataFromFile = new List<Byte>();
+        public bool is_in_boot_mode = false;
 
 
         private static readonly object Synlock = new object();
@@ -135,7 +136,22 @@ namespace MotorController.ViewModels
         public void _serialProgrammer()
         {
             _currentState = (int)eSTAGE.INIT_VARIABLES;
+            if(is_in_boot_mode)
+            {
+                if(Rs232Interface._comPort != null)
+                    Rs232Interface._comPort.DataReceived -= Rs232Interface.GetInstance.DataReceived;
+                if(Rs232Interface._comPort != null)
+                    Rs232Interface._comPort.Close();
+                if(Rs232Interface._comPort != null)
+                    Rs232Interface._comPort.Dispose();
+                PortChat.GetInstance.CloseComunication();
+                PortChat.GetInstance.Main(Configuration.SelectedCom, Convert.ToInt32(MaintenanceViewModel.GetInstance.FlashBaudRate));
+                PortChat.GetInstance.ReadTick((int)(eSTATE.START));
+                PortChat.GetInstance._packetsList.Clear();
 
+                ini_variables();
+                _currentState = (int)eSTAGE.FLASH_BAUD;
+            }
             while(true)
             {
                 Debug.WriteLine(_currentState.ToString());
@@ -144,6 +160,8 @@ namespace MotorController.ViewModels
                     EventRiser.Instance.RiseEevent("Operation cancelled by user");
                     _currentState = (int)eSTAGE.EXIT;
                 }
+
+
                 switch(_currentState)
                 {
                     case (int)eSTAGE.IDLE:
@@ -252,13 +270,13 @@ namespace MotorController.ViewModels
                     {
                         if(expectedCS == 0)
                         {
-                            expectedResponse = new byte[] {  100, 0, 0, 200, 0, 0, 0, 27, 166 };
+                            expectedResponse = new byte[] { 100, 0, 0, 200, 0, 0, 0, 27, 166 };
                             size = 9;
                         }
                         for(int i = 0; i < PortChat.GetInstance._packetsList.ElementAt(0).Count(); i++)
                         {
-                                if(PortChat.GetInstance._packetsList.ElementAt(0)[i] == expectedResponse[i])
-                                    equal++;
+                            if(PortChat.GetInstance._packetsList.ElementAt(0)[i] == expectedResponse[i])
+                                equal++;
                         }
                         if(equal == size)
                         {
@@ -807,6 +825,7 @@ namespace MotorController.ViewModels
         }
         public void reconnect()
         {
+            is_in_boot_mode = false;
             PortChat.GetInstance.ReadTick((int)eSTATE.STOP);
             PortChat.GetInstance.CloseComunication();
             Rs232Interface.GetInstance.AutoConnect();

@@ -6,6 +6,7 @@ using MotorController.ViewModels;
 using System.Windows.Media;
 using System.Linq;
 using MotorController.Helpers;
+using Abt.Controls.SciChart;
 
 namespace MotorController.CommandsDB
 {
@@ -1462,7 +1463,7 @@ namespace MotorController.CommandsDB
                 EventRiser.Instance.RiseEevent(string.Format($"Com. Error: " + result));
                 if(WizardWindowViewModel.GetInstance.StartEnable == false)
                 {
-                    WizardWindowViewModel.GetInstance._save_cmd_success = true;
+                    WizardWindowViewModel.GetInstance.AbortCalib();
                 }
             }
             else

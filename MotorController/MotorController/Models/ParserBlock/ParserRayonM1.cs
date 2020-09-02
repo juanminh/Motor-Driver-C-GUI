@@ -544,6 +544,14 @@ namespace MotorController.Models.ParserBlock
                     Debug.WriteLine("commandId: " + commandId);
                     Debug.WriteLine("commandSubId: " + commandSubId);
                 }
+                
+                if(WizardWindowViewModel.GetInstance.send_update_parameters && getSet == 0)
+                {
+                    DataViewModel myValue;
+                    if(WizardWindowViewModel.GetInstance.OperationList.TryGetValue(new Tuple<int, int>(commandId, commandSubId), out myValue) && commandId != 64)
+                        WizardWindowViewModel.GetInstance.send_operation_count++;
+                }
+
                 if(LeftPanelViewModel.GetInstance.StarterPlotFlag || commandId == 34 || commandId == 35 || commandId == 36) // build plot list
                 {
                     OscilloscopeParameters.plot_transfert(commandId, commandSubId, getSet, transit, data);

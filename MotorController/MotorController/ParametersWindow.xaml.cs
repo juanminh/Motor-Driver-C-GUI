@@ -59,6 +59,7 @@ namespace MotorController.Views
             WindowsOpen = false;
             ParametersWindowTabSelected = -1;
             _instance = null;
+            BodeViewModel.GetInstance = null;
         }
 
         private void TabSelected(object sender, SelectionChangedEventArgs e)
