@@ -210,6 +210,10 @@
       <HintPath>..\packages\UserControlLibrary.dll</HintPath>
     </Reference>
     <Reference Include="WindowsBase" />
+    <Reference Include="WPFSpark, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\WPFSpark_v1.1\WPFSpark\WPFSpark\bin\x64\Release\WPFSpark.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -251,10 +255,14 @@
     <Compile Include="ViewModels\Operations.cs" />
     <Compile Include="ViewModels\PIDViewModel.cs" />
     <Compile Include="ViewModels\SerialProgrammer.cs" />
+    <Compile Include="ViewModels\ToggleSwitchViewModel.cs" />
     <Compile Include="ViewModels\UpDownControlModel.cs" />
     <Compile Include="ViewModels\WizardWindowViewModel.cs" />
     <Compile Include="Views\UC_CalibrationWizard.xaml.cs">
       <DependentUpon>UC_CalibrationWizard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UC_ToggleSwitch.xaml.cs">
+      <DependentUpon>UC_ToggleSwitch.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UpDownControl.xaml.cs">
       <DependentUpon>UpDownControl.xaml</DependentUpon>
@@ -357,6 +365,10 @@
       <DependentUpon>Wizard.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\UC_CalibrationWizard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UC_ToggleSwitch.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -695,12 +707,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Themes\MotorController.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\WPFSpark_v1.1\WPFSpark\WPFSpark\WPFSpark.csproj">
-      <Project>{98be1309-ceb4-45ee-b4ad-28baf0570fab}</Project>
-      <Name>WPFSpark</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\1452207982_settings.png" />

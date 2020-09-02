@@ -20,6 +20,16 @@ namespace MotorController.ViewModels
                 OnPropertyChanged("CalibStatus");
             }
         }
+        private int _calibTimeout;
+        public int CalibTimeout
+        {
+            get { return _calibTimeout; }
+            set
+            {
+                _calibTimeout = value;
+                OnPropertyChanged("CalibTimeout");
+            }
+        }
         private bool _advanceMode_Calibration = false;
         public bool AdvanceMode_Calibration {
             get { return _advanceMode_Calibration; }

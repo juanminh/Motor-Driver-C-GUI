@@ -19,6 +19,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/Dictionary1.xaml" />
                 <ResourceDictionary Source="Styles/ResourceDictionary1.xaml" />
+                
             </ResourceDictionary.MergedDictionaries>
             <DataTemplate x:Key="OscilloscopeViewModel">
                 <views:OscilloscopeView></views:OscilloscopeView>
@@ -61,6 +62,9 @@
             </DataTemplate>
             <DataTemplate x:Key="CalibrationWizardViewModel">
                 <views:UC_CalibrationWizard></views:UC_CalibrationWizard>
+            </DataTemplate>
+            <DataTemplate x:Key="ToggleSwitchViewModel">
+                <views:UC_ToggleSwitch></views:UC_ToggleSwitch>
             </DataTemplate>
             <!--<DataTemplate x:Key="LeftPanelViewModel">
                 <local:GridSplitter></local:GridSplitter>

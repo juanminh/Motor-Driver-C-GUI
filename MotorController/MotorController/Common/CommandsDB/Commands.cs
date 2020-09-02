@@ -50,6 +50,8 @@ namespace MotorController.CommandsDB
             GenerateDebugListCommands();
             GenerateIOTabCommands();
             GenerateBodeCommands();
+
+            GenerateToggleSwitchCommands();
         }
 
         static public void AssemblePacket(out PacketFields rxPacket, Int16 id, Int16 subId, bool isSet, bool isFloat, object data2Send)
@@ -77,6 +79,9 @@ namespace MotorController.CommandsDB
         public Dictionary<string, ObservableCollection<object>> DataCommandsListbySubGroup = new Dictionary<string, ObservableCollection<object>>();
         public Dictionary<string, ObservableCollection<object>> CalibartionCommandsListbySubGroup = new Dictionary<string, ObservableCollection<object>>();
         public Dictionary<string, ObservableCollection<object>> DebugCommandsListbySubGroup = new Dictionary<string, ObservableCollection<object>>();
+
+        public Dictionary<string, ObservableCollection<object>> ToggleSwitchList = new Dictionary<string, ObservableCollection<object>>();
+        public Dictionary<Tuple<int, int>, ToggleSwitchViewModel> ToggleSwitchCommands = new Dictionary<Tuple<int, int>, ToggleSwitchViewModel>();
 
         public Dictionary<int, string> ErrorList = new Dictionary<int, string>();
         public Dictionary<Tuple<int, int>, BoolViewIndModel> DigitalInputList = new Dictionary<Tuple<int, int>, BoolViewIndModel>();
@@ -1470,6 +1475,22 @@ namespace MotorController.CommandsDB
                 EventRiser.Instance.RiseEevent(string.Format($"Error: " + commandId.ToString() + "[" + commandSubId.ToString() + "] = " + transit.ToString()));
 
         }
+
+        
+        private void GenerateToggleSwitchCommands()
+        {
+            ToggleSwitchList.Add("MotorControl", new ObservableCollection<object>());
+            #region Operation
+            var data_b = new ToggleSwitchViewModel
+            {
+                Label = "Motorr",
+                CommandId = 1,
+                CommandSubId = 0
+            };
+            ToggleSwitchCommands.Add(new Tuple<int, int>(1, 0), data_b);
+            ToggleSwitchList["MotorControl"].Add(data_b);
+            #endregion Operation
+    }
     }
 }
 

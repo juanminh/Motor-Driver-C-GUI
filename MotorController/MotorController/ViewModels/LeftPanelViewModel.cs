@@ -386,6 +386,7 @@ namespace MotorController.ViewModels
         private bool _motorOnToggleChecked = false;
         private int _ledMotorStatus;
 
+
         public bool MotorOnToggleChecked
         {
             get
@@ -445,6 +446,22 @@ namespace MotorController.ViewModels
             }
         }
 
+        private ObservableCollection<object> _motorControlTogglewitch;
+        public ObservableCollection<object> MotorControlTogglewitch
+        {
+
+            get
+            {
+                return Commands.GetInstance.ToggleSwitchList["MotorControl"];
+            }
+            set
+            {
+                _motorControlTogglewitch = value;
+                OnPropertyChanged();
+            }
+
+
+        }
         private ObservableCollection<object> _driverStatusList;
         public ObservableCollection<object> DriverStatusList
         {

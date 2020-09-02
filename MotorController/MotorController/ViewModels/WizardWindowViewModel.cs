@@ -294,6 +294,7 @@ namespace MotorController.ViewModels
             {
                 "-1", "4", "6", "8", "14", "10", "12"
             };
+            int[] CalibTimeout = new int[] {3, 3, 70, 15, 60, 60, 60 };
             Dictionary<string, string> calibOperation = new Dictionary<string, string>();
             for(int i = 0; i < names.Length; i++)
                 calibOperation.Add(names[i], SubID[i]);
@@ -316,7 +317,8 @@ namespace MotorController.ViewModels
                     CalibrationName = calibOperation.ElementAt(i).Key,
                     CalibStatus = 0,
                     CommandId = "6",
-                    CommandSubId = calibOperation.ElementAt(i).Value
+                    CommandSubId = calibOperation.ElementAt(i).Value,
+                    CalibTimeout = CalibTimeout[i]
                 };
                 if(_instance != null)
                 {
@@ -734,7 +736,7 @@ namespace MotorController.ViewModels
             if(!cancellationTokenCalib.IsCancellationRequested)
             {
                 int timeout = 0;
-                while(GetInstance.OperationList.Count != send_operation_count + 1 && timeout < 20)
+                while(GetInstance.OperationList.Count != send_operation_count + 1 && timeout < 15)
                 {
                     Thread.Sleep(200);
                     timeout++;
@@ -1226,7 +1228,7 @@ namespace MotorController.ViewModels
                 if(calibration_index != Convert.ToInt16(GetInstance.OperationList.ElementAt(GetInstance.Count).Value.CommandSubId))
                 {
                     calibration_index = Convert.ToInt16(GetInstance.OperationList.ElementAt(GetInstance.Count).Value.CommandSubId);
-                    calibration_timeout = max_timeout;
+                    calibration_timeout = GetInstance.CalibrationWizardList.ElementAt(GetInstance.Count + 1).Value.CalibTimeout;
                 }
                 if(calibration_timeout == 0)
                 {

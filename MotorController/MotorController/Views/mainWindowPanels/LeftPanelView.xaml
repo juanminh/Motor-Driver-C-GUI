@@ -7,7 +7,8 @@
              xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:Borders="clr-namespace:ToggleSwitch.Borders;assembly=ToggleSwitch" 
              xmlns:ToggleSwitch="clr-namespace:ToggleSwitch;assembly=ToggleSwitch" 
-             xmlns:Views="clr-namespace:MotorController.Views"  
+             xmlns:Views="clr-namespace:MotorController.Views" 
+             xmlns:local="clr-namespace:MotorController" 
              xmlns:Helpers="clr-namespace:MotorController.Helpers"
              xmlns:wpfSpark="clr-namespace:WPFSpark;assembly=WPFSpark"
              x:Class="MotorController.Views.mainWindowPanels.LeftPanelView"
@@ -782,7 +783,7 @@
                     <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="MOTOR" VerticalAlignment="Bottom" Width="70" FontWeight="Bold" FontSize="15" Foreground="White"/>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <TextBlock HorizontalAlignment="Left" Text="Controller           Version 1.3.c" VerticalAlignment="Top" Width="Auto" Foreground="#FF5499D3" FontSize="12"/>
+                    <TextBlock HorizontalAlignment="Left" Text="Controller           Version 1.3.d" VerticalAlignment="Top" Width="Auto" Foreground="#FF5499D3" FontSize="12"/>
                 </Grid>
                 <Grid Grid.Row="2" Height="10">
                 </Grid>
@@ -984,14 +985,20 @@
                 </Grid>
                 <Grid Grid.Row="20">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="25*"></ColumnDefinition>
-                        <ColumnDefinition Width="5*"></ColumnDefinition>
-                        <ColumnDefinition Width="45*"></ColumnDefinition>
-                        <ColumnDefinition Width="25*"></ColumnDefinition>
+                        <ColumnDefinition Width="0.2*"></ColumnDefinition>
+                        <ColumnDefinition Width="1"></ColumnDefinition>
+                        <ColumnDefinition Width="0.4*"></ColumnDefinition>
+                        <ColumnDefinition Width="1"></ColumnDefinition>
+                        <ColumnDefinition Width="0.4*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" TextDecorations="Underline" FontWeight="Bold" FontSize="13" VerticalAlignment="Center" Foreground="White" Margin="0,0,0,3">Motor</TextBlock>
-                    <wpfSpark:ToggleSwitch Grid.Column="2" Width="100" Height="25"  VerticalAlignment="Center" IsChecked="{Binding MotorOnToggleChecked, Mode=TwoWay}"  />
-                    <Helpers:RoundBoolLed Grid.Column="3" Width="16" Height="16" CurrStatus="{Binding LedMotorStatus}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBlock Grid.Column="0" TextDecorations="Underline" FontWeight="Bold" FontSize="13" 
+                               VerticalAlignment="Center" Foreground="White" Margin="0,0,0,3">Motor</TextBlock>
+                    <wpfSpark:ToggleSwitch Grid.Column="2" Width="100" Height="25"  VerticalAlignment="Center" IsChecked="{Binding MotorOnToggleChecked, Mode=TwoWay}" />
+                    <!--<Views:UC_ToggleSwitch Grid.Column="0" />-->
+                    <!--<ItemsControl Grid.Column="0" 
+                                  ItemsSource="{Binding MotorControlTogglewitch, Mode=TwoWay}"
+                                  ItemTemplate="{StaticResource ToggleSwitchViewModel}"></ItemsControl>-->
+                    <Helpers:RoundBoolLed Grid.Column="4" CurrStatus="{Binding LedMotorStatus}"/>
                 </Grid>
             </Grid>
         </ScrollViewer>

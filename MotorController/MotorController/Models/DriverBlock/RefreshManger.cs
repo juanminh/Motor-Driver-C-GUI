@@ -782,6 +782,18 @@ namespace MotorController.Models.DriverBlock
                     }
                     #endregion PID
                 }
+                #region ToggleSwitch
+                if(Commands.GetInstance.ToggleSwitchCommands.ContainsKey(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)))
+                {
+                    try
+                    {
+                        Commands.GetInstance.ToggleSwitchCommands[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)].IsChecked = Convert.ToBoolean(Convert.ToInt16(newPropertyValue));
+                    }
+                    catch
+                    {
+                    }
+                }
+                #endregion ToggleSwitch
                 //else if(commandidentifier.Item1 == 1 && commandidentifier.Item2 == 0 && !DebugViewModel.GetInstance._forceConnectMode) // MotorStatus
                 //{
                 //    updateConnectionStatus(commandidentifier, newPropertyValue);
