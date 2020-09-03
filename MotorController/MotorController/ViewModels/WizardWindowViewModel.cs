@@ -101,6 +101,8 @@ namespace MotorController.ViewModels
         public Dictionary<Tuple<int, int>, CalibrationWizardViewModel> CalibrationWizardList = new Dictionary<Tuple<int, int>, CalibrationWizardViewModel>();
         public Dictionary<string, ObservableCollection<object>> CalibrationWizardListbySubGroup = new Dictionary<string, ObservableCollection<object>>();
         public Dictionary<Tuple<int, int>, DataViewModel> OperationList = new Dictionary<Tuple<int, int>, DataViewModel>();
+        public Dictionary<Tuple<int, int>, DataViewModel> operation_echo = new Dictionary<Tuple<int, int>, DataViewModel>();
+
         //public bool _save_cmd_success = false;
         #region FIELDS
         private static readonly object Synlock = new object();
@@ -294,7 +296,7 @@ namespace MotorController.ViewModels
             {
                 "-1", "4", "6", "8", "14", "10", "12"
             };
-            int[] CalibTimeout = new int[] {3, 3, 70, 15, 60, 60, 60 };
+            int[] CalibTimeout = new int[] {10, 10, 70, 15, 60, 60, 60 };
             Dictionary<string, string> calibOperation = new Dictionary<string, string>();
             for(int i = 0; i < names.Length; i++)
                 calibOperation.Add(names[i], SubID[i]);
@@ -708,7 +710,7 @@ namespace MotorController.ViewModels
                 Int32.TryParse(operation.CommandSubId, out commandSubId);
                 GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
             }
-            
+
 
             //operation = new DataViewModel { CommandName = "Save", CommandId = "63", CommandSubId = "0", IsFloat = false, CommandValue = "1" };
             //Int32.TryParse(operation.CommandId, out commandId);
@@ -720,11 +722,17 @@ namespace MotorController.ViewModels
             //Int32.TryParse(operation.CommandSubId, out commandSubId);
             //GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
 
+            DataViewModel myValue;
+            for(int i = 0; i < OperationList.Count; i++)
+            {
+                OperationList.TryGetValue(new Tuple<int, int>(Convert.ToInt16(OperationList.ElementAt(i).Value.CommandId), Convert.ToInt16(OperationList.ElementAt(i).Value.CommandSubId)), out myValue);
+                operation_echo.Add(new Tuple<int, int>(Convert.ToInt16(OperationList.ElementAt(i).Value.CommandId), Convert.ToInt16(OperationList.ElementAt(i).Value.CommandSubId)), myValue);
+            }
+
             operation = new DataViewModel { CommandName = "Synchronisation Command", CommandId = "64", CommandSubId = "0", IsFloat = false, CommandValue = "1" };
             Int32.TryParse(operation.CommandId, out commandId);
             Int32.TryParse(operation.CommandSubId, out commandSubId);
             GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation); // Restart Plot
-
             #endregion BuildOperationList
 
             #region Save_parameters_to_ini_file
@@ -736,15 +744,18 @@ namespace MotorController.ViewModels
             if(!cancellationTokenCalib.IsCancellationRequested)
             {
                 int timeout = 0;
-                while(GetInstance.OperationList.Count != send_operation_count + 1 && timeout < 15)
+                while(GetInstance.OperationList.Count != send_operation_count + 1 && timeout < GetInstance.CalibrationWizardList.ElementAt(0).Value.CalibTimeout)
                 {
-                    Thread.Sleep(200);
+                    Thread.Sleep(1000);
                     timeout++;
                 }
-                if(timeout >= 20)
+                if(timeout >= GetInstance.CalibrationWizardList.ElementAt(0).Value.CalibTimeout)
                 {
                     GetInstance.CalibrationWizardList[new Tuple<int, int>(6, -1)].CalibStatus = RoundBoolLed.FAILED;
                     EventRiser.Instance.RiseEevent(string.Format($"Missing some commands echo"));
+                    for(int i = 0; i < operation_echo.Count; i++)
+                        EventRiser.Instance.RiseEevent("Missing " + operation_echo.ElementAt(i).Value.CommandId + "[" + operation_echo.ElementAt(i).Value.CommandSubId + "]");
+
                     return;
                 }
                 GetInstance.CalibrationWizardList[new Tuple<int, int>(6, -1)].CalibStatus = RoundBoolLed.PASSED;
@@ -793,14 +804,14 @@ namespace MotorController.ViewModels
             });
             Thread.Sleep(10);
 
-            Rs232Interface.GetInstance.SendToParser(new PacketFields
-            {
-                Data2Send = 0,
-                ID = 63,
-                SubID = 9,
-                IsSet = true,
-                IsFloat = false
-            });
+            //Rs232Interface.GetInstance.SendToParser(new PacketFields
+            //{
+            //    Data2Send = 0,
+            //    ID = 63,
+            //    SubID = 9,
+            //    IsSet = true,
+            //    IsFloat = false
+            //});
 
             StartButtonStop();
             Thread.Sleep(100);

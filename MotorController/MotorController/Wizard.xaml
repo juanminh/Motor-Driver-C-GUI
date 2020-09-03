@@ -457,7 +457,7 @@
                                     <TextBlock Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
-                                                <Setter Property="Text" Value="Resolution [cnts/rev]" />
+                                                <Setter Property="Text" Value="Resolution [lines/rev]" />
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding EncoderFeedback}" Value="5">
                                                         <Setter Property="Text" Value="Resolution [bit]" />
@@ -845,6 +845,7 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="5"/>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="20"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Width="Auto" Text="Commands" Foreground="White" Background="Gray" FontWeight="Bold"/>
@@ -856,7 +857,7 @@
                     <TextBlock Grid.Column="0" Foreground="White">Save Parameters</TextBlock>
                     <CheckBox Grid.Column="1" Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding Save}"/>
                 </Grid>
-                <Grid Grid.Row="4" HorizontalAlignment="Left">
+                <Grid Grid.Row="5" HorizontalAlignment="Left">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="220"/>
                         <ColumnDefinition Width="Auto"/>

@@ -465,6 +465,8 @@ namespace MotorController.Models.DriverBlock
                     return "All OK !";
                 case 1:
                     return "Hall Error";
+                case 2:
+                    return "Parameters Checksum Error";
                 case 4:
                     return "Encoder/Hall Sync";
                 case 8:

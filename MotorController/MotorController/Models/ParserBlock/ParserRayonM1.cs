@@ -549,7 +549,10 @@ namespace MotorController.Models.ParserBlock
                 {
                     DataViewModel myValue;
                     if(WizardWindowViewModel.GetInstance.OperationList.TryGetValue(new Tuple<int, int>(commandId, commandSubId), out myValue) && commandId != 64)
+                    {
                         WizardWindowViewModel.GetInstance.send_operation_count++;
+                        WizardWindowViewModel.GetInstance.operation_echo.Remove(new Tuple<int, int>(commandId, commandSubId));
+                    }
                 }
 
                 if(LeftPanelViewModel.GetInstance.StarterPlotFlag || commandId == 34 || commandId == 35 || commandId == 36) // build plot list
