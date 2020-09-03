@@ -380,7 +380,7 @@
                             <!--<TextBlock Grid.Row="1" Width="Auto" Text="   Encoder" VerticalAlignment="Center" Foreground="White" Background="Transparent" FontWeight="DemiBold" FontSize="12"/>-->
                             <GroupBox Grid.Row="2" Width="Auto" Style="{x:Null}" BorderBrush="Gray" BorderThickness="0.6">
                                 <GroupBox.Header>
-                                    <Span FontWeight="DemiBold" Foreground="White">Encoder</Span>
+                                    <Span FontWeight="DemiBold" Foreground="White">Motor Encoder</Span>
                                 </GroupBox.Header>
                                 <Grid>
                                     <Grid.RowDefinitions>

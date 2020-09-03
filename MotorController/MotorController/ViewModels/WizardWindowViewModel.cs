@@ -721,7 +721,7 @@ namespace MotorController.ViewModels
             //Int32.TryParse(operation.CommandId, out commandId);
             //Int32.TryParse(operation.CommandSubId, out commandSubId);
             //GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
-
+            operation_echo.Clear();
             DataViewModel myValue;
             for(int i = 0; i < OperationList.Count; i++)
             {
@@ -910,7 +910,7 @@ namespace MotorController.ViewModels
                 OnPropertyChanged("AdvancedConfig");
             }
         }
-        private bool _loadDefault = true;
+        private bool _loadDefault = false;
         public bool LoadDefault
         {
             get { return _loadDefault; }
@@ -1333,7 +1333,7 @@ namespace MotorController.ViewModels
                     GetInstance.OperationList.ElementAt(i).Value.CommandName == "Save" ||
                     GetInstance.OperationList.ElementAt(i).Value.CommandName == "Reset")
                     Thread.Sleep(2000);
-                Thread.Sleep(10);
+                Thread.Sleep(30);
             }
         }
         #endregion Tasks
