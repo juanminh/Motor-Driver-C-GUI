@@ -845,26 +845,30 @@
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="5"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="5"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Width="Auto" Text="Commands" Foreground="White" Background="Gray" FontWeight="Bold"/>
-                <Grid Grid.Row="3" HorizontalAlignment="Left">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="220"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Foreground="White">Save Parameters</TextBlock>
-                    <CheckBox Grid.Column="1" Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding Save}"/>
-                </Grid>
-                <Grid Grid.Row="5" HorizontalAlignment="Left">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="220"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Foreground="White">Restore Previous Parameters</TextBlock>
-                    <CheckBox Grid.Column="1" Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding Restore}"/>
-                </Grid>
+                <TextBlock Grid.Row="0" Width="Auto" Text="Parameters" Foreground="White" Background="Gray" FontWeight="Bold"/>
+                <Border Grid.Row="3" Width="auto" Height="auto" BorderBrush="White" BorderThickness="1" CornerRadius="2" VerticalAlignment="Top">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="220"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Foreground="White">Save To Flash</TextBlock>
+                        <CheckBox Grid.Column="1" Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding Save}"/>
+                    </Grid>
+                </Border>
+                <Border Grid.Row="5" Width="auto" Height="auto" BorderBrush="White" BorderThickness="1" CornerRadius="2" VerticalAlignment="Top">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="220"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Foreground="White">Restore From Flash</TextBlock>
+                        <CheckBox Grid.Column="1" Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding Restore}"/>
+                    </Grid>
+                </Border>
             </Grid>
         </Border>
         <Image Grid.Row="5" Stretch="Uniform" Source="pack://siteoforigin:,,,/WizardMotorImages/Motor.png" Height="80" Width="auto"></Image>

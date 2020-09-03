@@ -68,7 +68,7 @@ namespace MotorController.ViewModels
         private string _filePath = "";
         private static List<Byte> _dataFromFile = new List<Byte>();
         public bool is_in_boot_mode = false;
-
+        private bool is_program_succeed = false;
 
         private static readonly object Synlock = new object();
         private static SerialProgrammer _instance;
@@ -413,6 +413,7 @@ namespace MotorController.ViewModels
                 EventRiser.Instance.RiseEevent(string.Format("File path not valid"));
                 return false;
             }
+            is_program_succeed = false;
             wait = true;
             equal = 0;
             expectedResponse = new byte[] { 0 };             //  Requiered response => 139 60 134 0 0 79 218 62 0 192 135
@@ -731,7 +732,10 @@ namespace MotorController.ViewModels
                 return false;
             }
             else
+            {
                 EventRiser.Instance.RiseEevent(string.Format($"Program sucess"));
+                is_program_succeed = true;
+            }
 
             return true;
         }
@@ -833,6 +837,11 @@ namespace MotorController.ViewModels
         public bool exit()
         {
             MaintenanceViewModel.GetInstance.SerialProgrammerCheck = false;
+            if(!is_program_succeed)
+            {
+                PortChat.GetInstance.ReadTick((int)eSTATE.STOP);
+                PortChat.GetInstance.CloseComunication();
+            }
             return true;
         }
         #endregion SerialProgrammerFunctions

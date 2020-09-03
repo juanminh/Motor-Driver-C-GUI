@@ -754,7 +754,9 @@ namespace MotorController.ViewModels
                     GetInstance.CalibrationWizardList[new Tuple<int, int>(6, -1)].CalibStatus = RoundBoolLed.FAILED;
                     EventRiser.Instance.RiseEevent(string.Format($"Missing some commands echo"));
                     for(int i = 0; i < operation_echo.Count; i++)
-                        EventRiser.Instance.RiseEevent("Missing " + operation_echo.ElementAt(i).Value.CommandId + "[" + operation_echo.ElementAt(i).Value.CommandSubId + "]");
+                        EventRiser.Instance.RiseEevent("Missing " + operation_echo.ElementAt(i).Value.CommandName + ": " + 
+                            operation_echo.ElementAt(i).Value.CommandId + "[" + 
+                            operation_echo.ElementAt(i).Value.CommandSubId + "]");
 
                     return;
                 }

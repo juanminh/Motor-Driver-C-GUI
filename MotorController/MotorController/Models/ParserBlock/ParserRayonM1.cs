@@ -536,14 +536,14 @@ namespace MotorController.Models.ParserBlock
                 transit |= data[4];
                 transit <<= 8;
                 transit |= data[3];
-                if(LeftPanelViewModel.GetInstance.StarterOperationFlag ||
+                /*if(LeftPanelViewModel.GetInstance.StarterOperationFlag ||
                     LeftPanelViewModel.GetInstance.StarterPlotFlag)
                 {
                     Debug.WriteLine("StarterOperationFlag: " + LeftPanelViewModel.GetInstance.StarterOperationFlag);
                     Debug.WriteLine("StarterPlotFlag: " + LeftPanelViewModel.GetInstance.StarterPlotFlag);
                     Debug.WriteLine("commandId: " + commandId);
                     Debug.WriteLine("commandSubId: " + commandSubId);
-                }
+                }*/
                 
                 if(WizardWindowViewModel.GetInstance.send_update_parameters && getSet == 0)
                 {
