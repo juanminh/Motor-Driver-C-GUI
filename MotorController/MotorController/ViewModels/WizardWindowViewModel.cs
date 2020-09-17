@@ -243,6 +243,7 @@ namespace MotorController.ViewModels
         #endregion Motor_Parameter
         #region Calibration
         public int send_operation_count = 0;
+        public bool calibration_is_in_process = false;
         private int _validOperations = RoundBoolLed.FAILED;
         public int ValidOperations
         {
@@ -315,7 +316,7 @@ namespace MotorController.ViewModels
                 {
                     AdvanceMode_Calibration = CalibrationAdvancedMode,
                     CalibrationEnabled = i == 0 ? false : true,
-                    CalibrationPerform = true, //i == 0 ? true : false,
+                    CalibrationPerform = CalibrationAdvancedMode ? i == 0 ? true : false : true,
                     CalibrationName = calibOperation.ElementAt(i).Key,
                     CalibStatus = 0,
                     CommandId = "6",
@@ -340,12 +341,13 @@ namespace MotorController.ViewModels
         {
             if(!LeftPanelViewModel._app_running)
                 return;
+            //calibration_is_in_process = true;
             StartEnable = false;
             cancellationTokenCalib = new CancellationToken(false);
 
             RefreshManger.TempTab = -1;
-            LeftPanelViewModel.GetInstance.RefreshParamsTick(STOP);
-            LeftPanelViewModel.GetInstance.RefreshParamsTick(START);
+            //LeftPanelViewModel.GetInstance.RefreshParamsTick(STOP);
+            //LeftPanelViewModel.GetInstance.RefreshParamsTick(START);
             Thread.Sleep(100);
 
             try
@@ -359,8 +361,8 @@ namespace MotorController.ViewModels
             StartEnable = true;
 
             RefreshManger.TempTab = -1;
-            LeftPanelViewModel.GetInstance.RefreshParamsTick(STOP);
-            LeftPanelViewModel.GetInstance.RefreshParamsTick(START);
+            //LeftPanelViewModel.GetInstance.RefreshParamsTick(STOP);
+            //LeftPanelViewModel.GetInstance.RefreshParamsTick(START);
         }
         private async void StartButtonStop()
         {
@@ -793,7 +795,7 @@ namespace MotorController.ViewModels
         {
             //if(StartEnable)
             //    return;
-
+            calibration_is_in_process = false;
             cancellationTokenCalib = new CancellationToken(true);
 
             Rs232Interface.GetInstance.SendToParser(new PacketFields
@@ -820,8 +822,8 @@ namespace MotorController.ViewModels
             GetInstance.Count = GetInstance.OperationList.Count;
 
             RefreshManger.TempTab = -1;
-            LeftPanelViewModel.GetInstance.RefreshParamsTick(STOP);
-            LeftPanelViewModel.GetInstance.RefreshParamsTick(START);
+            //LeftPanelViewModel.GetInstance.RefreshParamsTick(STOP);
+            //LeftPanelViewModel.GetInstance.RefreshParamsTick(START);
         }
         private bool _save = false;
         public bool Save

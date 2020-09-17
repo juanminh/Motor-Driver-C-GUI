@@ -541,7 +541,7 @@
                                                   VerticalAlignment="Top"  
                                                   HorizontalAlignment="Left" 
                                                   ItemsSource="{Binding MotionCommandList}" 
-                                                  ItemTemplate="{StaticResource DataViewSmallFont}">
+                                                  ItemTemplate="{StaticResource DataViewModel}">
 
                                     </ItemsControl>
                                 </ScrollViewer>
@@ -557,7 +557,7 @@
                                                   VerticalAlignment="Top"  
                                                   HorizontalAlignment="Left" 
                                                   ItemsSource="{Binding MotionCommandList2}" 
-                                                  ItemTemplate="{StaticResource DataViewSmallFont}">
+                                                  ItemTemplate="{StaticResource DataViewModel}">
 
                                         </ItemsControl>
                                         <ItemsControl Width="200"
@@ -600,7 +600,7 @@
                                                   VerticalAlignment="Top"  
                                                   HorizontalAlignment="Left" 
                                                   ItemsSource="{Binding SGList}" 
-                                                  ItemTemplate="{StaticResource DataViewSmallFont}">
+                                                  ItemTemplate="{StaticResource DataViewModel}">
                                                 </ItemsControl>
                                             </Grid>
                                         </Border>
@@ -644,7 +644,7 @@
                                     <ColumnDefinition Width="0.4*"></ColumnDefinition>
                                 </Grid.ColumnDefinitions>
                                 <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
-                                        <ItemsControl HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" VerticalAlignment="Top"  ItemsSource="{Binding MotionStatusList}" ItemTemplate="{StaticResource DataViewSmallFontInd}"/>
+                                        <ItemsControl HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" VerticalAlignment="Top"  ItemsSource="{Binding MotionStatusList}" ItemTemplate="{StaticResource DataViewModel}"/>
                                 </ScrollViewer>
                                 <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
                                     <Grid Grid.Column="1">
@@ -677,7 +677,7 @@
                                                     <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
                                                 <TextBlock Grid.Row="0" Text="  Position Counters" Foreground="White" Background="Gray" HorizontalAlignment="Stretch" FontSize="12"/>
-                                                <ItemsControl Grid.Row="1" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" ItemsSource="{Binding PositionCountersList}" ItemTemplate="{StaticResource DataViewSmallFontInd}"/>
+                                                <ItemsControl Grid.Row="1" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" ItemsSource="{Binding PositionCountersList}" ItemTemplate="{StaticResource DataViewModel}"/>
                                             </Grid>
                                         </Border>
                                         <!--<Border Grid.Row="0" Width="229" Height="Auto" BorderBrush="Gray" BorderThickness="1" CornerRadius="4">

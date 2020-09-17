@@ -54,39 +54,53 @@ namespace MotorController.ViewModels
 
         }
 
-        private bool _external_interpolation = false;
+        //private bool _external_interpolation = false;
 
-        public bool External_interpolation
+        //public bool External_interpolation
+        //{
+        //    get
+        //    {
+        //        return _external_interpolation;
+        //    }
+        //    set
+        //    {
+        //        if(!LeftPanelViewModel._app_running)
+        //            return;
+        //        // get call stack
+        //        StackTrace stackTrace = new StackTrace();
+        //        if(stackTrace.GetFrame(1).GetMethod().Name == "UpdateModel")
+        //        {
+        //            _external_interpolation = value;
+        //            OnPropertyChanged();
+        //        }
+        //        else if(stackTrace.GetFrame(1).GetMethod().Name != "UpdateModel")
+        //        {
+        //            Rs232Interface.GetInstance.SendToParser(new PacketFields
+        //            {
+        //                Data2Send = value ? 1 : 0,
+        //                ID = Convert.ToInt16(78),
+        //                SubID = Convert.ToInt16(1),
+        //                IsSet = true,
+        //                IsFloat = false
+        //            });
+        //        }
+        //    }
+        //}
+
+        private ObservableCollection<object> _externalInterpolation;
+        public ObservableCollection<object> ExternalInterpolation
         {
+
             get
             {
-                return _external_interpolation;
+                return Commands.GetInstance.ToggleSwitchList["Feedback Sync"];
             }
             set
             {
-                if(!LeftPanelViewModel._app_running)
-                    return;
-                // get call stack
-                StackTrace stackTrace = new StackTrace();
-                if(stackTrace.GetFrame(1).GetMethod().Name == "UpdateModel")
-                {
-                    _external_interpolation = value;
-                    OnPropertyChanged();
-                }
-                else if(stackTrace.GetFrame(1).GetMethod().Name != "UpdateModel")
-                {
-                    Rs232Interface.GetInstance.SendToParser(new PacketFields
-                    {
-                        Data2Send = value ? 1 : 0,
-                        ID = Convert.ToInt16(78),
-                        SubID = Convert.ToInt16(1),
-                        IsSet = true,
-                        IsFloat = false
-                    });
-                }
+                _externalInterpolation = value;
+                OnPropertyChanged();
             }
         }
-        
         private ObservableCollection<object> _feedbackSyncList;
         public ObservableCollection<object> FeedbackSyncList
         {

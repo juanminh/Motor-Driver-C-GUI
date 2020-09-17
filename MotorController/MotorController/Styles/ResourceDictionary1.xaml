@@ -2424,7 +2424,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}"/>
         <Setter Property="BorderThickness" Value="1,1,1,1"/>
     </Style>
-    <Style TargetType="{x:Type Slider}">
+    <!--<Style TargetType="{x:Type Slider}">
         <Setter Property="Background" Value="{DynamicResource NormalBrush}" />
         <Setter Property="BorderBrush" Value="{DynamicResource NormalBorderBrush}" />
         <Setter Property="Template">
@@ -2478,7 +2478,7 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>
+    </Style>-->
     <Style TargetType="{x:Type TreeView}">
         <Setter Property="Template">
             <Setter.Value>

@@ -153,15 +153,15 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Feed Backs" TabIndex="2" Background="Black" Foreground="White" DataContext="{Binding FeedBackViewModel}" >
+            <TabItem Header="Feed Backs" TabIndex="2" Background="Black" Foreground="White" DataContext="{Binding FeedBackViewModel}" Height="22" VerticalAlignment="Top" >
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="210"/>
-                        <ColumnDefinition Width="10"/>
-                        <ColumnDefinition Width="210"/>
-                        <ColumnDefinition Width="10"/>
-                        <ColumnDefinition Width="210"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="0.3*"/>
+                        <ColumnDefinition Width="0.03*"/>
+                        <ColumnDefinition Width="0.3*"/>
+                        <ColumnDefinition Width="0.03*"/>
+                        <ColumnDefinition Width="0.3*"/>
+                        <ColumnDefinition Width="0.03*"/>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
                         <Grid.RowDefinitions>
@@ -184,14 +184,17 @@
                                     <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="Auto"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <Border Grid.Row="0" BorderThickness="1" BorderBrush="White" CornerRadius="4">
+                                <!--<Border Grid.Row="0" BorderThickness="1" BorderBrush="White" CornerRadius="4">
                                     <Grid>
                                         <TextBlock Text="External interpolation" VerticalAlignment="Center"/>
                                         <wpfSpark:ToggleSwitch Width="80" Height="22" HorizontalAlignment="Right" VerticalAlignment="Center"
                                                     FontSize="9" UncheckedText="Off" CheckedText="On"
                                                     IsChecked="{Binding External_interpolation, Mode=TwoWay}"/>
                                     </Grid>
-                                </Border>
+                                </Border>-->
+                                <ItemsControl Grid.Row="0"
+                                  ItemsSource="{Binding ExternalInterpolation, Mode=TwoWay}"
+                                  ItemTemplate="{StaticResource ToggleSwitchViewModel}"></ItemsControl>
                                 <ItemsControl Grid.Row="1" ItemsSource="{Binding FeedbackSyncList}" ItemTemplate="{StaticResource DataViewModel}" />
                             </Grid>
                         </GroupBox>
@@ -288,8 +291,12 @@
             <TabItem Header="PID" TabIndex="3" Background="Black" Foreground="White" DataContext="{Binding PIDViewModel}">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="250"/>
-                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition Width="0.3*"/>
+                        <ColumnDefinition Width="0.03*"/>
+                        <ColumnDefinition Width="0.3*"/>
+                        <ColumnDefinition Width="0.03*"/>
+                        <ColumnDefinition Width="0.3*"/>
+                        <ColumnDefinition Width="0.03*"/>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
                         <Grid.RowDefinitions>
@@ -297,49 +304,40 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <GroupBox Grid.Row="0" Header="Speed">
-                            <StackPanel Background="Transparent" Orientation="Vertical">
-                                <ItemsControl ItemsSource="{Binding PidSpeedList}" ItemTemplate="{StaticResource DataViewModel}" Margin="0,4,0,0"/>
-                                <Border BorderThickness="1" BorderBrush="White" CornerRadius="4">
-                                    <Grid>
-                                        <TextBlock Text="              Close Loop"/>
-                                        <wpfSpark:ToggleSwitch Width="80" Height="22" HorizontalAlignment="Right" VerticalAlignment="Center"
-                                                    FontSize="9" UncheckedText="Off" CheckedText="On"
-                                                    IsChecked="{Binding PID_speed_loop, Mode=TwoWay}"/>
-                                    </Grid>
-                                </Border>
-                            </StackPanel>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <ItemsControl Grid.Row="0" ItemsSource="{Binding PidSpeedList}" ItemTemplate="{StaticResource DataViewModel}"/>
+                                <ItemsControl Grid.Row="1" ItemsSource="{Binding PID_speed_loop, Mode=TwoWay}" ItemTemplate="{StaticResource ToggleSwitchViewModel}"/>
+                            </Grid>
                         </GroupBox>
                         <GroupBox  Grid.Row="1" Header="Current" Margin="0,10,0,0">
-                            <StackPanel  Background="Transparent" Orientation="Vertical" >
-                                <ItemsControl ItemsSource="{Binding PidCurrentList, UpdateSourceTrigger=PropertyChanged}" ItemTemplate="{StaticResource DataViewModel}" Margin="0,4,0,0"/>
-                                <Border BorderThickness="1" BorderBrush="White" CornerRadius="4">
-                                    <Grid>
-                                        <TextBlock Text="              Close Loop"/>
-                                        <wpfSpark:ToggleSwitch Width="80" Height="22" HorizontalAlignment="Right" VerticalAlignment="Center"
-                                                    FontSize="9" UncheckedText="Off" CheckedText="On"
-                                                    IsChecked="{Binding PID_current_loop, Mode=TwoWay}"/>
-                                    </Grid>
-                                </Border>
-                            </StackPanel>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <ItemsControl Grid.Row="0" ItemsSource="{Binding PidCurrentList}" ItemTemplate="{StaticResource DataViewModel}"/>
+                                <ItemsControl Grid.Row="1" ItemsSource="{Binding PID_current_loop, Mode=TwoWay}" ItemTemplate="{StaticResource ToggleSwitchViewModel}"/>
+                            </Grid>
                         </GroupBox>
                     </Grid>
-                    <Grid Grid.Column="1">
+                    <Grid Grid.Column="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <GroupBox Grid.Row="0"    Header="Possition"  Background="Transparent" Margin="30,0,0,0">
-                            <StackPanel  Background="Transparent" Orientation="Vertical" >
-                                <ItemsControl   ItemsSource="{Binding PidPositionList}" ItemTemplate="{StaticResource DataViewModel}" Margin="0,4,0,0"/>
-                                <Border BorderThickness="1" BorderBrush="White" CornerRadius="4">
-                                    <Grid>
-                                        <TextBlock Text="           Close Loop"/>
-                                        <wpfSpark:ToggleSwitch Width="70" Height="22" HorizontalAlignment="Right" VerticalAlignment="Center"
-                                                    FontSize="9" UncheckedText="Off" CheckedText="On"
-                                                    IsChecked="{Binding PID_position_loop, Mode=TwoWay}"/>
-                                    </Grid>
-                                </Border>
-                            </StackPanel>
+                        <GroupBox Grid.Row="0"    Header="Position"  Background="Transparent">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <ItemsControl Grid.Row="0" ItemsSource="{Binding PidPositionList}" ItemTemplate="{StaticResource DataViewModel}"/>
+                                <ItemsControl Grid.Row="1" ItemsSource="{Binding PID_position_loop, Mode=TwoWay}" ItemTemplate="{StaticResource ToggleSwitchViewModel}"/>
+                            </Grid>
                         </GroupBox>
                     </Grid>
                 </Grid>
@@ -356,18 +354,14 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <GroupBox  Grid.Row="0" Header="Current Reference IIR Filter">
-                            <StackPanel  Background="Transparent" Orientation="Vertical" >
-                                <Border BorderThickness="1" BorderBrush="White" CornerRadius="4" Margin="0,4,0,0">
-                                    <Grid>
-                                        <TextBlock Text="              Enable"/>
-                                        <wpfSpark:ToggleSwitch Width="80" Height="22" HorizontalAlignment="Right" VerticalAlignment="Center"
-                                                    FontSize="9" UncheckedText="Off" CheckedText="On"
-                                                    IsChecked="{Binding Filter_Enable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                                    </Grid>
-                                </Border>
-                                <ItemsControl ItemsSource="{Binding FilterList, UpdateSourceTrigger=PropertyChanged}" 
-                                              ItemTemplate="{StaticResource DataViewModel}" />
-                            </StackPanel>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <ItemsControl Grid.Row="0" ItemsSource="{Binding FilterList}" ItemTemplate="{StaticResource DataViewModel}"/>
+                                <ItemsControl Grid.Row="1" ItemsSource="{Binding Filter_Enable, Mode=TwoWay}" ItemTemplate="{StaticResource ToggleSwitchViewModel}"/>
+                            </Grid>
                         </GroupBox>
                     </Grid>
                 </Grid>
@@ -924,7 +918,7 @@
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto"/>
                                             </Grid.RowDefinitions>
-                                            <ItemsControl Grid.Row="0" ItemsSource="{Binding InternalParamList}" ItemTemplate="{StaticResource DataViewSmallFontInd}"/>
+                                            <ItemsControl Grid.Row="0" ItemsSource="{Binding InternalParamList}" ItemTemplate="{StaticResource DataViewModel}"/>
                                         </Grid>
                                         <Grid Grid.Column="1">
                                             <Grid.RowDefinitions>

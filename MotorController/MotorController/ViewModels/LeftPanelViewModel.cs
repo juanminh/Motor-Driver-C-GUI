@@ -185,6 +185,7 @@ namespace MotorController.ViewModels
                     IsFloat = false
                 });
                 Thread.Sleep(50);
+                Debug.WriteLine("param i: " + i);
             }
             
             #endregion  Operations
@@ -399,25 +400,25 @@ namespace MotorController.ViewModels
                 {
                     _motorOnToggleChecked = value;
                     //Sent
-                    if(!MotorOnOff_flag)
-                    {
-                        Rs232Interface.GetInstance.SendToParser(new PacketFields
-                        {
-                            Data2Send = _motorOnToggleChecked ? 1 : 0,
-                            ID = Convert.ToInt16(1),
-                            SubID = Convert.ToInt16(0),
-                            IsSet = true,
-                            IsFloat = false
-                        });
-                        Rs232Interface.GetInstance.SendToParser(new PacketFields
-                        {
-                            Data2Send = "",
-                            ID = Convert.ToInt16(1),
-                            SubID = Convert.ToInt16(0),
-                            IsSet = false,
-                            IsFloat = false
-                        });
-                    }
+                    //if(!MotorOnOff_flag)
+                    //{
+                    //    Rs232Interface.GetInstance.SendToParser(new PacketFields
+                    //    {
+                    //        Data2Send = _motorOnToggleChecked ? 1 : 0,
+                    //        ID = Convert.ToInt16(1),
+                    //        SubID = Convert.ToInt16(0),
+                    //        IsSet = true,
+                    //        IsFloat = false
+                    //    });
+                    //    Rs232Interface.GetInstance.SendToParser(new PacketFields
+                    //    {
+                    //        Data2Send = "",
+                    //        ID = Convert.ToInt16(1),
+                    //        SubID = Convert.ToInt16(0),
+                    //        IsSet = false,
+                    //        IsFloat = false
+                    //    });
+                    //}
                     MotorOnOff_flag = false;
                     OnPropertyChanged("MotorONToggleChecked");
                 }
@@ -459,8 +460,6 @@ namespace MotorController.ViewModels
                 _motorControlTogglewitch = value;
                 OnPropertyChanged();
             }
-
-
         }
         private ObservableCollection<object> _driverStatusList;
         public ObservableCollection<object> DriverStatusList

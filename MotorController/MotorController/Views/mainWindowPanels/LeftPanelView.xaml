@@ -16,8 +16,8 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              DataContext="{Binding LeftPanelViewModel}"
              d:DesignHeight="800"
-             d:DesignWidth="1380"
-             mc:Ignorable="d" Height="700" MaxWidth="180" Focusable="True"
+             d:DesignWidth="170"
+             mc:Ignorable="d" Height="800" Focusable="True"
              >
     <UserControl.Resources>
 
@@ -745,41 +745,61 @@
                 </Borders:OuterGlowBorder>
             </Grid>
         </ControlTemplate>
-
     </UserControl.Resources>
 
-    <Grid MaxWidth="170">
-
+    <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="161" MaxWidth="161"/>
-            <ColumnDefinition Width="9"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Grid.Column="0">
-            <Grid>
+            <Grid HorizontalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"></RowDefinition>
+                    <!--0-->
                     <RowDefinition Height="auto"></RowDefinition>
+                    <!--1-->
                     <RowDefinition Height="auto"></RowDefinition>
+                    <!--2-->
                     <RowDefinition Height="auto"></RowDefinition>
+                    <!--3-->
                     <RowDefinition Height="auto"></RowDefinition>
+                    <!--4-->
                     <RowDefinition Height="auto"></RowDefinition>
+                    <!--5-->
                     <RowDefinition Height="auto"></RowDefinition>
+                    <!--6-->
                     <RowDefinition Height="auto"></RowDefinition>
+                    <!--7-->
                     <RowDefinition Height="auto"></RowDefinition>
+                    <!--8-->
                     <RowDefinition Height="auto"></RowDefinition>
+                    <!--9-->
                     <RowDefinition Height="auto"></RowDefinition>
+                    <!--10-->
                     <RowDefinition Height="auto"></RowDefinition>
+                    <!--11-->
                     <RowDefinition Height="auto"></RowDefinition>
+                    <!--12-->
                     <RowDefinition Height="auto"></RowDefinition>
+                    <!--13-->
                     <RowDefinition Height="auto"></RowDefinition>
+                    <!--14-->
                     <RowDefinition Height="auto"></RowDefinition>
+                    <!--15-->
                     <RowDefinition Height="auto"></RowDefinition>
+                    <!--16-->
                     <RowDefinition Height="auto"></RowDefinition>
+                    <!--17-->
                     <RowDefinition Height="auto"></RowDefinition>
+                    <!--18-->
                     <RowDefinition Height="auto"></RowDefinition>
+                    <!--19-->
                     <RowDefinition Height="auto"></RowDefinition>
+                    <!--20-->
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0"><!--(&#x3B2;)-->
+                <Grid Grid.Row="0">
+                    <!--(&#x3B2;)-->
                     <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="MOTOR" VerticalAlignment="Bottom" Width="70" FontWeight="Bold" FontSize="15" Foreground="White"/>
                 </Grid>
                 <Grid Grid.Row="1">
@@ -792,16 +812,18 @@
                 </Grid>
                 <Grid Grid.Row="4">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="32"></ColumnDefinition>
-                        <ColumnDefinition Width="128"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <TextBox Grid.Column="0" Text="PORT" FontSize="11"
+                    <TextBox Grid.Column="0" Text="PORT" FontSize="12"
                          HorizontalContentAlignment="Left" 
                          VerticalContentAlignment="Center"
                          TextWrapping="NoWrap"
+                         SelectionBrush="Transparent"
                          IsReadOnly="True"
-                         BorderBrush="Transparent"
-                         SelectionLength="0"></TextBox>
+                         BorderThickness="0"
+                         SelectionLength="0"
+                             IsManipulationEnabled="False"></TextBox>
                     <ComboBox Grid.Column="1"
                     x:Name="ComboboxCOM"
                     SelectedIndex="1"
@@ -809,8 +831,6 @@
                     DataContext="{Binding ComboBoxCOM}"
             	    ItemsSource="{Binding ComList}"
             	    SelectedValue="{Binding ComString, Mode=TwoWay}"
-                    Height="24" 
-                    Width="Auto"
                     HorizontalContentAlignment="Center"
                     FontSize="12"
                     IsEnabled="{Binding ComPortComboboxEn}">
@@ -821,7 +841,7 @@
                         </i:Interaction.Triggers>
                     </ComboBox>
                 </Grid>
-                <Grid Grid.Row="5" Width="161" HorizontalAlignment="Left">
+                <Grid Grid.Row="5" Margin="0,2,0,0">
                     <!--Connect motorController-->
                     <Button
                 Content="{Binding ConnectButtonContent, Mode=TwoWay}"
@@ -832,7 +852,7 @@
                 Height="30" 
 				FontFamily="Bell MT" 
 				FontSize="12" Width="70" 
-                HorizontalAlignment="Left" Margin="0,2,0,0" VerticalAlignment="Top"
+                HorizontalAlignment="Left"  VerticalAlignment="Top"
                         IsEnabled="{Binding ConnectButtonEnable}">
                         <Button.Style>
                             <Style TargetType="Button">
@@ -849,33 +869,26 @@
                     </Button>
                     <Helpers:RoundBoolLed Width="10" Height="10" CurrStatus="{Binding LedStatusTx}" VerticalAlignment="Top" Margin="70,2,81,0"/>
                     <TextBlock HorizontalAlignment="Center" Text="Tx" VerticalAlignment="Top" FontSize="10" Margin="80,0,72,0" Foreground="White"></TextBlock>
-                    <Border BorderBrush="Transparent" 
-                        BorderThickness="1" 
-                        CornerRadius="3" 
-                        Width="90" Height="20" 
-                        VerticalAlignment="Center" 
-                        HorizontalAlignment="Right">
-                        <TextBox 
+                    <TextBox 
                         Text="{Binding ConnectTextBoxContent, Mode=TwoWay}"  
                         Background="Transparent" 
-                        BorderBrush="Transparent" 
-                        Width="89" Height="19"
+                        BorderThickness="0"
+                        Height="20"
                         Foreground="White" 
-                        HorizontalContentAlignment="Center" 
-                        VerticalContentAlignment="Center"
+                        Margin="90,0,0,0"
+                        HorizontalAlignment="Center"
                         TextWrapping="NoWrap"
                         IsHitTestVisible="False"
                         IsReadOnly="True"
-                            FontSize="11">
-                        </TextBox>
-                    </Border>
+                        FontSize="11">
+                    </TextBox>
                     <Helpers:RoundBoolLed Width="10" Height="10" CurrStatus="{Binding LedStatusRx}" VerticalAlignment="Bottom" Margin="70,0,81,2"/>
                     <TextBlock HorizontalAlignment="Center" Text="Rx" VerticalAlignment="Bottom" FontSize="10" Margin="80,0,70,1" Foreground="White"></TextBlock>
                 </Grid>
                 <Grid Grid.Row="6">
                     <ItemsControl Height="auto"
                               ItemsSource="{Binding LPCommandsList}" 
-                              ItemTemplate="{StaticResource DataViewSmallFontInd}"/>
+                              ItemTemplate="{StaticResource DataViewModel}"/>
                 </Grid>
                 <Grid Grid.Row="7" Height="10">
                 </Grid>
@@ -885,9 +898,9 @@
                 <Grid Grid.Row="9">
                     <TextBlock Height="17" Text="Log" HorizontalAlignment="Center" Foreground="White" FontSize="12"></TextBlock>
                 </Grid>
-                <Grid Grid.Row="10" Width="161" HorizontalAlignment="Left" MaxHeight="190" MinHeight="190">
+                <Grid Grid.Row="10" HorizontalAlignment="Stretch" Height="190" MaxWidth="170">
                     <!-- Log -->
-                    <TextBox Width="auto" IsReadOnly="True" Foreground="White" BorderBrush="White" TextWrapping="Wrap"  Text="{Binding LogText}"
+                    <TextBox IsReadOnly="True" Foreground="White" BorderBrush="White" TextWrapping="Wrap"  Text="{Binding LogText}"
                  ScrollViewer.VerticalScrollBarVisibility="Auto"
                  ScrollViewer.CanContentScroll="True" FontSize="11"/>
                 </Grid>
@@ -937,6 +950,16 @@
                             <Image Source="pack://application:,,,/Images/alt-parameters-icone-9469-64.png"/>
                         </Button>
                     </Border>
+                    <!-- Bode Command ="{Binding Showwindow}"--><!--
+                    <Border Grid.Column="4" CornerRadius="2" BorderBrush="Gray" BorderThickness="1" Width="50">
+                        <Button 
+                            Background="Transparent" 
+                            Foreground="Transparent"
+                            BorderThickness="0"
+                            Padding="0">
+                            <Image Source="pack://application:,,,/Images/bode.png" Height="49"/>
+                        </Button>
+                    </Border>-->
                     <!-- Monitor -->
                     <!--<Border Grid.Column="5" CornerRadius="15" BorderBrush="Gray" BorderThickness="1" Width="50">
                         <Button Grid.Column="5" Command ="{Binding Showwindow}"
@@ -949,7 +972,7 @@
                     </Border>-->
                 </Grid>
                 <Grid Grid.Row="14" Height="10">
-                    <TextBlock Text="     Wizard           Parameters" Foreground="White" FontSize="8" FontWeight="Bold"/>
+                    <TextBlock Text="     Wizard           Parameters              " Foreground="White" FontSize="8" FontWeight="Bold"/>
                 </Grid>
                 <Grid Grid.Row="15">
                     <Separator Width="65"></Separator>
@@ -959,10 +982,10 @@
                 <Grid Grid.Row="17">
                     <TextBlock Foreground="White" HorizontalAlignment="Center" FontWeight="Bold" FontSize="13">Driver Status</TextBlock>
                 </Grid>
-                <Grid Grid.Row="18" HorizontalAlignment="Center">
+                <Grid Grid.Row="18" HorizontalAlignment="Stretch">
                     <!--<ItemsControl ItemsSource="{Binding DriverStatusList}" ItemTemplate="{StaticResource DataViewSmallFontInd}" FontSize="20"/>-->
                     <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="0.5">
-                        <TextBlock Name="DrvSt" Width="159" HorizontalAlignment="Center" Margin="0,0,0,0" Text="{Binding DriverStat}" FontSize="13" FontWeight="Bold">
+                        <TextBlock Name="DrvSt" HorizontalAlignment="Stretch" Text="{Binding DriverStat}" FontSize="12" FontWeight="Bold">
                             <TextBlock.Style>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="Foreground" Value="Red" />
@@ -983,30 +1006,31 @@
                 </Grid>
                 <Grid Grid.Row="19" Height="5">
                 </Grid>
-                <Grid Grid.Row="20">
+                <Grid Grid.Row="20" Height="30">
                     <Grid.ColumnDefinitions>
+                        <!--<ColumnDefinition Width="0.2*"></ColumnDefinition>
+                        <ColumnDefinition Width="1"></ColumnDefinition>
+                        <ColumnDefinition Width="0.4*"></ColumnDefinition>
+                        <ColumnDefinition Width="1"></ColumnDefinition>
+                        <ColumnDefinition Width="0.4*"></ColumnDefinition>-->
+                        <ColumnDefinition Width="0.8*"></ColumnDefinition>
                         <ColumnDefinition Width="0.2*"></ColumnDefinition>
-                        <ColumnDefinition Width="1"></ColumnDefinition>
-                        <ColumnDefinition Width="0.4*"></ColumnDefinition>
-                        <ColumnDefinition Width="1"></ColumnDefinition>
-                        <ColumnDefinition Width="0.4*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" TextDecorations="Underline" FontWeight="Bold" FontSize="13" 
+                    <!--<TextBlock Grid.Column="0" TextDecorations="Underline" FontWeight="Bold" FontSize="13" 
                                VerticalAlignment="Center" Foreground="White" Margin="0,0,0,3">Motor</TextBlock>
-                    <wpfSpark:ToggleSwitch Grid.Column="2" Width="100" Height="25"  VerticalAlignment="Center" IsChecked="{Binding MotorOnToggleChecked, Mode=TwoWay}" />
+                    <wpfSpark:ToggleSwitch Grid.Column="2" Width="100" Height="25"  VerticalAlignment="Center" IsChecked="{Binding MotorOnToggleChecked, Mode=TwoWay}" />-->
                     <!--<Views:UC_ToggleSwitch Grid.Column="0" />-->
-                    <!--<ItemsControl Grid.Column="0" 
+                    <ItemsControl Grid.Column="0"
                                   ItemsSource="{Binding MotorControlTogglewitch, Mode=TwoWay}"
-                                  ItemTemplate="{StaticResource ToggleSwitchViewModel}"></ItemsControl>-->
-                    <Helpers:RoundBoolLed Grid.Column="4" CurrStatus="{Binding LedMotorStatus}"/>
+                                  ItemTemplate="{StaticResource ToggleSwitchViewModel}"></ItemsControl>
+                    <Helpers:RoundBoolLed Grid.Column="1" CurrStatus="{Binding LedMotorStatus}" Width="25" Height="25"/>
                 </Grid>
             </Grid>
         </ScrollViewer>
 
         <common:CollapsableGridSplitter Grid.Column="1"              
 			Width="9"
-			Margin="3,0,0,0"
-			HorizontalAlignment="Left"
+			HorizontalAlignment="Right"
 			VerticalAlignment="Stretch"
 			CollapseMode="Previous"
 			IsCollapsed="False"

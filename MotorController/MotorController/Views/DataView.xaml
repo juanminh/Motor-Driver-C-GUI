@@ -35,6 +35,7 @@
                 <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+
     </UserControl.Resources>
     <UserControl.RenderTransform>
         <TransformGroup>
@@ -62,8 +63,8 @@
     </UserControl.Triggers>
     <Grid >
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="13*"/>
-            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="0.6*"/>
+            <ColumnDefinition Width="0.3*"/>
         </Grid.ColumnDefinitions>
         <Border BorderBrush="White" BorderThickness="1" CornerRadius="4,0,0,4" Grid.Column="0">
             <Border BorderThickness="1" CornerRadius="4,0,0,4" Background="#7F000000">
@@ -85,7 +86,7 @@
                         </Border.Background>
                     </Border>
                     <Label Content="{Binding CommandName}" 
-                           Foreground="#FFF9F6F6" FontSize="13.333" 
+                           Foreground="#FFF9F6F6" FontSize="11" 
                            HorizontalContentAlignment="Center" 
                            VerticalContentAlignment="Stretch"
                            HorizontalAlignment="Center"
@@ -100,11 +101,27 @@
                              BorderBrush="{x:Null}" MaxLines="1"
                              HorizontalContentAlignment="Center"
                              VerticalContentAlignment="Center"
-                             Foreground="#FF111111"
-                             FontSize="10.667" 
-                             Text="{Binding CommandValue,UpdateSourceTrigger=PropertyChanged}" 
-                             Background="{Binding BackgroundStd}"
-                             MouseDoubleClick="SetValTB_MouseDoubleClick">
+                             FontSize="11" 
+                             Text="{Binding CommandValue, UpdateSourceTrigger=PropertyChanged}" 
+                             Background="{Binding Background}"
+                             IsReadOnly="{Binding ReadOnly}" >                             <!--Foreground="{Binding Foreground}"-->
+
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Setter Property="Foreground" Value="White" />
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding GetCount_bool}" Value="True" />
+                                    </MultiDataTrigger.Conditions>
+                                    <MultiDataTrigger.Setters>
+                                        <Setter Property="Foreground" Value="Yellow" />
+                                    </MultiDataTrigger.Setters>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                    <!--Background="{Binding BackgroundStd}"-->
                     <i:Interaction.Behaviors>
                         <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="20"/>
                     </i:Interaction.Behaviors>
@@ -114,6 +131,9 @@
                         </i:EventTrigger>
                         <i:EventTrigger EventName="GotFocus" >
                             <i:InvokeCommandAction Command="{Binding MouseLeftClickCommand}" />
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="LostFocus" >
+                            <i:InvokeCommandAction Command="{Binding ResetValue}" />
                         </i:EventTrigger>
                     </i:Interaction.Triggers>
                     <TextBox.InputBindings>

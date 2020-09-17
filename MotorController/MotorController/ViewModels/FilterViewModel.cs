@@ -54,37 +54,52 @@ namespace MotorController.ViewModels
             }
 
         }
-        private bool _Filter_Enable = false;
+        //private bool _Filter_Enable = false;
 
-        public bool Filter_Enable
+        //public bool Filter_Enable
+        //{
+        //    get
+        //    {
+        //        return _Filter_Enable;
+        //    }
+        //    set
+        //    {
+        //        if(!LeftPanelViewModel._app_running)
+        //            return;
+        //        //_Filter_Enable = value;
+        //        // get call stack
+        //        StackTrace stackTrace = new StackTrace();
+        //        if(stackTrace.GetFrame(1).GetMethod().Name == "UpdateModel")
+        //        {
+        //            _Filter_Enable = value;
+        //            OnPropertyChanged("Filter_Enable");
+        //        }
+        //        else if(stackTrace.GetFrame(1).GetMethod().Name != "UpdateModel")
+        //        {
+        //            Rs232Interface.GetInstance.SendToParser(new PacketFields
+        //            {
+        //                Data2Send = value ? 1 : 0,
+        //                ID = Convert.ToInt16(101),
+        //                SubID = Convert.ToInt16(0),
+        //                IsSet = true,
+        //                IsFloat = false
+        //            });
+        //        }
+        //    }
+        //}
+        
+        private ObservableCollection<object> _Filter_Enable;
+        public ObservableCollection<object> Filter_Enable
         {
+
             get
             {
-                return _Filter_Enable;
+                return Commands.GetInstance.ToggleSwitchList["Filter_Enable"];
             }
             set
             {
-                if(!LeftPanelViewModel._app_running)
-                    return;
-                //_Filter_Enable = value;
-                // get call stack
-                StackTrace stackTrace = new StackTrace();
-                if(stackTrace.GetFrame(1).GetMethod().Name == "UpdateModel")
-                {
-                    _Filter_Enable = value;
-                    OnPropertyChanged("Filter_Enable");
-                }
-                else if(stackTrace.GetFrame(1).GetMethod().Name != "UpdateModel")
-                {
-                    Rs232Interface.GetInstance.SendToParser(new PacketFields
-                    {
-                        Data2Send = value ? 1 : 0,
-                        ID = Convert.ToInt16(101),
-                        SubID = Convert.ToInt16(0),
-                        IsSet = true,
-                        IsFloat = false
-                    });
-                }
+                _Filter_Enable = value;
+                OnPropertyChanged();
             }
         }
         #endregion Filter

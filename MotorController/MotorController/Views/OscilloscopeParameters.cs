@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading;
 using System.Windows.Media.Animation;
+using System.Diagnostics;
+
 
 namespace MotorController.Views
 {
@@ -169,17 +171,30 @@ namespace MotorController.Views
             OscilloscopeViewModel.GetInstance.Channel1SourceItems.Add("Pause");
             OscilloscopeViewModel.GetInstance.ChannelYtitles.Add("Pause", "");
             plotType_ls.Add(plotType[0]); //Pause
-            foreach(var element in plotGeneral)
+            try
             {
-                if(element > 0)
+                foreach(var element in plotGeneral)
                 {
-                    ScaleAndGainList.Add(new Tuple<float, float>(1, plotFullScale[i]));
-                    OscilloscopeViewModel.GetInstance._channel1SourceItems.Add(plotName_ls[element & 0xFFFF]);
-                    //if(!OscilloscopeViewModel.GetInstance.ChannelYtitles.ContainsKey(new Tuple<string, string>((plotName_ls[element & 0xFFFF]), (plotUnit[(element >> 24) & 0xFF])))
-                    OscilloscopeViewModel.GetInstance.ChannelYtitles.Add(plotName_ls[element & 0xFFFF], plotUnit[(element >> 24) & 0xFF]);
-                    plotType_ls.Add(plotType[(element >> 16) & 0xFF]);
+                    if(element > 0)
+                    {
+                        ScaleAndGainList.Add(new Tuple<float, float>(1, plotFullScale[i]));
+                        Debug.WriteLine("Plot i: " + i);
+
+                        OscilloscopeViewModel.GetInstance._channel1SourceItems.Add(plotName_ls[element & 0xFFFF]);
+                        Debug.WriteLine("element & 0xFFFF: " + (element & 0xFFFF));
+
+                        //if(!OscilloscopeViewModel.GetInstance.ChannelYtitles.ContainsKey(new Tuple<string, string>((plotName_ls[element & 0xFFFF]), (plotUnit[(element >> 24) & 0xFF])))
+                        OscilloscopeViewModel.GetInstance.ChannelYtitles.Add(plotName_ls[element & 0xFFFF], plotUnit[(element >> 24) & 0xFF]);
+                        Debug.WriteLine("(element >> 24) & 0xFF: " + ((element >> 24) & 0xFF));
+
+                        plotType_ls.Add(plotType[(element >> 16) & 0xFF]);
+                        Debug.WriteLine("(element >> 16) & 0xFF: " + ((element >> 16) & 0xFF));
+
+                    }
+                    i++;
                 }
-                i++;
+            }
+            catch {
             }
         }
         public static void InitList()

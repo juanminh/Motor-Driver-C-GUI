@@ -44,7 +44,7 @@ namespace MotorController.ViewModels
         public string CommandId { get { return _baseModel.CommandID; } set { _baseModel.CommandID = value; } }
         public string CommandSubId { get { return _baseModel.CommandSubID; } set { _baseModel.CommandSubID = value; } }
         public bool IsFloat { get { return _baseModel.IsFloat; } set { _baseModel.IsFloat = value; } }
-        public bool IsSelected { get { return _baseModel.IsSelected; } set { _baseModel.IsSelected = value; OnPropertyChanged(); } }
+        //public bool IsSelected { get { return _baseModel.IsSelected; } set { _baseModel.IsSelected = value; OnPropertyChanged(); } }
         public ActionCommand ButtonCal { get { return new ActionCommand(ButtonCmd); } }
         
         private void ButtonCmd()

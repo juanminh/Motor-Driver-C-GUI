@@ -568,7 +568,7 @@ namespace MotorController.Models.ParserBlock
                         if(getSet == 1)
                             RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), transit.ToString(), true);
                         else if(ParametarsWindow.ParametersWindowTabSelected == (int)eTab.DEBUG)
-                            RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), newPropertyValuef.ToString(), false);
+                            RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), newPropertyValuef.ToString(), isInt);
 #if(DEBUG && DEBUG_OPERATION)
 #if DEBUG_SET
                         if(getSet == 0)
@@ -591,7 +591,7 @@ namespace MotorController.Models.ParserBlock
                             RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), newPropertyValuef.ToString(), false);
                         }
                         else if(ParametarsWindow.ParametersWindowTabSelected == (int)eTab.DEBUG)
-                            RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), newPropertyValuef.ToString(), false);
+                            RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), newPropertyValuef.ToString(), isInt);
 
 #if(DEBUG && DEBUG_OPERATION)
 #if DEBUG_SET

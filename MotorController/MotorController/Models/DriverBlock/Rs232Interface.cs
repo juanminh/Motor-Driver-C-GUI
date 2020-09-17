@@ -22,6 +22,8 @@ using System.Globalization;
 using MotorController.Common;
 using System.Windows;
 using MotorController.Helpers;
+using System.Windows.Threading;
+using System.Windows.Media;
 
 namespace MotorController.Models.DriverBlock
 {
@@ -259,7 +261,7 @@ namespace MotorController.Models.DriverBlock
                                         {
                                             RxtoParser(this, new Rs232InterfaceEventArgs(RxPacket));
                                             Debug.WriteLine("Baudrate Send: " + _comPort.BaudRate.ToString());
-                                            Thread.Sleep(10);
+                                            Thread.Sleep(50);
                                             if(_isSynced)
                                             {
                                                 break;
@@ -269,7 +271,7 @@ namespace MotorController.Models.DriverBlock
                                     //Thread.Sleep(250);// while with timeout of 1 second
                                     //Cleaner = ComPort.ReadExisting();
                                 }
-                                Thread.Sleep(250);// while with timeout of 1 second
+                                Thread.Sleep(100);// while with timeout of 1 second
                                 if(_isSynced) // Baudrate found
                                 {
                                     if(Driver2Mainmodel != null)
@@ -287,6 +289,7 @@ namespace MotorController.Models.DriverBlock
                                     _comPortStr = Configuration.SelectedCom;
                                     ComPort = new SerialPort();
                                     LeftPanelViewModel.busy = false;
+                                    Thread.Sleep(250);
                                     LeftPanelViewModel.GetInstance.StarterOperation(LeftPanelViewModel.STOP);
                                     LeftPanelViewModel.GetInstance.StarterOperation(LeftPanelViewModel.START);
                                     return;
@@ -503,7 +506,17 @@ namespace MotorController.Models.DriverBlock
         public void SendToParser(PacketFields messege)
         {
             RxtoParser?.Invoke(this, new Rs232InterfaceEventArgs(messege)); // then go to "void parseOutdata(object sender, Rs232InterfaceEventArgs e)"
-            //Debug.WriteLine("{0} {1}[{2}]={3} {4}.", messege.IsSet ? "Set" : "Get", messege.ID, messege.SubID, messege.Data2Send, messege.IsFloat ? "F" : "I");
+            if(Commands.GetInstance.DataViewCommandsList.ContainsKey(new Tuple<int, int>(Convert.ToInt16(messege.ID), Convert.ToInt16(messege.SubID)))
+                        && Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(messege.ID), Convert.ToInt16(messege.SubID))].IsSelected == false)
+            {
+                //Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(() =>
+                //{
+                //    Debug.WriteLine("black");
+                //    Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(messege.ID), Convert.ToInt16(messege.SubID))].Foreground = new SolidColorBrush(Colors.Black);
+                //}));
+            }
+            //if(messege.IsSet)
+            //  Debug.WriteLine("{0} {1}[{2}]={3} {4}.", messege.IsSet ? "Set" : "Get", messege.ID, messege.SubID, messege.Data2Send, messege.IsFloat ? "F" : "I");
         }
 
         #endregion

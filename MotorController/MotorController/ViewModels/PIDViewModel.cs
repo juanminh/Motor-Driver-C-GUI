@@ -84,103 +84,144 @@ namespace MotorController.ViewModels
             }
 
         }
-
-        private bool _PID_current_loop = false;
-
-        public bool PID_current_loop
+        private ObservableCollection<object> _PID_speed_loop;
+        public ObservableCollection<object> PID_speed_loop
         {
+
             get
             {
-                return _PID_current_loop;
+                return Commands.GetInstance.ToggleSwitchList["PID_speed_loop"];
             }
             set
             {
-                if(!LeftPanelViewModel._app_running)
-                    return;
-                // get call stack
-                StackTrace stackTrace = new StackTrace();
-                if(stackTrace.GetFrame(1).GetMethod().Name == "UpdateModel")
-                {
-                    _PID_current_loop = value;
-                    OnPropertyChanged();
-                }
-                else if(stackTrace.GetFrame(1).GetMethod().Name != "UpdateModel")
-                {
-                    Rs232Interface.GetInstance.SendToParser(new PacketFields
-                    {
-                        Data2Send = value ? 1 : 0,
-                        ID = Convert.ToInt16(81),
-                        SubID = Convert.ToInt16(10),
-                        IsSet = true,
-                        IsFloat = false
-                    });
-                }
+                _PID_speed_loop = value;
+                OnPropertyChanged();
             }
         }
-        private bool _PID_speed_loop = false;
-
-        public bool PID_speed_loop
+        private ObservableCollection<object> _PID_current_loop;
+        public ObservableCollection<object> PID_current_loop
         {
+
             get
             {
-                return _PID_speed_loop;
+                return Commands.GetInstance.ToggleSwitchList["PID_current_loop"];
             }
             set
             {
-                if(!LeftPanelViewModel._app_running)
-                    return;
-                // get call stack
-                StackTrace stackTrace = new StackTrace();
-                if(stackTrace.GetFrame(1).GetMethod().Name == "UpdateModel")
-                {
-                    _PID_speed_loop = value;
-                    OnPropertyChanged();
-                }
-                else if(stackTrace.GetFrame(1).GetMethod().Name != "UpdateModel")
-                {
-                    Rs232Interface.GetInstance.SendToParser(new PacketFields
-                    {
-                        Data2Send = value ? 1 : 0,
-                        ID = Convert.ToInt16(82),
-                        SubID = Convert.ToInt16(10),
-                        IsSet = true,
-                        IsFloat = false
-                    });
-                }
+                _PID_current_loop = value;
+                OnPropertyChanged();
             }
         }
-        private bool _PID_position_loop = false;
-
-        public bool PID_position_loop
+        private ObservableCollection<object> _PID_position_loop;
+        public ObservableCollection<object> PID_position_loop
         {
+
             get
             {
-                return _PID_position_loop;
+                return Commands.GetInstance.ToggleSwitchList["PID_position_loop"];
             }
             set
             {
-                if(!LeftPanelViewModel._app_running)
-                    return;
-                // get call stack
-                StackTrace stackTrace = new StackTrace();
-                if(stackTrace.GetFrame(1).GetMethod().Name == "UpdateModel")
-                {
-                    _PID_position_loop = value;
-                    OnPropertyChanged();
-                }
-                else if(stackTrace.GetFrame(1).GetMethod().Name != "UpdateModel")
-                {
-                    Rs232Interface.GetInstance.SendToParser(new PacketFields
-                    {
-                        Data2Send = value ? 1 : 0,
-                        ID = Convert.ToInt16(83),
-                        SubID = Convert.ToInt16(10),
-                        IsSet = true,
-                        IsFloat = false
-                    });
-                }
+                _PID_position_loop = value;
+                OnPropertyChanged();
             }
         }
+        //private bool _PID_current_loop = false;
+
+        //public bool PID_current_loop
+        //{
+        //    get
+        //    {
+        //        return _PID_current_loop;
+        //    }
+        //    set
+        //    {
+        //        if(!LeftPanelViewModel._app_running)
+        //            return;
+        //        // get call stack
+        //        StackTrace stackTrace = new StackTrace();
+        //        if(stackTrace.GetFrame(1).GetMethod().Name == "UpdateModel")
+        //        {
+        //            _PID_current_loop = value;
+        //            OnPropertyChanged();
+        //        }
+        //        else if(stackTrace.GetFrame(1).GetMethod().Name != "UpdateModel")
+        //        {
+        //            Rs232Interface.GetInstance.SendToParser(new PacketFields
+        //            {
+        //                Data2Send = value ? 1 : 0,
+        //                ID = Convert.ToInt16(81),
+        //                SubID = Convert.ToInt16(10),
+        //                IsSet = true,
+        //                IsFloat = false
+        //            });
+        //        }
+        //    }
+        //}
+        //private bool _PID_speed_loop = false;
+
+        //public bool PID_speed_loop
+        //{
+        //    get
+        //    {
+        //        return _PID_speed_loop;
+        //    }
+        //    set
+        //    {
+        //        if(!LeftPanelViewModel._app_running)
+        //            return;
+        //        // get call stack
+        //        StackTrace stackTrace = new StackTrace();
+        //        if(stackTrace.GetFrame(1).GetMethod().Name == "UpdateModel")
+        //        {
+        //            _PID_speed_loop = value;
+        //            OnPropertyChanged();
+        //        }
+        //        else if(stackTrace.GetFrame(1).GetMethod().Name != "UpdateModel")
+        //        {
+        //            Rs232Interface.GetInstance.SendToParser(new PacketFields
+        //            {
+        //                Data2Send = value ? 1 : 0,
+        //                ID = Convert.ToInt16(82),
+        //                SubID = Convert.ToInt16(10),
+        //                IsSet = true,
+        //                IsFloat = false
+        //            });
+        //        }
+        //    }
+        //}
+        //private bool _PID_position_loop = false;
+
+        //public bool PID_position_loop
+        //{
+        //    get
+        //    {
+        //        return _PID_position_loop;
+        //    }
+        //    set
+        //    {
+        //        if(!LeftPanelViewModel._app_running)
+        //            return;
+        //        // get call stack
+        //        StackTrace stackTrace = new StackTrace();
+        //        if(stackTrace.GetFrame(1).GetMethod().Name == "UpdateModel")
+        //        {
+        //            _PID_position_loop = value;
+        //            OnPropertyChanged();
+        //        }
+        //        else if(stackTrace.GetFrame(1).GetMethod().Name != "UpdateModel")
+        //        {
+        //            Rs232Interface.GetInstance.SendToParser(new PacketFields
+        //            {
+        //                Data2Send = value ? 1 : 0,
+        //                ID = Convert.ToInt16(83),
+        //                SubID = Convert.ToInt16(10),
+        //                IsSet = true,
+        //                IsFloat = false
+        //            });
+        //        }
+        //    }
+        //}
         #endregion PID
     }
 }

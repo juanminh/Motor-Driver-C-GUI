@@ -9,7 +9,6 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -17,11 +16,11 @@ using System.Windows.Shapes;
 namespace MotorController.Views
 {
     /// <summary>
-    /// Interaction logic for DataView.xaml
+    /// Interaction logic for UC_ToggleSwitch.xaml
     /// </summary>
-    public partial class DataViewInd : UserControl
+    public partial class UC_ToggleSwitch : UserControl
     {
-        public DataViewInd()
+        public UC_ToggleSwitch()
         {
             InitializeComponent();
         }

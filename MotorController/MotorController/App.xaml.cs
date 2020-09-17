@@ -192,20 +192,26 @@ namespace MotorController
             path = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + path;
             path += ".txt";
 
-            
 
-            using(StreamWriter writer = new StreamWriter(path))
+            try
             {
-                writer.WriteLine("***  Function Name ***");
-                writer.WriteLine(_functionName);
-                writer.WriteLine(_exception.Message);
-                writer.WriteLine("***  Function Name ***");
-
-                for(int i = _stackTrace.FrameCount - 1; i >= 0; i--)
+                if(!Directory.Exists(path))
                 {
-                    writer.WriteLine(_stackTrace.GetFrame(i).GetMethod().Name);
+                    using(StreamWriter writer = new StreamWriter(path))
+                    {
+                        writer.WriteLine("***  Function Name ***");
+                        writer.WriteLine(_functionName);
+                        writer.WriteLine(_exception.Message);
+                        writer.WriteLine("***  Function Name ***");
+
+                        for(int i = _stackTrace.FrameCount - 1; i >= 0; i--)
+                        {
+                            writer.WriteLine(_stackTrace.GetFrame(i).GetMethod().Name);
+                        }
+                    }
                 }
             }
+            catch { }
         }
     }
 }

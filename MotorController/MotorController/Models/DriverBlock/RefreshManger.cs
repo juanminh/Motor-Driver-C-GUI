@@ -221,7 +221,7 @@ namespace MotorController.Models.DriverBlock
                 switch(tabIndex)
                 {
                     case (int)eTab.CONTROL:
-                        arr = new string[] {"Control", "Motor", "Motion Limit", "CurrentLimit List" };
+                        arr = new string[] { "Control", "Motor", "Motion Limit", "CurrentLimit List" };
                         break;
                     case (int)eTab.FEED_BACKS:
                         arr = new string[] { "Hall", "FeedbackSync", "FeedbackSyncBackGround", "Qep1", "Qep2", "SSI_Feedback", "Qep1Bis", "Qep2Bis" };
@@ -344,6 +344,19 @@ namespace MotorController.Models.DriverBlock
                                     IsSet = false,
                                     IsFloat = BuildList.ElementAt(element).Value.IsFloat
                                 });
+                                if(Commands.GetInstance.DataViewCommandsList.ContainsKey(new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))))
+                                {
+                                    Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))].GetCount++;
+
+                                    //Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(() =>
+                                    //{
+                                        //Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))]._changeForeGround();
+                                    //    if(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))].GetCount >= 5)
+                                    //        Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))].Foreground = new SolidColorBrush(Colors.Yellow);
+                                    //    else
+                                    //        Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))].Foreground = new SolidColorBrush(Colors.White);
+                                    ////}));
+                                }
                             }
                         }
                         //Thread.Sleep(1);
@@ -759,29 +772,29 @@ namespace MotorController.Models.DriverBlock
                     }
                     #endregion DigitalInput
                     #region PID
-                    else if((commandidentifier.Item1 == 81 || commandidentifier.Item1 == 82 || commandidentifier.Item1 == 83) && commandidentifier.Item2 == 10) // PID
-                    {
-                        switch(commandidentifier.Item1)
-                        {
-                            case 81:
-                                PIDViewModel.GetInstance.PID_current_loop = newPropertyValue == "1" ? true : false;
-                                break;
-                            case 82:
-                                PIDViewModel.GetInstance.PID_speed_loop = newPropertyValue == "1" ? true : false;
-                                break;
-                            case 83:
-                                PIDViewModel.GetInstance.PID_position_loop = newPropertyValue == "1" ? true : false;
-                                break;
-                        }
-                    }
-                    else if(commandidentifier.Item1 == 78 && commandidentifier.Item2 == 1)
-                    {
-                        FeedBackViewModel.GetInstance.External_interpolation = newPropertyValue == "1" ? true : false;
-                    }
-                    else if(commandidentifier.Item1 == 101 && commandidentifier.Item2 == 0) // Filter Enable
-                    {
-                        FilterViewModel.GetInstance.Filter_Enable = newPropertyValue == "1" ? true : false;
-                    }
+                    //else if((commandidentifier.Item1 == 81 || commandidentifier.Item1 == 82 || commandidentifier.Item1 == 83) && commandidentifier.Item2 == 10) // PID
+                    //{
+                    //    switch(commandidentifier.Item1)
+                    //    {
+                    //        case 81:
+                    //            PIDViewModel.GetInstance.PID_current_loop = newPropertyValue == "1" ? true : false;
+                    //            break;
+                    //        case 82:
+                    //            PIDViewModel.GetInstance.PID_speed_loop = newPropertyValue == "1" ? true : false;
+                    //            break;
+                    //        case 83:
+                    //            PIDViewModel.GetInstance.PID_position_loop = newPropertyValue == "1" ? true : false;
+                    //            break;
+                    //    }
+                    //}
+                    //else if(commandidentifier.Item1 == 78 && commandidentifier.Item2 == 1)
+                    //{
+                    //    FeedBackViewModel.GetInstance.External_interpolation = newPropertyValue == "1" ? true : false;
+                    //}
+                    //else if(commandidentifier.Item1 == 101 && commandidentifier.Item2 == 0) // Filter Enable
+                    //{
+                    //    FilterViewModel.GetInstance.Filter_Enable = newPropertyValue == "1" ? true : false;
+                    //}
                     #endregion PID
                 }
                 #region ToggleSwitch

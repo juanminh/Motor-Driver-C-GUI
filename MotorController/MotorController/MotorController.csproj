@@ -717,6 +717,7 @@
     <Resource Include="Images\zoomMinus_3.jpg" />
     <Resource Include="Images\zoomPlus_2.png" />
     <Resource Include="Images\zoomPlus_3.png" />
+    <Resource Include="Images\bode.png" />
     <Content Include="NDP451-KB2858728-x86-x64-AllOS-ENU.exe" />
     <None Include="WizardMotorImages\Motor.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

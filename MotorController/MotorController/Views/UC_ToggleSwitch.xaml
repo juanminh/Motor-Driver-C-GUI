@@ -1,0 +1,204 @@
+﻿<UserControl x:Class="MotorController.Views.UC_ToggleSwitch"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MotorController.Views"             
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             mc:Ignorable="d" 
+             xmlns:wpfspark="clr-namespace:WPFSpark;assembly=WPFSpark"
+             d:DesignHeight="30" d:DesignWidth="250">
+    <UserControl.Resources>
+        <Storyboard x:Key="OnMouseEnter1">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Glow">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0.9"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Shine">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[0].(GradientStop.Offset)" Storyboard.TargetName="Shine">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0.9"/>
+            </DoubleAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[0].(GradientStop.Color)" Storyboard.TargetName="Shine">
+                <EasingColorKeyFrame KeyTime="0:0:0.4" Value="#33F7F5F6"/>
+            </ColorAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[1].(GradientStop.Color)" Storyboard.TargetName="Shine">
+                <EasingColorKeyFrame KeyTime="0:0:0.4" Value="#99FFFFFF"/>
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="OnMouseEnter2">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Shine">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0.9"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Glow">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </UserControl.Resources>
+    <UserControl.RenderTransform>
+        <TransformGroup>
+            <ScaleTransform/>
+            <SkewTransform/>
+            <RotateTransform Angle="360"/>
+            <TranslateTransform/>
+        </TransformGroup>
+    </UserControl.RenderTransform>
+    <UserControl.LayoutTransform>
+        <TransformGroup>
+            <ScaleTransform/>
+            <SkewTransform/>
+            <RotateTransform Angle="360"/>
+            <TranslateTransform/>
+        </TransformGroup>
+    </UserControl.LayoutTransform>
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="Mouse.MouseEnter">
+            <BeginStoryboard x:Name="OnMouseEnter1_BeginStoryboard" Storyboard="{StaticResource OnMouseEnter1}"/>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="Mouse.MouseLeave">
+            <BeginStoryboard x:Name="OnMouseEnter2_BeginStoryboard" Storyboard="{StaticResource OnMouseEnter2}"/>
+        </EventTrigger>
+    </UserControl.Triggers>
+    <Grid>
+        <Border BorderBrush="White" BorderThickness="1" CornerRadius="4">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.6*"/>
+                    <ColumnDefinition Width="0.3*"/>
+                </Grid.ColumnDefinitions>
+                <Border Background="#7F000000" Grid.Column="0">
+                    <Grid>
+                        <Border x:Name="Glow" BorderThickness="1" CornerRadius="4,0,0,4" Opacity="0">
+                            <Border.Background>
+                                <RadialGradientBrush RadiusX="1.397" Center="1.012,0.5" GradientOrigin="1.012,0.5" RadiusY="0.68">
+                                    <GradientStop Color="#B2657FF7"/>
+                                    <GradientStop Color="#00657FF7" Offset="1"/>
+                                </RadialGradientBrush>
+                            </Border.Background>
+                        </Border>
+                        <Border x:Name="Shine" BorderThickness="1" CornerRadius="4,0,0,4" Opacity="0">
+                            <Border.Background>
+                                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="-0.026,1.005">
+                                    <GradientStop Color="#99F7F5F6" Offset="0.998"/>
+                                    <GradientStop Color="#33FFFFFF"/>
+                                </LinearGradientBrush>
+                            </Border.Background>
+                        </Border>
+                        <TextBlock  
+                   FontSize="11" 
+                   Text="{Binding Label, Mode=TwoWay}"
+                   Foreground="White"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   Focusable="True">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="TextDecorations" Value="None" />
+                                    <Setter Property="FontWeight" Value="Normal" />
+                                    <Style.Triggers>
+                                        <MultiDataTrigger>
+                                            <MultiDataTrigger.Conditions>
+                                                <Condition Binding="{Binding Label}" Value="Motor" />
+                                            </MultiDataTrigger.Conditions>
+                                            <MultiDataTrigger.Setters>
+                                                <Setter Property="TextDecorations" Value="Underline" />
+                                                <Setter Property="FontWeight" Value="Bold" />
+                                            </MultiDataTrigger.Setters>
+                                        </MultiDataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </Grid>
+                </Border>
+                <Grid Grid.Column="1">
+                    <wpfspark:ToggleSwitch
+                          ThumbWidth="40"
+                        Width="80"
+                               ThumbGlowColor="Gray"
+                               ThumbBackground="Gray"
+                               CheckedForeground="White"
+                               UncheckedForeground="Black"
+                                
+                                
+                               CheckedBackground="{Binding CheckedBackground}"
+                               UncheckedBackground="{Binding UnCheckedBackground}"
+                               
+                               CheckedText="{Binding CheckedText}" 
+                               UncheckedText="{Binding UnCheckedText}"
+                               
+                                
+                               BorderThickness="1"
+                               CornerRadius="5"
+                               
+                               ThumbBorderThickness="2"
+                               ThumbCornerRadius="4"
+                               ThumbShineCornerRadius="4"
+                               
+                               FontSize="15"
+                               FontWeight="Normal"
+                               HorizontalAlignment="Stretch"
+                                IsChecked="{Binding IsChecked}">
+                        <!--<wpfspark:ToggleSwitch.BorderBrush>
+                <LinearGradientBrush EndPoint="0,0"
+                                     StartPoint="0,1">
+                    <GradientStop Color="#959595"
+                                  Offset="0" />
+                    <GradientStop Color="#A1A1A1"
+                                  Offset="0.5" />
+                    <GradientStop Color="#555555"
+                                  Offset="1" />
+                </LinearGradientBrush>
+            </wpfspark:ToggleSwitch.BorderBrush>
+            <wpfspark:ToggleSwitch.CheckedBackground>
+                <LinearGradientBrush EndPoint="0,1"
+                                     StartPoint="0,0">
+                    <GradientStop Color="#1E41A5"
+                                  Offset="0" />
+                    <GradientStop Color="#2F6AEA"
+                                  Offset="0.5" />
+                    <GradientStop Color="#6298FE"
+                                  Offset="1" />
+                </LinearGradientBrush>
+            </wpfspark:ToggleSwitch.CheckedBackground>
+            <wpfspark:ToggleSwitch.ThumbBackground>
+                <LinearGradientBrush EndPoint="0,1"
+                                     StartPoint="0,0">
+                    <GradientStop Color="#C1C1C1"
+                                  Offset="0" />
+                    <GradientStop Color="#A5A5A5"
+                                  Offset="0.5" />
+                    <GradientStop Color="#FCFCF6"
+                                  Offset="1" />
+                </LinearGradientBrush>
+            </wpfspark:ToggleSwitch.ThumbBackground>
+            <wpfspark:ToggleSwitch.ThumbBorderBrush>
+                <LinearGradientBrush EndPoint="0,1"
+                                     StartPoint="0,0">
+                    <GradientStop Color="#F6F6F6"
+                                  Offset="0" />
+                    <GradientStop Color="#959595"
+                                  Offset="0.5" />
+                    <GradientStop Color="#565656"
+                                  Offset="1" />
+                </LinearGradientBrush>
+            </wpfspark:ToggleSwitch.ThumbBorderBrush>
+            <wpfspark:ToggleSwitch.UncheckedBackground>
+                <LinearGradientBrush EndPoint="0,1"
+                                     StartPoint="0,0">
+                    <GradientStop Color="#626262"
+                                  Offset="0.1" />
+                    <GradientStop Color="#A5A5A5"
+                                  Offset="0.5" />
+                    <GradientStop Color="#F1F1F1"
+                                  Offset="1" />
+                </LinearGradientBrush>
+            </wpfspark:ToggleSwitch.UncheckedBackground>-->
+                    </wpfspark:ToggleSwitch>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</UserControl>

@@ -7,59 +7,6 @@
              xmlns:models="clr-namespace:MotorController.Models"
              mc:Ignorable="d" 
              d:DesignHeight="30" d:DesignWidth="150">
-    <!--<UserControl.Resources>
-        <Storyboard x:Key="OnMouseEnter1">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Glow">
-                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0.9"/>
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Shine">
-                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="1"/>
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[0].(GradientStop.Offset)" Storyboard.TargetName="Shine">
-                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="0.995"/>
-            </DoubleAnimationUsingKeyFrames>
-            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[0].(GradientStop.Color)" Storyboard.TargetName="Shine">
-                <EasingColorKeyFrame KeyTime="0:0:0.4" Value="#33F7F5F6"/>
-            </ColorAnimationUsingKeyFrames>
-            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(GradientBrush.GradientStops)[1].(GradientStop.Color)" Storyboard.TargetName="Shine">
-                <EasingColorKeyFrame KeyTime="0:0:0.4" Value="#99FFFFFF"/>
-            </ColorAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="OnMouseEnter2">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Shine">
-                <EasingDoubleKeyFrame KeyTime="0" Value="0.9"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="0"/>
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Glow">
-                <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="0"/>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
-    </UserControl.Resources>
-    <UserControl.RenderTransform>
-        <TransformGroup>
-            <ScaleTransform/>
-            <SkewTransform/>
-            <RotateTransform Angle="360"/>
-            <TranslateTransform/>
-        </TransformGroup>
-    </UserControl.RenderTransform>
-    <UserControl.LayoutTransform>
-        <TransformGroup>
-            <ScaleTransform/>
-            <SkewTransform/>
-            <RotateTransform Angle="360"/>
-            <TranslateTransform/>
-        </TransformGroup>
-    </UserControl.LayoutTransform>
-    <UserControl.Triggers>
-        <EventTrigger RoutedEvent="Mouse.MouseEnter">
-            <BeginStoryboard x:Name="OnMouseEnter1_BeginStoryboard" Storyboard="{StaticResource OnMouseEnter1}"/>
-        </EventTrigger>
-        <EventTrigger RoutedEvent="Mouse.MouseLeave">
-            <BeginStoryboard x:Name="OnMouseEnter2_BeginStoryboard" Storyboard="{StaticResource OnMouseEnter2}"/>
-        </EventTrigger>
-    </UserControl.Triggers>-->
     <Grid >
         <Border BorderBrush="White" BorderThickness="1" CornerRadius="0,4,4,0">
             <Grid>

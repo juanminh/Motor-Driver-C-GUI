@@ -938,6 +938,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "2",
                 CommandValue = "",
                 IsFloat = true,
+                ReadOnly = true
             };
             DataViewCommandsList.Add(new Tuple<int, int>(30, 2), data);
             DataCommandsListbySubGroup["MotionStatus List"].Add(data);
@@ -949,6 +950,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "0",
                 CommandValue = "",
                 IsFloat = false,
+                ReadOnly = true
             };
             DataViewCommandsList.Add(new Tuple<int, int>(25, 0), data);
             DataCommandsListbySubGroup["MotionStatus List"].Add(data);
@@ -960,6 +962,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "10",
                 CommandValue = "",
                 IsFloat = false,
+                ReadOnly = true
             };
             DataViewCommandsList.Add(new Tuple<int, int>(25, 10), data);
             DataCommandsListbySubGroup["MotionStatus List"].Add(data);
@@ -971,6 +974,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "0",
                 CommandValue = "",
                 IsFloat = true,
+                ReadOnly = true
             };
             DataViewCommandsList.Add(new Tuple<int, int>(30, 0), data);
             DataCommandsListbySubGroup["MotionStatus List"].Add(data);
@@ -982,6 +986,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "1",
                 CommandValue = "",
                 IsFloat = true,
+                ReadOnly = true
             };
             DataViewCommandsList.Add(new Tuple<int, int>(30, 1), data);
             DataCommandsListbySubGroup["MotionStatus List"].Add(data);
@@ -993,6 +998,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "10",
                 CommandValue = "",
                 IsFloat = true,
+                ReadOnly = true
             };
             DataViewCommandsList.Add(new Tuple<int, int>(30, 10), data);
             DataCommandsListbySubGroup["MotionStatus List"].Add(data);
@@ -1004,6 +1010,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "11",
                 CommandValue = "",
                 IsFloat = true,
+                ReadOnly = true
             };
             DataViewCommandsList.Add(new Tuple<int, int>(30, 11), data);
             DataCommandsListbySubGroup["MotionStatus List"].Add(data);
@@ -1015,6 +1022,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "12",
                 CommandValue = "",
                 IsFloat = true,
+                ReadOnly = true
             };
             DataViewCommandsList.Add(new Tuple<int, int>(30, 12), data);
             DataCommandsListbySubGroup["MotionStatus List"].Add(data);
@@ -1026,8 +1034,20 @@ namespace MotorController.CommandsDB
                 CommandSubId = "1",
                 CommandValue = "",
                 IsFloat = true,
+                ReadOnly = true
             };
             DataViewCommandsList.Add(new Tuple<int, int>(32, 1), data);
+            DataCommandsListbySubGroup["MotionStatus List"].Add(data);
+            data = new DataViewModel
+            {
+                CommandName = "MotorStatus",
+                CommandId = "1",
+                CommandSubId = "0",
+                CommandValue = "",
+                IsFloat = false,
+                ReadOnly = true
+            };
+            DataViewCommandsList.Add(new Tuple<int, int>(1, 0), data);
             DataCommandsListbySubGroup["MotionStatus List"].Add(data);
             #endregion Status_1
             #region Status2
@@ -1060,6 +1080,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "0",
                 CommandValue = "",
                 IsFloat = false,
+                ReadOnly = true
             };
             DataViewCommandsList.Add(new Tuple<int, int>(26, 0), data);
             DataCommandsListbySubGroup["Position counters List"].Add(data);
@@ -1071,6 +1092,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "1",
                 CommandValue = "",
                 IsFloat = false,
+                ReadOnly = true
             };
             DataViewCommandsList.Add(new Tuple<int, int>(26, 1), data);
             DataCommandsListbySubGroup["Position counters List"].Add(data);
@@ -1082,6 +1104,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "2",
                 CommandValue = "",
                 IsFloat = false,
+                ReadOnly = true
             };
             DataViewCommandsList.Add(new Tuple<int, int>(26, 2), data);
             DataCommandsListbySubGroup["Position counters List"].Add(data);
@@ -1093,6 +1116,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "3",
                 CommandValue = "",
                 IsFloat = false,
+                ReadOnly = true
             };
             DataViewCommandsList.Add(new Tuple<int, int>(26, 3), data);
             DataCommandsListbySubGroup["Position counters List"].Add(data);
@@ -1110,6 +1134,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "1",
                 CommandValue = "",
                 IsFloat = false,
+                ReadOnly = true
             };
             DataViewCommandsListLP.Add(new Tuple<int, int>(62, 1), data);
             DataCommandsListbySubGroup["LPCommands List"].Add(data);
@@ -1121,6 +1146,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "2",
                 CommandValue = "",
                 IsFloat = true,
+                ReadOnly = true
             };
             DataViewCommandsListLP.Add(new Tuple<int, int>(62, 2), data);
             DataCommandsListbySubGroup["LPCommands List"].Add(data);
@@ -1132,6 +1158,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "3",
                 CommandValue = "",
                 IsFloat = false,
+                ReadOnly = true
             };
             DataViewCommandsListLP.Add(new Tuple<int, int>(62, 3), data);
             DataViewCommandsList.Add(new Tuple<int, int>(62, 3), data);
@@ -1174,20 +1201,10 @@ namespace MotorController.CommandsDB
                 CommandSubId = "1",
                 CommandValue = "",
                 IsFloat = false,
+                ReadOnly = true
             };
             DataViewCommandsList.Add(new Tuple<int, int>(33, 1), data);
             DataCommandsListbySubGroup["DriverStatus List"].Add(data);
-
-            data = new DataViewModel
-            {
-                CommandName = "MotorStatus",
-                CommandId = "1",
-                CommandSubId = "0",
-                CommandValue = "",
-                IsFloat = false,
-            };
-            DataViewCommandsList.Add(new Tuple<int, int>(1, 0), data);
-            DataCommandsListbySubGroup["MotionStatus List"].Add(data);
             #endregion Command3
         }
         private void GenerateMotionTabCommands()
@@ -1476,21 +1493,96 @@ namespace MotorController.CommandsDB
 
         }
 
-        
+
         private void GenerateToggleSwitchCommands()
         {
-            ToggleSwitchList.Add("MotorControl", new ObservableCollection<object>());
             #region Operation
+            ToggleSwitchList.Add("MotorControl", new ObservableCollection<object>());
             var data_b = new ToggleSwitchViewModel
             {
-                Label = "Motorr",
+                Label = "Motor",
                 CommandId = 1,
-                CommandSubId = 0
+                CommandSubId = 0,
+                CheckedBackground_final = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2a5ed5")),
+                CheckedText = "ON",
+                UnCheckedText = "OFF"
             };
             ToggleSwitchCommands.Add(new Tuple<int, int>(1, 0), data_b);
             ToggleSwitchList["MotorControl"].Add(data_b);
             #endregion Operation
-    }
+
+
+            #region Feedback_Sync
+            ToggleSwitchList.Add("Feedback Sync", new ObservableCollection<object>());
+            data_b = new ToggleSwitchViewModel
+            {
+                Label = "External interpolation",
+                CommandId = 78,
+                CommandSubId = 1,
+                CheckedBackground_final = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2a5ed5")),
+                CheckedText = "ON",
+                UnCheckedText = "OFF"
+            };
+            ToggleSwitchCommands.Add(new Tuple<int, int>(78, 1), data_b);
+            ToggleSwitchList["Feedback Sync"].Add(data_b);
+            #endregion Feedback_Sync
+
+            #region PID
+            ToggleSwitchList.Add("PID_speed_loop", new ObservableCollection<object>());
+            data_b = new ToggleSwitchViewModel
+            {
+                Label = "Close Loop",
+                CommandId = 82,
+                CommandSubId = 10,
+                CheckedBackground_final = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2a5ed5")),
+                CheckedText = "ON",
+                UnCheckedText = "OFF"
+            };
+            ToggleSwitchCommands.Add(new Tuple<int, int>(82, 10), data_b);
+            ToggleSwitchList["PID_speed_loop"].Add(data_b);
+
+            ToggleSwitchList.Add("PID_current_loop", new ObservableCollection<object>());
+            data_b = new ToggleSwitchViewModel
+            {
+                Label = "Close Loop",
+                CommandId = 81,
+                CommandSubId = 10,
+                CheckedBackground_final = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2a5ed5")),
+                CheckedText = "ON",
+                UnCheckedText = "OFF"
+            };
+            ToggleSwitchCommands.Add(new Tuple<int, int>(81, 10), data_b);
+            ToggleSwitchList["PID_current_loop"].Add(data_b);
+
+            ToggleSwitchList.Add("PID_position_loop", new ObservableCollection<object>());
+            data_b = new ToggleSwitchViewModel
+            {
+                Label = "Close Loop",
+                CommandId = 83,
+                CommandSubId = 10,
+                CheckedBackground_final = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2a5ed5")),
+                CheckedText = "ON",
+                UnCheckedText = "OFF"
+            };
+            ToggleSwitchCommands.Add(new Tuple<int, int>(83, 10), data_b);
+            ToggleSwitchList["PID_position_loop"].Add(data_b);
+            #endregion PID
+
+            #region Filter
+            ToggleSwitchList.Add("Filter_Enable", new ObservableCollection<object>());
+            data_b = new ToggleSwitchViewModel
+            {
+                Label = "Enable",
+                CommandId = 101,
+                CommandSubId = 0,
+                CheckedBackground_final = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2a5ed5")),
+                CheckedText = "ON",
+                UnCheckedText = "OFF"
+            };
+            ToggleSwitchCommands.Add(new Tuple<int, int>(101, 0), data_b);
+            ToggleSwitchList["Filter_Enable"].Add(data_b);
+            #endregion Filter
+        }
     }
 }
 
