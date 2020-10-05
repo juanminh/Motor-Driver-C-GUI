@@ -181,7 +181,7 @@ namespace MotorController.ViewModels
             set
             {
                 _getCount = value;
-                if(_getCount >= 5)
+                if(_getCount >= 1)
                     GetCount_bool = true;
                 else
                     GetCount_bool = false;

@@ -214,7 +214,7 @@ namespace MotorController.Models.DriverBlock
             string[] PanelElements = new string[] { "DriverStatus List", "Channel List", "MotionCommand List2", "MotionCommand List",
                                                     "Profiler Mode", "S.G.List", "S.G.Type", "PowerOut List",
                                                     "MotionStatus List", "Digital Input List", "Position counters List",
-                                                    "UpperMainPan List" };// , "Driver Type" ,
+                                                    "UpperMainPan List", "LPCommands List" };// , "Driver Type" ,
             string[] arr = new string[] { };
             if(DebugViewModel.GetInstance.EnRefresh)
             {
@@ -329,7 +329,6 @@ namespace MotorController.Models.DriverBlock
                         _iteratorRefresh = BuildList.Count - 1;
 
                     //foreach(var command in BuildList)
-                    {
                         int element = _iteratorRefresh--;
                         //Debug.WriteLine("2: " + element);
                         if(element < BuildList.Count && element > -1)
@@ -344,23 +343,24 @@ namespace MotorController.Models.DriverBlock
                                     IsSet = false,
                                     IsFloat = BuildList.ElementAt(element).Value.IsFloat
                                 });
-                                if(Commands.GetInstance.DataViewCommandsList.ContainsKey(new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))))
+                                if(BuildList.Count > 0)
                                 {
-                                    Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))].GetCount++;
+                                    if(Commands.GetInstance.DataViewCommandsList.ContainsKey(new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))))
+                                    {
+                                        Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))].GetCount++;
 
-                                    //Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(() =>
-                                    //{
+                                        //Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(() =>
+                                        //{
                                         //Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))]._changeForeGround();
-                                    //    if(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))].GetCount >= 5)
-                                    //        Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))].Foreground = new SolidColorBrush(Colors.Yellow);
-                                    //    else
-                                    //        Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))].Foreground = new SolidColorBrush(Colors.White);
-                                    ////}));
+                                        //    if(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))].GetCount >= 5)
+                                        //        Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))].Foreground = new SolidColorBrush(Colors.Yellow);
+                                        //    else
+                                        //        Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))].Foreground = new SolidColorBrush(Colors.White);
+                                        ////}));
+                                    }
                                 }
                             }
                         }
-                        //Thread.Sleep(1);
-                    }
 
 #if REFRESH_MANAGER
                 Debug.WriteLine("EndRefresh: " + DateTime.Now.ToString("h:mm:ss.fff"));

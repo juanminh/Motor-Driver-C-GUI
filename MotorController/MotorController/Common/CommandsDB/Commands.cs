@@ -439,7 +439,7 @@ namespace MotorController.CommandsDB
             #region EncderInput_1/2
             names = new[]
             {
-                "Enable", "Roll High", "Roll Low", "Direction", "Lines Per Rev",
+                "Enable", "Roll High", "Roll Low", "Direction", "Lines Per Revolution",
                 "Speed LPF", "Index Mode", "Reset Value", "Set Position Value"
             };
             bool[] IsFloat = new[] { false, false, false, false, false, true, false, false, false };
@@ -1145,7 +1145,7 @@ namespace MotorController.CommandsDB
                 CommandId = "62",
                 CommandSubId = "2",
                 CommandValue = "",
-                IsFloat = true,
+                IsFloat = false,
                 ReadOnly = true
             };
             DataViewCommandsListLP.Add(new Tuple<int, int>(62, 2), data);
@@ -1388,6 +1388,7 @@ namespace MotorController.CommandsDB
         {
             CalibartionCommandsListbySubGroup.Add("Calibration List", new ObservableCollection<object>());
             CalibartionCommandsListbySubGroup.Add("Calibration Result List", new ObservableCollection<object>());
+            ToggleSwitchList.Add("CalibrationList_ToggleSwitch", new ObservableCollection<object>());
 
             var names = new[]
             {
@@ -1406,6 +1407,22 @@ namespace MotorController.CommandsDB
                 CalibartionCommandsList.Add(new Tuple<int, int>(6, Convert.ToInt16(i * 2 + 1)), data);
                 CalibartionCommandsListbySubGroup["Calibration List"].Add(data);
 
+                #region CalibrationList_ToggleSwitch
+                var data_b = new ToggleSwitchViewModel
+                {
+                    Label = names[i],
+                    CommandId = 6,
+                    CommandSubId = (short)(i * 2 + 1),
+                    CheckedBackground_final = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2a5ed5")),
+                    CheckedText = "ON",
+                    UnCheckedText = "OFF",
+                    Height = 26
+                };
+                ToggleSwitchCommands.Add(new Tuple<int, int>(data_b.CommandId, data_b.CommandSubId), data_b);
+                ToggleSwitchList["CalibrationList_ToggleSwitch"].Add(data_b);
+                #endregion CalibrationList_ToggleSwitch
+
+                // Calibration Result - Textbox //
                 var TextBoxResult = new DataViewModel
                 {
                     CommandName = names[i],

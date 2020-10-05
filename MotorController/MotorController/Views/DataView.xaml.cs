@@ -24,10 +24,5 @@ namespace MotorController.Views
         {
             InitializeComponent();
         }
-
-        private void SetValTB_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            (sender as TextBox).SelectAll();
-        }
     }
 }

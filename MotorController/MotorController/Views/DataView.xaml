@@ -96,7 +96,22 @@
             </Border>
         </Border>
         <Border BorderBrush="White" BorderThickness="1" CornerRadius="0,4,4,0" Grid.Column="1">
-            <Border BorderBrush="#FF686464" BorderThickness="1" Background="White" CornerRadius="0,4,4,0">
+            <Border BorderBrush="#FF686464" BorderThickness="0" Background="White" CornerRadius="0,4,4,0">
+                <!--<Border.Style>
+                    <Style TargetType="Border">
+                        <Setter Property="BorderThickness" Value="1" />
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding ReadOnly}" Value="True" />
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.Setters>
+                                    <Setter Property="BorderThickness" Value="0" />
+                                </MultiDataTrigger.Setters>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Border.Style>-->
                 <TextBox x:Name="SetValTB"
                              BorderBrush="{x:Null}" MaxLines="1"
                              HorizontalContentAlignment="Center"
@@ -104,8 +119,8 @@
                              FontSize="11" 
                              Text="{Binding CommandValue, UpdateSourceTrigger=PropertyChanged}" 
                              Background="{Binding Background}"
-                             IsReadOnly="{Binding ReadOnly}" >                             <!--Foreground="{Binding Foreground}"-->
-
+                             IsReadOnly="{Binding ReadOnly}"
+                             Focusable="True">                             <!--Foreground="{Binding Foreground}"-->
                     <TextBox.Style>
                         <Style TargetType="TextBox">
                             <Setter Property="Foreground" Value="White" />
@@ -115,7 +130,7 @@
                                         <Condition Binding="{Binding GetCount_bool}" Value="True" />
                                     </MultiDataTrigger.Conditions>
                                     <MultiDataTrigger.Setters>
-                                        <Setter Property="Foreground" Value="Yellow" />
+                                        <Setter Property="Foreground" Value="Gainsboro" />
                                     </MultiDataTrigger.Setters>
                                 </MultiDataTrigger>
                             </Style.Triggers>
@@ -126,9 +141,9 @@
                         <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="20"/>
                     </i:Interaction.Behaviors>
                     <i:Interaction.Triggers>
-                        <i:EventTrigger EventName="PreviewMouseLeftButtonDown" >
+                        <!--<i:EventTrigger EventName="PreviewMouseLeftButtonDown" >
                             <i:InvokeCommandAction Command="{Binding MouseLeftClickCommand}" />
-                        </i:EventTrigger>
+                        </i:EventTrigger>-->
                         <i:EventTrigger EventName="GotFocus" >
                             <i:InvokeCommandAction Command="{Binding MouseLeftClickCommand}" />
                         </i:EventTrigger>

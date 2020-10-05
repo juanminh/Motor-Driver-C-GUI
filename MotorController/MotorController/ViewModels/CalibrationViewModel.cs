@@ -52,6 +52,20 @@ namespace MotorController.ViewModels
                 OnPropertyChanged();
             }
         }
+        private ObservableCollection<object> _calibrationList_ToggleSwitch;
+        public ObservableCollection<object> CalibrationList_ToggleSwitch
+        {
+
+            get
+            {
+                return Commands.GetInstance.ToggleSwitchList["CalibrationList_ToggleSwitch"];
+            }
+            set
+            {
+                _calibrationList_ToggleSwitch = value;
+                OnPropertyChanged();
+            }
+        }
         private ObservableCollection<object> _calibrationResultList;
         public ObservableCollection<object> CalibrationResultList
         {

@@ -20,10 +20,13 @@ namespace MotorController.ViewModels
         private string _label = "";
         private short _command_id = 0, _command_subid = 0;
         private bool _is_checked = false;
+        private int _height = 20;
 
         public string Label { get { return _label; } set { _label = value; OnPropertyChanged(); } }
         public short CommandId { get { return _command_id; } set { _command_id = value; OnPropertyChanged(); } }
         public short CommandSubId { get { return _command_subid; } set { _command_subid = value; OnPropertyChanged(); } }
+        public int Height { get { return _height; } set { _height = value; OnPropertyChanged(); } }
+
         public bool IsChecked
         {
             get { return _is_checked; }

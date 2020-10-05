@@ -386,10 +386,21 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
                                         <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
+                                        <RowDefinition>
+                                            <RowDefinition.Style>
+                                                <Style TargetType="{x:Type RowDefinition}">
+                                                    <Setter Property="Height" Value="Auto" />
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding EncoderFeedback}" Value="5">
+                                                            <Setter Property="Height" Value="0" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </RowDefinition.Style>
+                                        </RowDefinition>
                                     </Grid.RowDefinitions>
-                                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">Type</TextBlock>
-                                    <ComboBox HorizontalAlignment="Right"
+                                    <TextBlock Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">Type</TextBlock>
+                                    <ComboBox Grid.Row="0" HorizontalAlignment="Right"
                                               Width="{StaticResource MotorParametersWidth}" 
                                               FontSize="12"
                                               SelectedIndex="{Binding EncoderFeedback}">
@@ -504,6 +515,13 @@
                                         <i:Interaction.Behaviors>
                                             <models:AllowableCharactersTextBoxBehavior RegularExpression="{StaticResource RegexInt}" MaxLength="12"/>
                                         </i:Interaction.Behaviors>
+                                    </TextBox>
+                                    <TextBlock Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto" Text="Resolution [Counts]"></TextBlock>
+                                    <TextBox Grid.Row="2" HorizontalAlignment="Right" BorderThickness="0" Foreground="White"
+                                            Width="{StaticResource MotorParametersWidth}" 
+                                            FontSize="12"
+                                            Text="{Binding EncoderResolutionCounts, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                            IsReadOnly="True" IsHitTestVisible="False" IsEnabled="False">
                                     </TextBox>
                                 </Grid>
                             </GroupBox>

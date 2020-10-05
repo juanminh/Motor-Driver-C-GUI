@@ -237,7 +237,19 @@ namespace MotorController.ViewModels
                     _encoderResolution = value;
                 else
                     return;
+                EncoderResolutionCounts = (Convert.ToInt64(_encoderResolution) * 4).ToString();
                 OnPropertyChanged("EncoderResolution");
+            }
+        }
+        
+        private string _encoderResolutionCounts = "18";//"1000";
+        public string EncoderResolutionCounts
+        {
+            get { return (Convert.ToInt64(EncoderResolution)*4).ToString(); }
+            set
+            {
+                _encoderResolutionCounts = value;
+                OnPropertyChanged("EncoderResolutionCounts");
             }
         }
         #endregion Motor_Parameter

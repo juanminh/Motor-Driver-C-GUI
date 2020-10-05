@@ -28,6 +28,7 @@
         <viewModels:ParametarsWindowViewModel/>
     </Window.DataContext>
 
+    
     <Window.Resources>
         <Style x:Key="CalToggleButtonStyle"
            BasedOn="{StaticResource ToggleButtonStyleCalibrationPan}"
@@ -144,7 +145,7 @@
                         </Grid.RowDefinitions>
                         <GroupBox Header="Motor Limit"  Grid.Row="0">
                             <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                <ItemsControl ItemsSource="{Binding MotorLimitlList}" ItemTemplate="{StaticResource DataViewModel}"/>
+                                <ItemsControl ItemsSource="{Binding MotorLimitlList}" ItemTemplate="{StaticResource DataViewModel}" />
                             </ScrollViewer>
                         </GroupBox>
                         <GroupBox Grid.Row="2" Header="Current Limit" >
@@ -310,7 +311,8 @@
                                     <RowDefinition Height="Auto"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <ItemsControl Grid.Row="0" ItemsSource="{Binding PidSpeedList}" ItemTemplate="{StaticResource DataViewModel}"/>
-                                <ItemsControl Grid.Row="1" ItemsSource="{Binding PID_speed_loop, Mode=TwoWay}" ItemTemplate="{StaticResource ToggleSwitchViewModel}"/>
+                                <ItemsControl Grid.Row="1" ItemsSource="{Binding PID_speed_loop, Mode=TwoWay}" 
+                                              ItemTemplate="{StaticResource ToggleSwitchViewModel}"/>
                             </Grid>
                         </GroupBox>
                         <GroupBox  Grid.Row="1" Header="Current" Margin="0,10,0,0">
@@ -407,7 +409,7 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
                         <Grid.RowDefinitions>
@@ -416,7 +418,7 @@
                         <Border Grid.Row="1">
                             <GroupBox>
                                 <GroupBox.Header>
-                                    <Border Width="299">
+                                    <Border Width="auto">
                                         <Grid Width="Auto">
                                             <TextBlock Text="Automatic Calibration Menu" HorizontalAlignment="Center"/>
                                         </Grid>
@@ -424,10 +426,16 @@
                                 </GroupBox.Header>
                                 <Grid Width="Auto">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="250"/>
+                                        <ColumnDefinition Width="100"/>
                                     </Grid.ColumnDefinitions>
-                                    <ItemsControl Grid.Column="0" Width="Auto" ItemsSource="{Binding CalibrationList}" ItemTemplate="{StaticResource CalibrationButtonModel}"/>
+                                    <!--<ItemsControl Grid.Column="0" Width="Auto" ItemsSource="{Binding CalibrationList}" 
+                                                  ItemTemplate="{StaticResource CalibrationButtonModel}"/>-->
+<!--ItemTemplate="{StaticResource ToggleSwitchViewModel}"-->
+                                    <ItemsControl Grid.Column="0" Width="Auto" Height="auto" ItemsSource="{Binding CalibrationList_ToggleSwitch}" 
+                                                  ItemTemplate="{StaticResource ToggleSwitchViewModel}">
+
+                                    </ItemsControl>
                                     <ItemsControl Grid.Column="1" Width="Auto" ItemsSource="{Binding CalibrationResultList}" ItemTemplate="{StaticResource DataViewInd}"/>
                                 </Grid>
                                 <!--<StackPanel Background="Transparent" Orientation="Vertical" >

@@ -117,6 +117,7 @@
                     <wpfspark:ToggleSwitch
                           ThumbWidth="40"
                         Width="80"
+                        Height="{Binding Height}"
                                ThumbGlowColor="Gray"
                                ThumbBackground="Gray"
                                CheckedForeground="White"
