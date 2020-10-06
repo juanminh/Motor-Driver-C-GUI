@@ -565,7 +565,7 @@
                                              Grid.Row="1"
                                              HorizontalAlignment="Left" 
                                              ItemsSource="{Binding ProfilerModeList}" 
-                                             ItemTemplate="{StaticResource EnumViewSmallFont}"/>
+                                             ItemTemplate="{StaticResource EnumViewModel}"/>
                                     </Grid>
                                 </ScrollViewer>
                                 <ScrollViewer Grid.Column="4" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
@@ -577,7 +577,7 @@
                                             <RowDefinition Height="10"/>
                                             <RowDefinition Height="Auto"/>
                                         </Grid.RowDefinitions>
-                                        <Border Grid.Row="0" Width="180" Height="87" BorderBrush="Gray" BorderThickness="1" CornerRadius="4">
+                                        <Border Grid.Row="0" Width="180" Height="Auto" BorderBrush="Gray" BorderThickness="1" CornerRadius="4">
                                             <Grid >
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
@@ -587,16 +587,16 @@
                                                 <TextBlock Width="180" Text="  Signal Generator" Foreground="White" Background="Gray" HorizontalAlignment="Center" FontSize="12"/>
                                                 <ItemsControl 
                                              HorizontalContentAlignment="Left"
-                                             Grid.Row="1" 
+                                             Grid.Row="2" 
                                              Width="180" 
                                              VerticalAlignment="Top"
                                              HorizontalAlignment="Left" 
                                              ItemsSource="{Binding SGTypeList}" 
-                                             ItemTemplate="{StaticResource EnumViewSmallFont}"
+                                             ItemTemplate="{StaticResource EnumViewModel}"
                                              />
                                                 <ItemsControl Width="180"  
                                                   HorizontalContentAlignment="Left" 
-                                                  Grid.Row="2" 
+                                                  Grid.Row="1" 
                                                   VerticalAlignment="Top"  
                                                   HorizontalAlignment="Left" 
                                                   ItemsSource="{Binding SGList}" 
@@ -680,26 +680,6 @@
                                                 <ItemsControl Grid.Row="1" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" ItemsSource="{Binding PositionCountersList}" ItemTemplate="{StaticResource DataViewModel}"/>
                                             </Grid>
                                         </Border>
-                                        <!--<Border Grid.Row="0" Width="229" Height="Auto" BorderBrush="Gray" BorderThickness="1" CornerRadius="4">
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="Auto"/>
-                                                </Grid.RowDefinitions>
-                                                <TextBlock Grid.Row="0" Width="229" Text="  Control" Foreground="White" Background="Gray" HorizontalAlignment="Center" FontSize="12"/>
-                                                <ItemsControl Grid.Row="1" Width="229" ItemsSource="{Binding ControlList}" ItemTemplate="{StaticResource EnumViewSmallFontInd}"/>
-                                            </Grid>
-                                        </Border>
-                                        <Border Grid.Row="1" Width="229" Height="Auto" BorderBrush="Gray" BorderThickness="1" CornerRadius="4">
-                                            <Grid>
-                                                <Grid.RowDefinitions>
-                                                    <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="Auto"/>
-                                                </Grid.RowDefinitions>
-                                                <TextBlock Grid.Row="0" Width="229" Text="  Motor" Foreground="White" Background="Gray" HorizontalAlignment="Center" FontSize="12"/>
-                                                <ItemsControl Grid.Row="1" Width="229" ItemsSource="{Binding MotorlList}" ItemTemplate="{StaticResource DataViewSmallFontInd}"/>
-                                            </Grid>
-                                        </Border>-->
                                     </Grid>
                                 </ScrollViewer>
 

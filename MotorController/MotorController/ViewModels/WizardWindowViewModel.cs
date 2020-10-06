@@ -333,7 +333,8 @@ namespace MotorController.ViewModels
                     CalibStatus = 0,
                     CommandId = "6",
                     CommandSubId = calibOperation.ElementAt(i).Value,
-                    CalibTimeout = CalibTimeout[i]
+                    CalibTimeout = CalibTimeout[i],
+                    isWizard = true                    
                 };
                 if(_instance != null)
                 {

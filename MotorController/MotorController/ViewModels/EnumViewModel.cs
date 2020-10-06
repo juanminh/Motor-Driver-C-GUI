@@ -119,41 +119,46 @@ namespace MotorController.ViewModels
             get { return _selectedIndex; }
             set { _selectedIndex = value; OnPropertyChanged("SelectedIndex"); }
         }
-
+        private double _fontSize = 13.33;
+        public double FontSize
+        {
+            get { return _fontSize; }
+            set { _fontSize = value; OnPropertyChanged("FontSize"); }
+        }
         //public string SelectedValue
         //{
-            //get { return _selectedValue != null ? (CommandList.FindIndex(x => x.StartsWith(_selectedValue))).ToString() : _selectedValue; }
-            //set
-            //{
-            //    if(_selectedValue == value)
-            //    {
-            //        _selectedValue = value;
-            //        OnPropertyChanged("SelectedValue");
-            //        LeftPanelViewModel.GetInstance.ValueChange = false;
-            //        return;
-            //    }
-            //    if(_selectedValue != null)
-            //    {
-            //        try
-            //        {
-            //            if(Convert.ToInt16(value) >= 0 && Convert.ToInt16(value) < CommandList.Count)
-            //            {
-            //                _selectedValue = CommandList[Convert.ToInt16(value)];
-            //            }
-            //            LeftPanelViewModel.GetInstance.ValueChange = false;
-            //        }
-            //        catch(Exception e)
-            //        {
-            //            _selectedValue = value;
-            //            OnPropertyChanged("SelectedValue");
-            //        }
-            //    }
-            //    else
-            //    {
-            //        _selectedValue = value;
-            //        OnPropertyChanged("SelectedValue");
-            //    }
-            //}
+        //get { return _selectedValue != null ? (CommandList.FindIndex(x => x.StartsWith(_selectedValue))).ToString() : _selectedValue; }
+        //set
+        //{
+        //    if(_selectedValue == value)
+        //    {
+        //        _selectedValue = value;
+        //        OnPropertyChanged("SelectedValue");
+        //        LeftPanelViewModel.GetInstance.ValueChange = false;
+        //        return;
+        //    }
+        //    if(_selectedValue != null)
+        //    {
+        //        try
+        //        {
+        //            if(Convert.ToInt16(value) >= 0 && Convert.ToInt16(value) < CommandList.Count)
+        //            {
+        //                _selectedValue = CommandList[Convert.ToInt16(value)];
+        //            }
+        //            LeftPanelViewModel.GetInstance.ValueChange = false;
+        //        }
+        //        catch(Exception e)
+        //        {
+        //            _selectedValue = value;
+        //            OnPropertyChanged("SelectedValue");
+        //        }
+        //    }
+        //    else
+        //    {
+        //        _selectedValue = value;
+        //        OnPropertyChanged("SelectedValue");
+        //    }
+        //}
         //}
         //public string SelectedValue
         //{
@@ -183,7 +188,7 @@ namespace MotorController.ViewModels
         //        }
         //    }
         //}
-        
+
 
         public EnumViewModel()
         {

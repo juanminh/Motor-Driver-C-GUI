@@ -27,16 +27,16 @@
             <DataTemplate x:Key="EnumViewModel">
                 <views:EnumView></views:EnumView>
             </DataTemplate>
-            <DataTemplate x:Key="EnumViewSmallFont">
+            <!--<DataTemplate x:Key="EnumViewSmallFont">
                 <views:EnumViewSmallFont></views:EnumViewSmallFont>
-            </DataTemplate>
-            <DataTemplate x:Key="EnumViewSmallFontInd">
+            </DataTemplate>-->
+            <!--<DataTemplate x:Key="EnumViewSmallFontInd">
                 <views:EnumViewSmallFontInd></views:EnumViewSmallFontInd>
-            </DataTemplate>
+            </DataTemplate>-->
             <DataTemplate x:Key="DataViewModel">
                 <views:DataView></views:DataView>
             </DataTemplate>
-            <DataTemplate x:Key="DataViewSmallFont">
+            <!--<DataTemplate x:Key="DataViewSmallFont">
                 <views:DataViewSmallFont></views:DataViewSmallFont>
             </DataTemplate>
             <DataTemplate x:Key="DataViewSmallFontInd">
@@ -44,7 +44,7 @@
             </DataTemplate>
             <DataTemplate x:Key="DataViewInd">
                 <views:DataViewInd></views:DataViewInd>
-            </DataTemplate>
+            </DataTemplate>-->
             <DataTemplate x:Key="IntegerUCModel">
                 <views:IntegerUC></views:IntegerUC>
             </DataTemplate>
@@ -696,7 +696,7 @@
             		</Setter.Value>
             	</Setter>
             </Style>-->
-            <Style x:Key="EnumUCStyleLeftPanel" TargetType="{x:Type views:EnumUC}">
+            <!--<Style x:Key="EnumUCStyleLeftPanel" TargetType="{x:Type views:EnumUC}">
             	<Setter Property="Template">
             		<Setter.Value>
             			<ControlTemplate TargetType="{x:Type views:EnumUC}">
@@ -706,7 +706,7 @@
             			</ControlTemplate>
             		</Setter.Value>
             	</Setter>
-            </Style>
+            </Style>-->
             <Style x:Key="imageListBoxItemStyle" TargetType="ListBoxItem">
                 <Setter Property="HorizontalContentAlignment" Value="Left" />
                 <Setter Property="VerticalContentAlignment" Value="Top" />

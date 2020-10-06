@@ -62,7 +62,7 @@
         </EventTrigger>
     </UserControl.Triggers>
     <Grid>
-        <Border BorderBrush="White" BorderThickness="1" CornerRadius="4">
+        <Border BorderBrush="White" BorderThickness="1" CornerRadius="3">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.6*"/>

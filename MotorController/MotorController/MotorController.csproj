@@ -261,6 +261,9 @@
     <Compile Include="Views\UC_CalibrationWizard.xaml.cs">
       <DependentUpon>UC_CalibrationWizard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\UC_Calibration.xaml.cs">
+      <DependentUpon>UC_Calibration.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UC_ToggleSwitch.xaml.cs">
       <DependentUpon>UC_ToggleSwitch.xaml</DependentUpon>
     </Compile>
@@ -273,23 +276,8 @@
     <Compile Include="Views\CalibrationButton.xaml.cs">
       <DependentUpon>CalibrationButton.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\DataViewInd.xaml.cs">
-      <DependentUpon>DataViewInd.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\BoolViewInd.xaml.cs">
       <DependentUpon>BoolViewInd.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DataViewSmallFontInd.xaml.cs">
-      <DependentUpon>DataViewSmallFontInd.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\DataViewSmallFont.xaml.cs">
-      <DependentUpon>DataViewSmallFont.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\EnumViewSmallFontInd.xaml.cs">
-      <DependentUpon>EnumViewSmallFontInd.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\EnumViewSmallFont.xaml.cs">
-      <DependentUpon>EnumViewSmallFont.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\mainWindowPanels\BottomPanel.xaml.cs">
       <DependentUpon>BottomPanel.xaml</DependentUpon>
@@ -355,9 +343,6 @@
       <DependentUpon>OscilloscopeView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\EnumUCModel.cs" />
-    <Compile Include="Views\EnumUC.xaml.cs">
-      <DependentUpon>EnumUC.xaml</DependentUpon>
-    </Compile>
     <Compile Include="ParametersWindow.xaml.cs">
       <DependentUpon>ParametersWindow.xaml</DependentUpon>
     </Compile>
@@ -365,6 +350,10 @@
       <DependentUpon>Wizard.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\UC_CalibrationWizard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UC_Calibration.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -384,27 +373,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\DataViewInd.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Views\BoolViewInd.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\DataViewSmallFontInd.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\DataViewSmallFont.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\EnumViewSmallFontInd.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\EnumViewSmallFont.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -472,10 +441,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\OscilloscopeView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\EnumUC.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

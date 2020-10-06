@@ -86,7 +86,7 @@
                         </Border.Background>
                     </Border>
                     <Label Content="{Binding CommandName}" 
-                           Foreground="#FFF9F6F6" FontSize="11" 
+                           Foreground="#FFF9F6F6" FontSize="{Binding FontSize}" 
                            HorizontalContentAlignment="Center" 
                            VerticalContentAlignment="Stretch"
                            HorizontalAlignment="Center"
@@ -116,7 +116,7 @@
                              BorderBrush="{x:Null}" MaxLines="1"
                              HorizontalContentAlignment="Center"
                              VerticalContentAlignment="Center"
-                             FontSize="11" 
+                             FontSize="{Binding FontSize}"
                              Text="{Binding CommandValue, UpdateSourceTrigger=PropertyChanged}" 
                              Background="{Binding Background}"
                              IsReadOnly="{Binding ReadOnly}"

@@ -9,7 +9,7 @@
              d:DesignHeight="40" d:DesignWidth="300">
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="5"/>
+            <!--<ColumnDefinition Width="5"/>
             <ColumnDefinition>
                 <ColumnDefinition.Style>
                     <Style TargetType="{x:Type ColumnDefinition}">
@@ -24,77 +24,118 @@
             </ColumnDefinition>
             <ColumnDefinition Width="5"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="5"/>
+            <ColumnDefinition Width="5"/>-->
+            <ColumnDefinition>
+                <ColumnDefinition.Style>
+                    <Style TargetType="{x:Type ColumnDefinition}">
+                        <Setter Property="Width" Value="0" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding isWizard}" Value="true">
+                                <Setter Property="Width" Value="Auto" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ColumnDefinition.Style>
+            </ColumnDefinition>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="5"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <CheckBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="16" 
+        <!--<CheckBox Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" Width="16" 
                   IsChecked="{Binding CalibrationPerform}" 
                   IsEnabled="{Binding CalibrationEnabled}"/>
         <TextBlock Grid.Column="3" Width="120" Height="22" 
                     Foreground="White"
                     VerticalAlignment="Center" 
                     HorizontalAlignment="Center"
-                    Text="{Binding CalibrationName}"/>
-        <TextBox Grid.Column="5" Height="22" Width="100"
+                    Text="{Binding CalibrationName}"/>-->
+        <local:UC_Calibration Grid.Column="0">
+            <local:UC_Calibration.Style>
+                <Style TargetType="{x:Type local:UC_Calibration}">
+                    <Setter Property="Height" Value="28" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding isWizard}" Value="true">
+                            <Setter Property="Height" Value="22" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </local:UC_Calibration.Style>
+        </local:UC_Calibration>
+        <Border BorderBrush="White" CornerRadius="0,4,4,0" Grid.Column="1">
+            <Border.Style>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="BorderThickness" Value="1" />
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding isWizard}" Value="true">
+                            <Setter Property="BorderThickness" Value="0" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <StackPanel Orientation="Horizontal">
+                <Grid Width="2"/>
+                <TextBox Height="22" Width="100"
                  IsHitTestVisible="False"
                  IsReadOnly="True"
                  HorizontalContentAlignment="Center">
-            <TextBox.Style>
-                <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
-                    <Setter Property="Text" Value="idle" />
-                    <Style.Triggers>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding CalibStatus}" Value="5" />
-                            </MultiDataTrigger.Conditions>
-                            <MultiDataTrigger.Setters>
-                                <Setter Property="Text" Value="Stopped" />
-                            </MultiDataTrigger.Setters>
-                        </MultiDataTrigger>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding CalibStatus}" Value="4" />
-                            </MultiDataTrigger.Conditions>
-                            <MultiDataTrigger.Setters>
-                                <Setter Property="Text" Value="Running" />
-                            </MultiDataTrigger.Setters>
-                        </MultiDataTrigger>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding CalibStatus}" Value="3" />
-                            </MultiDataTrigger.Conditions>
-                            <MultiDataTrigger.Setters>
-                                <Setter Property="Text" Value="Disabled" />
-                            </MultiDataTrigger.Setters>
-                        </MultiDataTrigger>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding CalibStatus}" Value="2" />
-                            </MultiDataTrigger.Conditions>
-                            <MultiDataTrigger.Setters>
-                                <Setter Property="Text" Value="Failure" />
-                            </MultiDataTrigger.Setters>
-                        </MultiDataTrigger>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding CalibStatus}" Value="1" />
-                            </MultiDataTrigger.Conditions>
-                            <MultiDataTrigger.Setters>
-                                <Setter Property="Text" Value="Success" />
-                            </MultiDataTrigger.Setters>
-                        </MultiDataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </TextBox.Style>
-        </TextBox>
-        <Helpers:RoundBoolLed Grid.Column="7"
+                    <TextBox.Style>
+                        <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
+                            <Setter Property="Text" Value="idle" />
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding CalibStatus}" Value="5" />
+                                    </MultiDataTrigger.Conditions>
+                                    <MultiDataTrigger.Setters>
+                                        <Setter Property="Text" Value="Stopped" />
+                                    </MultiDataTrigger.Setters>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding CalibStatus}" Value="4" />
+                                    </MultiDataTrigger.Conditions>
+                                    <MultiDataTrigger.Setters>
+                                        <Setter Property="Text" Value="Running" />
+                                    </MultiDataTrigger.Setters>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding CalibStatus}" Value="3" />
+                                    </MultiDataTrigger.Conditions>
+                                    <MultiDataTrigger.Setters>
+                                        <Setter Property="Text" Value="Disabled" />
+                                    </MultiDataTrigger.Setters>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding CalibStatus}" Value="2" />
+                                    </MultiDataTrigger.Conditions>
+                                    <MultiDataTrigger.Setters>
+                                        <Setter Property="Text" Value="Failure" />
+                                    </MultiDataTrigger.Setters>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding CalibStatus}" Value="1" />
+                                    </MultiDataTrigger.Conditions>
+                                    <MultiDataTrigger.Setters>
+                                        <Setter Property="Text" Value="Success" />
+                                    </MultiDataTrigger.Setters>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+                <Grid Width="5"/>
+                <Helpers:RoundBoolLed 
                               Width="20" Height="20" 
                               CurrStatus="{Binding CalibStatus}"
                               VerticalAlignment="Center" 
                               HorizontalAlignment="Center"/>
+                <Grid Width="5"/>
+            </StackPanel>
+        </Border>
     </Grid>
 </UserControl>
 

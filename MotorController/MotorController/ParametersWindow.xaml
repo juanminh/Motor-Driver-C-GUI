@@ -427,7 +427,7 @@
                                 <Grid Width="Auto">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="250"/>
-                                        <ColumnDefinition Width="100"/>
+                                        <ColumnDefinition Width="135"/>
                                     </Grid.ColumnDefinitions>
                                     <!--<ItemsControl Grid.Column="0" Width="Auto" ItemsSource="{Binding CalibrationList}" 
                                                   ItemTemplate="{StaticResource CalibrationButtonModel}"/>-->
@@ -436,7 +436,11 @@
                                                   ItemTemplate="{StaticResource ToggleSwitchViewModel}">
 
                                     </ItemsControl>
-                                    <ItemsControl Grid.Column="1" Width="Auto" ItemsSource="{Binding CalibrationResultList}" ItemTemplate="{StaticResource DataViewInd}"/>
+                                    <!--<ItemsControl Grid.Column="1" Width="Auto" ItemsSource="{Binding CalibrationResultList}" ItemTemplate="{StaticResource DataViewModel}"/>-->
+                                    <ItemsControl Grid.Column="1" Width="Auto" 
+                                                  ItemsSource="{Binding CalibrationResultList}" 
+                                                  ItemTemplate="{StaticResource CalibrationWizardViewModel}" 
+                                                  Margin="-1,0,0,0"/>
                                 </Grid>
                                 <!--<StackPanel Background="Transparent" Orientation="Vertical" >
                                     <ItemsControl ItemsSource="{Binding CalibrationList}" ItemTemplate="{StaticResource CalibrationButtonModel}"/>

@@ -10,8 +10,6 @@
 	d:DesignWidth="90" d:DesignHeight="20">
 
     <UserControl.Resources>
-        <!--<local:EnumUCModel x:Key="EnumUCModelDataSource" />-->
-
         <Storyboard x:Key="OnMouseEnter1"/>
         <Storyboard x:Key="OnMouseEnter2"/>
     </UserControl.Resources>
@@ -44,8 +42,6 @@
 
 
     <Grid DataContext="{Binding ElementName=parent}">
-
-        <!--<Grid x:Name="LayoutRoot" DataContext="{Binding Source={StaticResource EnumUCModelDataSource}}">-->
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>

@@ -8,7 +8,7 @@
         xmlns:viewModels="clr-namespace:MotorController.ViewModels"
         xmlns:models="clr-namespace:MotorController.Models"
         mc:Ignorable="d"
-        Title="Wizard" Height="560" Width="600"
+        Title="Wizard" Height="560" Width="620"
         ResizeMode="NoResize"
         Closing="Window_Closing"
         Icon="./Themes/MotorController.png"
@@ -771,7 +771,7 @@
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Width="Auto" Text="Calibration" Foreground="White" Background="Gray" FontWeight="Bold"/>
-                <ItemsControl Grid.Row="1" Width="Auto" 
+                <ItemsControl Grid.Row="1" Width="Auto" HorizontalAlignment="Center"
                                   ItemsSource="{Binding CalibList}" 
                                   ItemTemplate="{StaticResource CalibrationWizardViewModel}"/>
                 <Grid Grid.Row="3" HorizontalAlignment="Center">

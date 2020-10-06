@@ -50,9 +50,9 @@ namespace MotorController.Models.DriverBlock
             BuildList = new Dictionary<Tuple<int, int>, DataViewModel>();
             //var DataViewlist = CommandsDB.Commands.GetInstance.DataViewCommandsList;
             //var EnumViewlist = CommandsDB.Commands.GetInstance.EnumViewCommandsList;
-            var AllDataList = CommandsDB.Commands.GetInstance.DataCommandsListbySubGroup;
-            var AllEnumList = CommandsDB.Commands.GetInstance.EnumCommandsListbySubGroup;
-            var AllCalList = CommandsDB.Commands.GetInstance.CalibartionCommandsListbySubGroup;
+            var AllDataList = Commands.GetInstance.DataCommandsListbySubGroup;
+            var AllEnumList = Commands.GetInstance.EnumCommandsListbySubGroup;
+            var AllCalList = Commands.GetInstance.CalibartionCommandsListbySubGroup;
             var AllBoolList = Commands.GetInstance.DigitalInputListbySubGroup;
             var AllDebugList = Commands.GetInstance.DebugCommandsListbySubGroup;
 
@@ -178,36 +178,6 @@ namespace MotorController.Models.DriverBlock
                     BuildGroup[list.Key].Add(data);
                 }
             }
-            //foreach (var list in AllEnumList)
-            //{
-            //    foreach (var sub_list in list.Value)
-            //    {
-            //        var data = new DataViewModel
-            //        {
-            //            CommandName = ((DataViewModel)sub_list).CommandName,
-            //            CommandId = ((DataViewModel)sub_list).CommandId,
-            //            CommandSubId = ((DataViewModel)sub_list).CommandSubId,
-            //            CommandValue = ((DataViewModel)sub_list).CommandValue,
-            //            IsFloat = ((DataViewModel)sub_list).IsFloat,
-            //        };
-            //        BuildList.Add(new Tuple<int, int>(Int32.Parse(((DataViewModel)sub_list).CommandId), Int32.Parse(((DataViewModel)sub_list).CommandSubId)), data);
-            //    }
-            //}
-            //foreach (var list in AllDataList)
-            //{
-            //    foreach (var sub_list in list.Value)
-            //    {
-            //        var data = new DataViewModel
-            //        {
-            //            CommandName = ((DataViewModel)sub_list).CommandName,
-            //            CommandId = ((DataViewModel)sub_list).CommandId,
-            //            CommandSubId = ((DataViewModel)sub_list).CommandSubId,
-            //            CommandValue = ((DataViewModel)sub_list).CommandValue,
-            //            IsFloat = ((DataViewModel)sub_list).IsFloat,
-            //        };
-            //        BuildList.Add(new Tuple<int, int>(Int32.Parse(((DataViewModel)sub_list).CommandId), Int32.Parse(((DataViewModel)sub_list).CommandSubId)), data);
-            //    }
-            //}
         }
         public string[] GroupToExecute(int tabIndex)//
         {
@@ -268,10 +238,7 @@ namespace MotorController.Models.DriverBlock
 
             return arr;
         }
-        //public List<byte> arr = new List<byte>();
-        //public List<byte> arr2 = new List<byte>();
-        //public List<byte> arr3 = new List<byte>();
-        //public List<byte> arr4 = new List<byte>();
+
         private int _iteratorRefresh = 0;
         public void StartRefresh()
         {
@@ -328,9 +295,7 @@ namespace MotorController.Models.DriverBlock
                     if(_iteratorRefresh < 0)
                         _iteratorRefresh = BuildList.Count - 1;
 
-                    //foreach(var command in BuildList)
                         int element = _iteratorRefresh--;
-                        //Debug.WriteLine("2: " + element);
                         if(element < BuildList.Count && element > -1)
                         {
                             if(!BuildList.ElementAt(element).Value.IsSelected)
@@ -345,19 +310,10 @@ namespace MotorController.Models.DriverBlock
                                 });
                                 if(BuildList.Count > 0)
                                 {
-                                    if(Commands.GetInstance.DataViewCommandsList.ContainsKey(new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))))
-                                    {
-                                        Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))].GetCount++;
-
-                                        //Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(() =>
-                                        //{
-                                        //Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))]._changeForeGround();
-                                        //    if(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))].GetCount >= 5)
-                                        //        Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))].Foreground = new SolidColorBrush(Colors.Yellow);
-                                        //    else
-                                        //        Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))].Foreground = new SolidColorBrush(Colors.White);
-                                        ////}));
-                                    }
+                                    if(Commands.GetInstance.DataViewCommandsList.ContainsKey(
+                                        new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))))
+                                        Commands.GetInstance.DataViewCommandsList[
+                                            new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))].GetCount++;
                                 }
                             }
                         }

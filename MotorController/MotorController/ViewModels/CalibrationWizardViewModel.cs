@@ -12,6 +12,16 @@ namespace MotorController.ViewModels
         //{
         //}
         //~CalibrationWizardViewModel() { }
+        private bool _isWizard = true;
+        public bool isWizard
+        {
+            get { return _isWizard; }
+            set
+            {
+                _isWizard = value;
+                OnPropertyChanged("isWizard");
+            }
+        }
         private int _calibStatus;
         public int CalibStatus {
             get { return _calibStatus; }

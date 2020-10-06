@@ -7,8 +7,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="30" d:DesignWidth="300">
     <UserControl.Resources>
-        <!--<local:EnumUCModel x:Key="EnumUCModelDataSource" />-->
-
         <Storyboard x:Key="OnMouseEnter1">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Glow">
                 <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1"/>
@@ -104,7 +102,7 @@
                     </Border>
                     <Label   Content="{Binding Path=CommandName}"
                              Foreground="#FFF9F6F6" 
-                             FontSize="13.333"
+                             FontSize="{Binding FontSize}"
                              HorizontalContentAlignment="Center" 
                              VerticalContentAlignment="Stretch" 
                              HorizontalAlignment="Center"
@@ -128,7 +126,8 @@
                       d:IsHidden="False" 
                       ItemsSource="{Binding Path=CommandList}"
                       SelectedItem="{Binding Path=SelectedItem}"
-                      SelectedIndex="{Binding Path=SelectedIndex}" >
+                      SelectedIndex="{Binding Path=SelectedIndex}" 
+                      FontSize="{Binding FontSize}">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding SelectedItemChanged1}"  />

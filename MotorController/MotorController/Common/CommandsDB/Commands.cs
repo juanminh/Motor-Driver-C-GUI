@@ -747,6 +747,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "0",
                 CommandValue = "",
                 IsFloat = true,
+                FontSize = 11
             };
             DataViewCommandsList.Add(new Tuple<int, int>(3, 0), data);
             DataCommandsListbySubGroup["MotionCommand List"].Add(data);
@@ -758,6 +759,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "0",
                 CommandValue = "",
                 IsFloat = false,
+                FontSize = 11
             };
             DataViewCommandsList.Add(new Tuple<int, int>(4, 0), data);
             DataCommandsListbySubGroup["MotionCommand List"].Add(data);
@@ -769,6 +771,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "10",
                 CommandValue = "",
                 IsFloat = false,
+                FontSize = 11
             };
             DataViewCommandsList.Add(new Tuple<int, int>(4, 10), data);
             DataCommandsListbySubGroup["MotionCommand List"].Add(data);
@@ -780,6 +783,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "2",
                 CommandValue = "",
                 IsFloat = false,
+                FontSize = 11
             };
             DataViewCommandsList.Add(new Tuple<int, int>(5, 2), data);
             DataCommandsListbySubGroup["MotionCommand List"].Add(data);
@@ -792,6 +796,7 @@ namespace MotorController.CommandsDB
                 CommandValue = "",
                 IsFloat = false,
                 IsSelected = false,
+                FontSize = 11
             };
             DataViewCommandsList.Add(new Tuple<int, int>(5, 0), data);
             DataCommandsListbySubGroup["MotionCommand List"].Add(data);
@@ -803,6 +808,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "1",
                 CommandValue = "",
                 IsFloat = false,
+                FontSize = 11
             };
             DataViewCommandsList.Add(new Tuple<int, int>(5, 1), data);
             DataCommandsListbySubGroup["MotionCommand List"].Add(data);
@@ -814,6 +820,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "3",
                 CommandValue = "",
                 IsFloat = false,
+                FontSize = 11
             };
             DataViewCommandsList.Add(new Tuple<int, int>(54, 3), data);
             DataCommandsListbySubGroup["MotionCommand List2"].Add(data);
@@ -825,6 +832,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "2",
                 CommandValue = "",
                 IsFloat = false,
+                FontSize = 11
             };
             DataViewCommandsList.Add(new Tuple<int, int>(54, 2), data);
             DataCommandsListbySubGroup["MotionCommand List2"].Add(data);
@@ -836,6 +844,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "6",
                 CommandValue = "",
                 IsFloat = false,
+                FontSize = 11
             };
             DataViewCommandsList.Add(new Tuple<int, int>(54, 6), data);
             DataCommandsListbySubGroup["MotionCommand List2"].Add(data);
@@ -855,6 +864,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "1",
                 CommandList = Enums["Profiler Mode"],
                 CommandValue = "1",//first enum in list
+                FontSize = 11
             };
             //DataViewCommandsList.Add(new Tuple<int, int>(54, 1), ProfilerModeCmd);
             EnumViewCommandsList.Add(new Tuple<int, int>(54, 1), ProfilerModeCmd);
@@ -880,6 +890,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "1",
                 CommandList = Enums["S.G.Type"],
                 CommandValue = "1",//first enum in list start at 0
+                FontSize = 11
             };
             //DataViewCommandsList.Add(new Tuple<int, int>(7, 1), SignalgeneratorTypeCmd);
             EnumViewCommandsList.Add(new Tuple<int, int>(7, 1), SignalgeneratorTypeCmd);
@@ -898,6 +909,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "5",
                 CommandValue = "",
                 IsFloat = false,
+                FontSize = 11
             };
             DataViewCommandsList.Add(new Tuple<int, int>(7, 5), data);
             DataCommandsListbySubGroup["S.G.List"].Add(data);
@@ -909,6 +921,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "6",
                 CommandValue = "",
                 IsFloat = true,
+                FontSize = 11
             };
             DataViewCommandsList.Add(new Tuple<int, int>(7, 6), data);
             DataCommandsListbySubGroup["S.G.List"].Add(data);
@@ -924,6 +937,7 @@ namespace MotorController.CommandsDB
                 CommandSubId = "1",
                 CommandValue = "",
                 IsFloat = false,
+                FontSize = 11
             };
             DataViewCommandsList.Add(new Tuple<int, int>(12, 1), data);
             DataCommandsListbySubGroup["PowerOut List"].Add(data);
@@ -938,7 +952,8 @@ namespace MotorController.CommandsDB
                 CommandSubId = "2",
                 CommandValue = "",
                 IsFloat = true,
-                ReadOnly = true
+                ReadOnly = true,
+                FontSize = 11
             };
             DataViewCommandsList.Add(new Tuple<int, int>(30, 2), data);
             DataCommandsListbySubGroup["MotionStatus List"].Add(data);
@@ -950,7 +965,8 @@ namespace MotorController.CommandsDB
                 CommandSubId = "0",
                 CommandValue = "",
                 IsFloat = false,
-                ReadOnly = true
+                ReadOnly = true,
+                FontSize = 11
             };
             DataViewCommandsList.Add(new Tuple<int, int>(25, 0), data);
             DataCommandsListbySubGroup["MotionStatus List"].Add(data);
@@ -962,7 +978,8 @@ namespace MotorController.CommandsDB
                 CommandSubId = "10",
                 CommandValue = "",
                 IsFloat = false,
-                ReadOnly = true
+                ReadOnly = true,
+                FontSize = 11
             };
             DataViewCommandsList.Add(new Tuple<int, int>(25, 10), data);
             DataCommandsListbySubGroup["MotionStatus List"].Add(data);
@@ -974,7 +991,8 @@ namespace MotorController.CommandsDB
                 CommandSubId = "0",
                 CommandValue = "",
                 IsFloat = true,
-                ReadOnly = true
+                ReadOnly = true,
+                FontSize = 11
             };
             DataViewCommandsList.Add(new Tuple<int, int>(30, 0), data);
             DataCommandsListbySubGroup["MotionStatus List"].Add(data);
@@ -986,7 +1004,8 @@ namespace MotorController.CommandsDB
                 CommandSubId = "1",
                 CommandValue = "",
                 IsFloat = true,
-                ReadOnly = true
+                ReadOnly = true,
+                FontSize = 11
             };
             DataViewCommandsList.Add(new Tuple<int, int>(30, 1), data);
             DataCommandsListbySubGroup["MotionStatus List"].Add(data);
@@ -998,7 +1017,8 @@ namespace MotorController.CommandsDB
                 CommandSubId = "10",
                 CommandValue = "",
                 IsFloat = true,
-                ReadOnly = true
+                ReadOnly = true,
+                FontSize = 11
             };
             DataViewCommandsList.Add(new Tuple<int, int>(30, 10), data);
             DataCommandsListbySubGroup["MotionStatus List"].Add(data);
@@ -1010,7 +1030,8 @@ namespace MotorController.CommandsDB
                 CommandSubId = "11",
                 CommandValue = "",
                 IsFloat = true,
-                ReadOnly = true
+                ReadOnly = true,
+                FontSize = 11
             };
             DataViewCommandsList.Add(new Tuple<int, int>(30, 11), data);
             DataCommandsListbySubGroup["MotionStatus List"].Add(data);
@@ -1022,7 +1043,8 @@ namespace MotorController.CommandsDB
                 CommandSubId = "12",
                 CommandValue = "",
                 IsFloat = true,
-                ReadOnly = true
+                ReadOnly = true,
+                FontSize = 11
             };
             DataViewCommandsList.Add(new Tuple<int, int>(30, 12), data);
             DataCommandsListbySubGroup["MotionStatus List"].Add(data);
@@ -1034,7 +1056,8 @@ namespace MotorController.CommandsDB
                 CommandSubId = "1",
                 CommandValue = "",
                 IsFloat = true,
-                ReadOnly = true
+                ReadOnly = true,
+                FontSize = 11
             };
             DataViewCommandsList.Add(new Tuple<int, int>(32, 1), data);
             DataCommandsListbySubGroup["MotionStatus List"].Add(data);
@@ -1045,7 +1068,8 @@ namespace MotorController.CommandsDB
                 CommandSubId = "0",
                 CommandValue = "",
                 IsFloat = false,
-                ReadOnly = true
+                ReadOnly = true,
+                FontSize = 11
             };
             DataViewCommandsList.Add(new Tuple<int, int>(1, 0), data);
             DataCommandsListbySubGroup["MotionStatus List"].Add(data);
@@ -1080,7 +1104,8 @@ namespace MotorController.CommandsDB
                 CommandSubId = "0",
                 CommandValue = "",
                 IsFloat = false,
-                ReadOnly = true
+                ReadOnly = true,
+                FontSize = 11
             };
             DataViewCommandsList.Add(new Tuple<int, int>(26, 0), data);
             DataCommandsListbySubGroup["Position counters List"].Add(data);
@@ -1092,7 +1117,8 @@ namespace MotorController.CommandsDB
                 CommandSubId = "1",
                 CommandValue = "",
                 IsFloat = false,
-                ReadOnly = true
+                ReadOnly = true,
+                FontSize = 11
             };
             DataViewCommandsList.Add(new Tuple<int, int>(26, 1), data);
             DataCommandsListbySubGroup["Position counters List"].Add(data);
@@ -1104,7 +1130,8 @@ namespace MotorController.CommandsDB
                 CommandSubId = "2",
                 CommandValue = "",
                 IsFloat = false,
-                ReadOnly = true
+                ReadOnly = true,
+                FontSize = 11
             };
             DataViewCommandsList.Add(new Tuple<int, int>(26, 2), data);
             DataCommandsListbySubGroup["Position counters List"].Add(data);
@@ -1116,7 +1143,8 @@ namespace MotorController.CommandsDB
                 CommandSubId = "3",
                 CommandValue = "",
                 IsFloat = false,
-                ReadOnly = true
+                ReadOnly = true,
+                FontSize = 11
             };
             DataViewCommandsList.Add(new Tuple<int, int>(26, 3), data);
             DataCommandsListbySubGroup["Position counters List"].Add(data);
@@ -1394,6 +1422,8 @@ namespace MotorController.CommandsDB
             {
                 "Current Offset", "PI Current Loop", "Hall Mapping", "Feedback Direction", "PI Speed Loop", "PI Position Loop", "Abs. Enc."
             };
+            int[] CalibTimeout = new int[] { 10, 10, 70, 15, 60, 60, 60 };
+
             for(int i = 0; i < names.Length; i++) // Calibration Button
             {
                 var data = new CalibrationButtonModel
@@ -1423,16 +1453,29 @@ namespace MotorController.CommandsDB
                 #endregion CalibrationList_ToggleSwitch
 
                 // Calibration Result - Textbox //
-                var TextBoxResult = new DataViewModel
+                //var TextBoxResult = new DataViewModel
+                //{
+                //    CommandName = names[i],
+                //    CommandId = "6",
+                //    CommandSubId = (i * 2 + 2).ToString(CultureInfo.InvariantCulture),
+                //    CommandValue = "",
+                //    IsFloat = false
+                //};
+                //DataViewCommandsList.Add(new Tuple<int, int>(6, Convert.ToInt16(i * 2 + 2)), TextBoxResult);
+                //CalibartionCommandsListbySubGroup["Calibration Result List"].Add(TextBoxResult);
+
+                CalibrationWizardViewModel calibElement;
+                calibElement = new CalibrationWizardViewModel
                 {
-                    CommandName = names[i],
+                    isWizard = false,
+                    CalibrationName = names[i],
+                    CalibStatus = 0,
                     CommandId = "6",
                     CommandSubId = (i * 2 + 2).ToString(CultureInfo.InvariantCulture),
-                    CommandValue = "",
-                    IsFloat = false,
+                    CalibTimeout = CalibTimeout[i]
                 };
-                DataViewCommandsList.Add(new Tuple<int, int>(6, Convert.ToInt16(i * 2 + 2)), TextBoxResult);
-                CalibartionCommandsListbySubGroup["Calibration Result List"].Add(TextBoxResult);
+                CalibartionCommandsListbySubGroup["Calibration Result List"].Add(calibElement);
+
             }
         }
         private void BuildErrorList()

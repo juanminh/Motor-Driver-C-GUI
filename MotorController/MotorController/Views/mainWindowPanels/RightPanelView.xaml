@@ -864,7 +864,6 @@
 				Margin="8,2,8,0" 
 				FontFamily="Bell MT" 
 				FontSize="18.667"/>
-			<motorController:EnumUC Height="30" Margin="5,2,5,5" Width="164"/>
 		</StackPanel>-->
 
         <common:CollapsableGridSplitter Grid.Column="0"

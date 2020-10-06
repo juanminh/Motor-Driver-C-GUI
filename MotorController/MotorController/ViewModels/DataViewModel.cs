@@ -78,6 +78,12 @@ namespace MotorController.ViewModels
             get { return _isReadOnly; }
             set { _isReadOnly = value; OnPropertyChanged("ReadOnly"); }
         }
+        private double _fontSize = 13.33;
+        public double FontSize
+        {
+            get { return _fontSize; }
+            set { _fontSize = value; OnPropertyChanged("FontSize"); }
+        }
         private bool _enableTextBox = true;
         public bool EnableTextBox { get { return _enableTextBox; } set { _enableTextBox = value; OnPropertyChanged("EnableTextBox"); } }
 
