@@ -14,7 +14,7 @@
 	x:Class="MotorController.BottomPanel"
 	x:Name="UserControl"
 	d:DesignWidth="1200">
-<!--xmlns:behaviors="clr-namespace:MotorController.Behaviors"-->
+    <!--xmlns:behaviors="clr-namespace:MotorController.Behaviors"-->
     <UserControl.Resources>
 
         <!--  Vertical GridSplitter Handle  -->
@@ -495,12 +495,12 @@
 
     </UserControl.Resources>
     <!--<Expander Grid.Row="0" Background="Transparent">-->
-        <Grid x:Name="LayoutRoot">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="8"/>
-                <RowDefinition Height="200"/>
-            </Grid.RowDefinitions>
-            <common:CollapsableGridSplitter Grid.Row="0"
+    <Grid x:Name="LayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="8"/>
+            <RowDefinition Height="200"/>
+        </Grid.RowDefinitions>
+        <common:CollapsableGridSplitter Grid.Row="0"
                                         ResizeDirection="Rows"   
                                         Margin="0"
                                         HorizontalAlignment="Stretch"
@@ -510,7 +510,7 @@
                                         IsTabStop="False" Height="8" Grid.ColumnSpan="2"
                                         AllowDrop="True"
                                         ResizeBehavior="PreviousAndNext"/>
-            <!---->
+        <!---->
             <Grid Grid.Row="1">
                 <Grid Margin="0,1,0,0">
                     <Grid.ColumnDefinitions>
@@ -541,8 +541,8 @@
                                                   VerticalAlignment="Top"  
                                                   HorizontalAlignment="Left" 
                                                   ItemsSource="{Binding MotionCommandList}" 
-                                                  ItemTemplate="{StaticResource DataViewModel}">
-
+                                                  ItemTemplate="{StaticResource DataViewModel}"> 
+                                        <!---->
                                     </ItemsControl>
                                 </ScrollViewer>
                                 <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">

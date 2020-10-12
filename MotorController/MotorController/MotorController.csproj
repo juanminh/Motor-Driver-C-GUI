@@ -255,7 +255,8 @@
     <Compile Include="ViewModels\Operations.cs" />
     <Compile Include="ViewModels\PIDViewModel.cs" />
     <Compile Include="ViewModels\SerialProgrammer.cs" />
-    <Compile Include="ViewModels\ToggleSwitchViewModel.cs" />
+    <Compile Include="ViewModels\UC_ToggleSwitchViewModel.cs" />
+    <Compile Include="ViewModels\UC_ChannelViewModel.cs" />
     <Compile Include="ViewModels\UpDownControlModel.cs" />
     <Compile Include="ViewModels\WizardWindowViewModel.cs" />
     <Compile Include="Views\UC_CalibrationWizard.xaml.cs">
@@ -263,6 +264,9 @@
     </Compile>
     <Compile Include="Views\UC_Calibration.xaml.cs">
       <DependentUpon>UC_Calibration.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\UC_Channel.xaml.cs">
+      <DependentUpon>UC_Channel.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\UC_ToggleSwitch.xaml.cs">
       <DependentUpon>UC_ToggleSwitch.xaml</DependentUpon>
@@ -354,6 +358,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\UC_Calibration.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UC_Channel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -683,6 +691,7 @@
     <Resource Include="Images\zoomPlus_2.png" />
     <Resource Include="Images\zoomPlus_3.png" />
     <Resource Include="Images\bode.png" />
+    <Resource Include="Images\excel.png" />
     <Content Include="NDP451-KB2858728-x86-x64-AllOS-ENU.exe" />
     <None Include="WizardMotorImages\Motor.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

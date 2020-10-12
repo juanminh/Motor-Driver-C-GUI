@@ -125,6 +125,41 @@ namespace MotorController.ViewModels
             get { return _fontSize; }
             set { _fontSize = value; OnPropertyChanged("FontSize"); }
         }
+        private int _getCount = -1;
+        public int GetCount
+        {
+            get { return _getCount; }
+            set
+            {
+                _getCount = value;
+                if(_getCount >= 1)
+                    GetCount_bool = true;
+                else
+                    GetCount_bool = false;
+
+                OnPropertyChanged();
+            }
+        }
+        private bool _getCount_bool = false;
+        public bool GetCount_bool
+        {
+            get { return _getCount_bool; }
+            set
+            {
+                _getCount_bool = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool _isSelected = false;
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                _isSelected = value;
+                OnPropertyChanged();
+            }
+        }
         //public string SelectedValue
         //{
         //get { return _selectedValue != null ? (CommandList.FindIndex(x => x.StartsWith(_selectedValue))).ToString() : _selectedValue; }

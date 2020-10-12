@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Linq;
 using MotorController.CommandsDB;
 using MotorController.ViewModels;
+using System.Windows.Controls;
 
 namespace MotorController.ViewModels
 {
@@ -52,8 +53,11 @@ namespace MotorController.ViewModels
             get { return _isSelected; }
             set
             {
-                _isSelected = value;
-                OnPropertyChanged();
+                if(_isSelected != value)
+                {
+                    _isSelected = value;
+                    OnPropertyChanged();
+                }
             }
         }
         private SolidColorBrush _backgroundStdby = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#333333")); // Gray
@@ -78,7 +82,7 @@ namespace MotorController.ViewModels
             get { return _isReadOnly; }
             set { _isReadOnly = value; OnPropertyChanged("ReadOnly"); }
         }
-        private double _fontSize = 13.33;
+        private double _fontSize = 13;
         public double FontSize
         {
             get { return _fontSize; }
@@ -102,6 +106,13 @@ namespace MotorController.ViewModels
                 return _mouseLeaveCommand ?? (_mouseLeaveCommand = new RelayCommand(MouseLeaveCommandFunc));
             }
         }
+        public virtual ICommand MouseDoubleClick
+        {
+            get
+            {
+                return new RelayCommand(MouseDoubleClick_Func);
+            }
+        }
         private void BuildPacketTosend()
         {
             if(LeftPanelViewModel.GetInstance.ConnectButtonContent == "Disconnect")
@@ -118,8 +129,8 @@ namespace MotorController.ViewModels
                     };
                     Task.Factory.StartNew(action: () => { Rs232Interface.GetInstance.SendToParser(tmp); });
                 }
-                Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(CommandId), Convert.ToInt16(CommandSubId))].IsSelected = false;
-                Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(CommandId), Convert.ToInt16(CommandSubId))].Background = _background;
+                ((DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(Convert.ToInt16(CommandId), Convert.ToInt16(CommandSubId))]).IsSelected = false;
+                ((DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(Convert.ToInt16(CommandId), Convert.ToInt16(CommandSubId))]).Background = _background;
             }
         }
         public ICommand MouseLeftClickCommand
@@ -135,29 +146,35 @@ namespace MotorController.ViewModels
                 return;
             if(LeftPanelViewModel.GetInstance.ConnectButtonContent == "Disconnect")
             {
-                foreach(var list in Commands.GetInstance.DataViewCommandsList)
+                foreach(var list in Commands.GetInstance.GenericCommandsList)
                 {
                     try
                     {
-                        Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(list.Value.CommandId), Convert.ToInt16(list.Value.CommandSubId))].IsSelected = false;
-                        Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(list.Value.CommandId), Convert.ToInt16(list.Value.CommandSubId))].Background = _background;
+                        if(list.Value.GetType().Name == "DataViewModel")
+                        {
+                            ((DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(Convert.ToInt16(((DataViewModel)list.Value).CommandId), Convert.ToInt16(((DataViewModel)list.Value).CommandSubId))]).IsSelected = false;
+                            ((DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(Convert.ToInt16(((DataViewModel)list.Value).CommandId), Convert.ToInt16(((DataViewModel)list.Value).CommandSubId))]).Background = _background;
+                        }
                     }
                     catch(Exception)
                     {
                     }
                 }
-                Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(CommandId), Convert.ToInt16(CommandSubId))].IsSelected = true;
-                Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(CommandId), Convert.ToInt16(CommandSubId))].Background = _backgroundSelected;
+                ((DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(Convert.ToInt16(CommandId), Convert.ToInt16(CommandSubId))]).IsSelected = true;
+                ((DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(Convert.ToInt16(CommandId), Convert.ToInt16(CommandSubId))]).Background = _backgroundSelected;
             }
         }
         private void MouseLeaveCommandFunc()
         {
-            foreach(var list in Commands.GetInstance.DataViewCommandsList)
+            foreach(var list in Commands.GetInstance.GenericCommandsList)
             {
                 try
                 {
-                    Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(list.Value.CommandId), Convert.ToInt16(list.Value.CommandSubId))].IsSelected = false;
-                    Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(list.Value.CommandId), Convert.ToInt16(list.Value.CommandSubId))].Background = _background;
+                    if(list.Value.GetType().Name == "DataViewModel")
+                    {
+                        ((DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(Convert.ToInt16(((DataViewModel)list.Value).CommandId), Convert.ToInt16(((DataViewModel)list.Value).CommandSubId))]).IsSelected = false;
+                        ((DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(Convert.ToInt16(((DataViewModel)list.Value).CommandId), Convert.ToInt16(((DataViewModel)list.Value).CommandSubId))]).Background = _background;
+                    }
                 }
                 catch(Exception)
                 {
@@ -165,21 +182,11 @@ namespace MotorController.ViewModels
                 }
             }
         }
-
-        private SolidColorBrush _foreground = new SolidColorBrush(Colors.White);
-        public SolidColorBrush Foreground
+        private void MouseDoubleClick_Func(object sender)
         {
-            get
-            {
-                return _foreground;
-            }
-            set
-            {
-                _foreground = value;
-                OnPropertyChanged();
-            }
+            var _tb = sender as TextBox;
+            _tb.SelectAll();
         }
-
         private int _getCount = -1;
         public int GetCount
         {
@@ -205,12 +212,5 @@ namespace MotorController.ViewModels
                 OnPropertyChanged();
             }
         }
-        //public void _changeForeGround()
-        //{
-        //    if(GetCount != -1)
-        //        Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(CommandId), Convert.ToInt16(CommandSubId))].Foreground = _foreGroundNotRefreshed;
-        //    else
-        //        Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(CommandId), Convert.ToInt16(CommandSubId))].Foreground = _foreGroundRefreshed;
-        //}
     }
 }

@@ -12,6 +12,10 @@ using System.Diagnostics;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.IO;
+using System.Windows.Input;
+using MotorController.Models;
+using System.Windows;
+using MotorController.CommandsDB;
 
 namespace MotorController.ViewModels
 {
@@ -1429,6 +1433,28 @@ namespace MotorController.ViewModels
 
                 #endregion Advanced_Configuration
             }
+        }
+
+        public virtual ICommand WizardWindowLoaded
+        {
+            get
+            {
+                return new RelayCommand(WizardWindowLoaded_Func);
+            }
+        }
+        public ICommand WizardWindowClosed
+        {
+            get
+            {
+                return new RelayCommand(WizardWindowClosed_Func);
+            }
+        }
+        private void WizardWindowLoaded_Func()
+        {
+        }
+        private void WizardWindowClosed_Func()
+        {
+            LeftPanelViewModel.GetInstance._wizard_window.Visibility = Visibility.Hidden;
         }
     }
 }

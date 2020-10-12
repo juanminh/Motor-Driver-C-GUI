@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 using System.Threading;
 using System.Windows.Media.Animation;
 using System.Diagnostics;
-
+using MotorController.CommandsDB;
 
 namespace MotorController.Views
 {
@@ -131,8 +131,8 @@ namespace MotorController.Views
                 plotGeneral.Clear();
                 plotFullScale.Clear();
                 plotType_ls.Clear();
-                OscilloscopeViewModel.GetInstance._channel1SourceItems.Clear();
-                OscilloscopeViewModel.GetInstance.ChannelYtitles.Clear();
+                //OscilloscopeViewModel.GetInstance._channel1SourceItems.Clear();
+                //OscilloscopeViewModel.GetInstance.ChannelYtitles.Clear();
                 ScaleAndGainList.Clear();
             }
 
@@ -161,8 +161,12 @@ namespace MotorController.Views
                 buildPlotList();
             }
         }
+        public static ObservableCollection<string> _channel_plot_list = new ObservableCollection<string>();
+        public static Dictionary<string, string> _channel_title_list = new Dictionary<string, string>();
+
         private static void buildPlotList()
         {
+#if OLD
             int i = 0;
             ScaleAndGainList.Clear();
             OscilloscopeViewModel.GetInstance.Channel1SourceItems.Clear();
@@ -178,17 +182,17 @@ namespace MotorController.Views
                     if(element > 0)
                     {
                         ScaleAndGainList.Add(new Tuple<float, float>(1, plotFullScale[i]));
-                        Debug.WriteLine("Plot i: " + i);
+                        //Debug.WriteLine("Plot i: " + i);
 
                         OscilloscopeViewModel.GetInstance._channel1SourceItems.Add(plotName_ls[element & 0xFFFF]);
-                        Debug.WriteLine("element & 0xFFFF: " + (element & 0xFFFF));
+                        //Debug.WriteLine("element & 0xFFFF: " + (element & 0xFFFF));
 
                         //if(!OscilloscopeViewModel.GetInstance.ChannelYtitles.ContainsKey(new Tuple<string, string>((plotName_ls[element & 0xFFFF]), (plotUnit[(element >> 24) & 0xFF])))
                         OscilloscopeViewModel.GetInstance.ChannelYtitles.Add(plotName_ls[element & 0xFFFF], plotUnit[(element >> 24) & 0xFF]);
-                        Debug.WriteLine("(element >> 24) & 0xFF: " + ((element >> 24) & 0xFF));
+                        //Debug.WriteLine("(element >> 24) & 0xFF: " + ((element >> 24) & 0xFF));
 
                         plotType_ls.Add(plotType[(element >> 16) & 0xFF]);
-                        Debug.WriteLine("(element >> 16) & 0xFF: " + ((element >> 16) & 0xFF));
+                        //Debug.WriteLine("(element >> 16) & 0xFF: " + ((element >> 16) & 0xFF));
 
                     }
                     i++;
@@ -196,6 +200,41 @@ namespace MotorController.Views
             }
             catch {
             }
+#endif
+            int i = 0;
+            ScaleAndGainList = new List<Tuple<float, float>>();
+            _channel_plot_list = new ObservableCollection<string>();
+            _channel_title_list = new Dictionary<string, string>();
+            ScaleAndGainList.Add(new Tuple<float, float>((float)1.0, (float)1.0)); //Pause
+            _channel_plot_list.Add("Pause");
+            _channel_title_list.Add("Pause", "");
+            plotType_ls.Add(plotType[0]); //Pause
+            try
+            {
+                foreach(var element in plotGeneral)
+                {
+                    if(element > 0)
+                    {
+                        ScaleAndGainList.Add(new Tuple<float, float>(1, plotFullScale[i]));
+                        _channel_plot_list.Add(plotName_ls[element & 0xFFFF]);
+                        _channel_title_list.Add(plotName_ls[element & 0xFFFF], plotUnit[(element >> 24) & 0xFF]);
+                        plotType_ls.Add(plotType[(element >> 16) & 0xFF]);
+                    }
+                    i++;
+                }
+            }
+            catch
+            {
+            }
+            for(int j = 0; j < Commands.GetInstance.GenericCommandsGroup["ChannelsList"].Count; j++)
+            {
+                ((UC_ChannelViewModel)Commands.GetInstance.GenericCommandsList[
+                    new Tuple<int, int>(
+                        ((int)((UC_ChannelViewModel)Commands.GetInstance.GenericCommandsGroup["ChannelsList"][j]).CommandId),
+                        ((int)((UC_ChannelViewModel)Commands.GetInstance.GenericCommandsGroup["ChannelsList"][j]).CommandSubId))]).ChItemsSource = _channel_plot_list;
+            }
+            //OscilloscopeViewModel.GetInstance.Channel1SourceItems = _channel_plot_list;
+            OscilloscopeViewModel.GetInstance.ChannelYtitles = _channel_title_list;
         }
         public static void InitList()
         {

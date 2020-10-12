@@ -66,7 +66,7 @@ namespace MotorController.ViewModels
         {
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["InternalParam List"];
+                return Commands.GetInstance.GenericCommandsGroup["InternalParam List"];
             }
             set
             {

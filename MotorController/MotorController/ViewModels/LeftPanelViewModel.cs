@@ -17,12 +17,18 @@ using System.Windows.Media;
 using Timer = System.Timers.Timer;
 using System.Collections.Generic;
 using System.Windows.Threading;
+using System.Linq;
 
 namespace MotorController.ViewModels
 {
 
     public partial class LeftPanelViewModel : ViewModelBase
     {
+        public enum eTaskOperation
+        {
+            STOP = 0,
+            START = 1
+        }
         #region members
         public PacketFields RxPacket;
         private static readonly object TableLock = new object();
@@ -31,6 +37,9 @@ namespace MotorController.ViewModels
         private ComboBox _comboBox;
 
         private Thread _xlThread = new Thread(ThreadProc);
+
+        public ParametarsWindow _param_window;
+        public Wizard _wizard_window;
         #endregion
         #region Actions
         public ActionCommand SetAutoConnectActionCommandCommand
@@ -69,6 +78,7 @@ namespace MotorController.ViewModels
         public LeftPanelViewModel()
         {
             ComboBoxCOM = ComboBox.GetInstance;
+
         }
         public ComboBox ComboBoxCOM
         {
@@ -197,8 +207,8 @@ namespace MotorController.ViewModels
                 timeOutReadParam++;
             } while(StarterOperationFlag && timeOutReadParam <= 20);
             int _freqCount = 0;
-            if(!String.IsNullOrEmpty(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(62, 3)].CommandValue))
-                if(Convert.ToInt32(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(62, 3)].CommandValue) > 20257)
+            if(!String.IsNullOrEmpty(((DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>((int)eDeviceInfo.ID, (int)eDeviceInfo.FW_Rev)]).CommandValue))
+                if(Convert.ToInt32(((DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>((int)eDeviceInfo.ID, (int)eDeviceInfo.FW_Rev)]).CommandValue) > 20257)
                 {
                     StarterOperationFlag = true;
                     // Get Frequency 
@@ -286,6 +296,7 @@ namespace MotorController.ViewModels
             BlinkLedsTicks(START);
 
             RefreshParamsTick(STOP);
+            RefreshManger.GetInstance.BuildGenericCommandsList_Func();
             if(DebugViewModel.GetInstance.EnRefresh)
                 RefreshParamsTick(START);
 
@@ -313,13 +324,13 @@ namespace MotorController.ViewModels
         {
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["LPCommands List"];
+                return Commands.GetInstance.GenericCommandsGroup["LPCommands List"];
             }
-            set
-            {
-                _lpCommandsList = value;
-                OnPropertyChanged();
-            }
+            //set
+            //{
+            //    _lpCommandsList = value;
+            //    OnPropertyChanged();
+            //}
         }
 #endregion
 
@@ -453,7 +464,7 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.ToggleSwitchList["MotorControl"];
+                return Commands.GetInstance.GenericCommandsGroup["MotorControl"];
             }
             set
             {
@@ -467,15 +478,13 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["DriverStatus List"];
+                return Commands.GetInstance.GenericCommandsGroup["DriverStatus List"];
             }
-            set
-            {
-                _driverStatusList = value;
-                OnPropertyChanged();
-            }
-
-
+            //set
+            //{
+            //    _driverStatusList = value;
+            //    OnPropertyChanged();
+            //}
         }
 
 #endregion
@@ -514,37 +523,6 @@ namespace MotorController.ViewModels
 #endregion TXRXLed
 
 #region Send_Button
-
-        public ActionCommand SendActionCommand { get { return new ActionCommand(() => SendXLS()); } }
-
-
-        public void SendXLS()
-        {
-            if(_xlThread.ThreadState == System.Threading.ThreadState.Running)
-            {
-                System.Windows.MessageBox.Show(" Wait until the end of XLS!! thread running)))");
-                return;
-            }
-
-            if(_xlThread.ThreadState == System.Threading.ThreadState.WaitSleepJoin)
-            {
-                System.Windows.MessageBox.Show(" Wait until the end of XLS!! thread Sleeping)))");
-                return;
-            }
-
-            if(_xlThread.ThreadState == System.Threading.ThreadState.Unstarted)
-            {
-
-                _xlThread.Start();
-            }
-
-            if(_xlThread.ThreadState == System.Threading.ThreadState.Stopped)
-            {
-                _xlThread = new Thread(ThreadProc);
-                _xlThread.Start();
-            }
-
-        }
 
         public static bool Stop = false;
         public static ManualResetEvent mre = new ManualResetEvent(false);
@@ -771,68 +749,64 @@ namespace MotorController.ViewModels
         }
         public static bool _app_running = false; // Indicate the application is running and connected to a driver
 
-        public static ParametarsWindow win;
+        //public static ParametarsWindow win;
         private void ShowParametersWindow()
-        {
-            if(ParametarsWindow.WindowsOpen != true)
-            {
-                win = ParametarsWindow.GetInstance;
-                if(win.ActualHeight != 0)
-                {
-                    win.Activate();
-                }
-                else
-                {
-                    win.Show();
-                }
-            }
-            else if(win.WindowState == System.Windows.WindowState.Minimized)
-                win.WindowState = System.Windows.WindowState.Normal;
-            win.Activate();
-            win.Topmost = true;  // important
-            win.Topmost = false; // important
-            win.Focus();         // important
+        {            
+            if (_param_window == null)
+                _param_window = new ParametarsWindow();
+            else if(_param_window.Visibility == System.Windows.Visibility.Hidden)
+                _param_window = new ParametarsWindow();
+            else if(_param_window.Visibility == System.Windows.Visibility.Visible)
+                _param_window.Activate();
+            _param_window.Visibility = System.Windows.Visibility.Visible;
         }
 
-        public static Wizard WizardWindow;
+        //public static Wizard WizardWindow;
         private void ShowWizardWindow()
         {
-            if(Wizard.WindowsOpen != true)
-            {
-                WizardWindow = Wizard.GetInstance;
-                if(WizardWindow.ActualHeight != 0)
-                    WizardWindow.Activate();
-                else
-                {
-                    //WizardWindow.Show();
-                    //Thread thread = new Thread((ThreadStart)(() =>
-                    //{
-                    //    WizardWindow.Show();
+            if(_wizard_window == null)
+                _wizard_window = new Wizard();
+            else if(_wizard_window.Visibility == System.Windows.Visibility.Hidden)
+                _wizard_window = new Wizard();
+            else if(_wizard_window.Visibility == System.Windows.Visibility.Visible)
+                _wizard_window.Activate();
+            _wizard_window.Visibility = System.Windows.Visibility.Visible;
+            //if(Wizard.WindowsOpen != true)
+            //{
+            //    WizardWindow = Wizard.GetInstance;
+            //    if(WizardWindow.ActualHeight != 0)
+            //        WizardWindow.Activate();
+            //    else
+            //    {
+            //        //WizardWindow.Show();
+            //        //Thread thread = new Thread((ThreadStart)(() =>
+            //        //{
+            //        //    WizardWindow.Show();
 
-                    //    System.Windows.Threading.Dispatcher.Run();
-                    //}));
+            //        //    System.Windows.Threading.Dispatcher.Run();
+            //        //}));
 
-                    //thread.SetApartmentState(ApartmentState.STA);
-                    //thread.Start();
+            //        //thread.SetApartmentState(ApartmentState.STA);
+            //        //thread.Start();
 
-                    WizardWindow.Dispatcher.Invoke(DispatcherPriority.Normal,
-                        new Action(delegate ()
-                        {
-                            WizardWindow.Show();
-                        }
-                        ));
-                }
-            }
-            else if(WizardWindow.WindowState == System.Windows.WindowState.Minimized)
-                WizardWindow.WindowState = System.Windows.WindowState.Normal;
-            WizardWindow.Activate();
-            WizardWindow.Topmost = true;  // important
-            WizardWindow.Topmost = false; // important
-            WizardWindow.Focus();         // important
+            //        WizardWindow.Dispatcher.Invoke(DispatcherPriority.Normal,
+            //            new Action(delegate ()
+            //            {
+            //                WizardWindow.Show();
+            //            }
+            //            ));
+            //    }
+            //}
+            //else if(WizardWindow.WindowState == System.Windows.WindowState.Minimized)
+            //    WizardWindow.WindowState = System.Windows.WindowState.Normal;
+            //WizardWindow.Activate();
+            //WizardWindow.Topmost = true;  // important
+            //WizardWindow.Topmost = false; // important
+            //WizardWindow.Focus();         // important
         }
         public void Close_parmeterWindow()
         {
-            win.Close();
+            //win.Close();
         }
 
         private void ClearLog()
@@ -879,6 +853,7 @@ namespace MotorController.ViewModels
                     break;
             }
         }
+        public CancellationToken cancelRefresh = new CancellationToken(true);
         public void RefreshParams(object sender, EventArgs e)
         {
             if((_app_running && DebugViewModel.GetInstance.EnRefresh) || (_app_running && DebugViewModel.GetInstance.DebugRefresh))

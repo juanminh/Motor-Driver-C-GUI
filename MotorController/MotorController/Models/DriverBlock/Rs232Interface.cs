@@ -108,7 +108,8 @@ namespace MotorController.Models.DriverBlock
                             {
                                 _isSynced = false;
                                 Thread.Sleep(100);
-                                DataViewModel temp = (DataViewModel)Commands.GetInstance.DataCommandsListbySubGroup["DeviceSynchCommand"][0];
+                                //DataViewModel temp = (DataViewModel)Commands.GetInstance.DataCommandsListbySubGroup["DeviceSynchCommand"][0];
+                                DataViewModel temp = (DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(64, 0)];
                                 Commands.AssemblePacket(out RxPacket, Int16.Parse(temp.CommandId), Int16.Parse(temp.CommandSubId), true, false, 0);
                                 RxtoParser(this, new Rs232InterfaceEventArgs(RxPacket));
 
@@ -255,7 +256,8 @@ namespace MotorController.Models.DriverBlock
                                     if(RxtoParser != null)
                                     {
                                         _comPort.DiscardInBuffer();        //Reset internal rx buffer
-                                        DataViewModel temp = (DataViewModel)Commands.GetInstance.DataCommandsListbySubGroup["DeviceSynchCommand"][3]; // [0]: 64[0], [1]: 64[1], [2]: 1[0], [3]: 61[1]
+                                        //DataViewModel temp = (DataViewModel)Commands.GetInstance.DebugCommandsListbySubGroup["DeviceSynchCommand"][3]; // [0]: 64[0], [1]: 64[1], [2]: 1[0], [3]: 61[1]
+                                        DataViewModel temp = (DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(61, 1)];
                                         Commands.AssemblePacket(out RxPacket, Int16.Parse(temp.CommandId), Int16.Parse(temp.CommandSubId), false, false, 0);
                                         for(int i = 0; i < 3; i++)
                                         {
@@ -487,12 +489,11 @@ namespace MotorController.Models.DriverBlock
                             {
                                 Debug.WriteLine("SendData data: " + transit);
                             }
-
                         }
-                        else
-                        {
+                        //else
+                        //{
 
-                        }
+                        //}
 #endif
                         serialPort.DiscardOutBuffer();
                     }
@@ -506,15 +507,15 @@ namespace MotorController.Models.DriverBlock
         public void SendToParser(PacketFields messege)
         {
             RxtoParser?.Invoke(this, new Rs232InterfaceEventArgs(messege)); // then go to "void parseOutdata(object sender, Rs232InterfaceEventArgs e)"
-            if(Commands.GetInstance.DataViewCommandsList.ContainsKey(new Tuple<int, int>(Convert.ToInt16(messege.ID), Convert.ToInt16(messege.SubID)))
-                        && Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(messege.ID), Convert.ToInt16(messege.SubID))].IsSelected == false)
-            {
+            //if(Commands.GetInstance.DataViewCommandsList.ContainsKey(new Tuple<int, int>(Convert.ToInt16(messege.ID), Convert.ToInt16(messege.SubID)))
+            //            && Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(messege.ID), Convert.ToInt16(messege.SubID))].IsSelected == false)
+            //{
                 //Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(() =>
                 //{
                 //    Debug.WriteLine("black");
                 //    Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(messege.ID), Convert.ToInt16(messege.SubID))].Foreground = new SolidColorBrush(Colors.Black);
                 //}));
-            }
+            //}
             //if(messege.IsSet)
             //  Debug.WriteLine("{0} {1}[{2}]={3} {4}.", messege.IsSet ? "Set" : "Get", messege.ID, messege.SubID, messege.Data2Send, messege.IsFloat ? "F" : "I");
         }

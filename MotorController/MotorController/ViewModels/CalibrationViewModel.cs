@@ -44,7 +44,7 @@ namespace MotorController.ViewModels
         {
             get
             {
-                return Commands.GetInstance.CalibartionCommandsListbySubGroup["Calibration List"];
+                return Commands.GetInstance.GenericCommandsGroup["Calibration List"];
             }
             set
             {
@@ -58,7 +58,7 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.ToggleSwitchList["CalibrationList_ToggleSwitch"];
+                return Commands.GetInstance.GenericCommandsGroup["CalibrationList_ToggleSwitch"];
             }
             set
             {
@@ -71,7 +71,7 @@ namespace MotorController.ViewModels
         {
             get
             {
-                return Commands.GetInstance.CalibartionCommandsListbySubGroup["Calibration Result List"];
+                return Commands.GetInstance.GenericCommandsGroup["Calibration Result List"];
             }
             set
             {

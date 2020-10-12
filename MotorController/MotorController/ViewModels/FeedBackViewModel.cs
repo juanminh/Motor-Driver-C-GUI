@@ -7,6 +7,8 @@ using System.Collections.ObjectModel;
 using MotorController.CommandsDB;
 using System.Diagnostics;
 using MotorController.Models.DriverBlock;
+using System.Windows.Input;
+using MotorController.Models;
 
 namespace MotorController.ViewModels
 {
@@ -44,7 +46,7 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["Hall"];
+                return Commands.GetInstance.GenericCommandsGroup["Hall"];
             }
             set
             {
@@ -93,7 +95,7 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.ToggleSwitchList["Feedback Sync"];
+                return Commands.GetInstance.GenericCommandsGroup["Feedback Sync"];
             }
             set
             {
@@ -107,7 +109,7 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["FeedbackSync"];
+                return Commands.GetInstance.GenericCommandsGroup["FeedbackSync"];
             }
             set
             {
@@ -127,7 +129,7 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["Qep1"];
+                return Commands.GetInstance.GenericCommandsGroup["Qep1"];
             }
             set
             {
@@ -141,7 +143,7 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.EnumCommandsListbySubGroup["Qep1Bis"];
+                return Commands.GetInstance.GenericCommandsGroup["Qep1Bis"];
             }
             set
             {
@@ -155,7 +157,7 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.EnumCommandsListbySubGroup["Qep2Bis"];
+                return Commands.GetInstance.GenericCommandsGroup["Qep2Bis"];
             }
             set
             {
@@ -170,7 +172,7 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["Qep2"];
+                return Commands.GetInstance.GenericCommandsGroup["Qep2"];
             }
             set
             {
@@ -185,8 +187,22 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["SSI_Feedback"];
+                return Commands.GetInstance.GenericCommandsGroup["SSI_Feedback"];
             }
+
+        }
+        ICommand _mouseLeaveCommand;
+
+        public virtual ICommand ResetValue
+        {
+            get
+            {
+                return _mouseLeaveCommand ?? (_mouseLeaveCommand = new RelayCommand(MouseLeaveCommandFunc));
+            }
+        }
+
+        private void MouseLeaveCommandFunc()
+        {
 
         }
     }

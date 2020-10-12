@@ -16,7 +16,7 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["RPCommands List"]; //Motion Limit
+                return Commands.GetInstance.GenericCommandsGroup["RPCommands List"]; //Motion Limit
             }
             set
             {

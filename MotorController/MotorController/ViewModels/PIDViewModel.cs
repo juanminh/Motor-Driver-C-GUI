@@ -46,7 +46,7 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["PIDCurrent"];
+                return Commands.GetInstance.GenericCommandsGroup["PIDCurrent"];
             }
             set
             {
@@ -60,7 +60,7 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["PIDSpeed"];
+                return Commands.GetInstance.GenericCommandsGroup["PIDSpeed"];
             }
             set
             {
@@ -75,7 +75,7 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["PIDPosition"];
+                return Commands.GetInstance.GenericCommandsGroup["PIDPosition"];
             }
             set
             {
@@ -90,7 +90,7 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.ToggleSwitchList["PID_speed_loop"];
+                return Commands.GetInstance.GenericCommandsGroup["PID_speed_loop"];
             }
             set
             {
@@ -104,7 +104,7 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.ToggleSwitchList["PID_current_loop"];
+                return Commands.GetInstance.GenericCommandsGroup["PID_current_loop"];
             }
             set
             {
@@ -118,7 +118,7 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.ToggleSwitchList["PID_position_loop"];
+                return Commands.GetInstance.GenericCommandsGroup["PID_position_loop"];
             }
             set
             {

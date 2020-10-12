@@ -36,7 +36,7 @@ namespace MotorController.Views
     {
         #region members
         private string _yaxeTitle;
-        public readonly Dictionary<string, string> ChannelYtitles = new Dictionary<string, string>();
+        public Dictionary<string, string> ChannelYtitles = new Dictionary<string, string>();
 
         //CH1 ComboBox
         int ch1;
@@ -258,7 +258,7 @@ namespace MotorController.Views
 
         }
         #region Yzoom
-        private double _yzoom = 0;
+        public double _yzoom = 0;
         public ActionCommand YPlus
         {
             get { return new ActionCommand(YDirPlus); }
@@ -961,7 +961,7 @@ namespace MotorController.Views
                 OnPropertyChanged("SelectedCh2DataSource");
             }
         }
-        private void ChannelsplotActivationMerge()
+        public void ChannelsplotActivationMerge()
         {
             //Activate plot
             if(OscilloscopeParameters.ChanTotalCounter > 0 && plotActivationstate == 0)
@@ -983,8 +983,13 @@ namespace MotorController.Views
                 OnExampleExit();
             }
         }
-        private void ChannelsYaxeMerge(int ch, int comboBox)
+        public void ChannelsYaxeMerge(int ch, int comboBox)
         {
+            if(comboBox == 1)
+                ch1 = ch;
+            else
+                ch2 = ch;
+
             if(ch >= 0 && OscilloscopeParameters.ScaleAndGainList.Count != 0)
             {
                 //Channel One
@@ -1066,6 +1071,15 @@ namespace MotorController.Views
                 ActChenCount = 1;
                 _isFull = false;
                 pivot = 0;
+                if(ChartData == null)
+                    ChartData = new XyDataSeries<float, float>();
+                if(ChartData1 == null)
+                    ChartData1 = new XyDataSeries<float, float>();
+                if(_series0 == null)
+                    _series0 = new XyDataSeries<float, float>();
+                if(_series1 == null)
+                    _series1 = new XyDataSeries<float, float>();
+
                 using(this.ChartData.SuspendUpdates())
                 {
                     _series0.Clear();
@@ -1076,7 +1090,7 @@ namespace MotorController.Views
                 AllYData.Clear();
             }
         }
-        private void StepRecalcMerge()
+        public void StepRecalcMerge()
         {
             if(_timer != null)
                 lock(_timer)
@@ -1225,10 +1239,12 @@ namespace MotorController.Views
                 if(_yAxisUnits == value)
                     return;
                 /*if(_yAxisUnits == "")
-                {
+                {*/
                     _yAxisUnits = value;
-                }
+                /*}
                 else */
+                OnPropertyChanged("YAxisUnits");
+#if OLD
                 if(_yAxisUnits != null)
                 {
                     char[] separator = { ':', ',' };
@@ -1277,6 +1293,7 @@ namespace MotorController.Views
                 }
 
                 OnPropertyChanged("YAxisUnits");
+#endif
             }
         }
         public ModifierType ChartModifier
@@ -1434,7 +1451,7 @@ namespace MotorController.Views
                         if(OscilloscopeParameters.ChanTotalCounter == 1)
                         {
                             //Debug.WriteLine("1: OscilloscopeParameters.Gain - OscilloscopeParameters.FullScale - SubGain1: " + OscilloscopeParameters.Gain.ToString() + " - " + OscilloscopeParameters.FullScale.ToString() + " - " + SubGain1.ToString());
-                            #region SingleChan
+#region SingleChan
                             if(ParserRayonM1.GetInstanceofParser.FifoplotList.IsEmpty)
                             {
                                 if(AllYData.Count > 1 && _isFull)
@@ -1471,7 +1488,7 @@ namespace MotorController.Views
                                     }
                                 }
                                 */
-                                #region RecordAray
+#region RecordAray
                                 if(RecFlag)
                                 {
                                     if(ch1 != 0)
@@ -1491,7 +1508,7 @@ namespace MotorController.Views
                                         }
                                     }
                                 }
-                                #endregion RecordAray
+#endregion RecordAray
                                 else
                                 {
                                     if(ch1 != 0)
@@ -1520,7 +1537,7 @@ namespace MotorController.Views
                                 }
                                 else
                                     return;
-                                #region Switch
+#region Switch
                                 switch(State)
                                 {
                                     case (2): //Fills y buffer
@@ -1695,15 +1712,15 @@ namespace MotorController.Views
                                         }
                                         break;
                                 }
-                                #endregion Switch
+#endregion Switch
                             }
-                            #endregion
+#endregion
                         }
                         else if(OscilloscopeParameters.ChanTotalCounter == 2)// Two channels
                         {
                             //Debug.WriteLine("2: OscilloscopeParameters.Gain - OscilloscopeParameters.FullScale - SubGain1: " + OscilloscopeParameters.Gain.ToString() + " - " + OscilloscopeParameters.FullScale.ToString() + " - " + SubGain1.ToString());
 
-                            #region DoubleChan
+#region DoubleChan
                             if(ParserRayonM1.GetInstanceofParser.FifoplotList.IsEmpty)
                             {
                                 if(AllYData.Count > 1 && _isFull)
@@ -1730,7 +1747,7 @@ namespace MotorController.Views
                             Debug.WriteLine("Plot 1: " + DateTime.Now.ToString("h:mm:ss.fff"));
 #endif
                                 //Collect data from first channel
-                                #region RecordAray
+#region RecordAray
                                 if(RecFlag)
                                 {
                                     while(ParserRayonM1.GetInstanceofParser.FifoplotList.TryDequeue(out item))
@@ -1743,7 +1760,7 @@ namespace MotorController.Views
                                         RecList2.Add(calcFactor((item2 * OscilloscopeParameters.Gain2 * OscilloscopeParameters.FullScale2 * SubGain2), 2));
                                     }
                                 }
-                                #endregion RecordAray
+#endregion RecordAray
                                 else
                                 {
                                     while(ParserRayonM1.GetInstanceofParser.FifoplotList.TryDequeue(out item))
@@ -1765,7 +1782,7 @@ namespace MotorController.Views
                                 }
                                 else
                                     return;
-                                #region Switch
+#region Switch
 #if(DEBUG && DEBUG_PLOT)
                             Debug.WriteLine(POintstoPlot);
                             Debug.WriteLine(State);
@@ -1773,7 +1790,7 @@ namespace MotorController.Views
                                 switch(State)
                                 {
                                     case (2): //Fills y buffer
-                                        #region case2
+#region case2
                                         float[] temp;
                                         float[] temp2;
 
@@ -1833,7 +1850,7 @@ namespace MotorController.Views
 
                                         AllYData.RemoveRange(0, temp.Length - 1);
                                         AllYData2.RemoveRange(0, temp2.Length - 1);
-                                        #endregion case2
+#endregion case2
                                         break;
                                     case (4):
                                         //_isFull = false;
@@ -1917,13 +1934,13 @@ namespace MotorController.Views
                                         }
                                         break;
                                 }
-                                #endregion Switch
+#endregion Switch
 
 #if(DEBUG && DEBUG_PLOT)
                             Debug.WriteLine("Plot 2: " + DateTime.Now.ToString("h:mm:ss.fff"));
 #endif
                             }
-                            #endregion
+#endregion
                         }
                     }
                 }
@@ -2237,6 +2254,21 @@ namespace MotorController.Views
                     _is_freeze = false;
                 }
                 OnPropertyChanged("IsFreeze");
+            }
+        }
+
+        private ObservableCollection<object> _channelsList;
+        public ObservableCollection<object> ChannelsList
+        {
+
+            get
+            {
+                return Commands.GetInstance.GenericCommandsGroup["ChannelsList"];
+            }
+            set
+            {
+                _channelsList = value;
+                OnPropertyChanged();
             }
         }
     }

@@ -57,6 +57,15 @@ namespace MotorController.ViewModels
 
             //Load();
         }
+        private ObservableCollection<object> _bodeStart;
+        public ObservableCollection<object> BodeStart
+        {
+
+            get
+            {
+                return Commands.GetInstance.GenericCommandsGroup["BodeStart"];
+            }
+        }
         private bool _bodeStartStop = false;
 
         public bool BodeStartStop
@@ -394,7 +403,7 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["DataBodeList"];
+                return Commands.GetInstance.GenericCommandsGroup["DataBodeList"];
             }
             set
             {
@@ -409,7 +418,7 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.EnumCommandsListbySubGroup["EnumBodeList"];
+                return Commands.GetInstance.GenericCommandsGroup["EnumBodeList"];
             }
             set
             {

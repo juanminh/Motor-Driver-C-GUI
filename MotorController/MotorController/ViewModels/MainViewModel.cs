@@ -32,14 +32,23 @@ namespace MotorController.ViewModels
         {
 
         }
-
-        #region Actions
+#if DEBUG
+        private WindowState _windowState = WindowState.Normal;
+#else
+        private WindowState _windowState = WindowState.Maximized;
+#endif
+        public WindowState WindowState
+        {
+            get { return _windowState; }
+            set {; }
+        }
+#region Actions
         public ActionCommand SetAutoConnectActionCommandCommand
         {
             get { return new ActionCommand(AutoConnectCommand); }
         }
 
-        #endregion
+#endregion
 
         public double MaxHeight
         {
@@ -72,7 +81,7 @@ namespace MotorController.ViewModels
             set { }
         }
 
-        #region Debug
+#region Debug
 
         //private Example _selectedExample;
         //private  string connectButtonContent;
@@ -102,7 +111,7 @@ namespace MotorController.ViewModels
         //    Left_Grid_Width = 10;
         //    Left_Grid_Width = 10;
         //}
-        #endregion
+#endregion
         public MainViewModel()
         {
             //System.Windows.Media.Color color;

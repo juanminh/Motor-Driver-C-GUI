@@ -567,7 +567,7 @@ namespace MotorController.Models.ParserBlock
                     {
                         if(getSet == 1)
                             RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), transit.ToString(), true);
-                        else if(ParametarsWindow.ParametersWindowTabSelected == (int)eTab.DEBUG)
+                        else if(ParametarsWindowViewModel.TabControlIndex == (int)eTab.DEBUG)
                             RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), newPropertyValuef.ToString(), isInt);
 #if(DEBUG && DEBUG_OPERATION)
 #if DEBUG_SET
@@ -590,7 +590,7 @@ namespace MotorController.Models.ParserBlock
                         {
                             RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), newPropertyValuef.ToString(), false);
                         }
-                        else if(ParametarsWindow.ParametersWindowTabSelected == (int)eTab.DEBUG)
+                        else if(ParametarsWindowViewModel.TabControlIndex == (int)eTab.DEBUG)
                             RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), newPropertyValuef.ToString(), isInt);
 
 #if(DEBUG && DEBUG_OPERATION)
@@ -667,13 +667,17 @@ namespace MotorController.Models.ParserBlock
             // In order to achive best performance using good old-fashioned for loop: twice faster! then "foreach (byte[] packet in PlotList)"
             //Debug.WriteLine("ParsePlot 1" + DateTime.Now.ToString("h:mm:ss.fff"));
             string plotType_ch1 = "", plotType_ch2 = "";
-            if(OscilloscopeParameters.plotType_ls.Count != 0)
+            try
             {
-                plotType_ch1 = OscilloscopeParameters.plotType_ls.ElementAt(OscilloscopeViewModel.GetInstance.Ch1SelectedIndex);
-                plotType_ch2 = OscilloscopeParameters.plotType_ls.ElementAt(OscilloscopeViewModel.GetInstance.Ch2SelectedIndex);
+                if(OscilloscopeParameters.plotType_ls.Count != 0)
+                {
+                    plotType_ch1 = OscilloscopeParameters.plotType_ls.ElementAt(OscilloscopeViewModel.GetInstance.Ch1SelectedIndex);
+                    plotType_ch2 = OscilloscopeParameters.plotType_ls.ElementAt(OscilloscopeViewModel.GetInstance.Ch2SelectedIndex);
 
-                // maked plotType_ch1 or plotType_ch2 empty in case one of them is pause
+                    // maked plotType_ch1 or plotType_ch2 empty in case one of them is pause
+                }
             }
+            catch { }
             for(var i = 0; i < PlotList.Count; i++)
             {
                 lock(PlotListLock)

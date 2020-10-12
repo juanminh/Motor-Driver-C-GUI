@@ -12,7 +12,7 @@ using System.Windows.Media;
 
 namespace MotorController.ViewModels
 {
-    public class ToggleSwitchViewModel : ViewModelBase
+    public class UC_ToggleSwitchViewModel : ViewModelBase
     {
 
         private SolidColorBrush _backgroundSmallFontSelected = new SolidColorBrush(Colors.Gray);
@@ -35,7 +35,7 @@ namespace MotorController.ViewModels
                 if(!LeftPanelViewModel._app_running)
                     return;
                 StackTrace stackTrace = new StackTrace();
-                if(stackTrace.GetFrame(1).GetMethod().Name == "UpdateModel")
+                if(stackTrace.GetFrame(1).GetMethod().Name == "UpdateModel" || stackTrace.GetFrame(1).GetMethod().Name == "updateConnectionStatus")
                 {
                     CheckedBackground = CheckedBackground_final;
                     _is_checked = value;
@@ -108,7 +108,31 @@ namespace MotorController.ViewModels
         }
         public string CheckedText { get { return _checkedText; } set { _checkedText = value; OnPropertyChanged(); } }
         public string UnCheckedText { get { return _uncheckedText; } set { _uncheckedText = value; OnPropertyChanged(); } }
+        private int _getCount = -1;
+        public int GetCount
+        {
+            get { return _getCount; }
+            set
+            {
+                _getCount = value;
+                if(_getCount >= 1)
+                    GetCount_bool = true;
+                else
+                    GetCount_bool = false;
 
+                OnPropertyChanged();
+            }
+        }
+        private bool _getCount_bool = false;
+        public bool GetCount_bool
+        {
+            get { return _getCount_bool; }
+            set
+            {
+                _getCount_bool = value;
+                OnPropertyChanged();
+            }
+        }
         //public SolidColorBrush BackgroundSmallFont
         //{
         //    get

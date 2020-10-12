@@ -32,8 +32,8 @@ namespace MotorController
 
         private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (ParametarsWindow.WindowsOpen == true)
-                LeftPanelViewModel.GetInstance.Close_parmeterWindow();
+            //if (ParametarsWindow.WindowsOpen == true)
+            //    LeftPanelViewModel.GetInstance.Close_parmeterWindow();
             App.Current.Shutdown();
             Process.GetCurrentProcess().Kill();
         }

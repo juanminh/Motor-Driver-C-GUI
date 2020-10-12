@@ -48,9 +48,9 @@
             <DataTemplate x:Key="IntegerUCModel">
                 <views:IntegerUC></views:IntegerUC>
             </DataTemplate>
-            <DataTemplate x:Key="CalibrationButtonModel">
+            <!--<DataTemplate x:Key="CalibrationButtonModel">
                 <views:CalibrationButton></views:CalibrationButton>
-            </DataTemplate>
+            </DataTemplate>-->
             <DataTemplate x:Key="BoolViewIndModel">
                 <views:BoolViewInd></views:BoolViewInd>
             </DataTemplate>
@@ -63,8 +63,11 @@
             <DataTemplate x:Key="CalibrationWizardViewModel">
                 <views:UC_CalibrationWizard></views:UC_CalibrationWizard>
             </DataTemplate>
-            <DataTemplate x:Key="ToggleSwitchViewModel">
+            <DataTemplate x:Key="UC_ToggleSwitchViewModel">
                 <views:UC_ToggleSwitch></views:UC_ToggleSwitch>
+            </DataTemplate>
+            <DataTemplate x:Key="UC_ChannelViewModel">
+                <views:UC_Channel></views:UC_Channel>
             </DataTemplate>
             <!--<DataTemplate x:Key="LeftPanelViewModel">
                 <local:GridSplitter></local:GridSplitter>

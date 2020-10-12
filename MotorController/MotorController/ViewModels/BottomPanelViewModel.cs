@@ -75,7 +75,7 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["MotionCommand List"]; //Motion Limit
+                return Commands.GetInstance.GenericCommandsGroup["MotionCommand List"]; //Motion Limit
             }
             set
             {
@@ -90,7 +90,7 @@ namespace MotorController.ViewModels
         {
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["MotionCommand List2"]; //Motion Limit
+                return Commands.GetInstance.GenericCommandsGroup["MotionCommand List2"]; //Motion Limit
             }
             set
             {
@@ -103,7 +103,7 @@ namespace MotorController.ViewModels
         {
             get
             {
-                return Commands.GetInstance.DigitalInputListbySubGroup["Digital Input List"]; //Motion Limit
+                return Commands.GetInstance.GenericCommandsGroup["Digital Input List"]; //Motion Limit
             }
             set
             {
@@ -116,7 +116,7 @@ namespace MotorController.ViewModels
         {
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["Position counters List"]; //Motion Limit
+                return Commands.GetInstance.GenericCommandsGroup["Position counters List"]; //Motion Limit
             }
             set
             {
@@ -130,7 +130,7 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["MotionStatus List"];
+                return Commands.GetInstance.GenericCommandsGroup["MotionStatus List"];
             }
             set
             {
@@ -145,7 +145,7 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.EnumCommandsListbySubGroup["Control"];
+                return Commands.GetInstance.GenericCommandsGroup["Control"];
             }
 
 
@@ -156,7 +156,7 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["Motor"];
+                return Commands.GetInstance.GenericCommandsGroup["Motor"];
             }
 
         }
@@ -164,14 +164,14 @@ namespace MotorController.ViewModels
         {
             get
             {
-                return Commands.GetInstance.EnumCommandsListbySubGroup["Profiler Mode"];
+                return Commands.GetInstance.GenericCommandsGroup["Profiler Mode"];
             }
         }
         public ObservableCollection<object> SGTypeList
         {
             get
             {
-                return Commands.GetInstance.EnumCommandsListbySubGroup["S.G.Type"];
+                return Commands.GetInstance.GenericCommandsGroup["S.G.Type"];
             }
         }
         public ObservableCollection<object> SGList
@@ -179,7 +179,7 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["S.G.List"];
+                return Commands.GetInstance.GenericCommandsGroup["S.G.List"];
             }
             set
             {

@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:MotorController.Views"
              xmlns:Helpers="clr-namespace:MotorController.Helpers"
              mc:Ignorable="d" 
-             d:DesignHeight="40" d:DesignWidth="300">
+             d:DesignHeight="30" d:DesignWidth="300">
     <Grid>
         <Grid.ColumnDefinitions>
             <!--<ColumnDefinition Width="5"/>
@@ -53,7 +53,7 @@
         <local:UC_Calibration Grid.Column="0">
             <local:UC_Calibration.Style>
                 <Style TargetType="{x:Type local:UC_Calibration}">
-                    <Setter Property="Height" Value="28" />
+                    <Setter Property="Height" Value="25" />
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding isWizard}" Value="true">
                             <Setter Property="Height" Value="22" />
@@ -62,8 +62,8 @@
                 </Style>
             </local:UC_Calibration.Style>
         </local:UC_Calibration>
-        <Border BorderBrush="White" CornerRadius="0,4,4,0" Grid.Column="1">
-            <Border.Style>
+        <!--<Border BorderBrush="White" CornerRadius="0,4,4,0" Grid.Column="1">-->
+            <!--<Border.Style>
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="BorderThickness" Value="1" />
                     <Style.Triggers>
@@ -72,8 +72,8 @@
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
-            </Border.Style>
-            <StackPanel Orientation="Horizontal">
+            </Border.Style>-->
+            <StackPanel Grid.Column="1" Orientation="Horizontal" VerticalAlignment="Center">
                 <Grid Width="2"/>
                 <TextBox Height="22" Width="100"
                  IsHitTestVisible="False"
@@ -125,7 +125,7 @@
                                 </MultiDataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </TextBox.Style>
+                </TextBox.Style>
                 </TextBox>
                 <Grid Width="5"/>
                 <Helpers:RoundBoolLed 
@@ -135,7 +135,7 @@
                               HorizontalAlignment="Center"/>
                 <Grid Width="5"/>
             </StackPanel>
-        </Border>
+        <!--</Border>-->
     </Grid>
 </UserControl>
 

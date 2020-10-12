@@ -49,7 +49,7 @@ namespace MotorController.ViewModels
         {
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["AnalogCommand List"];
+                return Commands.GetInstance.GenericCommandsGroup["AnalogCommand List"];
             }
             set
             {

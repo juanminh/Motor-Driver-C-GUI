@@ -803,7 +803,7 @@
                     <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="MOTOR" VerticalAlignment="Bottom" Width="70" FontWeight="Bold" FontSize="15" Foreground="White"/>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <TextBlock HorizontalAlignment="Left" Text="Controller           Version 1.3.j" VerticalAlignment="Top" Width="Auto" Foreground="#FF5499D3" FontSize="12"/>
+                    <TextBlock HorizontalAlignment="Left" Text="Controller           Version 1.3.k" VerticalAlignment="Top" Width="Auto" Foreground="#FF5499D3" FontSize="12"/>
                 </Grid>
                 <Grid Grid.Row="2" Height="10">
                 </Grid>
@@ -888,7 +888,7 @@
                 <Grid Grid.Row="6">
                     <ItemsControl Height="auto"
                               ItemsSource="{Binding LPCommandsList}" 
-                              ItemTemplate="{StaticResource DataViewModel}"/>
+                              ItemTemplate="{StaticResource DataViewModel}" IsHitTestVisible="False" Focusable="False"/>
                 </Grid>
                 <Grid Grid.Row="7" Height="10">
                 </Grid>
@@ -1020,10 +1020,10 @@
                                VerticalAlignment="Center" Foreground="White" Margin="0,0,0,3">Motor</TextBlock>
                     <wpfSpark:ToggleSwitch Grid.Column="2" Width="100" Height="25"  VerticalAlignment="Center" IsChecked="{Binding MotorOnToggleChecked, Mode=TwoWay}" />-->
                     <!--<Views:UC_ToggleSwitch Grid.Column="0" />-->
-                    <ItemsControl Grid.Column="0"
+                    <ItemsControl Grid.Column="0" VerticalAlignment="Center"
                                   ItemsSource="{Binding MotorControlTogglewitch, Mode=TwoWay}"
-                                  ItemTemplate="{StaticResource ToggleSwitchViewModel}"></ItemsControl>
-                    <Helpers:RoundBoolLed Grid.Column="1" CurrStatus="{Binding LedMotorStatus}" Width="25" Height="25"/>
+                                  ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}"></ItemsControl>
+                    <Helpers:RoundBoolLed Grid.Column="1" VerticalAlignment="Center" CurrStatus="{Binding LedMotorStatus}" Width="20" Height="20"/>
                 </Grid>
             </Grid>
         </ScrollViewer>

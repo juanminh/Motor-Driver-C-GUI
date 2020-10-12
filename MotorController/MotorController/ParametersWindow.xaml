@@ -16,10 +16,17 @@
         xmlns:Helpers="clr-namespace:MotorController.Helpers"
         ResizeMode="CanMinimize"
         Title="Driver Parameters" Height="560" Width="810"
-        Closing="Window_Closing"
         Icon="./Themes/MotorController.png"
         WindowStartupLocation="CenterOwner"
         Name="ParametersWindow">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded" >
+            <i:InvokeCommandAction Command="{Binding ParametersWindowLoaded}" />
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Closing" >
+            <i:InvokeCommandAction Command="{Binding ParametersWindowClosed}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Window.Background>
         <ImageBrush ImageSource="pack://siteoforigin:,,,/Views/HomeBackground.jpg"/>
     </Window.Background>
@@ -28,7 +35,7 @@
         <viewModels:ParametarsWindowViewModel/>
     </Window.DataContext>
 
-    
+
     <Window.Resources>
         <Style x:Key="CalToggleButtonStyle"
            BasedOn="{StaticResource ToggleButtonStyleCalibrationPan}"
@@ -109,7 +116,14 @@
     </Window.Resources>
 
     <Grid >
-        <TabControl TabStripPlacement="Top" SelectionChanged="TabSelected" Margin="1,0,-1,0" FontSize="12">
+        <!--SelectionChanged="TabSelected"-->
+        <TabControl TabStripPlacement="Top"  Margin="1,0,-1,0" FontSize="12" 
+                    SelectedItem="{Binding TabControlItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged" >
+                    <i:InvokeCommandAction Command="{Binding ParametersWindowTabSelection}" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <TabControl.Background>
                 <ImageBrush ImageSource="pack://siteoforigin:,,,/Views/HomeBackground.jpg"/>
             </TabControl.Background>
@@ -171,12 +185,18 @@
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <GroupBox Grid.Row="0" Header="Hall" HorizontalContentAlignment="Center">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="LostFocus" >
+                                    <i:InvokeCommandAction Command="{Binding ResetValue}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"></RowDefinition>
                                     <RowDefinition Height="Auto"></RowDefinition>
                                 </Grid.RowDefinitions>
-                                <ItemsControl Grid.Row="1" ItemsSource="{Binding HallFeedBackList}" ItemTemplate="{StaticResource DataViewModel}" />
+                                <ItemsControl Grid.Row="1" ItemsSource="{Binding HallFeedBackList}" 
+                                              ItemTemplate="{StaticResource DataViewModel}"/>
                             </Grid>
                         </GroupBox>
                         <GroupBox Grid.Row="2" Header="Feedback Sync" HorizontalContentAlignment="Center">
@@ -195,7 +215,7 @@
                                 </Border>-->
                                 <ItemsControl Grid.Row="0"
                                   ItemsSource="{Binding ExternalInterpolation, Mode=TwoWay}"
-                                  ItemTemplate="{StaticResource ToggleSwitchViewModel}"></ItemsControl>
+                                  ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}"></ItemsControl>
                                 <ItemsControl Grid.Row="1" ItemsSource="{Binding FeedbackSyncList}" ItemTemplate="{StaticResource DataViewModel}" />
                             </Grid>
                         </GroupBox>
@@ -312,7 +332,7 @@
                                 </Grid.RowDefinitions>
                                 <ItemsControl Grid.Row="0" ItemsSource="{Binding PidSpeedList}" ItemTemplate="{StaticResource DataViewModel}"/>
                                 <ItemsControl Grid.Row="1" ItemsSource="{Binding PID_speed_loop, Mode=TwoWay}" 
-                                              ItemTemplate="{StaticResource ToggleSwitchViewModel}"/>
+                                              ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}"/>
                             </Grid>
                         </GroupBox>
                         <GroupBox  Grid.Row="1" Header="Current" Margin="0,10,0,0">
@@ -322,7 +342,7 @@
                                     <RowDefinition Height="Auto"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <ItemsControl Grid.Row="0" ItemsSource="{Binding PidCurrentList}" ItemTemplate="{StaticResource DataViewModel}"/>
-                                <ItemsControl Grid.Row="1" ItemsSource="{Binding PID_current_loop, Mode=TwoWay}" ItemTemplate="{StaticResource ToggleSwitchViewModel}"/>
+                                <ItemsControl Grid.Row="1" ItemsSource="{Binding PID_current_loop, Mode=TwoWay}" ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}"/>
                             </Grid>
                         </GroupBox>
                     </Grid>
@@ -338,7 +358,7 @@
                                     <RowDefinition Height="Auto"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <ItemsControl Grid.Row="0" ItemsSource="{Binding PidPositionList}" ItemTemplate="{StaticResource DataViewModel}"/>
-                                <ItemsControl Grid.Row="1" ItemsSource="{Binding PID_position_loop, Mode=TwoWay}" ItemTemplate="{StaticResource ToggleSwitchViewModel}"/>
+                                <ItemsControl Grid.Row="1" ItemsSource="{Binding PID_position_loop, Mode=TwoWay}" ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}"/>
                             </Grid>
                         </GroupBox>
                     </Grid>
@@ -362,7 +382,7 @@
                                     <RowDefinition Height="Auto"></RowDefinition>
                                 </Grid.RowDefinitions>
                                 <ItemsControl Grid.Row="0" ItemsSource="{Binding FilterList}" ItemTemplate="{StaticResource DataViewModel}"/>
-                                <ItemsControl Grid.Row="1" ItemsSource="{Binding Filter_Enable, Mode=TwoWay}" ItemTemplate="{StaticResource ToggleSwitchViewModel}"/>
+                                <ItemsControl Grid.Row="1" ItemsSource="{Binding Filter_Enable, Mode=TwoWay}" ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}"/>
                             </Grid>
                         </GroupBox>
                     </Grid>
@@ -431,9 +451,9 @@
                                     </Grid.ColumnDefinitions>
                                     <!--<ItemsControl Grid.Column="0" Width="Auto" ItemsSource="{Binding CalibrationList}" 
                                                   ItemTemplate="{StaticResource CalibrationButtonModel}"/>-->
-<!--ItemTemplate="{StaticResource ToggleSwitchViewModel}"-->
+                                    <!--ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}"-->
                                     <ItemsControl Grid.Column="0" Width="Auto" Height="auto" ItemsSource="{Binding CalibrationList_ToggleSwitch}" 
-                                                  ItemTemplate="{StaticResource ToggleSwitchViewModel}">
+                                                  ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}">
 
                                     </ItemsControl>
                                     <!--<ItemsControl Grid.Column="1" Width="Auto" ItemsSource="{Binding CalibrationResultList}" ItemTemplate="{StaticResource DataViewModel}"/>-->
@@ -605,7 +625,8 @@
                                             BorderThickness="0.5" 
                                                  VerticalAlignment="Center">
                                         <StackPanel Orientation="Horizontal">
-                                            <TextBlock Margin="3" FontSize="12">Save to Excel</TextBlock>
+                                            <Image Source="pack://application:,,,/Images/excel.png"/>
+                                            <TextBlock Margin="3" FontSize="12">Save</TextBlock>
                                         </StackPanel>
                                     </Button>
                                     <Line Grid.Column="3" Margin="2,2" Stroke="#FFD6D5D5" Y2="16" VerticalAlignment="Center" Fill="#FFC1C1C1"/>
@@ -643,17 +664,17 @@
                                 <TextBlock Grid.Row="0" Width="230" Text="Parameters" Foreground="White" Background="Gray" HorizontalAlignment="Left" Margin="0,0,-1,0"/>
                                 <Grid Grid.Row="2">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="60"/>
-                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="5"/>
                                         <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition Width="5"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Grid.Column="0" Text="  Bode Operation" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+                                    <!--<TextBlock Grid.Column="0" Text="  Bode Operation" HorizontalAlignment="Left" VerticalAlignment="Center"/>
                                     <wpfSpark:ToggleSwitch Grid.Column="2" Width="55" Height="25" HorizontalAlignment="Right" VerticalAlignment="Center" 
                                                     FontSize="9" UncheckedText="Start" CheckedText="Stop"
-                                                    IsChecked="{Binding BodeStartStop, Mode=TwoWay}"/>
-                                    <Helpers:RoundBoolLed Grid.Column="4" Width="10" Height="10" VerticalAlignment="Stretch">
+                                                    IsChecked="{Binding BodeStartStop, Mode=TwoWay}"/>-->
+                                    <ItemsControl Grid.Column="0" ItemsSource="{Binding BodeStart}" ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}"/>
+                                    <Helpers:RoundBoolLed Grid.Column="2" Width="15" Height="15" VerticalAlignment="Stretch">
                                         <Helpers:RoundBoolLed.Style>
                                             <Style TargetType="Helpers:RoundBoolLed">
                                                 <Setter Property="CurrStatus" Value="0" />

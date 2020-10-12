@@ -45,7 +45,7 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["FilterList"];
+                return Commands.GetInstance.GenericCommandsGroup["FilterList"];
             }
             set
             {
@@ -94,7 +94,7 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.ToggleSwitchList["Filter_Enable"];
+                return Commands.GetInstance.GenericCommandsGroup["Filter_Enable"];
             }
             set
             {

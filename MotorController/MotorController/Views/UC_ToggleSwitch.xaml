@@ -7,7 +7,7 @@
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              mc:Ignorable="d" 
              xmlns:wpfspark="clr-namespace:WPFSpark;assembly=WPFSpark"
-             d:DesignHeight="30" d:DesignWidth="250">
+             d:DesignHeight="30" d:DesignWidth="300">
     <UserControl.Resources>
         <Storyboard x:Key="OnMouseEnter1">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Glow">
@@ -36,6 +36,11 @@
                 <EasingDoubleKeyFrame KeyTime="0:0:0.1" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+        <Style x:Key="TextBoxStyle"
+           TargetType="TextBox">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderBrush" Value="Transparent" />
+        </Style>
     </UserControl.Resources>
     <UserControl.RenderTransform>
         <TransformGroup>
@@ -62,14 +67,14 @@
         </EventTrigger>
     </UserControl.Triggers>
     <Grid>
-        <Border BorderBrush="White" BorderThickness="1" CornerRadius="3">
+        <Border BorderBrush="White" BorderThickness="0" CornerRadius="3">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="0.6*"/>
                     <ColumnDefinition Width="0.3*"/>
                 </Grid.ColumnDefinitions>
-                <Border Background="#7F000000" Grid.Column="0">
-                    <Grid>
+                <Border Grid.Column="0">
+                    <Grid Height="Auto">
                         <Border x:Name="Glow" BorderThickness="1" CornerRadius="4,0,0,4" Opacity="0">
                             <Border.Background>
                                 <RadialGradientBrush RadiusX="1.397" Center="1.012,0.5" GradientOrigin="1.012,0.5" RadiusY="0.68">
@@ -86,15 +91,18 @@
                                 </LinearGradientBrush>
                             </Border.Background>
                         </Border>
-                        <TextBlock  
-                   FontSize="11" 
-                   Text="{Binding Label, Mode=TwoWay}"
-                   Foreground="White"
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
-                   Focusable="True">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
+                        <TextBox  
+                            VerticalContentAlignment="Center"
+                            IsReadOnly="True"
+                            IsHitTestVisible="False"
+                            FontSize="13" 
+                            Height="25"
+                            Text="{Binding Label, Mode=TwoWay}"
+                            Foreground="White"
+                            HorizontalAlignment="Center"
+                            Focusable="True">    
+                            <TextBox.Style>
+                                <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxStyle}">
                                     <Setter Property="TextDecorations" Value="None" />
                                     <Setter Property="FontWeight" Value="Normal" />
                                     <Style.Triggers>
@@ -109,15 +117,15 @@
                                         </MultiDataTrigger>
                                     </Style.Triggers>
                                 </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
+                            </TextBox.Style>
+                        </TextBox>
                     </Grid>
                 </Border>
                 <Grid Grid.Column="1">
                     <wpfspark:ToggleSwitch
-                          ThumbWidth="40"
-                        Width="80"
-                        Height="{Binding Height}"
+                            ThumbWidth="30"
+                            Width="60"
+                            Height="{Binding Height}"
                                ThumbGlowColor="Gray"
                                ThumbBackground="Gray"
                                CheckedForeground="White"
@@ -138,10 +146,10 @@
                                ThumbCornerRadius="4"
                                ThumbShineCornerRadius="4"
                                
-                               FontSize="15"
+                               FontSize="13"
                                FontWeight="Normal"
                                HorizontalAlignment="Stretch"
-                                IsChecked="{Binding IsChecked}">
+                               IsChecked="{Binding IsChecked}">
                         <!--<wpfspark:ToggleSwitch.BorderBrush>
                 <LinearGradientBrush EndPoint="0,0"
                                      StartPoint="0,1">

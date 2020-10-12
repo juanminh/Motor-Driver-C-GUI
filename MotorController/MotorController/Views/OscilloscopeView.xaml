@@ -166,7 +166,18 @@
             			Source="pack://application:,,,/Images/plusZoom.png" Width="20" Height="20" Stretch="Fill" />
                     </StackPanel>
                 </Button>
-                <Border Grid.Column="5" BorderBrush="White" BorderThickness="1" Margin="10,0,0,0" Width="25" Height="22" CornerRadius="1,0,0,1">
+                <ItemsControl Grid.Column="5" Width="Auto" Height="auto" 
+                              ItemsSource="{Binding ChannelsList}" 
+                              ItemTemplate="{StaticResource UC_ChannelViewModel}"
+                              VerticalAlignment="Stretch"
+                              HorizontalAlignment="Stretch">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+                <!--<Border Grid.Column="5" BorderBrush="White" BorderThickness="1" Margin="10,0,0,0" Width="25" Height="22" CornerRadius="1,0,0,1">
                     <TextBlock Height="22" Foreground="White" Text="CH1" Background="#82F7E31D" FontSize="12"/>
                 </Border>
                 <Border Grid.Column="6" MinWidth="100" Height="22" BorderBrush="White" BorderThickness="1" CornerRadius="0" Margin="-2,0,0,0">
@@ -200,8 +211,8 @@
                             <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
                         </i:Interaction.Behaviors>
                     </TextBox>
-                </Border>
-                <Border Grid.Column="9" BorderBrush="White" BorderThickness="1" Margin="5,0,0,0" Width="25" Height="22" CornerRadius="1,0,0,1">
+                </Border>-->
+                <!--<Border Grid.Column="9" BorderBrush="White" BorderThickness="1" Margin="5,0,0,0" Width="25" Height="22" CornerRadius="1,0,0,1">
                     <TextBlock Height="22" Foreground="White" Background="#7F1810D4" Text="CH2" FontSize="12"/>
                 </Border>
                 <Border Grid.Column="10" MinWidth="100" Height="22" BorderBrush="White" BorderThickness="1" CornerRadius="0" Margin="-2,0,0,0">
@@ -236,7 +247,7 @@
                             <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
                         </i:Interaction.Behaviors>
                     </TextBox>
-                </Border>
+                </Border>-->
                 <Line Grid.Column="13" Margin="2,2" Stroke="#FFD6D5D5" Y2="16" VerticalAlignment="Center" Fill="#FFC1C1C1"/>
                 <ToggleButton Grid.Column="14" Style="{StaticResource ExampleToolbarToggleButtonStyle}" IsChecked="{Binding IsFreeze}" BorderThickness="0" 
                               BorderBrush="#FFF3F3F3" Margin="0,1" VerticalAlignment="Center" Height="24.0107">

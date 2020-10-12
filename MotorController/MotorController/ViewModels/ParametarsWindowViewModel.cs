@@ -8,23 +8,26 @@ using System.Threading;
 using MotorController.Models.DriverBlock;
 using System.Diagnostics;
 using MotorController.ViewModels;
+using MotorController.Views;
+using System.ComponentModel;
+using System.Windows;
 
 namespace MotorController.ViewModels
 {
-    enum eTab // = tabIndex - 1
+    enum eTab
     {
-        CONTROL = 0,
-        FEED_BACKS = 1,
-        PID = 2,
-        FILTER = 3,
-        DEVICE = 4,
-        I_O = 5,
-        CALIBRATION = 6,
-        BODE = 7,
-        MAINTENANCE = 8,
-        DEBUG = 9
+        CONTROL = 1,
+        FEED_BACKS = 2,
+        PID = 3,
+        FILTER = 4,
+        DEVICE = 5,
+        I_O = 6,
+        CALIBRATION = 7,
+        BODE = 8,
+        MAINTENANCE = 9,
+        DEBUG = 10
     };
-    internal class ParametarsWindowViewModel : ViewModelBase
+    internal class ParametarsWindowViewModel : Window//,  ViewModelBase
     {
         private CalibrationViewModel _calibrationViewModel;
         private MotionViewModel _motionViewModel;
@@ -53,10 +56,6 @@ namespace MotorController.ViewModels
                     return _instance;
                 }
             }
-            set
-            {
-                _instance = value;
-            }
         }
         public ParametarsWindowViewModel()
         {
@@ -70,107 +69,70 @@ namespace MotorController.ViewModels
             _bodeViewModel = BodeViewModel.GetInstance;
             _pidViewModel = PIDViewModel.GetInstance;
             //_loadParamsViewModel = LoadParamsViewModel.GetInstance;
+
         }
         ~ParametarsWindowViewModel() { }
         public ObservableCollection<object> ControlList
         {
             get
             {
-                return Commands.GetInstance.EnumCommandsListbySubGroup["Control"];
+                return Commands.GetInstance.GenericCommandsGroup["Control"];
             }
         }
 
         public ObservableCollection<object> MotorlList
         {
-
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["Motor"];
+                return Commands.GetInstance.GenericCommandsGroup["Motor"];
             }
-
         }
         private ObservableCollection<object> _motorLimitlList;
         public ObservableCollection<object> MotorLimitlList
         {
-
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["Motion Limit"];
+                return Commands.GetInstance.GenericCommandsGroup["Motion Limit"];
             }
-            set
-            {
-                _motorLimitlList = value;
-                OnPropertyChanged();
-            }
-
         }
         private ObservableCollection<object> _currentLimitList;
         public ObservableCollection<object> CurrentLimitList
         {
-
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["CurrentLimit List"];
+                return Commands.GetInstance.GenericCommandsGroup["CurrentLimit List"];
             }
-            set
-            {
-                _currentLimitList = value;
-                OnPropertyChanged();
-            }
-
         }
         public ObservableCollection<object> DigitalFeedbackFeedBackList
         {
-
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["Digital"];
+                return Commands.GetInstance.GenericCommandsGroup["Digital"];
             }
-
         }
         public ObservableCollection<object> AnalogFeedbackFeedBackList
         {
-
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["Analog"];
+                return Commands.GetInstance.GenericCommandsGroup["Analog"];
             }
-
         }
-
-     
         private ObservableCollection<object> _baudrateList;
         public ObservableCollection<object> DeviceSerialList
         {
-
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["DeviceSerial"];
+                return Commands.GetInstance.GenericCommandsGroup["DeviceSerial"];
             }
-
         }
         public ObservableCollection<object> BaudrateList
         {
-
             get
             {
-                return Commands.GetInstance.EnumCommandsListbySubGroup["BaudrateList"];
-            }
-            set
-            {
-                _baudrateList = value;
-                OnPropertyChanged();
-            }
-
-        }
-
-        public virtual ICommand TestEnumChange
-        {
-            get
-            {
-                return new RelayCommand(EnumChange, CheckValue);
+                return Commands.GetInstance.GenericCommandsGroup["BaudrateList"];
             }
         }
+
         public CalibrationViewModel CalibrationViewModel
         {
             get { return _calibrationViewModel; }
@@ -202,10 +164,6 @@ namespace MotorController.ViewModels
         {
             get { return _filterViewModel; }
         }
-        //public LoadParamsViewModel LoadParamsViewModel
-        //{
-        //    get { return _loadParamsViewModel; }
-        //}
         public DebugViewModel DebugViewModel
         {
             get { return _debugViewModel; }
@@ -214,13 +172,61 @@ namespace MotorController.ViewModels
         {
             get { return _bodeViewModel; }
         }
-        private bool CheckValue()
+       
+        public virtual ICommand ParametersWindowTabSelection
         {
-            return true;
+            get
+            {
+                return new RelayCommand(RebuildGenericCommandsList);
+            }
         }
-
-        private void EnumChange()
+        public virtual ICommand ParametersWindowLoaded
         {
+            get
+            {
+                return new RelayCommand(ParametersWindowLoaded_Func);
+            }
+        }
+        public /*virtual*/ ICommand ParametersWindowClosed
+        {
+            get
+            {
+                return new RelayCommand(ParametersWindowClosed_Func);
+            }
+        }
+        private void RebuildGenericCommandsList()
+        {
+            LeftPanelViewModel.GetInstance.cancelRefresh = new CancellationToken(true);
+            RefreshManger.GetInstance.BuildGenericCommandsList_Func();
+        }
+        private void ParametersWindowLoaded_Func()
+        {
+            TabControlIndex = 1;
+            LeftPanelViewModel.GetInstance.cancelRefresh = new CancellationToken(true);
+            RefreshManger.GetInstance.BuildGenericCommandsList_Func();
+        }
+        private void ParametersWindowClosed_Func()
+        {
+            TabControlIndex = -1;
+            LeftPanelViewModel.GetInstance._param_window.Visibility = Visibility.Hidden;
+
+            LeftPanelViewModel.GetInstance.cancelRefresh = new CancellationToken(true);
+            RefreshManger.GetInstance.BuildGenericCommandsList_Func();
+        }
+        public static int TabControlIndex = -1;
+        //public int TabControlIndex
+        //{
+        //    get { return _tabControlIndex; }
+        //    set { _tabControlIndex = value; OnPropertyChanged(); }
+        //}
+        private TabItem _tabControlItem;
+        public TabItem TabControlItem
+        {
+            get { return _tabControlItem; }
+            set { _tabControlItem = value;
+                TabControlIndex = value.TabIndex;
+                //OnPropertyChanged(); 
+            }
         }
     }
 }

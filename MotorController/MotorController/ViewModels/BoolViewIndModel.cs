@@ -26,6 +26,30 @@ namespace MotorController.ViewModels
         public string CommandSubId { get { return _baseModel.CommandSubID; } set { _baseModel.CommandSubID = value; } }
 
         public bool IsFloat { get { return _baseModel.IsFloat; } set { _baseModel.IsFloat = value; } }
+        private int _getCount = -1;
+        public int GetCount
+        {
+            get { return _getCount; }
+            set
+            {
+                _getCount = value;
+                if(_getCount >= 1)
+                    GetCount_bool = true;
+                else
+                    GetCount_bool = false;
 
+                OnPropertyChanged();
+            }
+        }
+        private bool _getCount_bool = false;
+        public bool GetCount_bool
+        {
+            get { return _getCount_bool; }
+            set
+            {
+                _getCount_bool = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }

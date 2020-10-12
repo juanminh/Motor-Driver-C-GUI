@@ -22,12 +22,16 @@ namespace MotorController.Models.DriverBlock
 
     public class RefreshManger
     {
-        public static int tab = Views.ParametarsWindow.ParametersWindowTabSelected;
+        public static int tab = ParametarsWindowViewModel.TabControlIndex;
         private static readonly object Synlock = new object();
+        static readonly object _refresh_lock = new object();
+
         private static RefreshManger _instance;
 
         public static Dictionary<string, ObservableCollection<object>> BuildGroup = new Dictionary<string, ObservableCollection<object>>();
         public static Dictionary<Tuple<int, int>, DataViewModel> BuildList = new Dictionary<Tuple<int, int>, DataViewModel>();
+        public static Dictionary<Tuple<int, int>, object> BuildGenericCommandsList = new Dictionary<Tuple<int, int>, object>();
+
         public static int TempTab = 0;
         public static RefreshManger GetInstance
         {
@@ -55,6 +59,7 @@ namespace MotorController.Models.DriverBlock
             var AllCalList = Commands.GetInstance.CalibartionCommandsListbySubGroup;
             var AllBoolList = Commands.GetInstance.DigitalInputListbySubGroup;
             var AllDebugList = Commands.GetInstance.DebugCommandsListbySubGroup;
+            var AllToggleSwitchList = Commands.GetInstance.ToggleSwitchList;
 
             foreach(var list in AllEnumList)
             {
@@ -106,6 +111,20 @@ namespace MotorController.Models.DriverBlock
                             CommandId = CommandId,
                             CommandSubId = CommandSubId,
                             IsFloat = IsFloat,
+                        };
+                        BuildGroup[list.Key].Add(data);
+                    }
+                    else if(list.Key == "Calibration Result List")
+                    {
+                        CalibrationWizardViewModel temp = sub_list as CalibrationWizardViewModel;
+                        string CommandName = temp.CalibrationName;
+                        string CommandId = temp.CommandId;
+                        string CommandSubId = temp.CommandSubId;
+                        var data = new DataViewModel
+                        {
+                            CommandName = CommandName,
+                            CommandId = CommandId,
+                            CommandSubId = CommandSubId
                         };
                         BuildGroup[list.Key].Add(data);
                     }
@@ -178,13 +197,31 @@ namespace MotorController.Models.DriverBlock
                     BuildGroup[list.Key].Add(data);
                 }
             }
+            foreach(var list in AllToggleSwitchList)
+            {
+                BuildGroup.Add(list.Key, new ObservableCollection<object>());
+                foreach(var sub_list in list.Value)
+                {
+                    UC_ToggleSwitchViewModel temp = sub_list as UC_ToggleSwitchViewModel;
+                    string CommandName = temp.Label;
+                    string CommandId = temp.CommandId.ToString();
+                    string CommandSubId = temp.CommandSubId.ToString();
+                    var data = new DataViewModel
+                    {
+                        CommandName = CommandName,
+                        CommandId = CommandId,
+                        CommandSubId = CommandSubId
+                    };
+                    BuildGroup[list.Key].Add(data);
+                }
+            }
         }
         public string[] GroupToExecute(int tabIndex)//
         {
             string[] PanelElements = new string[] { "DriverStatus List", "Channel List", "MotionCommand List2", "MotionCommand List",
                                                     "Profiler Mode", "S.G.List", "S.G.Type", "PowerOut List",
                                                     "MotionStatus List", "Digital Input List", "Position counters List",
-                                                    "UpperMainPan List", "LPCommands List" };// , "Driver Type" ,
+                                                    "UpperMainPan List", "LPCommands List", "ChannelsList" };// , "Driver Type" ,
             string[] arr = new string[] { };
             if(DebugViewModel.GetInstance.EnRefresh)
             {
@@ -194,13 +231,13 @@ namespace MotorController.Models.DriverBlock
                         arr = new string[] { "Control", "Motor", "Motion Limit", "CurrentLimit List" };
                         break;
                     case (int)eTab.FEED_BACKS:
-                        arr = new string[] { "Hall", "FeedbackSync", "FeedbackSyncBackGround", "Qep1", "Qep2", "SSI_Feedback", "Qep1Bis", "Qep2Bis" };
+                        arr = new string[] { "Hall", "FeedbackSync", "Feedback Sync", "Qep1", "Qep2", "SSI_Feedback", "Qep1Bis", "Qep2Bis" };
                         break;
                     case (int)eTab.PID:
-                        arr = new string[] { "PIDCurrent", "PIDSpeed", "PIDPosition", "PIDListBackGround" };
+                        arr = new string[] { "PIDCurrent", "PIDSpeed", "PIDPosition", "PID_speed_loop", "PID_current_loop", "PID_position_loop"/*, "PIDListBackGround"*/ };
                         break;
                     case (int)eTab.FILTER:
-                        arr = new string[] { "FilterList", "FilterBackGround" };
+                        arr = new string[] { "FilterList", "Filter_Enable" };
                         break;
                     case (int)eTab.DEVICE:
                         arr = new string[] { "DeviceSerial", "BaudrateList" };
@@ -210,15 +247,12 @@ namespace MotorController.Models.DriverBlock
                         break;
                     case (int)eTab.CALIBRATION:
                         if(WizardWindowViewModel.GetInstance.StartEnable)
-                            arr = new string[] { "Calibration Result List", "Calibration List" };
+                            arr = new string[] { "Calibration Result List", "Calibration List", "CalibrationList_ToggleSwitch" };
                         break;
                     case (int)eTab.BODE:
-                        arr = new string[] { "DataBodeList", "BodeListBackGround", "EnumBodeList" };
+                        arr = new string[] { "DataBodeList", "BodeStart", "EnumBodeList" };
 
                         break;
-                    //case 8:
-                    //    arr = new string[] { "AnalogCommand List" };
-                    //    break;
                     default:
                         return PanelElements;
                 }
@@ -228,7 +262,7 @@ namespace MotorController.Models.DriverBlock
             {
                 switch(tabIndex)
                 {
-                    case 7:
+                    case (int)eTab.DEBUG:
                         arr = arr.Concat(new string[] { "Debug List" }).ToArray();
                         break;
                     default:
@@ -240,15 +274,181 @@ namespace MotorController.Models.DriverBlock
         }
 
         private int _iteratorRefresh = 0;
+        public void BuildGenericCommandsList_Func()
+        {
+            lock(_refresh_lock)
+            {
+                _iteratorRefresh = -1;
+                tab = ParametarsWindowViewModel.TabControlIndex;
+                //if(ParametarsWindow.WindowsOpen == false)
+                //    tab = -1;
+                /*else*/
+                //if(ParametarsWindowViewModel.TabControlIndex == -1)
+                //    tab = 0;
+
+                if(tab != TempTab || DebugViewModel.updateList)
+                {
+                    BuildGenericCommandsList = new Dictionary<Tuple<int, int>, object>();
+                    string[] _groups_to_execute = GroupToExecute(tab);
+                    for(int i = 0; i < _groups_to_execute.Length; i++)
+                    {
+                        if(Commands.GetInstance.GenericCommandsGroup.ContainsKey(_groups_to_execute[i]))
+                            foreach(var _data in Commands.GetInstance.GenericCommandsGroup[_groups_to_execute[i]])
+                            {
+                                switch(_data.GetType().Name)
+                                {
+                                    case "DataViewModel":
+                                        if(!BuildGenericCommandsList.ContainsKey(new Tuple<int, int>(Convert.ToInt16(((DataViewModel)_data).CommandId), Convert.ToInt16(((DataViewModel)_data).CommandSubId))))
+                                            BuildGenericCommandsList.Add(new Tuple<int, int>(Convert.ToInt16(((DataViewModel)_data).CommandId), Convert.ToInt16(((DataViewModel)_data).CommandSubId)), (DataViewModel)_data);
+                                        break;
+                                    case "EnumViewModel":
+                                        if(!BuildGenericCommandsList.ContainsKey(new Tuple<int, int>(Convert.ToInt16(((DataViewModel)_data).CommandId), Convert.ToInt16(((DataViewModel)_data).CommandSubId))))
+                                            BuildGenericCommandsList.Add(new Tuple<int, int>(Convert.ToInt16(((DataViewModel)_data).CommandId), Convert.ToInt16(((DataViewModel)_data).CommandSubId)), (EnumViewModel)_data);
+                                        break;
+                                    case "UC_ToggleSwitchViewModel":
+                                        if(!BuildGenericCommandsList.ContainsKey(new Tuple<int, int>(Convert.ToInt16(((UC_ToggleSwitchViewModel)_data).CommandId), Convert.ToInt16(((UC_ToggleSwitchViewModel)_data).CommandSubId))))
+                                            BuildGenericCommandsList.Add(new Tuple<int, int>(Convert.ToInt16(((UC_ToggleSwitchViewModel)_data).CommandId), Convert.ToInt16(((UC_ToggleSwitchViewModel)_data).CommandSubId)), (UC_ToggleSwitchViewModel)_data);
+                                        break;
+                                    case "CalibrationWizardViewModel":
+                                        if(!BuildGenericCommandsList.ContainsKey(new Tuple<int, int>(Convert.ToInt16(((CalibrationWizardViewModel)_data).CommandId), Convert.ToInt16(((CalibrationWizardViewModel)_data).CommandSubId))))
+                                            BuildGenericCommandsList.Add(new Tuple<int, int>(Convert.ToInt16(((CalibrationWizardViewModel)_data).CommandId), Convert.ToInt16(((CalibrationWizardViewModel)_data).CommandSubId)), (CalibrationWizardViewModel)_data);
+                                        break;
+                                    case "BoolViewIndModel":
+                                        if(!BuildGenericCommandsList.ContainsKey(new Tuple<int, int>(Convert.ToInt16(((BoolViewIndModel)_data).CommandId), Convert.ToInt16(((BoolViewIndModel)_data).CommandSubId))))
+                                            BuildGenericCommandsList.Add(new Tuple<int, int>(Convert.ToInt16(((BoolViewIndModel)_data).CommandId), Convert.ToInt16(((BoolViewIndModel)_data).CommandSubId)), (BoolViewIndModel)_data);
+                                        break;
+                                    case "UC_ChannelViewModel":
+                                        if(!BuildGenericCommandsList.ContainsKey(new Tuple<int, int>(Convert.ToInt16(((UC_ChannelViewModel)_data).CommandId), Convert.ToInt16(((UC_ChannelViewModel)_data).CommandSubId))))
+                                            BuildGenericCommandsList.Add(new Tuple<int, int>(Convert.ToInt16(((UC_ChannelViewModel)_data).CommandId), Convert.ToInt16(((UC_ChannelViewModel)_data).CommandSubId)), (UC_ChannelViewModel)_data);
+                                        break;
+                                }
+                            }
+                    }
+                    //TempTab = tab;
+                    //if(DebugViewModel.updateList)
+                    //   DebugViewModel.updateList = false;
+                    LeftPanelViewModel.GetInstance.cancelRefresh = new CancellationToken(false);
+                }
+            }
+        }
         public void StartRefresh()
+        {
+            if(LeftPanelViewModel.GetInstance.cancelRefresh.IsCancellationRequested)
+                return;
+
+            if(BuildGenericCommandsList.Count == 0)
+            {
+                if(DebugViewModel.GetInstance.DebugRefresh)
+                    DebugViewModel.GetInstance.DebugRefresh = false;
+                TempTab = -1;
+                return;
+            }
+
+            lock(_refresh_lock)
+            {
+                if(_iteratorRefresh < 0)
+                    _iteratorRefresh = BuildGenericCommandsList.Count - 1;
+
+                int element = _iteratorRefresh--;
+                if(element < BuildGenericCommandsList.Count && element > -1)
+                {
+                    try
+                    {
+                        switch(BuildGenericCommandsList.Values.ToList().ElementAt(element).GetType().Name)
+                        {
+                            case "DataViewModel":
+                                if(!((DataViewModel)BuildGenericCommandsList.Values.ToList().ElementAt(element)).IsSelected)
+                                {
+                                    Rs232Interface.GetInstance.SendToParser(new PacketFields
+                                    {
+                                        ID = Convert.ToInt16(((DataViewModel)BuildGenericCommandsList.Values.ToList().ElementAt(element)).CommandId),
+                                        SubID = Convert.ToInt16(((DataViewModel)BuildGenericCommandsList.Values.ToList().ElementAt(element)).CommandSubId),
+                                        IsSet = false,
+                                        IsFloat = ((DataViewModel)BuildGenericCommandsList.Values.ToList().ElementAt(element)).IsFloat
+                                    });
+                                    ((DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(
+                                            Convert.ToInt16(((DataViewModel)BuildGenericCommandsList.Values.ToList().ElementAt(element)).CommandId),
+                                            Convert.ToInt16(((DataViewModel)BuildGenericCommandsList.Values.ToList().ElementAt(element)).CommandSubId))]).GetCount++;
+                                }
+                                break;
+                            case "EnumViewModel":
+                                if(!((EnumViewModel)BuildGenericCommandsList.Values.ToList().ElementAt(element)).IsSelected)
+                                {
+                                    Rs232Interface.GetInstance.SendToParser(new PacketFields
+                                    {
+                                        ID = Convert.ToInt16(((EnumViewModel)BuildGenericCommandsList.Values.ToList().ElementAt(element)).CommandId),
+                                        SubID = Convert.ToInt16(((EnumViewModel)BuildGenericCommandsList.Values.ToList().ElementAt(element)).CommandSubId),
+                                        IsSet = false,
+                                        IsFloat = false
+                                    });
+                                    ((EnumViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(
+                                            Convert.ToInt16(((EnumViewModel)BuildGenericCommandsList.Values.ToList().ElementAt(element)).CommandId),
+                                            Convert.ToInt16(((EnumViewModel)BuildGenericCommandsList.Values.ToList().ElementAt(element)).CommandSubId))]).GetCount++;
+                                }
+                                break;
+                            case "UC_ToggleSwitchViewModel":
+                                Rs232Interface.GetInstance.SendToParser(new PacketFields
+                                {
+                                    ID = Convert.ToInt16(((UC_ToggleSwitchViewModel)BuildGenericCommandsList.Values.ToList().ElementAt(element)).CommandId),
+                                    SubID = Convert.ToInt16(((UC_ToggleSwitchViewModel)BuildGenericCommandsList.Values.ToList().ElementAt(element)).CommandSubId),
+                                    IsSet = false,
+                                    IsFloat = false
+                                });
+                                ((UC_ToggleSwitchViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(
+                                        Convert.ToInt16(((UC_ToggleSwitchViewModel)BuildGenericCommandsList.Values.ToList().ElementAt(element)).CommandId),
+                                        Convert.ToInt16(((UC_ToggleSwitchViewModel)BuildGenericCommandsList.Values.ToList().ElementAt(element)).CommandSubId))]).GetCount++;
+                                break;
+                            case "CalibrationWizardViewModel":
+                                Rs232Interface.GetInstance.SendToParser(new PacketFields
+                                {
+                                    ID = Convert.ToInt16(((CalibrationWizardViewModel)BuildGenericCommandsList.Values.ToList().ElementAt(element)).CommandId),
+                                    SubID = Convert.ToInt16(((CalibrationWizardViewModel)BuildGenericCommandsList.Values.ToList().ElementAt(element)).CommandSubId),
+                                    IsSet = false,
+                                    IsFloat = false
+                                });
+                                ((CalibrationWizardViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(
+                                        Convert.ToInt16(((CalibrationWizardViewModel)BuildGenericCommandsList.Values.ToList().ElementAt(element)).CommandId),
+                                        Convert.ToInt16(((CalibrationWizardViewModel)BuildGenericCommandsList.Values.ToList().ElementAt(element)).CommandSubId))]).GetCount++;
+                                break;
+                            case "BoolViewIndModel":
+                                Rs232Interface.GetInstance.SendToParser(new PacketFields
+                                {
+                                    ID = Convert.ToInt16(((BoolViewIndModel)BuildGenericCommandsList.Values.ToList().ElementAt(element)).CommandId),
+                                    SubID = Convert.ToInt16(((BoolViewIndModel)BuildGenericCommandsList.Values.ToList().ElementAt(element)).CommandSubId),
+                                    IsSet = false,
+                                    IsFloat = false
+                                });
+                                ((BoolViewIndModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(
+                                        Convert.ToInt16(((BoolViewIndModel)BuildGenericCommandsList.Values.ToList().ElementAt(element)).CommandId),
+                                        Convert.ToInt16(((BoolViewIndModel)BuildGenericCommandsList.Values.ToList().ElementAt(element)).CommandSubId))]).GetCount++;
+                                break;
+                            case "UC_ChannelViewModel":
+                                Rs232Interface.GetInstance.SendToParser(new PacketFields
+                                {
+                                    ID = Convert.ToInt16(((UC_ChannelViewModel)BuildGenericCommandsList.Values.ToList().ElementAt(element)).CommandId),
+                                    SubID = Convert.ToInt16(((UC_ChannelViewModel)BuildGenericCommandsList.Values.ToList().ElementAt(element)).CommandSubId),
+                                    IsSet = false,
+                                    IsFloat = false
+                                });
+                                ((UC_ChannelViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(
+                                        Convert.ToInt16(((UC_ChannelViewModel)BuildGenericCommandsList.Values.ToList().ElementAt(element)).CommandId),
+                                        Convert.ToInt16(((UC_ChannelViewModel)BuildGenericCommandsList.Values.ToList().ElementAt(element)).CommandSubId))]).GetCount++;
+                                break;
+                        }
+                    }
+                    catch(Exception e) { }
+                }
+            }
+        }
+        public void StartRefresh_old()
         {
             if(Rs232Interface._comPort != null)
             {
                 if(Rs232Interface._comPort.IsOpen)
                 {
-                    tab = Views.ParametarsWindow.ParametersWindowTabSelected;
-                    if(ParametarsWindow.WindowsOpen == false)
-                        tab = -1;
+                    //tab = Views.ParametarsWindow.ParametersWindowTabSelected;
+                    //if(ParametarsWindow.WindowsOpen == false)
+                    //    tab = -1;
 #if REFRESH_MANAGER
                 Debug.WriteLine("StartRefresh: " + DateTime.Now.ToString("h:mm:ss.fff"));
 #endif
@@ -295,28 +495,28 @@ namespace MotorController.Models.DriverBlock
                     if(_iteratorRefresh < 0)
                         _iteratorRefresh = BuildList.Count - 1;
 
-                        int element = _iteratorRefresh--;
-                        if(element < BuildList.Count && element > -1)
+                    int element = _iteratorRefresh--;
+                    if(element < BuildList.Count && element > -1)
+                    {
+                        if(!BuildList.ElementAt(element).Value.IsSelected)
                         {
-                            if(!BuildList.ElementAt(element).Value.IsSelected)
+                            Rs232Interface.GetInstance.SendToParser(new PacketFields
                             {
-                                Rs232Interface.GetInstance.SendToParser(new PacketFields
-                                {
-                                    Data2Send = BuildList.ElementAt(element).Value.CommandValue,
-                                    ID = Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId),
-                                    SubID = Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId),
-                                    IsSet = false,
-                                    IsFloat = BuildList.ElementAt(element).Value.IsFloat
-                                });
-                                if(BuildList.Count > 0)
-                                {
-                                    if(Commands.GetInstance.DataViewCommandsList.ContainsKey(
-                                        new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))))
-                                        Commands.GetInstance.DataViewCommandsList[
-                                            new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))].GetCount++;
-                                }
+                                Data2Send = BuildList.ElementAt(element).Value.CommandValue,
+                                ID = Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId),
+                                SubID = Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId),
+                                IsSet = false,
+                                IsFloat = BuildList.ElementAt(element).Value.IsFloat
+                            });
+                            if(BuildList.Count > 0)
+                            {
+                                if(Commands.GetInstance.DataViewCommandsList.ContainsKey(
+                                    new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))))
+                                    Commands.GetInstance.DataViewCommandsList[
+                                        new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))].GetCount++;
                             }
                         }
+                    }
 
 #if REFRESH_MANAGER
                 Debug.WriteLine("EndRefresh: " + DateTime.Now.ToString("h:mm:ss.fff"));
@@ -409,6 +609,32 @@ namespace MotorController.Models.DriverBlock
                 default:
                     return "No Info(" + returnedValue + ")";
             }
+        }
+        int CalibStatus(string returnedValue)
+        {
+            int StateTemp = 0;
+            switch(Convert.ToInt16(returnedValue))
+            {
+                case 0:
+                    StateTemp = RoundBoolLed.IDLE;
+                    break;
+                case 1:
+                    StateTemp = RoundBoolLed.RUNNING;
+                    break;
+                case 2:
+                    StateTemp = RoundBoolLed.FAILED;
+                    break;
+                case 3:
+                    StateTemp = RoundBoolLed.PASSED;
+                    break;
+                case 5:
+                    StateTemp = RoundBoolLed.STOPPED;
+                    break;
+                default:
+                    StateTemp = RoundBoolLed.FAILED;
+                    break;
+            }
+            return StateTemp;
         }
         string CalibrationGetError(string returnedValue)
         {
@@ -583,39 +809,113 @@ namespace MotorController.Models.DriverBlock
                             return;
                     }
                 }
-                LeftPanelViewModel.GetInstance.ValueChange = false;
+                //LeftPanelViewModel.GetInstance.ValueChange = false;
                 if(/*DebugViewModel.GetInstance.EnRefresh || LeftPanelViewModel.GetInstance.StarterOperationFlag ||*/ true)
                 {
                     #region Calibration
-                    if(commandidentifier.Item1 == 6)
+                    if(commandidentifier.Item1 == 6666)
                     {
+                        //if(Commands.GetInstance.CalibrationWizardCommands.ContainsKey(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)))
+                        //    Commands.GetInstance.CalibrationWizardCommands[new Tuple<int, int>(6, commandidentifier.Item2)].CalibStatus = CalibStatus(newPropertyValue);
 
-                        if(Commands.GetInstance.CalibartionCommandsList.ContainsKey(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)))
-                        {
-                            if(Convert.ToInt16(newPropertyValue) == 0)
-                                Commands.GetInstance.CalibartionCommandsList[new Tuple<int, int>(6, commandidentifier.Item2)].ButtonContent = "Run";
-                            else if(Convert.ToInt16(newPropertyValue) == 1)
-                                Commands.GetInstance.CalibartionCommandsList[new Tuple<int, int>(6, commandidentifier.Item2)].ButtonContent = "Running";
-                        }
-                        else if(Commands.GetInstance.DataViewCommandsList.ContainsKey(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)))
-                            Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)].CommandValue = CalibrationGetStatus(newPropertyValue);
-                        else if(commandidentifier.Item1 == 6 && commandidentifier.Item2 == 15) // StartStop Bode
+                        //int ind = Commands.GetInstance.CalibartionCommandsListbySubGroup["Calibration Result List"].IndexOf(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2));
+
+                        //if(Commands.GetInstance.CalibartionCommandsList.ContainsKey(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)))
+                        //{
+                        //    if(Convert.ToInt16(newPropertyValue) == 0)
+                        //        Commands.GetInstance.CalibartionCommandsList[new Tuple<int, int>(6, commandidentifier.Item2)].ButtonContent = "Run";
+                        //    else if(Convert.ToInt16(newPropertyValue) == 1)
+                        //        Commands.GetInstance.CalibartionCommandsList[new Tuple<int, int>(6, commandidentifier.Item2)].ButtonContent = "Running";
+                        //}
+                        //else 
+                        //if(Commands.GetInstance.DataViewCommandsList.ContainsKey(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)))
+                        //    Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)].CommandValue = CalibrationGetStatus(newPropertyValue);
+
+                        //else 
+                        if(commandidentifier.Item1 == 6 && commandidentifier.Item2 == 15) // StartStop Bode
                         {
                             if(newPropertyValue == "1")
                                 BodeViewModel.GetInstance.BodeStartStop = true;
                             else
                                 BodeViewModel.GetInstance.BodeStartStop = false;
                         }
-                        //if(!WizardWindowViewModel.GetInstance.StartEnable)
+
                         if(WizardWindowViewModel.GetInstance.CalibrationWizardList.ContainsKey(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)))
                             WizardWindowViewModel.GetInstance.updateCalibrationStatus(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2), newPropertyValue);
-
-                        //Debug.WriteLine(commandidentifier.Item1.ToString() + "[" + commandidentifier.Item2.ToString() + "] = " + newPropertyValue);
-
                     }
+                    else if(Commands.GetInstance.GenericCommandsList.ContainsKey(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)))
+                    {
+                        //((DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)]).CommandValue = newPropertyValue;
+                        Type _type = Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)].GetType();
+                        switch(_type.Name)
+                        {
+                            case "DataViewModel":
+                                ((DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)]).CommandValue = newPropertyValue;
+                                break;
+                            case "CalibrationWizardViewModel":
+                                ((CalibrationWizardViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)]).CalibStatus = CalibStatus(newPropertyValue);
+                                break;
+                            case "UC_ToggleSwitchViewModel":
+                                ((UC_ToggleSwitchViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)]).IsChecked = Convert.ToBoolean(Convert.ToInt16(newPropertyValue));
+                                break;
+                            case "EnumViewModel":
+                                int index = Convert.ToInt32(newPropertyValue) - Convert.ToInt32(((EnumViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)]).CommandValue);
+                                if(index < ((EnumViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)]).CommandList.Count && index >= 0)
+                                {
+                                    ((EnumViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)]).SelectedItem =
+                                    ((EnumViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)]).CommandList[index];
+                                }
+                                break;
+                            case "BoolViewIndModel":
+                                ((BoolViewIndModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)]).CommandValue = Convert.ToInt16(newPropertyValue) == 1 ? 1 : 0;
+                                break;
+                            case "UC_ChannelViewModel":
+                                ((UC_ChannelViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)]).ChSelectedIndex = Convert.ToInt16(newPropertyValue);
+                                //OscilloscopeViewModel.GetInstance.YAxisUnits = "";
+                                string temp = "";
+                                for(int j = 0; j < Commands.GetInstance.GenericCommandsGroup["ChannelsList"].Count; j++)
+                                {
+                                    temp += ((UC_ChannelViewModel)Commands.GetInstance.GenericCommandsList[
+                                        new Tuple<int, int>(
+                                            ((int)((UC_ChannelViewModel)Commands.GetInstance.GenericCommandsGroup["ChannelsList"][j]).CommandId),
+                                            ((int)((UC_ChannelViewModel)Commands.GetInstance.GenericCommandsGroup["ChannelsList"][j]).CommandSubId))]).Y_Axis_Title;
+                                    if(j != Commands.GetInstance.GenericCommandsGroup["ChannelsList"].Count - 1)
+                                        temp +=  ", ";
+                                }
+                                OscilloscopeViewModel.GetInstance.YAxisUnits = temp;
+                                break;
+                        }
+                    }
+                    if(commandidentifier.Item1 == 1 && commandidentifier.Item2 == 0 && !DebugViewModel.GetInstance._forceConnectMode) // MotorStatus
+                    {
+                        updateConnectionStatus(commandidentifier, newPropertyValue);
+                    }
+                    else if(commandidentifier.Item1 == 33)
+                    {
+                        LeftPanelViewModel.GetInstance.DriverStat = CalibrationGetError(newPropertyValue);
+                    }
+                    else if(WizardWindowViewModel.GetInstance.CalibrationWizardList.ContainsKey(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)))
+                        WizardWindowViewModel.GetInstance.updateCalibrationStatus(new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2), newPropertyValue);
+                    #region DebugTab
+                    if(DebugViewModel.GetInstance.DebugRefresh || DebugObjModel.DebugOperationPending)
+                    {
+                        if(Commands.GetInstance.DebugCommandsList.ContainsKey(new Tuple<int, int, bool>(commandidentifier.Item1, commandidentifier.Item2, IntFloat))) // Debug Panel
+                        {
+                            try
+                            {
+                                Commands.GetInstance.DebugCommandsList[new Tuple<int, int, bool>(commandidentifier.Item1, commandidentifier.Item2, IntFloat)].GetData = newPropertyValue;
+                                DebugViewModel.GetInstance.RxBuildOperation(ParserRayonM1.DebugData);
+                                DebugObjModel.DebugOperationPending = false;
+                            }
+                            catch { }
+                        }
+                    }
+                    #endregion DebugTab
+                    return;
                     #endregion Calibration
                     #region Plot_Channels
-                    else if(commandidentifier.Item1 == 60 && commandidentifier.Item2 <= 2)
+                    /*else*/
+                    if(commandidentifier.Item1 == 60 && commandidentifier.Item2 <= 2)
                     {
                         int Sel = 0;
                         if(Int32.Parse(newPropertyValue) >= 0)
@@ -825,7 +1125,9 @@ namespace MotorController.Models.DriverBlock
                 {
                     ConnectionCount = 0;
                     LeftPanelViewModel.GetInstance.LedMotorStatus = Convert.ToInt16(newPropertyValue);
-                    Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)].CommandValue = newPropertyValue;
+                    //Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)].CommandValue = newPropertyValue;
+                    ((UC_ToggleSwitchViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(commandidentifier.Item1, commandidentifier.Item2)]).IsChecked = Convert.ToBoolean(Convert.ToInt16(newPropertyValue));
+
                     //Debug.WriteLine("ConnectionCount: " + ConnectionCount + " " + DateTime.Now.ToString("h:mm:ss.fff"));
 
                 }

@@ -10,7 +10,6 @@
         mc:Ignorable="d"
         Title="Wizard" Height="560" Width="620"
         ResizeMode="NoResize"
-        Closing="Window_Closing"
         Icon="./Themes/MotorController.png"
         WindowStartupLocation="CenterOwner"
         xmlns:common="clr-namespace:MotorController.Common"
@@ -18,6 +17,14 @@
         xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:Helpers="clr-namespace:MotorController.Helpers">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Loaded" >
+            <i:InvokeCommandAction Command="{Binding WizardWindowLoaded}" />
+        </i:EventTrigger>
+        <i:EventTrigger EventName="Closing" >
+            <i:InvokeCommandAction Command="{Binding WizardWindowClosed}"/>
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Window.Background>
         <ImageBrush ImageSource="pack://siteoforigin:,,,/Views/HomeBackground.jpg"/>
     </Window.Background>
@@ -468,7 +475,7 @@
                                     <TextBlock Grid.Row="1" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto">
                                         <TextBlock.Style>
                                             <Style TargetType="{x:Type TextBlock}">
-                                                <Setter Property="Text" Value="Resolution [lines/rev]" />
+                                                <Setter Property="Text" Value="Resolution [counts/rev]" />
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding EncoderFeedback}" Value="5">
                                                         <Setter Property="Text" Value="Resolution [bit]" />
@@ -516,13 +523,13 @@
                                             <models:AllowableCharactersTextBoxBehavior RegularExpression="{StaticResource RegexInt}" MaxLength="12"/>
                                         </i:Interaction.Behaviors>
                                     </TextBox>
-                                    <TextBlock Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto" Text="Resolution [Counts]"></TextBlock>
-                                    <TextBox Grid.Row="2" HorizontalAlignment="Right" BorderThickness="0" Foreground="White"
+                                    <TextBlock Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="9" Width="Auto" Text="[Counts] = [Encoder Lines  x  4]"></TextBlock>
+                                    <!--<TextBox Grid.Row="2" HorizontalAlignment="Right" BorderThickness="0" Foreground="White"
                                             Width="{StaticResource MotorParametersWidth}" 
                                             FontSize="12"
                                             Text="{Binding EncoderResolutionCounts, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                                             IsReadOnly="True" IsHitTestVisible="False" IsEnabled="False">
-                                    </TextBox>
+                                    </TextBox>-->
                                 </Grid>
                             </GroupBox>
                         </Grid>

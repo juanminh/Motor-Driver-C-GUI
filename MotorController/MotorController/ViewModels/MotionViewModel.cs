@@ -41,7 +41,7 @@ namespace MotorController.ViewModels
 
             get
             {
-                return Commands.GetInstance.DataCommandsListbySubGroup["CurrentLimit List"];
+                return Commands.GetInstance.GenericCommandsGroup["CurrentLimit List"];
             }
             set
             {

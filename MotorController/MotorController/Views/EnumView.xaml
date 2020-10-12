@@ -69,8 +69,8 @@
             <ColumnDefinition Width="32*"/>
             <ColumnDefinition Width="47*"/>
         </Grid.ColumnDefinitions>
-        <Border BorderBrush="White" BorderThickness="1" CornerRadius="4,0,0,4">
-            <Border BorderThickness="1" CornerRadius="4,0,0,4" Background="#7F000000" d:IsHidden="True">
+        <Border BorderBrush="White" BorderThickness="0" CornerRadius="4,0,0,4"><!--Background="#7F000000"-->
+            <Border BorderThickness="1" CornerRadius="4,0,0,4"  d:IsHidden="True">
                 <Grid Margin="0,-1">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
@@ -119,7 +119,7 @@
         -->
         <!-- ComboBox -->
 
-        <Border BorderBrush="White" BorderThickness="1" CornerRadius="0,4,4,0" Grid.Column="1"><!--" SelectedIndex="0"
+        <Border BorderBrush="White" BorderThickness="0" CornerRadius="0,4,4,0" Grid.Column="1"><!--" SelectedIndex="0"
                       SelectedValue="{Binding Path=SelectedValue}" SelectedItem="{Binding Path=SelectedValue}"-->
             <ComboBox x:Name="EnumCombobox"
                        MinWidth="100"  
