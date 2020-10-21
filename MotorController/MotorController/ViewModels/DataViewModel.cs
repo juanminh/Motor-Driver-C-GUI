@@ -9,7 +9,7 @@ using System.Diagnostics;
 using System.Windows.Media;
 using System.Threading.Tasks;
 using System.Linq;
-using MotorController.CommandsDB;
+using MotorController.Common;
 using MotorController.ViewModels;
 using System.Windows.Controls;
 
@@ -18,7 +18,9 @@ namespace MotorController.ViewModels
     public class DataViewModel : ViewModelBase
     {
 
-        private SolidColorBrush _background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#333333")); // Gray
+        private SolidColorBrush _background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#333333")); // Gray  333333
+        private SolidColorBrush _backgroundStdby = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#333333")); // Gray
+
         private SolidColorBrush _backgroundSelected = new SolidColorBrush(Colors.Red);
         private SolidColorBrush _backgroundIndicator = new SolidColorBrush(Colors.Black);
         private SolidColorBrush _foreGroundNotRefreshed = new SolidColorBrush(Colors.Yellow);
@@ -38,10 +40,21 @@ namespace MotorController.ViewModels
             }
             set
             {
-                _baseModel.CommandValue = value;
+                _baseModel.CommandValue = _special_commands(value);
                 GetCount = -1;
                 OnPropertyChanged();
             }
+        }
+        private string _special_commands(string _value)
+        {
+            if(LeftPanelViewModel._app_running)
+            {
+                if(CommandId == "62" && CommandSubId == "10")
+                    return "0x" + int.Parse(_value).ToString("X8");
+                else if(CommandId == "33" && CommandSubId == "1")
+                    LeftPanelViewModel.GetInstance.DriverStat = RefreshManager.GetInstance.CalibrationGetError(_value);
+            }
+            return _value;
         }
         public string CommandId { get { return _baseModel.CommandID; } set { _baseModel.CommandID = value; } }
         public string CommandSubId { get { return _baseModel.CommandSubID; } set { _baseModel.CommandSubID = value; } }
@@ -60,7 +73,6 @@ namespace MotorController.ViewModels
                 }
             }
         }
-        private SolidColorBrush _backgroundStdby = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#333333")); // Gray
         public SolidColorBrush Background
         {
             get

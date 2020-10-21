@@ -4,7 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-      xmlns:models="clr-namespace:MotorController.Models"
+      xmlns:Helpers="clr-namespace:MotorController.Helpers"
       mc:Ignorable="d" 
       d:DesignHeight="30" d:DesignWidth="490">
     <UserControl.Resources>
@@ -89,7 +89,7 @@
             </Style>
         </TextBox.Style>
         <i:Interaction.Behaviors>
-            <models:AllowableCharactersTextBoxBehavior/>
+            <Helpers:AllowableCharactersTextBoxBehavior/>
         </i:Interaction.Behaviors>
     </TextBox>
     <!--Index-->
@@ -110,7 +110,7 @@
             </Style>
         </TextBox.Style>
         <i:Interaction.Behaviors>
-            <models:AllowableCharactersTextBoxBehavior/>
+            <Helpers:AllowableCharactersTextBoxBehavior/>
         </i:Interaction.Behaviors>
     </TextBox>
     <!--Type : Int/Float-->
@@ -172,7 +172,7 @@
                            Foreground="White" FontSize="12"
                            VerticalContentAlignment="Center">
             <i:Interaction.Behaviors>
-                <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="20"/>
+                <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="20"/>
             </i:Interaction.Behaviors>
         </TextBox>
     </Grid>

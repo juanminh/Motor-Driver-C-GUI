@@ -12,19 +12,13 @@ namespace MotorController.Models.ParserBlock
         public readonly byte[] MagicFirst;
         public readonly byte[] MagicSecond;
         public UInt16 PacketLength;
-
-
-
+        
         public PacketizerEventArgs(byte[] dataChunk, byte[] magicFirst, byte[] magicSecond,UInt16 packetLength)
         {
-
             DataChunk = dataChunk;
             MagicFirst = magicFirst;
             MagicSecond = magicSecond;
             PacketLength = packetLength;
-
         }
-
-
     }
 }

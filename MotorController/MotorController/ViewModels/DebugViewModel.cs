@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Collections.ObjectModel;
-using MotorController.CommandsDB;
+using MotorController.Common;
 using System.Threading;
 using System.Collections.Specialized;
 using System.ComponentModel;
@@ -25,6 +25,8 @@ namespace MotorController.ViewModels
         private static readonly object Synlock = new object();
         private static DebugViewModel _instance;
         #endregion FIELDS
+        public Dictionary<Tuple<int, int, bool>, DebugObjModel> DebugCommandsList = new Dictionary<Tuple<int, int, bool>, DebugObjModel>();
+        public Dictionary<string, ObservableCollection<object>> DebugCommandsListbySubGroup = new Dictionary<string, ObservableCollection<object>>();
 
         public static DebugViewModel GetInstance
         {
@@ -45,33 +47,22 @@ namespace MotorController.ViewModels
         }
         private DebugViewModel()
         {
+            Commands.GetInstance.GenericCommandsGroup.Add("Debug List", new ObservableCollection<object>());
             initSim();
         }
 
-        private ObservableCollection<object> _debugList;
         public ObservableCollection<object> DebugList
         {
             get
             {
-                return Commands.GetInstance.DebugCommandsListbySubGroup["Debug List"];
-            }
-            set
-            {
-                _debugList = value;
-                OnPropertyChanged();
+                return Commands.GetInstance.GenericCommandsGroup["Debug List"];
             }
         }
-        private ObservableCollection<object> _nternalParamList;
         public ObservableCollection<object> InternalParamList
         {
             get
             {
                 return Commands.GetInstance.GenericCommandsGroup["InternalParam List"];
-            }
-            set
-            {
-                _nternalParamList = value;
-                OnPropertyChanged();
             }
         }
 
@@ -134,18 +125,18 @@ namespace MotorController.ViewModels
                 }
                 else if(!value)
                 {
-                    foreach(var list in Commands.GetInstance.DataViewCommandsList)
-                    {
-                        try
-                        {
-                            Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(list.Value.CommandId), Convert.ToInt16(list.Value.CommandSubId))].IsSelected = false;
-                            //Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(list.Value.CommandId), Convert.ToInt16(list.Value.CommandSubId))].BackgroundStd = new SolidColorBrush(Colors.White);
-                            Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(list.Value.CommandId), Convert.ToInt16(list.Value.CommandSubId))].Background = new SolidColorBrush(Colors.Gray);
-                        }
-                        catch(Exception)
-                        {
-                        }
-                    }
+                    //foreach(var list in Commands.GetInstance.DataViewCommandsList)
+                    //{
+                    //    try
+                    //    {
+                    //        Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(list.Value.CommandId), Convert.ToInt16(list.Value.CommandSubId))].IsSelected = false;
+                    //        //Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(list.Value.CommandId), Convert.ToInt16(list.Value.CommandSubId))].BackgroundStd = new SolidColorBrush(Colors.White);
+                    //        Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(list.Value.CommandId), Convert.ToInt16(list.Value.CommandSubId))].Background = new SolidColorBrush(Colors.Gray);
+                    //    }
+                    //    catch(Exception)
+                    //    {
+                    //    }
+                    //}
                     if(DebugRefresh)
                         updateList = true;
                     else
@@ -200,7 +191,6 @@ namespace MotorController.ViewModels
                     LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.STOP);
             }
         }
-
         public static bool updateList = false;
         public ActionCommand addDebugOperation { get { return new ActionCommand(addDebugOperationCmd); } }
         private void addDebugOperationCmd()
@@ -208,24 +198,19 @@ namespace MotorController.ViewModels
 
             if(udID.Data != "" && udIndex.Data != "")
             {
-                if(!Commands.GetInstance.DebugCommandsList.ContainsKey(new Tuple<int, int, bool>(Convert.ToInt16(udID.Data), Convert.ToInt16(udIndex.Data), DebugIntFloat)))
+                var data = new DebugObjModel
                 {
-                    var data = new DebugObjModel
-                    {
-                        ID = udID.Data,
-                        Index = udIndex.Data,
-                        IntFloat = DebugIntFloat,
-                        GetData = "",
-                        SetData = "",
-                    };
-                    Commands.GetInstance.DebugCommandsList.Add(new Tuple<int, int, bool>(Convert.ToInt16(udID.Data), Convert.ToInt16(udIndex.Data), DebugIntFloat), data);
-                    Commands.GetInstance.DebugCommandsListbySubGroup["Debug List"].Add(data);
-                    RefreshManger.buildGroup();
-                }
+                    ID = udID.Data,
+                    Index = udIndex.Data,
+                    IntFloat = DebugIntFloat,
+                    GetData = "",
+                    SetData = "",
+                };
+                Commands.GetInstance.addData(typeof(DebugObjModel), data, "Debug List");
             }
         }
         public ActionCommand removeDebugOperation { get { return new ActionCommand(removeDebugOperationCmd); } }
-        private bool CompareDebugObj(DebugObjModel first, DebugObjModel second)
+        public bool CompareDebugObj(DebugObjModel first, DebugObjModel second)
         {
             if(first.ID == second.ID)
                 if(first.Index == second.Index)
@@ -236,25 +221,20 @@ namespace MotorController.ViewModels
         {
             if(udID.Data != "" && udIndex.Data != "")
             {
-                if(Commands.GetInstance.DebugCommandsList.ContainsKey(new Tuple<int, int, bool>(Convert.ToInt16(udID.Data), Convert.ToInt16(udIndex.Data), DebugIntFloat)))
+                var data1 = new DebugObjModel
                 {
-                    Commands.GetInstance.DebugCommandsList.Remove(new Tuple<int, int, bool>(Convert.ToInt16(udID.Data), Convert.ToInt16(udIndex.Data), DebugIntFloat));
-                    var data1 = new DebugObjModel
-                    {
-                        ID = udID.Data,
-                        Index = udIndex.Data,
-                        IntFloat = DebugIntFloat,
-                        GetData = "",
-                        SetData = "",
-                    };
+                    ID = udID.Data,
+                    Index = udIndex.Data,
+                    IntFloat = DebugIntFloat,
+                    GetData = "",
+                    SetData = "",
+                };
 
-                    for(int i = 0; i < Commands.GetInstance.DebugCommandsListbySubGroup["Debug List"].Count; i++)
+                for(int i = 0; i < Commands.GetInstance.GenericCommandsGroup["Debug List"].Count; i++)
+                {
+                    if(CompareDebugObj(data1, Commands.GetInstance.GenericCommandsGroup["Debug List"].ElementAt(i) as DebugObjModel))
                     {
-                        if(CompareDebugObj(data1, Commands.GetInstance.DebugCommandsListbySubGroup["Debug List"].ElementAt(i) as DebugObjModel))
-                        {
-                            Commands.GetInstance.DebugCommandsListbySubGroup["Debug List"].RemoveAt(i);
-                            RefreshManger.buildGroup();
-                        }
+                        Commands.GetInstance.GenericCommandsGroup["Debug List"].RemoveAt(i);
                     }
                 }
             }
@@ -270,14 +250,11 @@ namespace MotorController.ViewModels
                 IsSet = false,
                 IsFloat = false
             });
-
         }
         public ActionCommand ClearDebugOp { get { return new ActionCommand(ClearDebugOpCmd); } }
         private void ClearDebugOpCmd()
         {
-            Commands.GetInstance.DebugCommandsList.Clear();
-            Commands.GetInstance.DebugCommandsListbySubGroup["Debug List"].Clear();
-            RefreshManger.buildGroup();
+            Commands.GetInstance.GenericCommandsGroup["Debug List"].Clear();
         }
 
         #region In_Output_Parse
@@ -475,10 +452,10 @@ namespace MotorController.ViewModels
                                 _simulation = true;
                             }
                             //else
-                                //_simulation = false;
+                            //_simulation = false;
                         }
                         //else
-                            //_simulation = false;
+                        //_simulation = false;
                     }
                     else
                         _simulation = false;
@@ -486,7 +463,7 @@ namespace MotorController.ViewModels
                 OnPropertyChanged("Simulation");
             }
         }
-        
+
         private UpDownControlModel _udIDSim;
         public UpDownControlModel udIDSim
         {

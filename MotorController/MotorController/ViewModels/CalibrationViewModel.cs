@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Collections.ObjectModel;
-using MotorController.CommandsDB;
+using MotorController.Common;
 
 namespace MotorController.ViewModels
 {
@@ -39,20 +39,6 @@ namespace MotorController.ViewModels
 
         }
 
-        private ObservableCollection<object> _calibrationList;
-        public ObservableCollection<object> CalibrationList
-        {
-            get
-            {
-                return Commands.GetInstance.GenericCommandsGroup["Calibration List"];
-            }
-            set
-            {
-                _calibrationList = value;
-                OnPropertyChanged();
-            }
-        }
-        private ObservableCollection<object> _calibrationList_ToggleSwitch;
         public ObservableCollection<object> CalibrationList_ToggleSwitch
         {
 
@@ -60,23 +46,12 @@ namespace MotorController.ViewModels
             {
                 return Commands.GetInstance.GenericCommandsGroup["CalibrationList_ToggleSwitch"];
             }
-            set
-            {
-                _calibrationList_ToggleSwitch = value;
-                OnPropertyChanged();
-            }
         }
-        private ObservableCollection<object> _calibrationResultList;
         public ObservableCollection<object> CalibrationResultList
         {
             get
             {
                 return Commands.GetInstance.GenericCommandsGroup["Calibration Result List"];
-            }
-            set
-            {
-                _calibrationResultList = value;
-                OnPropertyChanged();
             }
         }
     }

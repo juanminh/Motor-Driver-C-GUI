@@ -15,16 +15,12 @@ using System.Diagnostics;
 
 namespace MotorController.Models.ParserBlock
 {
-
-    internal delegate void PacketizerEventHandler(object sender, PacketizerEventArgs e);//Event declaration, when parser will finish operation. Rise event
-
     class Packetizer
     {
         public List<byte[]> StandartPacketsList = new List<byte[]>();
         public List<byte[]> PlotPacketsList = new List<byte[]>();
         public List<byte[]> PlotBodePacketsList = new List<byte[]>();
         public List<byte[]> StandartPacketsListNew = new List<byte[]>();
-        // private  int DEBCount;
         private byte[] pack = new byte[11];
         private byte[] bode_pack = new byte[15];
         private int plotpacketState = 0;
@@ -32,11 +28,9 @@ namespace MotorController.Models.ParserBlock
         private int standpacketState = 0;
         private int standpacketStateNew = 0;
         private int standpacketIndexCounter = 0;
-        // private int plotpacketSize = 0;
 
         private int _synchAproveState;
         private int _synchAproveIndexCounter;
-        // private int _synchAproveState = 0;
         byte[] readypacket = new byte[9];
         //Once created , could not be changed (READ ONLY)
         private static readonly object Synlock = new object(); //Single tone variable
@@ -47,7 +41,6 @@ namespace MotorController.Models.ParserBlock
         Int32 TempA = 0;
 
         public static readonly object Packetizerlock = new object(); //Single tone variable
-        //public event PacketizerEventHandler ToPacketizer;
 
         public static Packetizer GetInstance
         {
@@ -95,29 +88,21 @@ namespace MotorController.Models.ParserBlock
                     for(int i = 0; i < length; i++)
                     {
                         FiilsPlotPackets(data[i]); //Plot packets
-                        FiilsPlotBodePackets(data[i]); //Plot packets
-                        //FiilsStandartPackets(data[i]);//Standart Packets                    
+                        FiilsPlotBodePackets(data[i]); //Plot packets            
                         FiilsStandartPacketsNew(data[i]);//Standart Packets New Updeted
                     }
                     if(PlotPacketsList.Count > 0)
                     {
                         ParserRayonM1.GetInstanceofParser.ParsePlot(PlotPacketsList);
-                        //PlotPacketsList.Clear();
                     }               //send to plot parser  
                     if(PlotBodePacketsList.Count > 0)
                     {
-                        Debug.WriteLine("Bode Count: " + PlotBodePacketsList.Count);
                         BodeViewModel.GetInstance.ParseBodePlot(PlotBodePacketsList);
                         PlotBodePacketsList.Clear();
-                        //PlotPacketsList.Clear();
                     }
                     if(StandartPacketsListNew.Count > 0)
                     {
-                        //ParserRayonM1.GetInstanceofParser.ParseStandartData(StandartPacketsListNew);
-                        //foreach(var packet in StandartPacketsListNew)
-                        //ParserRayonM1.GetInstanceofParser.ParseInputPacket(packet);
                         StandartPacketsListNew.Clear(); // Joseph add
-
                     } //send to Standart parser                             
                 }
                 else
@@ -386,7 +371,6 @@ namespace MotorController.Models.ParserBlock
                     break;
             }
         }
-
         private void FiilsPlotBodePackets(byte ch)
         {
 

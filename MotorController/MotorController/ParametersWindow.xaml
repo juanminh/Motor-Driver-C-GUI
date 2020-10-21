@@ -3,21 +3,21 @@
         xmlns:viewModels="clr-namespace:MotorController.ViewModels"
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:models="clr-namespace:MotorController.Models"
-        xmlns:Behaviors="clr-namespace:MotorController.Behaviors"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:s="http://schemas.abtsoftware.co.uk/scichart"
         xmlns:common="clr-namespace:MotorController.Common"
         xmlns:wpfSpark="clr-namespace:WPFSpark;assembly=WPFSpark"
-        xmlns:ToggleSwitch="clr-namespace:ToggleSwitch;assembly=ToggleSwitch"        
+        xmlns:ToggleSwitch="clr-namespace:ToggleSwitch;assembly=ToggleSwitch"
+        xmlns:System="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d" 
         x:Class="MotorController.Views.ParametarsWindow"
         xmlns:UserControl="clr-namespace:MotorController.Views"
         xmlns:Helpers="clr-namespace:MotorController.Helpers"
         ResizeMode="CanMinimize"
-        Title="Driver Parameters" Height="560" Width="810"
-        Icon="./Themes/MotorController.png"
-        WindowStartupLocation="CenterOwner"
+        Title="Driver Parameters" Height="600" Width="810"
+        Icon="pack://application:,,,/Images/alt-parameters-icone-9469-64.png"
+        WindowStartupLocation="CenterScreen"
         Name="ParametersWindow">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Loaded" >
@@ -61,7 +61,7 @@
             <Setter Property="MaxHeight" Value="28" />
         </Style>
 
-        <common:IsModifierTypeConverter x:Key="IsModifierTypeConverter" />
+        <Helpers:IsModifierTypeConverter x:Key="IsModifierTypeConverter" />
         <Style x:Key="LineSeriesStyle" TargetType="s:FastLineRenderableSeries">
             <Setter Property="StrokeThickness" Value="2" />
             <Setter Property="AntiAliasing" Value="True" />
@@ -113,6 +113,12 @@
                 </StackPanel>
             </Border>
         </ControlTemplate>
+
+        <!-- Variables -->
+        <System:Double x:Key="MaintenanceFonstSize">13</System:Double>
+        <System:Double x:Key="MaintenanceLabelWidth">160</System:Double>
+        <System:Double x:Key="MaintenancePathWidth">200</System:Double>
+
     </Window.Resources>
 
     <Grid >
@@ -454,13 +460,25 @@
                                     <!--ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}"-->
                                     <ItemsControl Grid.Column="0" Width="Auto" Height="auto" ItemsSource="{Binding CalibrationList_ToggleSwitch}" 
                                                   ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}">
-
+                                        <ItemsControl.ItemContainerStyle>
+                                            <Style>
+                                                <Setter Property="Control.Width" Value="Auto"/>
+                                                <Setter Property="Control.Margin" Value="3"/>
+                                            </Style>
+                                        </ItemsControl.ItemContainerStyle>
                                     </ItemsControl>
                                     <!--<ItemsControl Grid.Column="1" Width="Auto" ItemsSource="{Binding CalibrationResultList}" ItemTemplate="{StaticResource DataViewModel}"/>-->
                                     <ItemsControl Grid.Column="1" Width="Auto" 
                                                   ItemsSource="{Binding CalibrationResultList}" 
                                                   ItemTemplate="{StaticResource CalibrationWizardViewModel}" 
-                                                  Margin="-1,0,0,0"/>
+                                                  Margin="-1,0,0,0">
+                                        <ItemsControl.ItemContainerStyle>
+                                            <Style>
+                                                <Setter Property="Control.Width" Value="Auto"/>
+                                                <Setter Property="Control.Margin" Value="3"/>
+                                            </Style>
+                                        </ItemsControl.ItemContainerStyle>
+                                    </ItemsControl>
                                 </Grid>
                                 <!--<StackPanel Background="Transparent" Orientation="Vertical" >
                                     <ItemsControl ItemsSource="{Binding CalibrationList}" ItemTemplate="{StaticResource CalibrationButtonModel}"/>
@@ -481,9 +499,9 @@
                     <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="0"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="1"/>
-                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="0.5*"/>
+                            <RowDefinition Height="0.01*"/>
+                            <RowDefinition Height="0.5*"/>
                         </Grid.RowDefinitions>
                         <!--http://support.scichart.com/index.php?/Knowledgebase/Article/View/17227/36/performance-tips-and-tricks-->
 
@@ -492,7 +510,7 @@
                             Name="Y1_Magnitude"
                             Grid.Row="1"
                             Width="550"
-                            Height="245"
+                            Height="Auto"
                            RenderPriority="Normal" 
                            s:ThemeManager.Theme="Oscilloscope"
                            ClipModifierSurface="True"
@@ -543,7 +561,7 @@
                            Name="Y2_Phase"
                            Grid.Row="3"
                            Width="550"
-                           Height="245"
+                           Height="Auto"
                            RenderPriority="Normal" 
                            s:ThemeManager.Theme="Oscilloscope"
                            ClipModifierSurface="True"
@@ -620,13 +638,27 @@
                                         <ColumnDefinition Width="auto"/>
                                     </Grid.ColumnDefinitions>
                                     <Button Grid.Column="1" Width="75"
-                                                  Style="{StaticResource ExampleToolbarButtonStyle}" 
                                                   Command="{Binding SaveBodeToExcel}" 
-                                            BorderThickness="0.5" 
-                                                 VerticalAlignment="Center">
+                                                  BorderThickness="0.5" 
+                                                  VerticalAlignment="Center">
+                                        <Button.Style>
+                                            <Style TargetType="Button" BasedOn="{StaticResource ExampleToolbarButtonStyle}">
+                                                <Setter Property="IsEnabled" Value="True" />
+                                                <Style.Triggers>
+                                                    <MultiDataTrigger>
+                                                        <MultiDataTrigger.Conditions>
+                                                            <Condition Binding="{Binding BodeStartStop}" Value="True" />
+                                                        </MultiDataTrigger.Conditions>
+                                                        <MultiDataTrigger.Setters>
+                                                            <Setter Property="IsEnabled" Value="False" />
+                                                        </MultiDataTrigger.Setters>
+                                                    </MultiDataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
                                         <StackPanel Orientation="Horizontal">
                                             <Image Source="pack://application:,,,/Images/excel.png"/>
-                                            <TextBlock Margin="3" FontSize="12">Save</TextBlock>
+                                            <TextBlock Margin="3" FontSize="12" Text="Save"></TextBlock>
                                         </StackPanel>
                                     </Button>
                                     <Line Grid.Column="3" Margin="2,2" Stroke="#FFD6D5D5" Y2="16" VerticalAlignment="Center" Fill="#FFC1C1C1"/>
@@ -661,7 +693,7 @@
                                     <RowDefinition Height="5"/>
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Width="230" Text="Parameters" Foreground="White" Background="Gray" HorizontalAlignment="Left" Margin="0,0,-1,0"/>
+                                <TextBlock Grid.Row="0" Text="Parameters" Foreground="White" Background="Gray" Margin="0,0,-1,0"/>
                                 <Grid Grid.Row="2">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
@@ -714,7 +746,7 @@
                                     <Border Grid.Column="1" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="1">
                                         <TextBox Width="25" Text="{Binding Ch1Gain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="22" BorderThickness="0" >
                                             <i:Interaction.Behaviors>
-                                                <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
+                                                <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
                                             </i:Interaction.Behaviors>
                                         </TextBox>
                                     </Border>
@@ -724,7 +756,7 @@
                                     <Border Grid.Column="4" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="1">
                                         <TextBox Width="25" Text="{Binding Ch2Gain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="22" BorderThickness="0" >
                                             <i:Interaction.Behaviors>
-                                                <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
+                                                <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
                                             </i:Interaction.Behaviors>
                                         </TextBox>
                                     </Border>
@@ -744,152 +776,125 @@
                     <Grid Grid.Column="0">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="20"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
                         <Grid Grid.Row="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="140"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0">Save Parameters To Driver</TextBlock>
-                            <CheckBox Grid.Column="1" Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding Save}"/>
+                            <ItemsControl ItemsSource="{Binding MaintenanceOperation}" Width="250" HorizontalAlignment="Left"
+                                          ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}">
+                                <ItemsControl.ItemContainerStyle>
+                                    <Style>
+                                        <Setter Property="Control.Width" Value="Auto"/>
+                                        <Setter Property="Control.Margin" Value="0,0,0,10"/>
+                                        <Setter Property="Control.HorizontalContentAlignment" Value="Left"/>
+                                        <!--<Style.Triggers>
+                                            <Trigger Property="Control.IsMouseOver" Value="True">
+                                                <Setter Property="Control.ToolTip"
+                                                        Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=Content.Description}"/>
+                                            </Trigger>
+                                        </Style.Triggers>-->
+                                    </Style>
+                                </ItemsControl.ItemContainerStyle>
+                            </ItemsControl>
                         </Grid>
-                        <Grid Grid.Row="2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="140"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0">Load Manufacturer defaults</TextBlock>
-                            <CheckBox Grid.Column="1" Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding Manufacture}"/>
-                        </Grid>
-                        <Grid Grid.Row="3" Height="15"/>
-                        <Grid Grid.Row="4">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="140"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0">Load Parameters From File</TextBlock>
-                            <CheckBox Grid.Column="1" Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding LoadFromFile}"/>
-                        </Grid>
-                        <Grid Grid.Row="5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="140"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0">Save Parameters To File</TextBlock>
-                            <CheckBox Grid.Column="1" Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding SaveToFile}"/>
-                        </Grid>
-                        <Grid Grid.Row="6" Height="15"/>
-                        <Grid Grid.Row="7">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="140"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0">Reset</TextBlock>
-                            <CheckBox Grid.Column="1" Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding Reset}"/>
-                        </Grid>
-                        <Grid Grid.Row="8">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="140"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0">Protected Params</TextBlock>
-                            <CheckBox Grid.Column="1" Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding EnableWrite}"/>
-                        </Grid>
-                        <Separator Grid.Row="9" Height="10" Background="Transparent" Visibility="Hidden"/>
-                        <Grid Grid.Row="10">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="140"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0">Serial Programmer</TextBlock>
-                            <CheckBox Grid.Column="1" Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding SerialProgrammerCheck}"/>
-                            <!--<Button Grid.Column="1" Command="{Binding OpenSerialProgrammer}" Style="{StaticResource ExampleToolbarButtonStyle}" Height="20" Width="50" BorderBrush="Wheat" BorderThickness="1" Margin="2,0,0,0">
-                                <StackPanel Orientation="Horizontal">
-                                    <Image Source="pack://application:,,,/Images/serialPorgrammer.png" Stretch="Fill" Width="25" Height="18" Margin="0,-1,0,0"/>
-                                </StackPanel>
-                            </Button>-->
-                        </Grid>
-                        <!--<Border Grid.Row="9" Width="199" Height="Auto" BorderBrush="Gray" BorderThickness="1" CornerRadius="4,4,0,0">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                            </Grid>
-                        </Border>-->
-                    </Grid>
-                    <Grid Grid.Column="2">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="67"/>
-                            <RowDefinition Height="17"/>
-                            <RowDefinition Height="17"/>
-                            <RowDefinition Height="60"/>
-                            <RowDefinition Height="17"/>
-                            <RowDefinition Height="*"/>
-                        </Grid.RowDefinitions>
-                        <Grid Grid.Row="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="180"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBox  Grid.Column="0" BorderBrush="Wheat" BorderThickness="1" IsReadOnly="True" Text="{Binding PathFromFile}" FontSize="10" MouseDoubleClick="MouseDoubleClick" TextChanged="FolderTB_ScrolltoEnd" Height="17" VerticalAlignment="Top">
-                            </TextBox>
-                            <Button Grid.Column="1" Command="{Binding OpenFromFileCmd}" Style="{StaticResource ExampleToolbarButtonStyle}" Height="17" Width="25" BorderBrush="Wheat" BorderThickness="1" Margin="0">
+                        <StackPanel Grid.Row="1" Orientation="Horizontal">
+                            <TextBox Width="{StaticResource MaintenanceLabelWidth}" 
+                                     FontSize="{StaticResource MaintenanceFonstSize}"
+                                     IsReadOnly="True"
+                                     IsHitTestVisible="False"
+                                     Background="Transparent"
+                                     VerticalContentAlignment="Center"
+                                     HorizontalContentAlignment="Left"
+                                     BorderThickness="0">Load Parameters From File</TextBox>
+                            <CheckBox Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding LoadFromFile}"/>
+                            <Separator Width="15" Height="0"/>
+                            <TextBox BorderBrush="Wheat" 
+                                     BorderThickness="1" 
+                                     IsReadOnly="True" 
+                                     Text="{Binding PathFromFile}" 
+                                     FontSize="{StaticResource MaintenanceFonstSize}"
+                                     MouseDoubleClick="MouseDoubleClick" 
+                                     TextChanged="FolderTB_ScrolltoEnd"
+                                     VerticalAlignment="Top"
+                                     Width="{StaticResource MaintenancePathWidth}"/>
+                            <Button Command="{Binding OpenFromFileCmd}" Style="{StaticResource ExampleToolbarButtonStyle}" 
+                                    Width="25" 
+                                    BorderBrush="Wheat" 
+                                    BorderThickness="1" Margin="0">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Source="pack://application:,,,/Images/SelectFile.ico" Stretch="Fill" Width="17" Height="17" Margin="0,-3,0,0"/>
                                 </StackPanel>
                             </Button>
-                            <ProgressBar Grid.Column="2" Width="70" Value="{Binding PbarValueFromFile}"></ProgressBar>
-                        </Grid>
-                        <Grid Grid.Row="2">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="180"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBox  Grid.Column="0" BorderBrush="Wheat" BorderThickness="1" IsReadOnly="True" Text="{Binding PathToFile}" FontSize="10" MouseDoubleClick="MouseDoubleClick" TextChanged="FolderTB_ScrolltoEnd"></TextBox>
-                            <Button Grid.Column="1" Command="{Binding OpenToFileCmd}" Style="{StaticResource ExampleToolbarButtonStyle}" Height="17" Width="25" BorderBrush="Wheat" BorderThickness="1" Margin="0">
+                            <ProgressBar Width="70" Value="{Binding PbarValueFromFile}"></ProgressBar>
+                        </StackPanel>
+                        <StackPanel Grid.Row="2" Orientation="Horizontal">
+                            <TextBox Width="{StaticResource MaintenanceLabelWidth}" 
+                                     FontSize="{StaticResource MaintenanceFonstSize}"
+                                     IsHitTestVisible="False"
+                                     IsReadOnly="True"
+                                     Background="Transparent"
+                                     VerticalContentAlignment="Center"
+                                     HorizontalContentAlignment="Left"
+                                     BorderThickness="0">Save Parameters To File</TextBox>
+                            <CheckBox Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding SaveToFile}"/>
+                            <Separator Width="15" Height="0"/>
+                            <TextBox BorderBrush="Wheat" 
+                                     BorderThickness="1" 
+                                     IsReadOnly="True" 
+                                     Text="{Binding PathToFile}" 
+                                     FontSize="{StaticResource MaintenanceFonstSize}" 
+                                     MouseDoubleClick="MouseDoubleClick" 
+                                     TextChanged="FolderTB_ScrolltoEnd"
+                                     Width="{StaticResource MaintenancePathWidth}"/>
+                            <Button Command="{Binding OpenToFileCmd}" Style="{StaticResource ExampleToolbarButtonStyle}" 
+                                    Width="25" 
+                                    BorderBrush="Wheat" 
+                                    BorderThickness="1" Margin="0">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Source="pack://application:,,,/Images/SelectFile.ico" Stretch="Fill" Width="17" Height="17" Margin="0,-3,0,0"/>
                                 </StackPanel>
                             </Button>
                             <ProgressBar Grid.Column="2" Width="70" Value="{Binding PbarValueToFile}"></ProgressBar>
-                        </Grid>
-                        <Grid Grid.Row="4">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="180"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBox  Grid.Column="0" BorderBrush="Wheat" BorderThickness="1" IsReadOnly="True" Text="{Binding PathFW}" FontSize="10" MouseDoubleClick="MouseDoubleClick" TextChanged="FolderTB_ScrolltoEnd"></TextBox>
-                            <Button Grid.Column="1" Command="{Binding OpenPathFWCmd}" Style="{StaticResource ExampleToolbarButtonStyle}" Height="17" Width="25" BorderBrush="Wheat" BorderThickness="1" Margin="0">
+                        </StackPanel>
+                        <Separator Grid.Row="3" Height="10" Background="Transparent" Visibility="Hidden"/>
+                        <StackPanel Grid.Row="4" Orientation="Horizontal">
+                            <TextBox Width="{StaticResource MaintenanceLabelWidth}" 
+                                     FontSize="{StaticResource MaintenanceFonstSize}"
+                                     IsHitTestVisible="False"
+                                     IsReadOnly="True"
+                                     Background="Transparent"
+                                     VerticalContentAlignment="Center"
+                                     HorizontalContentAlignment="Left"
+                                     BorderThickness="0">
+                                     Serial Programmer</TextBox>
+                            <CheckBox Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding SerialProgrammerCheck}"/>
+                            <Separator Width="15" Height="0"/>
+                            <TextBox BorderBrush="Wheat" 
+                                     BorderThickness="1" 
+                                     IsReadOnly="True" 
+                                     Text="{Binding PathFW}" 
+                                     FontSize="{StaticResource MaintenanceFonstSize}"
+                                     MouseDoubleClick="MouseDoubleClick" 
+                                     TextChanged="FolderTB_ScrolltoEnd"
+                                     Width="{StaticResource MaintenancePathWidth}"></TextBox>
+                            <Button Command="{Binding OpenPathFWCmd}" 
+                                    Style="{StaticResource ExampleToolbarButtonStyle}" 
+                                    Width="25" 
+                                    BorderBrush="Wheat"
+                                    BorderThickness="1" Margin="0">
                                 <StackPanel Orientation="Horizontal">
                                     <Image Source="pack://application:,,,/Images/SelectFile.ico" Stretch="Fill" Width="17" Height="17" Margin="0,-3,0,0"/>
                                 </StackPanel>
                             </Button>
-                            <ProgressBar Grid.Column="2" Width="70" Value="{Binding PbarValueFW}"></ProgressBar>
-                            <ComboBox   Grid.Column="3"
-            	                        ItemsSource="{Binding FlashBaudrateList}"
-            	                        SelectedValue="{Binding FlashBaudRate, Mode=TwoWay}"
-                                        Height="18" 
-                                        Width="70"
-                                        FontSize="11">
+                            <ProgressBar Width="70" Value="{Binding PbarValueFW}"></ProgressBar>
+                            <ComboBox ItemsSource="{Binding FlashBaudrateList}"
+            	                      SelectedValue="{Binding FlashBaudRate, Mode=TwoWay}"
+                                      Width="70"
+                                      FontSize="11">
                             </ComboBox>
-                        </Grid>
+                        </StackPanel>
                     </Grid>
                 </Grid>
             </TabItem>
@@ -944,7 +949,7 @@
                                     <TextBlock Grid.Row="0" Width="auto" Text="Internal Parameters" Foreground="White" Background="Gray" Margin="0,0,-1,0"/>
                                     <Grid Grid.Row="1">
                                         <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="200"/>
+                                            <ColumnDefinition Width="220"/>
                                             <ColumnDefinition Width="auto"/>
                                         </Grid.ColumnDefinitions>
                                         <Grid Grid.Column="0">
@@ -1031,14 +1036,14 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <Border Grid.Row="0" BorderBrush="Gray" BorderThickness="1" CornerRadius="3" Width="170" HorizontalAlignment="Left">
+                        <Border Grid.Row="0" BorderBrush="Gray" BorderThickness="1" CornerRadius="3" Width="110" HorizontalAlignment="Left">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Width="170" Text="  +/-      ID      Index  Int/Float" Foreground="White" Background="Gray" HorizontalAlignment="Left" Margin="0,0,-1,0"/>
+                                <TextBlock Grid.Row="0" Width="170" Text="  +/-      ID      Index" Foreground="White" Background="Gray" HorizontalAlignment="Left" Margin="0,0,-1,0"/>
                                 <Grid Grid.Row="1">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto"/>
@@ -1068,10 +1073,10 @@
                                     <UserControl:UpDownControl Grid.Column="2" DataContext="{Binding udIndex}" Width="40"/>
                                     <!--<TextBox Grid.Column="1" Text="{Binding DebugID, Mode=TwoWay}" Width="40" Height="22" FontSize="12"/>
                                     <TextBox Grid.Column="2" Text="{Binding DebugIndex, Mode=TwoWay}" Width="40" Height="22" FontSize="12"/>-->
-                                    <CheckBox Grid.Column="3"     
+                                    <!--<CheckBox Grid.Column="3"     
                                                 Style="{StaticResource CheckBoxStyle3}"
                                                 VerticalAlignment="Center"
-                                                IsChecked="{Binding DebugIntFloat}"/>
+                                                IsChecked="{Binding DebugIntFloat}"/>-->
                                 </Grid>
 
                             </Grid>
@@ -1124,13 +1129,13 @@
                             <TextBlock Grid.Column="0" Text="Data" ></TextBlock>
                             <TextBox Grid.Column="1" Width="55" Text="{Binding SimData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <i:Interaction.Behaviors>
-                                    <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
+                                    <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
                                 </i:Interaction.Behaviors>
                             </TextBox>
                             <TextBlock Grid.Column="2" Text="Count" ></TextBlock>
                             <TextBox Grid.Column="3" Width="65" Text="{Binding SimCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding SimCountEn}">
                                 <i:Interaction.Behaviors>
-                                    <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9]$" MaxLength="10"/>
+                                    <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9]$" MaxLength="10"/>
                                 </i:Interaction.Behaviors>
                             </TextBox>
                         </Grid>
@@ -1146,13 +1151,13 @@
                             <TextBlock Grid.Column="0" Text="Step" ></TextBlock>
                             <TextBox Grid.Column="1" Width="35" Text="{Binding SimStep, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <i:Interaction.Behaviors>
-                                    <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
+                                    <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
                                 </i:Interaction.Behaviors>
                             </TextBox>
                             <TextBlock Grid.Column="2" Text="&#x394;t(ms)" ></TextBlock>
                             <TextBox Grid.Column="3" Width="35" Text="{Binding SimDeltaT, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <i:Interaction.Behaviors>
-                                    <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9]$" MaxLength="10"/>
+                                    <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9]$" MaxLength="10"/>
                                 </i:Interaction.Behaviors>
                             </TextBox>
                             <TextBlock Grid.Column="4" Text="iterator" ></TextBlock>
@@ -1240,63 +1245,6 @@
                     </Grid>
                 </Grid>
             </TabItem>
-
-            <!--<TabItem Header="Operations" TabIndex="7" DataContext="{Binding OperationViewModel}" Background="Black" Foreground="White" >
-                <Grid Background="#FF616161">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="200"/>
-                        <ColumnDefinition Width="160"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0"  Grid.Row="0" Background="#FF616161">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="25"/>
-                            <RowDefinition Height="25"/>
-                        </Grid.RowDefinitions>
-                        <StackPanel Orientation="Horizontal" Grid.Row="0" Width="200" HorizontalAlignment="Left">
-                            <Button    Foreground="White"  Margin="2" Template="{DynamicResource GlassButton}" Content="Get Driver Version" Command="{Binding GetDriverVersion}" />
-                            <TextBlock x:Name="DriverVersion" Foreground="Black"  Margin="2" Width="100" Background="White" TextAlignment="Center"  Text="{Binding DriverVersion}" ></TextBlock>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal" Grid.Row="1" Width="200" HorizontalAlignment="Left">
-                            <Button    Foreground="White"  Margin="2" Template="{DynamicResource GlassButton}" Content=" Get Motor Driver " Command="{Binding GetMotorDriver}" />
-                            <TextBlock x:Name="MotorDriver" Foreground="Black"  Margin="2" Width="100" Background="White" TextAlignment="Center" Text="{Binding MotorDriver, UpdateSourceTrigger=PropertyChanged,Mode=TwoWay}" />
-                        </StackPanel>
-                    </Grid>
-                </Grid>
-            </TabItem>-->
-            <!--<TabItem Header="Load Parameters" TabIndex="8" DataContext="{Binding LoadParamsViewModel}" Background="Black" Foreground="White">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <Grid Grid.Row="0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="140"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0">Save Parameters To File</TextBlock>
-                            <CheckBox Grid.Column="1" Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding SaveToFile}"/>
-                        </Grid>
-                        <Grid Grid.Row="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="140"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0">Load Parameters From File</TextBlock>
-                            <CheckBox Grid.Column="1" Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding LoadFromFile}"/>
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </TabItem>-->
         </TabControl>
     </Grid>
 </Window>

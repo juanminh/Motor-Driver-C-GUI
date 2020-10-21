@@ -1,5 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using MotorController.CommandsDB;
+using MotorController.Common;
 using System.Windows.Input;
 using MotorController.Models;
 using System.Windows.Controls;
@@ -38,7 +38,6 @@ namespace MotorController.ViewModels
         private BodeViewModel _bodeViewModel;
         private FilterViewModel _filterViewModel;
         private PIDViewModel _pidViewModel;
-        //private LoadParamsViewModel _loadParamsViewModel;
 
         private static readonly object Synlock = new object();
         public static readonly object PlotBodeListLock = new object();             //Singletone variable
@@ -68,8 +67,6 @@ namespace MotorController.ViewModels
             _ioViewModel = IOViewModel.GetInstance;
             _bodeViewModel = BodeViewModel.GetInstance;
             _pidViewModel = PIDViewModel.GetInstance;
-            //_loadParamsViewModel = LoadParamsViewModel.GetInstance;
-
         }
         ~ParametarsWindowViewModel() { }
         public ObservableCollection<object> ControlList
@@ -196,22 +193,28 @@ namespace MotorController.ViewModels
         }
         private void RebuildGenericCommandsList()
         {
+            Debug.WriteLine("RebuildGenericCommandsList");
+
             LeftPanelViewModel.GetInstance.cancelRefresh = new CancellationToken(true);
-            RefreshManger.GetInstance.BuildGenericCommandsList_Func();
+            RefreshManager.GetInstance.BuildGenericCommandsList_Func();
         }
         private void ParametersWindowLoaded_Func()
         {
+            Debug.WriteLine("ParametersWindowLoaded_Func");
+
             TabControlIndex = 1;
             LeftPanelViewModel.GetInstance.cancelRefresh = new CancellationToken(true);
-            RefreshManger.GetInstance.BuildGenericCommandsList_Func();
+            RefreshManager.GetInstance.BuildGenericCommandsList_Func();
         }
         private void ParametersWindowClosed_Func()
         {
             TabControlIndex = -1;
+            Debug.WriteLine("ParametersWindowClosed_Func");
+
             LeftPanelViewModel.GetInstance._param_window.Visibility = Visibility.Hidden;
 
             LeftPanelViewModel.GetInstance.cancelRefresh = new CancellationToken(true);
-            RefreshManger.GetInstance.BuildGenericCommandsList_Func();
+            RefreshManager.GetInstance.BuildGenericCommandsList_Func();
         }
         public static int TabControlIndex = -1;
         //public int TabControlIndex

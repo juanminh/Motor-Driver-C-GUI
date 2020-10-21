@@ -189,12 +189,13 @@ namespace MotorController.ViewModels
                     case (int)eSTAGE.BOOT_COMMAND:
                         if(LeftPanelViewModel._app_running)
                         {
-                            if(Rs232Interface._comPort != null)
-                                Rs232Interface._comPort.DataReceived -= Rs232Interface.GetInstance.DataReceived;
-                            if(Rs232Interface._comPort != null)
-                                Rs232Interface._comPort.Close();
-                            if(Rs232Interface._comPort != null)
-                                Rs232Interface._comPort.Dispose();
+                            //if(Rs232Interface._comPort != null)
+                            //{
+                            //    Rs232Interface._comPort.DataReceived -= Rs232Interface.GetInstance.DataReceived;
+                            //    Rs232Interface._comPort.Close();
+                            //    //Rs232Interface._comPort.Dispose();
+                            //}
+                            Rs232Interface.GetInstance.Disconnect();
                             PortChat.GetInstance.CloseComunication();
                             PortChat.GetInstance.Main(Configuration.SelectedCom, foundBaudrate);
                             PortChat.GetInstance.ReadTick((int)(eSTATE.START));
@@ -522,7 +523,7 @@ namespace MotorController.ViewModels
         }
         public bool boot_command()
         {
-            Rs232Interface.GetInstance.Disconnect();
+            //Rs232Interface.GetInstance.Disconnect();
 
             EventRiser.Instance.RiseEevent("Sending loader command");
             PortChat.GetInstance._packetsList.Clear();

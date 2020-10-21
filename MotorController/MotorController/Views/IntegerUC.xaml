@@ -6,7 +6,6 @@
     xmlns:TB="clr-namespace:TextBoxBehaivior;assembly=TextBoxBehaivior"
 	mc:Ignorable="d"
 	xmlns:local="clr-namespace:MotorController"
-	xmlns:behaviors="clr-namespace:MotorController.Behaviors"
 	x:Class="MotorController.Views.IntegerUC"
 	x:Name="parent"	
     d:DesignWidth="300" d:DesignHeight="30">
@@ -123,7 +122,6 @@
                              Background="#FFFBFBFB"
                              Foreground="#FF111111"
                              FontSize="10.667" 
-                             behaviors:InputBindingsManager.UpdatePropertySourceWhenEnterPressed="TextBox.Text"
                              Text="{Binding Path=TextMessege, Mode=TwoWay}"/>
     			</Border>
     		<!--	<Border Background="#7F000000">

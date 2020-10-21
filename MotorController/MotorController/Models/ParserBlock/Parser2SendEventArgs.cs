@@ -9,7 +9,6 @@ namespace MotorController.Models.ParserBlock
 {
     class Parser2SendEventArgs
     {
-
         public readonly byte[] BytesTosend;
         public readonly DoubleSeries Datasource;
         public readonly double X;
@@ -18,7 +17,6 @@ namespace MotorController.Models.ParserBlock
 
         public Parser2SendEventArgs(byte[] temp)
         {
-           
             BytesTosend = temp;
         }
 
@@ -38,6 +36,5 @@ namespace MotorController.Models.ParserBlock
         {
             Y = y;
         }
-
     }
 }

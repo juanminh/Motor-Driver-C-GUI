@@ -67,65 +67,106 @@
         </EventTrigger>
     </UserControl.Triggers>
     <Grid>
-        <Border BorderBrush="White" BorderThickness="0" CornerRadius="3">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="0.6*"/>
-                    <ColumnDefinition Width="0.3*"/>
-                </Grid.ColumnDefinitions>
-                <Border Grid.Column="0">
-                    <Grid Height="Auto">
-                        <Border x:Name="Glow" BorderThickness="1" CornerRadius="4,0,0,4" Opacity="0">
-                            <Border.Background>
-                                <RadialGradientBrush RadiusX="1.397" Center="1.012,0.5" GradientOrigin="1.012,0.5" RadiusY="0.68">
-                                    <GradientStop Color="#B2657FF7"/>
-                                    <GradientStop Color="#00657FF7" Offset="1"/>
-                                </RadialGradientBrush>
-                            </Border.Background>
-                        </Border>
-                        <Border x:Name="Shine" BorderThickness="1" CornerRadius="4,0,0,4" Opacity="0">
-                            <Border.Background>
-                                <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="-0.026,1.005">
-                                    <GradientStop Color="#99F7F5F6" Offset="0.998"/>
-                                    <GradientStop Color="#33FFFFFF"/>
-                                </LinearGradientBrush>
-                            </Border.Background>
-                        </Border>
-                        <TextBox  
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0.6*"/>
+            <ColumnDefinition Width="0.3*"/>
+        </Grid.ColumnDefinitions>
+        <Border Grid.Column="0" Background="#7F000000" BorderThickness="1" CornerRadius="4,0,0,4">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="#D6D5D5"/>
+                    <Setter Property="Height" Value="24"/>
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding FontSize}" Value="12"/>
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter Property="BorderBrush" Value="Transparent"/>
+                                <Setter Property="Height" Value="20"/>
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <Grid Height="Auto">
+                <Border x:Name="Glow" BorderThickness="1" CornerRadius="4,0,0,4" Opacity="0">
+                    <Border.Background>
+                        <RadialGradientBrush RadiusX="1.397" Center="1.012,0.5" GradientOrigin="1.012,0.5" RadiusY="0.68">
+                            <GradientStop Color="#B2657FF7"/>
+                            <GradientStop Color="#00657FF7" Offset="1"/>
+                        </RadialGradientBrush>
+                    </Border.Background>
+                </Border>
+                <Border x:Name="Shine" BorderThickness="1" CornerRadius="4,0,0,4" Opacity="0">
+                    <Border.Background>
+                        <LinearGradientBrush EndPoint="0.5,1" MappingMode="RelativeToBoundingBox" StartPoint="-0.026,1.005">
+                            <GradientStop Color="#99F7F5F6" Offset="0.998"/>
+                            <GradientStop Color="#33FFFFFF"/>
+                        </LinearGradientBrush>
+                    </Border.Background>
+                </Border>
+                <TextBox  
                             VerticalContentAlignment="Center"
                             IsReadOnly="True"
                             IsHitTestVisible="False"
-                            FontSize="13" 
+                            FontSize="{Binding FontSize}" 
                             Height="25"
                             Text="{Binding Label, Mode=TwoWay}"
                             Foreground="White"
-                            HorizontalAlignment="Center"
-                            Focusable="True">    
-                            <TextBox.Style>
-                                <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxStyle}">
-                                    <Setter Property="TextDecorations" Value="None" />
-                                    <Setter Property="FontWeight" Value="Normal" />
-                                    <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding Label}" Value="Motor" />
-                                            </MultiDataTrigger.Conditions>
-                                            <MultiDataTrigger.Setters>
-                                                <Setter Property="TextDecorations" Value="Underline" />
-                                                <Setter Property="FontWeight" Value="Bold" />
-                                            </MultiDataTrigger.Setters>
-                                        </MultiDataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBox.Style>
-                        </TextBox>
-                    </Grid>
-                </Border>
-                <Grid Grid.Column="1">
-                    <wpfspark:ToggleSwitch
-                            ThumbWidth="30"
-                            Width="60"
-                            Height="{Binding Height}"
+                            Focusable="True"
+                            VerticalAlignment="Center">
+                    <TextBox.Style>
+                        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxStyle}">
+                            <Setter Property="TextDecorations" Value="None" />
+                            <Setter Property="FontWeight" Value="Normal" />
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Style.Triggers>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding Label}" Value="Motor" />
+                                    </MultiDataTrigger.Conditions>
+                                    <MultiDataTrigger.Setters>
+                                        <Setter Property="TextDecorations" Value="Underline" />
+                                        <Setter Property="FontWeight" Value="Bold" />
+                                    </MultiDataTrigger.Setters>
+                                </MultiDataTrigger>
+                                <MultiDataTrigger>
+                                    <MultiDataTrigger.Conditions>
+                                        <Condition Binding="{Binding FontSize}" Value="12"/>
+                                    </MultiDataTrigger.Conditions>
+                                    <MultiDataTrigger.Setters>
+                                        <Setter Property="HorizontalAlignment" Value="Left"/>
+                                    </MultiDataTrigger.Setters>
+                                </MultiDataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
+            </Grid>
+        </Border>
+        <Border Grid.Column="1" Background="#7F000000" BorderThickness="1" CornerRadius="0,4,4,0" Width="Auto">
+            <Border.Style>
+                <Style TargetType="Border">
+                    <Setter Property="BorderBrush" Value="#D6D5D5"/>
+                    <Setter Property="Height" Value="24"/>
+                    <Style.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding FontSize}" Value="12"/>
+                            </MultiDataTrigger.Conditions>
+                            <MultiDataTrigger.Setters>
+                                <Setter Property="BorderBrush" Value="Transparent"/>
+                                <Setter Property="Height" Value="20"/>
+                            </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+            <wpfspark:ToggleSwitch
+                Width="70"
+                               ThumbWidth="25"
+                               Height="{Binding Height}"
                                ThumbGlowColor="Gray"
                                ThumbBackground="Gray"
                                CheckedForeground="White"
@@ -146,68 +187,11 @@
                                ThumbCornerRadius="4"
                                ThumbShineCornerRadius="4"
                                
-                               FontSize="13"
+                               FontSize="{Binding FontSize}"
                                FontWeight="Normal"
                                HorizontalAlignment="Stretch"
                                IsChecked="{Binding IsChecked}">
-                        <!--<wpfspark:ToggleSwitch.BorderBrush>
-                <LinearGradientBrush EndPoint="0,0"
-                                     StartPoint="0,1">
-                    <GradientStop Color="#959595"
-                                  Offset="0" />
-                    <GradientStop Color="#A1A1A1"
-                                  Offset="0.5" />
-                    <GradientStop Color="#555555"
-                                  Offset="1" />
-                </LinearGradientBrush>
-            </wpfspark:ToggleSwitch.BorderBrush>
-            <wpfspark:ToggleSwitch.CheckedBackground>
-                <LinearGradientBrush EndPoint="0,1"
-                                     StartPoint="0,0">
-                    <GradientStop Color="#1E41A5"
-                                  Offset="0" />
-                    <GradientStop Color="#2F6AEA"
-                                  Offset="0.5" />
-                    <GradientStop Color="#6298FE"
-                                  Offset="1" />
-                </LinearGradientBrush>
-            </wpfspark:ToggleSwitch.CheckedBackground>
-            <wpfspark:ToggleSwitch.ThumbBackground>
-                <LinearGradientBrush EndPoint="0,1"
-                                     StartPoint="0,0">
-                    <GradientStop Color="#C1C1C1"
-                                  Offset="0" />
-                    <GradientStop Color="#A5A5A5"
-                                  Offset="0.5" />
-                    <GradientStop Color="#FCFCF6"
-                                  Offset="1" />
-                </LinearGradientBrush>
-            </wpfspark:ToggleSwitch.ThumbBackground>
-            <wpfspark:ToggleSwitch.ThumbBorderBrush>
-                <LinearGradientBrush EndPoint="0,1"
-                                     StartPoint="0,0">
-                    <GradientStop Color="#F6F6F6"
-                                  Offset="0" />
-                    <GradientStop Color="#959595"
-                                  Offset="0.5" />
-                    <GradientStop Color="#565656"
-                                  Offset="1" />
-                </LinearGradientBrush>
-            </wpfspark:ToggleSwitch.ThumbBorderBrush>
-            <wpfspark:ToggleSwitch.UncheckedBackground>
-                <LinearGradientBrush EndPoint="0,1"
-                                     StartPoint="0,0">
-                    <GradientStop Color="#626262"
-                                  Offset="0.1" />
-                    <GradientStop Color="#A5A5A5"
-                                  Offset="0.5" />
-                    <GradientStop Color="#F1F1F1"
-                                  Offset="1" />
-                </LinearGradientBrush>
-            </wpfspark:ToggleSwitch.UncheckedBackground>-->
-                    </wpfspark:ToggleSwitch>
-                </Grid>
-            </Grid>
+            </wpfspark:ToggleSwitch>
         </Border>
     </Grid>
 </UserControl>

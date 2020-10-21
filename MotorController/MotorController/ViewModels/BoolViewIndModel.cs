@@ -9,7 +9,7 @@ using System.Diagnostics;
 using System.Windows.Media;
 using System.Threading.Tasks;
 using System.Linq;
-using MotorController.CommandsDB;
+using MotorController.Common;
 
 namespace MotorController.ViewModels
 {

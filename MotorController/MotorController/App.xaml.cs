@@ -130,7 +130,6 @@ namespace MotorController
             // raise selection change event even when there's no change in index
             EventManager.RegisterClassHandler(typeof(ComboBoxItem), UIElement.PreviewMouseLeftButtonDownEvent,
                                               new MouseButtonEventHandler(ComboBoxSelfSelection), true);
-            //EventManager.RegisterClassHandler(typeof(Window), Window.PreviewMouseDownEvent, new MouseButtonEventHandler(OnPreviewMouseDown));
 
             base.OnStartup(e);
         }
@@ -157,25 +156,6 @@ namespace MotorController
                     comboBox.RaiseEvent(new SelectionChangedEventArgs(Selector.SelectionChangedEvent, new List<object>(), new List<object>()));
                 }
             }
-        }
-        static void OnPreviewMouseDown(object sender, MouseButtonEventArgs e)
-        {
-            /*
-            Trace.WriteLine("Clicked!!");
-            if(LeftPanelViewModel.win != null)
-            {
-                if((LeftPanelViewModel.win.WindowState == WindowState.Normal || LeftPanelViewModel.win.WindowState == WindowState.Maximized) &&
-                    (App.Current.MainWindow.WindowState == WindowState.Normal || App.Current.MainWindow.WindowState == WindowState.Maximized)
-                    )
-                {
-                    var temp = sender as Window;
-                    if(temp.Name == "MainAppWindow")
-                    {
-                        //LeftPanelViewModel.win.WindowState = WindowState.Minimized;
-                    }
-                }
-            }
-            */
         }
 
         private void ErrorLog(StackTrace _stackTrace, Exception _exception, String _functionName)

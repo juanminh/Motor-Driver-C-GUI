@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
-using MotorController.CommandsDB;
+using MotorController.Common;
 using System.Diagnostics;
 using MotorController.Models.DriverBlock;
 

@@ -1,5 +1,5 @@
 ﻿using Abt.Controls.SciChart;
-using MotorController.CommandsDB;
+using MotorController.Common;
 using MotorController.Models;
 using MotorController.Models.DriverBlock;
 using MotorController.ViewModels;

@@ -8,10 +8,11 @@ using MotorController.Models;
 using MotorController.Models.DriverBlock;
 using System.Diagnostics;
 using System.Windows.Controls;
+using MotorController.Common;
 
 namespace MotorController.ViewModels
 {
-    class EnumViewModel : DataViewModel
+    class EnumViewModel : ViewModelBase
     {
 
 
@@ -41,24 +42,24 @@ namespace MotorController.ViewModels
             _commandList.AddRange(enumlist);
 
         }
+        private readonly BaseModel _baseModel = new BaseModel();
 
-        new public string CommandValue
+        public string CommandName { get { return _baseModel.CommandName; } set { _baseModel.CommandName = value; } }
+        public string CommandValue
         {
-            get { return base.CommandValue; }
+            get
+            {
+                return _baseModel.CommandValue;
+            }
             set
             {
-
-                base.CommandValue = value;
-                if(Count > 0)
-                {
-                    //SelectedValue = CommandList[Convert.ToInt16(value) - 1];
-                    Count++;
-                }
-                if(Count == 5)
-                    Count = -1;
+                _baseModel.CommandValue = value;
+                GetCount = -1;
+                OnPropertyChanged();
             }
         }
-
+        public string CommandId { get { return _baseModel.CommandID; } set { _baseModel.CommandID = value; } }
+        public string CommandSubId { get { return _baseModel.CommandSubID; } set { _baseModel.CommandSubID = value; } }
         public ICommand SelectedItemChanged1
         {
             get
@@ -75,36 +76,38 @@ namespace MotorController.ViewModels
         {
             _isOpened = true;
         }
-        private new void SendData()
+        private void SendData()
         {
-            if(_isOpened)
-            {
-                if(Count == 0 && SelectedIndex != null && Convert.ToInt16(SelectedIndex) >= 0) // SelectedValue SelectedValue
-                {
-                    int StartIndex = 0;
-                    int ListIndex = Convert.ToInt16(SelectedIndex); //SelectedValue
-                    foreach(var List in MotorController.CommandsDB.Commands.GetInstance.EnumViewCommandsList)
-                    {
-                        if((ListIndex < List.Value.CommandList.Count() && List.Value.CommandList[ListIndex] == CommandList[Convert.ToInt16(SelectedIndex)]) || (ListIndex == 0 && List.Value.CommandList[ListIndex] == SelectedItem)) // SelectedValue SelectedValue
-                        {
-                            if(List.Value.CommandValue != "")
-                            {
-                                StartIndex = Convert.ToInt16(List.Value.CommandValue);
-                                break;
-                            }
-                        }
-                    }
-                    BuildPacketTosend((ListIndex + StartIndex).ToString());
-                    _isOpened = false;
-                }
-            }
-            else
-                _isOpened = false;
+            if(LeftPanelViewModel.GetInstance.ConnectButtonContent != "Disconnect")
+                return;
+            //if(_isOpened)
+            //{
+            //if(Count == 0 && SelectedIndex != null && Convert.ToInt16(SelectedIndex) >= 0) // SelectedValue SelectedValue
+            //{
+            //    int StartIndex = 0;
+            //    int ListIndex = Convert.ToInt16(SelectedIndex); //SelectedValue
+            //    foreach(var List in Commands.GetInstance.EnumViewCommandsList)
+            //    {
+            //        if((ListIndex < List.Value.CommandList.Count() && List.Value.CommandList[ListIndex] == CommandList[Convert.ToInt16(SelectedIndex)]) || (ListIndex == 0 && List.Value.CommandList[ListIndex] == SelectedItem)) // SelectedValue SelectedValue
+            //        {
+            //            if(List.Value.CommandValue != "")
+            //            {
+            //                StartIndex = Convert.ToInt16(List.Value.CommandValue);
+            //                break;
+            //            }
+            //        }
+            //    }
+
+            BuildPacketTosend(/*(ListIndex + StartIndex).ToString()*/);
+            //        _isOpened = false;
+            //    }
+            //}
+            //else
+            //    _isOpened = false;
 
             if(Count == -1)
                 Count = 0;
         }
-
         private bool IsEnabled()
         {
             return true;
@@ -119,7 +122,7 @@ namespace MotorController.ViewModels
             get { return _selectedIndex; }
             set { _selectedIndex = value; OnPropertyChanged("SelectedIndex"); }
         }
-        private double _fontSize = 13.33;
+        private double _fontSize = 13;
         public double FontSize
         {
             get { return _fontSize; }
@@ -229,19 +232,19 @@ namespace MotorController.ViewModels
         {
             // TODO: Complete member initialization
         }
-        private void BuildPacketTosend(string val)
+        private void BuildPacketTosend(/*string val*/)
         {
-            if(LeftPanelViewModel.GetInstance.ConnectButtonContent == "Disconnect")
+            //if(LeftPanelViewModel.GetInstance.ConnectButtonContent == "Disconnect")
             {
                 Task.Factory.StartNew(action: () =>
                 {
                     var tmp = new PacketFields
                     {
-                        Data2Send = val,
+                        Data2Send = Convert.ToInt16(SelectedIndex) + Convert.ToInt16(CommandValue),
                         ID = Convert.ToInt16(CommandId),
                         SubID = Convert.ToInt16(CommandSubId),
                         IsSet = true,
-                        IsFloat = IsFloat
+                        IsFloat = false
                     };
                     Rs232Interface.GetInstance.SendToParser(tmp);
                 });

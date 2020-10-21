@@ -533,7 +533,7 @@
         </Style>
 
         <!--  ExtendedGridSplitter  -->
-        <Style TargetType="{x:Type common:CollapsableGridSplitter}">
+        <Style TargetType="{x:Type Helpers:CollapsableGridSplitter}">
             <Setter Property="Background" Value="#FFFFFFFF" />
             <Setter Property="IsTabStop" Value="true" />
             <Setter Property="PreviewStyle" Value="{StaticResource GridSplitterPreviewStyle}" />
@@ -543,7 +543,7 @@
             <Setter Property="VerticalAlignment" Value="Stretch" />
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type common:CollapsableGridSplitter}">
+                    <ControlTemplate TargetType="{x:Type Helpers:CollapsableGridSplitter}">
                         <ControlTemplate.Resources>
                             <LinearGradientBrush x:Key="splitterBackgroundBrush" MappingMode="RelativeToBoundingBox" StartPoint="0,1" EndPoint="1,1">
                                 <LinearGradientBrush.GradientStops>
@@ -803,7 +803,7 @@
                     <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="MOTOR" VerticalAlignment="Bottom" Width="70" FontWeight="Bold" FontSize="15" Foreground="White"/>
                 </Grid>
                 <Grid Grid.Row="1">
-                    <TextBlock HorizontalAlignment="Left" Text="Controller           Version 1.3.k" VerticalAlignment="Top" Width="Auto" Foreground="#FF5499D3" FontSize="12"/>
+                    <TextBlock HorizontalAlignment="Left" Text="Controller           Version 1.3.l" VerticalAlignment="Top" Width="Auto" Foreground="#FF5499D3" FontSize="12"/>
                 </Grid>
                 <Grid Grid.Row="2" Height="10">
                 </Grid>
@@ -888,7 +888,14 @@
                 <Grid Grid.Row="6">
                     <ItemsControl Height="auto"
                               ItemsSource="{Binding LPCommandsList}" 
-                              ItemTemplate="{StaticResource DataViewModel}" IsHitTestVisible="False" Focusable="False"/>
+                              ItemTemplate="{StaticResource DataViewModel}" IsHitTestVisible="False" Focusable="False">
+                        <ItemsControl.ItemContainerStyle>
+                            <Style>
+                                <Setter Property="Control.Background" Value="Transparent"/>
+                                <Setter Property="Control.BorderBrush" Value="Transparent"/>
+                            </Style>
+                        </ItemsControl.ItemContainerStyle>
+                    </ItemsControl>
                 </Grid>
                 <Grid Grid.Row="7" Height="10">
                 </Grid>
@@ -931,35 +938,32 @@
                         <ColumnDefinition Width="30*"/>
                     </Grid.ColumnDefinitions>
                     <!-- Wizard -->
-                    <Border Grid.Column="0" CornerRadius="1" BorderBrush="Gray" BorderThickness="1" Width="50">
-                        <Button Grid.Column="0" Command ="{Binding ShowWizard}"
-                            Background="Transparent" 
-                            Foreground="Transparent"
-                            BorderThickness="0"
-                            Padding="0">
-                            <Image Source="pack://application:,,,/Images/Wizard.png"/>
-                        </Button>
-                    </Border>
+                    <Button Grid.Column="0" Command ="{Binding ShowWizard}"
+                                Style="{StaticResource CalibButtonStyle}" 
+                                Width="50" 
+                                Height="50"
+                                BorderThickness="0" 
+                                Margin="0">
+                        <Image Source="pack://application:,,,/Images/Wizard1.png"/>
+                    </Button>
                     <!-- Param And Action -->
-                    <Border Grid.Column="2" CornerRadius="2" BorderBrush="Gray" BorderThickness="1" Width="50">
-                        <Button Command ="{Binding Showwindow}"
-                            Background="Transparent" 
-                            Foreground="Transparent"
-                            BorderThickness="0"
-                            Padding="0">
+                    <Button Grid.Column="2"
+                            Command="{Binding Showwindow}" 
+                            Style="{StaticResource CalibButtonStyle}" 
+                            Width="50" 
+                            Height="50"
+                            BorderThickness="0" Margin="0">
                             <Image Source="pack://application:,,,/Images/alt-parameters-icone-9469-64.png"/>
-                        </Button>
-                    </Border>
-                    <!-- Bode Command ="{Binding Showwindow}"--><!--
-                    <Border Grid.Column="4" CornerRadius="2" BorderBrush="Gray" BorderThickness="1" Width="50">
-                        <Button 
-                            Background="Transparent" 
-                            Foreground="Transparent"
-                            BorderThickness="0"
-                            Padding="0">
-                            <Image Source="pack://application:,,,/Images/bode.png" Height="49"/>
-                        </Button>
-                    </Border>-->
+                    </Button>
+                    <!-- Bode Command ="{Binding Showwindow}"-->
+                    <!--<Button Grid.Column="4"
+                            Command="{Binding Showwindow}" 
+                            Style="{StaticResource CalibButtonStyle}" 
+                            Width="50" 
+                            Height="50"
+                            BorderThickness="0" Margin="0">
+                        <Image Source="pack://application:,,,/Images/bode.png"/>
+                    </Button>-->
                     <!-- Monitor -->
                     <!--<Border Grid.Column="5" CornerRadius="15" BorderBrush="Gray" BorderThickness="1" Width="50">
                         <Button Grid.Column="5" Command ="{Binding Showwindow}"
@@ -1028,7 +1032,7 @@
             </Grid>
         </ScrollViewer>
 
-        <common:CollapsableGridSplitter Grid.Column="1"              
+        <Helpers:CollapsableGridSplitter Grid.Column="1"              
 			Width="9"
 			HorizontalAlignment="Right"
 			VerticalAlignment="Stretch"

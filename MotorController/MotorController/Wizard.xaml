@@ -10,8 +10,8 @@
         mc:Ignorable="d"
         Title="Wizard" Height="560" Width="620"
         ResizeMode="NoResize"
-        Icon="./Themes/MotorController.png"
-        WindowStartupLocation="CenterOwner"
+        Icon="pack://application:,,,/Images/Wizard1.png"
+        WindowStartupLocation="CenterScreen"
         xmlns:common="clr-namespace:MotorController.Common"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         xmlns:controls="using:Microsoft.Toolkit.Uwp.UI.Controls"
@@ -120,7 +120,7 @@
             </Setter>
         </Style>
         <!--  ExtendedGridSplitter  -->
-        <Style TargetType="common:CollapsableGridSplitter">
+        <Style TargetType="Helpers:CollapsableGridSplitter">
             <Setter Property="Background" Value="#FFFFFFFF" />
             <Setter Property="IsTabStop" Value="true" />
             <Setter Property="VerticalHandleStyle" Value="{StaticResource VerticalGridSplitterHandleStyle}" />
@@ -128,7 +128,7 @@
             <Setter Property="VerticalAlignment" Value="Stretch" />
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="common:CollapsableGridSplitter">
+                    <ControlTemplate TargetType="Helpers:CollapsableGridSplitter">
                         <ControlTemplate.Resources>
                             <LinearGradientBrush x:Key="splitterBackgroundBrush" MappingMode="RelativeToBoundingBox" StartPoint="0,1" EndPoint="1,1">
                                 <LinearGradientBrush.GradientStops>
@@ -326,7 +326,7 @@
                               Width="{StaticResource MotorParametersWidth}" 
                               FontSize="12" Text="{Binding PolePair, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <i:Interaction.Behaviors>
-                                    <models:AllowableCharactersTextBoxBehavior RegularExpression="{StaticResource RegexInt}" MaxLength="12"/>
+                                    <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="{StaticResource RegexInt}" MaxLength="12"/>
                                 </i:Interaction.Behaviors>
                             </TextBox>
                             <TextBlock Grid.Row="2" HorizontalAlignment="Left" 
@@ -338,7 +338,7 @@
                              Width="{StaticResource MotorParametersWidth}" 
                              FontSize="12" Text="{Binding ContinuousCurrent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <i:Interaction.Behaviors>
-                                    <models:AllowableCharactersTextBoxBehavior RegularExpression="{StaticResource RegexFloat}" MaxLength="12"/>
+                                    <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="{StaticResource RegexFloat}" MaxLength="12"/>
                                 </i:Interaction.Behaviors>
                             </TextBox>
                             <TextBlock Grid.Row="3" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="12" Width="Auto" Text="Max Speed [rpm]"></TextBlock>
@@ -346,7 +346,7 @@
                               Width="{StaticResource MotorParametersWidth}" 
                               FontSize="12" Text="{Binding MaxSpeed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <i:Interaction.Behaviors>
-                                    <models:AllowableCharactersTextBoxBehavior RegularExpression="{StaticResource RegexInt}" MaxLength="12"/>
+                                    <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="{StaticResource RegexInt}" MaxLength="12"/>
                                 </i:Interaction.Behaviors>
                             </TextBox>
                         </Grid>
@@ -520,7 +520,7 @@
                                             </Style>
                                         </TextBox.Style>
                                         <i:Interaction.Behaviors>
-                                            <models:AllowableCharactersTextBoxBehavior RegularExpression="{StaticResource RegexInt}" MaxLength="12"/>
+                                            <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="{StaticResource RegexInt}" MaxLength="12"/>
                                         </i:Interaction.Behaviors>
                                     </TextBox>
                                     <TextBlock Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="9" Width="Auto" Text="[Counts] = [Encoder Lines  x  4]"></TextBlock>
@@ -647,7 +647,7 @@
                                         </Style>
                                     </TextBox.Style>
                                     <i:Interaction.Behaviors>
-                                        <models:AllowableCharactersTextBoxBehavior RegularExpression="{StaticResource RegexInt}" MaxLength="12"/>
+                                        <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="{StaticResource RegexInt}" MaxLength="12"/>
                                     </i:Interaction.Behaviors>
                                 </TextBox>
                             </Grid>
@@ -741,7 +741,7 @@
                               Width="{StaticResource MotorParametersWidth}" 
                               FontSize="12" Text="{Binding AnalogCommandValue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                                 <i:Interaction.Behaviors>
-                                    <models:AllowableCharactersTextBoxBehavior RegularExpression="{StaticResource RegexFloat}" MaxLength="12"/>
+                                    <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="{StaticResource RegexFloat}" MaxLength="12"/>
                                 </i:Interaction.Behaviors>
                             </TextBox>
 
@@ -802,7 +802,7 @@
                             BorderThickness="0.5" 
                             Width="50" Height="15"
                             Background="Orange"
-                            IsEnabled="{ Binding StartEnable, Mode=TwoWay}"
+                            IsEnabled="{ Binding StartEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                             Command="{Binding Start}">
                         <Button.Style>
                             <Style TargetType="Button" BasedOn="{StaticResource CalibButtonStyle}">
@@ -868,13 +868,21 @@
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="5"/>
+                    <!--<RowDefinition Height="5"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="5"/>
-                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>-->
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Width="Auto" Text="Parameters" Foreground="White" Background="Gray" FontWeight="Bold"/>
-                <Border Grid.Row="3" Width="auto" Height="auto" BorderBrush="White" BorderThickness="1" CornerRadius="2" VerticalAlignment="Top">
+                <ItemsControl Grid.Row="1" ItemsSource="{Binding WizardOperation}"
+                                          ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}">
+                    <ItemsControl.ItemContainerStyle>
+                        <Style>
+                            <Setter Property="Control.Margin" Value="0,5,0,5"/>
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
+                </ItemsControl>
+                <!--<Border Grid.Row="3" Width="auto" Height="auto" BorderBrush="White" BorderThickness="1" CornerRadius="2" VerticalAlignment="Top">
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="220"/>
@@ -893,7 +901,7 @@
                         <TextBlock Grid.Column="0" Foreground="White">Restore From Flash</TextBlock>
                         <CheckBox Grid.Column="1" Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding Restore}"/>
                     </Grid>
-                </Border>
+                </Border>-->
             </Grid>
         </Border>
         <Image Grid.Row="5" Stretch="Uniform" Source="pack://siteoforigin:,,,/WizardMotorImages/Motor.png" Height="80" Width="auto"></Image>

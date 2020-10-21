@@ -13,7 +13,7 @@
     <RootNamespace>MotorController</RootNamespace>
     <AssemblyName>Motor Controller</AssemblyName>
     <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
-    <ApplicationIcon>MotorControllerMain.ico</ApplicationIcon>
+    <ApplicationIcon>MotorController.ico</ApplicationIcon>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -135,7 +135,8 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>Motor Controller_1_TemporaryKey.pfx</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup />
@@ -220,24 +221,17 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </ApplicationDefinition>
-    <Compile Include="Behaviors\InputBindingsManager.cs" />
-    <Compile Include="Behaviors\ListBoxMouseWheelScrollingBehavior.cs" />
     <Compile Include="Common\Configuration.cs" />
     <Compile Include="Common\Consts.cs" />
-    <Compile Include="Common\IsModifierTypeConverter.cs" />
-    <Compile Include="Helpers\ActualSizePropertyProxy.cs" />
-    <Compile Include="Helpers\AttachableInteractionClasses.cs" />
+    <Compile Include="Helpers\IsModifierTypeConverter.cs" />
     <Compile Include="Helpers\EnumHelper.cs" />
     <Compile Include="Helpers\EventRiser.cs" />
     <Compile Include="Helpers\iniFile.cs" />
     <Compile Include="Helpers\RecLed.cs" />
     <Compile Include="Helpers\RoundBoolLed.cs" />
-    <Compile Include="Helpers\TransitioningFrame.cs" />
-    <Compile Include="Helpers\TreeViewExtension.cs" />
     <Compile Include="ViewModels\BodeViewModel.cs" />
     <Compile Include="ViewModels\BoolViewIndModel.cs" />
     <Compile Include="ViewModels\BottomPanelViewModel.cs" />
-    <Compile Include="ViewModels\CalibrationButtonModel.cs" />
     <Compile Include="ViewModels\CalibrationWizardViewModel.cs" />
     <Compile Include="ViewModels\DebugObjModel.cs" />
     <Compile Include="ViewModels\DebugOutput.cs" />
@@ -246,11 +240,9 @@
     <Compile Include="ViewModels\CalibrationViewModel.cs" />
     <Compile Include="ViewModels\ComboBox.cs" />
     <Compile Include="ViewModels\FilterViewModel.cs" />
-    <Compile Include="ViewModels\LoadParamsViewModel.cs" />
     <Compile Include="ViewModels\IOViewModel.cs" />
     <Compile Include="ViewModels\FeedBackViewModel.cs" />
     <Compile Include="ViewModels\MaintenanceViewModel.cs" />
-    <Compile Include="ViewModels\MessageBoxVM.cs" />
     <Compile Include="ViewModels\MotionViewModel.cs" />
     <Compile Include="ViewModels\Operations.cs" />
     <Compile Include="ViewModels\PIDViewModel.cs" />
@@ -277,18 +269,15 @@
     <Compile Include="Views\DebugObj.xaml.cs">
       <DependentUpon>DebugObj.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\CalibrationButton.xaml.cs">
-      <DependentUpon>CalibrationButton.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\BoolViewInd.xaml.cs">
       <DependentUpon>BoolViewInd.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\mainWindowPanels\BottomPanel.xaml.cs">
       <DependentUpon>BottomPanel.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Common\CommandsDB\Commands.cs" />
+    <Compile Include="Common\Commands.cs" />
     <Compile Include="Common\BaseViewModel.cs" />
-    <Compile Include="Common\CollapsableGridSplitter.cs" />
+    <Compile Include="Helpers\CollapsableGridSplitter.cs" />
     <Compile Include="Common\Enums.cs" />
     <Compile Include="Data\DoubleSeries.cs" />
     <Compile Include="Data\XYPoint.cs" />
@@ -298,33 +287,26 @@
     <Compile Include="Views\mainWindowPanels\LeftPanelView.xaml.cs">
       <DependentUpon>LeftPanelView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\ParserBlock\AllowableCharactersTextBoxBehavior.cs" />
+    <Compile Include="Helpers\AllowableCharactersTextBoxBehavior.cs" />
     <Compile Include="Models\BaseModel.cs" />
     <Compile Include="Models\DriverBlock\ConnectionBase.cs" />
-    <Compile Include="Models\DriverBlock\RefreshManger.cs" />
+    <Compile Include="Models\RefreshManager.cs" />
     <Compile Include="Models\DriverBlock\Rs232Interface.cs" />
     <Compile Include="Models\DriverBlock\Rs232InterfaceEventArgs.cs" />
     <Compile Include="Models\ParserBlock\CrcBase.cs" />
     <Compile Include="Models\ParserBlock\Packetizer.cs" />
-    <Compile Include="Models\ParserBlock\PacketizerEventArgs.cs" />
     <Compile Include="Models\ParserBlock\Parser2SendEventArgs.cs" />
-    <Compile Include="Models\ParserBlock\ParserBase.cs" />
     <Compile Include="Models\ParserBlock\ParserRayonM1.cs" />
     <Compile Include="Models\RelayCommand.cs" />
-    <Compile Include="Models\SataticClaass\GuiUpdateQueue.cs" />
+    <Compile Include="Models\StaticClass\GuiUpdateQueue.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="Views\mainWindowPanels\RightPanelView.xaml.cs">
-      <DependentUpon>RightPanelView.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\mainWindowPanels\UpperPanel.xaml.cs">
       <DependentUpon>UpperPanel.xaml</DependentUpon>
     </Compile>
     <Compile Include="ViewModels\DataViewModel.cs" />
     <Compile Include="ViewModels\EnumViewModel.cs" />
-    <Compile Include="ViewModels\IntegerUCModel.cs" />
     <Compile Include="ViewModels\LeftPanelViewModel.cs" />
     <Compile Include="ViewModels\ParametarsWindowViewModel.cs" />
-    <Compile Include="ViewModels\RightPanelViewModel.cs" />
     <Compile Include="ViewModels\ViewModelBase.cs" />
     <Compile Include="Views\BoolUC.xaml.cs">
       <DependentUpon>BoolUC.xaml</DependentUpon>
@@ -335,18 +317,11 @@
     <Compile Include="Views\EnumView.xaml.cs">
       <DependentUpon>EnumView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\IntegerUC.xaml.cs">
-      <DependentUpon>IntegerUC.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\MesageBox.xaml.cs">
-      <DependentUpon>MesageBox.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\OscilloscopeParameters.cs" />
     <Compile Include="Views\OscilloscopeViewModel.cs" />
     <Compile Include="Views\OscilloscopeView.xaml.cs">
       <DependentUpon>OscilloscopeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ViewModels\EnumUCModel.cs" />
     <Compile Include="ParametersWindow.xaml.cs">
       <DependentUpon>ParametersWindow.xaml</DependentUpon>
     </Compile>
@@ -376,10 +351,6 @@
     <Page Include="Views\DebugObj.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\CalibrationButton.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\BoolViewInd.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -416,10 +387,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\mainWindowPanels\RightPanelView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="Styles\Dictionary1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -437,14 +404,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\EnumView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\IntegerUC.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\MesageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -473,7 +432,6 @@
       <Visible>false</Visible>
     </None>
     <Resource Include="Images\HomeBackground.jpg" />
-    <None Include="Motor Controller_1_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Views\HomeBackground.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -692,10 +650,18 @@
     <Resource Include="Images\zoomPlus_3.png" />
     <Resource Include="Images\bode.png" />
     <Resource Include="Images\excel.png" />
-    <Content Include="NDP451-KB2858728-x86-x64-AllOS-ENU.exe" />
     <None Include="WizardMotorImages\Motor.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Wizard1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\MotorController.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="MotorController.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath32)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

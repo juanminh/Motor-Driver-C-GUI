@@ -15,7 +15,7 @@
 
         <!--<common:VisibleIfTypeConverter x:Key="VisibleIfTypeConverter" />             xmlns:s3D="http://schemas.abtsoftware.co.uk/scichart3D"            
 -->
-        <common:IsModifierTypeConverter x:Key="IsModifierTypeConverter" />
+        <Helpers:IsModifierTypeConverter x:Key="IsModifierTypeConverter" />
 
         <!--Creates a style with this markup and adds to application resource to affect all charts-->
 
@@ -279,9 +279,6 @@
                     <TextBlock Text="Clear Graph" FontSize="12" />
                 </Button>
                 <Line Grid.Column="19" Margin="2,0" Stroke="#FFD6D5D5" Y2="16" VerticalAlignment="Center" Fill="#FFC1C1C1" />
-                <!--<TextBlock Grid.Column="20" Foreground="#FFF" Text="Num" FontSize="11" VerticalAlignment="Center" />
-                <CheckBox Grid.Column="21" Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding LogNum}"/>
-                <TextBlock Grid.Column="22" Foreground="#FFF" Text="Log" FontSize="11" VerticalAlignment="Center" />-->
             </Grid>
         </ScrollViewer>
 
@@ -292,7 +289,8 @@
                            MaxFrameRate="25"
                            s:ThemeManager.Theme="Oscilloscope"
                            ClipModifierSurface="True"
-                           XAxis="{Binding XAxis, Mode=TwoWay}"><!---->
+                           XAxis="{Binding XAxis, Mode=OneWay}"
+                           ><!---->
 
             <s:SciChartSurface.RenderableSeries>
                 <s:FastLineRenderableSeries DataSeries="{Binding ChartData}"
@@ -311,18 +309,8 @@
                                             Style="{StaticResource LineSeriesStyle}"/>
             </s:SciChartSurface.RenderableSeries>
             <!--Create default X and Y axes. Optional bands give a cool look and feel for minimal performance impact-->
-            <!--<s:SciChartSurface.XAxis>
-                <s:NumericAxis AnimatedVisibleRange="{Binding XVisibleRange, Mode=TwoWay}"
-                               VisibleRangeLimit="{Binding XLimit}"
-                               AxisTitle="Time (ms)"
-                               DrawMajorBands="False"
-                               DrawMinorGridLines="False"
-                               DrawMajorTicks="False"
-                               DrawMinorTicks="False"
-                               StrokeThickness="1"  />
-            </s:SciChartSurface.XAxis>-->
             <s:SciChartSurface.YAxis>
-                <s:NumericAxis AnimatedVisibleRange="{Binding YVisibleRange, Mode=TwoWay}"
+                <s:NumericAxis AnimatedVisibleRange="{Binding YVisibleRange, Mode=OneWay}"
                                AxisAlignment="Left"
                                DrawMajorBands="False"
                                DrawMinorGridLines="False"

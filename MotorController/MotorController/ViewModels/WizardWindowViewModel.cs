@@ -15,7 +15,7 @@ using System.IO;
 using System.Windows.Input;
 using MotorController.Models;
 using System.Windows;
-using MotorController.CommandsDB;
+using MotorController.Common;
 
 namespace MotorController.ViewModels
 {
@@ -105,7 +105,7 @@ namespace MotorController.ViewModels
         public Dictionary<Tuple<int, int>, CalibrationWizardViewModel> CalibrationWizardList = new Dictionary<Tuple<int, int>, CalibrationWizardViewModel>();
         public Dictionary<string, ObservableCollection<object>> CalibrationWizardListbySubGroup = new Dictionary<string, ObservableCollection<object>>();
         public Dictionary<Tuple<int, int>, DataViewModel> OperationList = new Dictionary<Tuple<int, int>, DataViewModel>();
-        public Dictionary<Tuple<int, int>, DataViewModel> operation_echo = new Dictionary<Tuple<int, int>, DataViewModel>();
+        public static Dictionary<Tuple<int, int>, DataViewModel> operation_echo = new Dictionary<Tuple<int, int>, DataViewModel>();
 
         //public bool _save_cmd_success = false;
         #region FIELDS
@@ -245,11 +245,11 @@ namespace MotorController.ViewModels
                 OnPropertyChanged("EncoderResolution");
             }
         }
-        
+
         private string _encoderResolutionCounts = "18";//"1000";
         public string EncoderResolutionCounts
         {
-            get { return (Convert.ToInt64(EncoderResolution)*4).ToString(); }
+            get { return (Convert.ToInt64(EncoderResolution) * 4).ToString(); }
             set
             {
                 _encoderResolutionCounts = value;
@@ -259,7 +259,7 @@ namespace MotorController.ViewModels
         #endregion Motor_Parameter
         #region Calibration
         public int send_operation_count = 0;
-        public bool calibration_is_in_process = false;
+        public static bool calibration_is_in_process = false;
         private int _validOperations = RoundBoolLed.FAILED;
         public int ValidOperations
         {
@@ -313,7 +313,7 @@ namespace MotorController.ViewModels
             {
                 "-1", "4", "6", "8", "14", "10", "12"
             };
-            int[] CalibTimeout = new int[] {10, 10, 70, 15, 60, 60, 60 };
+            int[] CalibTimeout = new int[] { 10, 10, 70, 15, 60, 60, 60 };
             Dictionary<string, string> calibOperation = new Dictionary<string, string>();
             for(int i = 0; i < names.Length; i++)
                 calibOperation.Add(names[i], SubID[i]);
@@ -338,7 +338,7 @@ namespace MotorController.ViewModels
                     CommandId = "6",
                     CommandSubId = calibOperation.ElementAt(i).Value,
                     CalibTimeout = CalibTimeout[i],
-                    isWizard = true                    
+                    isWizard = true
                 };
                 if(_instance != null)
                 {
@@ -358,33 +358,26 @@ namespace MotorController.ViewModels
         {
             if(!LeftPanelViewModel._app_running)
                 return;
-            //calibration_is_in_process = true;
             StartEnable = false;
+            calibration_is_in_process = true;
+
             cancellationTokenCalib = new CancellationToken(false);
 
-            RefreshManger.TempTab = -1;
-            //LeftPanelViewModel.GetInstance.RefreshParamsTick(STOP);
-            //LeftPanelViewModel.GetInstance.RefreshParamsTick(START);
-            Thread.Sleep(100);
-
+            Thread.Sleep(10);
             try
             {
-                await Task.Run(() => StartCalib(cancellationTokenCalib));
+                await Task.Run(() => StartCalib());
             }
             catch
             {
                 AbortCalib();
             }
-            StartEnable = true;
-
-            RefreshManger.TempTab = -1;
-            //LeftPanelViewModel.GetInstance.RefreshParamsTick(STOP);
-            //LeftPanelViewModel.GetInstance.RefreshParamsTick(START);
         }
         private async void StartButtonStop()
         {
-            StartEnable = true;
-            Thread.Sleep(10);
+            //if(!calibration_is_in_process || !StartEnable)
+            //    return;
+
             await Task.Run(() =>
             {
                 for(int i = 0; i < GetInstance.CalibrationWizardList.Count; i++)
@@ -393,13 +386,21 @@ namespace MotorController.ViewModels
                     if(GetInstance.CalibrationWizardList.ElementAt(i).Value.CalibStatus == RoundBoolLed.RUNNING)
                         updateCalibrationStatus(new Tuple<int, int>(Convert.ToInt32(GetInstance.CalibrationWizardList.ElementAt(i).Value.CommandId), Convert.ToInt32(GetInstance.CalibrationWizardList.ElementAt(i).Value.CommandSubId)), RoundBoolLed.STOPPED.ToString());
                 }
+
+                StartEnable = true;
+                calibration_is_in_process = false;
+                Thread.Sleep(10);
+                DebugViewModel.updateList = true;
+                RefreshManager.GetInstance.BuildGenericCommandsList_Func();
             });
         }
-        private void StartCalib(CancellationToken cancellationToken)
+        private void StartCalib()
         {
-            if(LeftPanelViewModel.GetInstance.MotorOnToggleChecked)
+            if(((UC_ToggleSwitchViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(1, 0)]).IsChecked)
             {
                 EventRiser.Instance.RiseEevent(string.Format($"Motor must be off."));
+                cancellationTokenCalib = new CancellationToken(true);
+                StartButtonStop();
                 return;
             }
             #region InitVariables
@@ -568,7 +569,7 @@ namespace MotorController.ViewModels
                 Int32.TryParse(operation.CommandId, out commandId);
                 Int32.TryParse(operation.CommandSubId, out commandSubId);
                 GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
-        
+
             }
 
             /*update  "Motor Encoder Resolution", "Roll High", "Roll Low" parameter*/
@@ -742,10 +743,10 @@ namespace MotorController.ViewModels
             //GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
             operation_echo.Clear();
             DataViewModel myValue;
-            for(int i = 0; i < OperationList.Count; i++)
+            for(int i = 0; i < GetInstance.OperationList.Count; i++)
             {
-                OperationList.TryGetValue(new Tuple<int, int>(Convert.ToInt16(OperationList.ElementAt(i).Value.CommandId), Convert.ToInt16(OperationList.ElementAt(i).Value.CommandSubId)), out myValue);
-                operation_echo.Add(new Tuple<int, int>(Convert.ToInt16(OperationList.ElementAt(i).Value.CommandId), Convert.ToInt16(OperationList.ElementAt(i).Value.CommandSubId)), myValue);
+                GetInstance.OperationList.TryGetValue(new Tuple<int, int>(Convert.ToInt16(GetInstance.OperationList.ElementAt(i).Value.CommandId), Convert.ToInt16(GetInstance.OperationList.ElementAt(i).Value.CommandSubId)), out myValue);
+                operation_echo.Add(new Tuple<int, int>(Convert.ToInt16(GetInstance.OperationList.ElementAt(i).Value.CommandId), Convert.ToInt16(GetInstance.OperationList.ElementAt(i).Value.CommandSubId)), myValue);
             }
 
             operation = new DataViewModel { CommandName = "Synchronisation Command", CommandId = "64", CommandSubId = "0", IsFloat = false, CommandValue = "1" };
@@ -763,22 +764,29 @@ namespace MotorController.ViewModels
             if(!cancellationTokenCalib.IsCancellationRequested)
             {
                 int timeout = 0;
-                while(GetInstance.OperationList.Count != send_operation_count + 1 && timeout < GetInstance.CalibrationWizardList.ElementAt(0).Value.CalibTimeout)
+                while(GetInstance.OperationList.Count != GetInstance.send_operation_count + 1 &&
+                    timeout < GetInstance.CalibrationWizardList.ElementAt(0).Value.CalibTimeout &&
+                    !cancellationTokenCalib.IsCancellationRequested)
                 {
                     Thread.Sleep(1000);
                     timeout++;
                 }
                 if(timeout >= GetInstance.CalibrationWizardList.ElementAt(0).Value.CalibTimeout)
                 {
+                    cancellationTokenCalib = new CancellationToken(true);
+
                     GetInstance.CalibrationWizardList[new Tuple<int, int>(6, -1)].CalibStatus = RoundBoolLed.FAILED;
+                    StartButtonStop();
+
                     EventRiser.Instance.RiseEevent(string.Format($"Missing some commands echo"));
                     for(int i = 0; i < operation_echo.Count; i++)
-                        EventRiser.Instance.RiseEevent("Missing " + operation_echo.ElementAt(i).Value.CommandName + ": " + 
-                            operation_echo.ElementAt(i).Value.CommandId + "[" + 
+                        EventRiser.Instance.RiseEevent("Missing " + operation_echo.ElementAt(i).Value.CommandName + ": " +
+                            operation_echo.ElementAt(i).Value.CommandId + "[" +
                             operation_echo.ElementAt(i).Value.CommandSubId + "]");
 
                     return;
                 }
+                GetInstance.send_update_parameters = false;
                 GetInstance.CalibrationWizardList[new Tuple<int, int>(6, -1)].CalibStatus = RoundBoolLed.PASSED;
             };
             Thread.Sleep(300);
@@ -804,15 +812,15 @@ namespace MotorController.ViewModels
                 }
             }
 
+            DebugViewModel.updateList = true;
+            RefreshManager.GetInstance.BuildGenericCommandsList_Func();
+
             CalibrationStart();
             CalibrationGetStatus();
         }
         public ActionCommand Abort { get { return new ActionCommand(AbortCalib); } }
         public void AbortCalib()
         {
-            //if(StartEnable)
-            //    return;
-            calibration_is_in_process = false;
             cancellationTokenCalib = new CancellationToken(true);
 
             Rs232Interface.GetInstance.SendToParser(new PacketFields
@@ -825,22 +833,9 @@ namespace MotorController.ViewModels
             });
             Thread.Sleep(10);
 
-            //Rs232Interface.GetInstance.SendToParser(new PacketFields
-            //{
-            //    Data2Send = 0,
-            //    ID = 63,
-            //    SubID = 9,
-            //    IsSet = true,
-            //    IsFloat = false
-            //});
-
-            StartButtonStop();
-            Thread.Sleep(100);
             GetInstance.Count = GetInstance.OperationList.Count;
 
-            RefreshManger.TempTab = -1;
-            //LeftPanelViewModel.GetInstance.RefreshParamsTick(STOP);
-            //LeftPanelViewModel.GetInstance.RefreshParamsTick(START);
+            StartButtonStop();
         }
         private bool _save = false;
         public bool Save
@@ -905,6 +900,14 @@ namespace MotorController.ViewModels
             Thread.Sleep(1000);
             Save = false;
             Restore = false;
+        }
+        public ObservableCollection<object> WizardOperation
+        {
+
+            get
+            {
+                return Commands.GetInstance.GenericCommandsGroup["WizardOperation"];
+            }
         }
         #endregion Calibration
         #region AdvancedConfiguration
@@ -1255,7 +1258,7 @@ namespace MotorController.ViewModels
             int max_timeout = 15;
             int calibration_timeout = max_timeout;
 
-            while(GetInstance.Count < GetInstance.OperationList.Count && StartEnable == false/* && Views.ParametarsWindow.ParametersWindowTabSelected != (int)eTab.CALIBRATION*/)
+            while(GetInstance.Count < GetInstance.OperationList.Count && /*!StartEnable*/ calibration_is_in_process)
             {
                 if(calibration_index != Convert.ToInt16(GetInstance.OperationList.ElementAt(GetInstance.Count).Value.CommandSubId))
                 {
@@ -1268,17 +1271,18 @@ namespace MotorController.ViewModels
                     AbortCalib();
                     return;
                 }
-                Rs232Interface.GetInstance.SendToParser(new PacketFields
-                {
-                    Data2Send = 1,
-                    ID = Convert.ToInt16(GetInstance.OperationList.ElementAt(GetInstance.Count).Value.CommandId),
-                    SubID = Convert.ToInt16(GetInstance.OperationList.ElementAt(GetInstance.Count).Value.CommandSubId),
-                    IsSet = false,
-                    IsFloat = false
-                });
-                Debug.WriteLine(GetInstance.OperationList.ElementAt(GetInstance.Count).Value.CommandId + "[" + Convert.ToInt16(GetInstance.OperationList.ElementAt(GetInstance.Count).Value.CommandSubId) + "]");
+                //Rs232Interface.GetInstance.SendToParser(new PacketFields
+                //{
+                //    Data2Send = 1,
+                //    ID = Convert.ToInt16(GetInstance.OperationList.ElementAt(GetInstance.Count).Value.CommandId),
+                //    SubID = Convert.ToInt16(GetInstance.OperationList.ElementAt(GetInstance.Count).Value.CommandSubId),
+                //    IsSet = false,
+                //    IsFloat = false
+                //});
+                //Debug.WriteLine(GetInstance.OperationList.ElementAt(GetInstance.Count).Value.CommandId + "[" + Convert.ToInt16(GetInstance.OperationList.ElementAt(GetInstance.Count).Value.CommandSubId) + "]");
                 Thread.Sleep(1000);
                 calibration_timeout--;
+                Debug.WriteLine("timeout" + calibration_timeout);
             }
         }
         public void updateCalibrationStatus(Tuple<int, int> commandidentifier, string newPropertyValue)
@@ -1306,31 +1310,44 @@ namespace MotorController.ViewModels
                     StateTemp = RoundBoolLed.FAILED;
                     break;
             }
-            if(StartEnable)
+            if(/*StartEnable*/ !calibration_is_in_process)
                 GetInstance.CalibrationWizardList[new Tuple<int, int>(6, commandidentifier.Item2)].CalibStatus = StateTemp;
-            else if(GetInstance.CalibrationWizardList[new Tuple<int, int>(6, commandidentifier.Item2)].CalibStatus != StateTemp)
+            else
             {
-                GetInstance.CalibrationWizardList[new Tuple<int, int>(6, commandidentifier.Item2)].CalibStatus = StateTemp;
-                if(StateTemp == RoundBoolLed.FAILED)
+                if(GetInstance.CalibrationWizardList[new Tuple<int, int>(6, commandidentifier.Item2)].CalibStatus != StateTemp)
                 {
-                    AbortCalib();
+                    GetInstance.CalibrationWizardList[new Tuple<int, int>(6, commandidentifier.Item2)].CalibStatus = StateTemp;
+                    if(StateTemp == RoundBoolLed.FAILED)
+                    {
+                        AbortCalib();
+                    }
+                    else if(StateTemp == RoundBoolLed.PASSED)
+                    {
+                        GetInstance.Count++;
+                        CalibrationStart();
+                    }
                 }
-                else if(StateTemp == RoundBoolLed.PASSED)
-                {
-                    GetInstance.Count++;
-                    CalibrationStart();
-                }
+                if(GetInstance.Count == GetInstance.OperationList.Count && /*!StartEnable*/ calibration_is_in_process && GetInstance.OperationList.Count != 0)
+                    StartButtonStop();
+
+                Thread.Sleep(100);
             }
-            if(GetInstance.Count == GetInstance.OperationList.Count && !StartEnable)
-                StartButtonStop();
-            Thread.Sleep(100);
             //CalibrationGetStatusTask(STOP);
         }
-        public bool send_update_parameters = false;
+        private bool _send_update_parameters = false;
+        public bool send_update_parameters
+        {
+            get { return _send_update_parameters; }
+            set
+            {
+                _send_update_parameters = value;
+                OnPropertyChanged();
+            }
+        }
         private void sendPreStartOperation()
         {
-            send_update_parameters = true;
-            send_operation_count = 0;
+            GetInstance.send_update_parameters = true;
+            GetInstance.send_operation_count = 0;
 
             Thread.Sleep(10);
             for(int i = 0; i < GetInstance.OperationList.Count; i++)
@@ -1449,12 +1466,17 @@ namespace MotorController.ViewModels
                 return new RelayCommand(WizardWindowClosed_Func);
             }
         }
+        public static bool _is_wizard_window_opened = false;
         private void WizardWindowLoaded_Func()
         {
+            LeftPanelViewModel.GetInstance.cancelRefresh = new CancellationToken(true);
+            RefreshManager.GetInstance.BuildGenericCommandsList_Func();
         }
         private void WizardWindowClosed_Func()
         {
             LeftPanelViewModel.GetInstance._wizard_window.Visibility = Visibility.Hidden;
+            LeftPanelViewModel.GetInstance.cancelRefresh = new CancellationToken(true);
+            RefreshManager.GetInstance.BuildGenericCommandsList_Func();
         }
     }
 }

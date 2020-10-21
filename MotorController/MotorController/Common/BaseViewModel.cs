@@ -75,7 +75,6 @@ namespace MotorController.Common
         }
 
         #region INotifyPropertyChanged
-        //public event PropertyChangedEventHandler PropertyChanged;
 
         protected void NotifyPropertyChanged(String info)
         {

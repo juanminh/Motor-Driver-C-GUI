@@ -14,12 +14,6 @@ namespace MotorController.Models
         private string _commandId;
         private string _commandSubId;
         private bool _isFloat;
-        //private bool _isSelected;
-        //private SolidColorBrush _background;
-        //private bool _readOnly;
-        //private bool _enableTextBox;
-
-
         public string CommandName { get { return _commandName; } set { _commandName = value; } }
 
         public string CommandValue { get { return _commandValue; } set { _commandValue = value; } }
@@ -28,9 +22,5 @@ namespace MotorController.Models
 
         public string CommandSubID { get { return _commandSubId; } set { _commandSubId = value; } }
         public bool IsFloat { get { return _isFloat; } set { _isFloat = value; } }
-        //public bool IsSelected { get { return _isSelected; } set { _isSelected = value; } }
-        //public SolidColorBrush Background { get { return _background; } set { _background = value; } }
-        //public bool ReadOnly { get { return _readOnly; } set { _readOnly = value; } }
-        //public bool EnableTextBox { get { return _enableTextBox; } set { _enableTextBox = value; } }
     }
 }

@@ -17,58 +17,52 @@ namespace MotorController.Models.ParserBlock
             0xA001, 0x6C00, 0x7800, 0xB401, 0x5000, 0x9C01, 0x8801, 0x4400
         };
 
-        static private ushort crc16(ushort crc, IEnumerable<byte> buffer,int offset)
+        static private ushort crc16(ushort crc, IEnumerable<byte> buffer, int offset)
         {
 
-            foreach (var byt in buffer)
+            foreach(var byt in buffer)
             {
-                if (offset == 0)
+                if(offset == 0)
                 {
-                    //  if (totalcnt > 0)
-                   // {
-                      //  totalcnt--;
-                        // CRC the lower 4 bits
-                        crc = (ushort) ((crc >> 4) ^ crctable[((crc ^ (byt & 0xF)) & 0xF)]);
+                    // CRC the lower 4 bits
+                    crc = (ushort)((crc >> 4) ^ crctable[((crc ^ (byt & 0xF)) & 0xF)]);
 
-                        // CRC the upper 4 bits
-                        crc = (ushort) ((crc >> 4) ^ crctable[((crc ^ (byt >> 4)) & 0xF)]);
-                   // }
+                    // CRC the upper 4 bits
+                    crc = (ushort)((crc >> 4) ^ crctable[((crc ^ (byt >> 4)) & 0xF)]);
                 }
 
                 // Move on to the next element
                 else
-                offset--;
+                    offset--;
 
             }
-                
+
             return crc;
         }
 
-        static  private ushort crc16_byte(ushort crc, byte _byte)
+        static private ushort crc16_byte(ushort crc, byte _byte)
         {
             // CRC the lower 4 bits
-            crc = (ushort) ((crc >> 4) ^ crctable[((crc ^ (_byte & 0xF)) & 0xF)]);
+            crc = (ushort)((crc >> 4) ^ crctable[((crc ^ (_byte & 0xF)) & 0xF)]);
 
             // CRC the upper 4 bits
-            crc = (ushort) ((crc >> 4) ^ crctable[((crc ^ (_byte >> 4)) & 0xF)]);
+            crc = (ushort)((crc >> 4) ^ crctable[((crc ^ (_byte >> 4)) & 0xF)]);
 
 
             // Return the cumulative CRC-16 value
             return crc;
         }
 
-        public  int CheckFrameCrc(byte[] data)
+        public int CheckFrameCrc(byte[] data)
         {
             return (crc16(0x0000, data, 0)); //,0));
 
         }
 
-        static public ushort CalcHostFrameCrc(IEnumerable<byte> data,int offset)
+        static public ushort CalcHostFrameCrc(IEnumerable<byte> data, int offset)
         {
             return crc16(0x0000, data, offset);// totalcnt);
         }
     }
-
-
 }
 

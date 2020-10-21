@@ -1,4 +1,4 @@
-﻿using MotorController.CommandsDB;
+﻿using MotorController.Common;
 using MotorController.Models;
 using MotorController.Models.DriverBlock;
 using System;
@@ -39,6 +39,7 @@ namespace MotorController.ViewModels
                 {
                     CheckedBackground = CheckedBackground_final;
                     _is_checked = value;
+                    _special_command(value);
                 }
                 else
                 {
@@ -48,7 +49,14 @@ namespace MotorController.ViewModels
                 OnPropertyChanged();
             }
         }
+        private void _special_command(bool _val)
+        {
+            if(CommandId == 6 && CommandSubId == 15)
+                BodeViewModel.GetInstance.BodeStartStop = Convert.ToBoolean(Convert.ToInt16(_val));
+            if(CommandId == 1 && CommandSubId == 0 && !DebugViewModel.GetInstance._forceConnectMode)
+                RefreshManager.GetInstance.updateConnectionStatus(_val);
 
+        }
         private void BuildPacketTosend()
         {
             if(LeftPanelViewModel.GetInstance.ConnectButtonContent == "Disconnect")
@@ -132,6 +140,12 @@ namespace MotorController.ViewModels
                 _getCount_bool = value;
                 OnPropertyChanged();
             }
+        }
+        private double _fontSize = 13;
+        public double FontSize
+        {
+            get { return _fontSize; }
+            set { _fontSize = value; OnPropertyChanged("FontSize"); }
         }
         //public SolidColorBrush BackgroundSmallFont
         //{

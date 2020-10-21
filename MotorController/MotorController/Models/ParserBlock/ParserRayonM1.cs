@@ -12,10 +12,10 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using Abt.Controls.SciChart.Example.Data;
-using MotorController.CommandsDB;
+using MotorController.Common;
 using MotorController.Data;
 using MotorController.Models.DriverBlock;
-using MotorController.Models.SataticClaass;
+using MotorController.Models.StaticClass;
 using MotorController.Views;
 using MotorController.Helpers;
 using MotorController.ViewModels;
@@ -108,7 +108,7 @@ namespace MotorController.Models.ParserBlock
 #endif
                 if(LeftPanelViewModel.GetInstance != null)
                 { // perform Get after "set" function
-                    if(LeftPanelViewModel._app_running == true && DebugViewModel.GetInstance.EnRefresh == false && e.PacketRx.IsSet != false)
+                    if(LeftPanelViewModel._app_running && !DebugViewModel.GetInstance.EnRefresh && e.PacketRx.IsSet != false)
                     {
                         Thread.Sleep(1);
                         if(e.PacketRx.ID != 63 && e.PacketRx.ID != 67)
@@ -165,11 +165,7 @@ namespace MotorController.Models.ParserBlock
                         XYPoint xyPoint4 = new XYPoint();
                         XYPoint xyPoint5 = new XYPoint();
 
-                        //    //First Sample
-
-                        //  try
-                        //  {
-
+                        //First Sample
 
                         PlotDataSampleLSB = (short)dataInput[i + 2];
                         PlotDataSampleMSB = (short)dataInput[i + 3];
@@ -243,11 +239,6 @@ namespace MotorController.Models.ParserBlock
                 datasource1.Clear();
             }
         }
-
-        //not need func:
-        //private void ParseData(int length, byte[] dataInput)
-        //{
-        //}
 
         #endregion //TODO 
 
@@ -422,23 +413,6 @@ namespace MotorController.Models.ParserBlock
         #endregion
 
         #endregion
-        #region Start_Parser
-
-        //not use
-        private void StartParser()
-        {
-            GuiUpdateQueue.queueIsFull.WaitOne();
-            //TODO Parallel for
-            //foreach (var data in inputFifo) 
-            // {
-            //   byte[] data1 ;
-            //   inputFifo.TryDequeue(out data1);
-            //   Task.Factory.StartNew(() => ParseInputData(data1));
-            //   }
-            GuiUpdateQueue.queueIsFull.Reset();
-        }
-
-        #endregion
 
         public void ParseSynchAcktData(List<byte[]> dataList)
         {
@@ -536,22 +510,20 @@ namespace MotorController.Models.ParserBlock
                 transit |= data[4];
                 transit <<= 8;
                 transit |= data[3];
-                /*if(LeftPanelViewModel.GetInstance.StarterOperationFlag ||
-                    LeftPanelViewModel.GetInstance.StarterPlotFlag)
-                {
-                    Debug.WriteLine("StarterOperationFlag: " + LeftPanelViewModel.GetInstance.StarterOperationFlag);
-                    Debug.WriteLine("StarterPlotFlag: " + LeftPanelViewModel.GetInstance.StarterPlotFlag);
-                    Debug.WriteLine("commandId: " + commandId);
-                    Debug.WriteLine("commandSubId: " + commandSubId);
-                }*/
-                
-                if(WizardWindowViewModel.GetInstance.send_update_parameters && getSet == 0)
+
+                var dataAray = new byte[4];
+                Array.Copy(data, 3, dataAray, 0, 4);
+
+                newPropertyValuef = BitConverter.ToSingle(dataAray, 0);
+
+                if(WizardWindowViewModel.GetInstance.send_update_parameters && getSet == 0 && commandId != 64)
                 {
                     DataViewModel myValue;
-                    if(WizardWindowViewModel.GetInstance.OperationList.TryGetValue(new Tuple<int, int>(commandId, commandSubId), out myValue) && commandId != 64)
+                    if(WizardWindowViewModel.GetInstance.OperationList.TryGetValue(new Tuple<int, int>(commandId, commandSubId), out myValue))
                     {
                         WizardWindowViewModel.GetInstance.send_operation_count++;
-                        WizardWindowViewModel.GetInstance.operation_echo.Remove(new Tuple<int, int>(commandId, commandSubId));
+                        WizardWindowViewModel.operation_echo.Remove(new Tuple<int, int>(commandId, commandSubId));
+                        Debug.WriteLine("Op Removed: {0}[{1}]={2} {3} {4}.", commandId, commandSubId, transit, "I", getSet == 0 ? "Set" : "Get");
                     }
                 }
 
@@ -561,14 +533,17 @@ namespace MotorController.Models.ParserBlock
                 }
                 else if(LeftPanelViewModel.GetInstance.StarterOperationFlag &&
                     !exceptionID.Contains(commandId) ||
-                    !exceptionID.Contains(commandId))
+                    !exceptionID.Contains(commandId) ||
+                    ParametarsWindowViewModel.TabControlIndex == (int)eTab.DEBUG)
                 {
+                    RefreshManager.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), isInt ? transit.ToString() : newPropertyValuef.ToString(), isInt);
+#if OLD
                     if(isInt)
                     {
-                        if(getSet == 1)
-                            RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), transit.ToString(), true);
-                        else if(ParametarsWindowViewModel.TabControlIndex == (int)eTab.DEBUG)
-                            RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), newPropertyValuef.ToString(), isInt);
+                        //if(getSet == 1)
+                            RefreshManager.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), transit.ToString(), true);
+                        //else if(ParametarsWindowViewModel.TabControlIndex == (int)eTab.DEBUG)
+                        //    RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), newPropertyValuef.ToString(), isInt);
 #if(DEBUG && DEBUG_OPERATION)
 #if DEBUG_SET
                         if(getSet == 0)
@@ -582,16 +557,11 @@ namespace MotorController.Models.ParserBlock
                     }
                     else
                     {
-                        var dataAray = new byte[4];
-                        Array.Copy(data, 3, dataAray, 0, 4);
-
-                        newPropertyValuef = BitConverter.ToSingle(dataAray, 0);
-                        if(getSet == 1)
-                        {
-                            RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), newPropertyValuef.ToString(), false);
-                        }
-                        else if(ParametarsWindowViewModel.TabControlIndex == (int)eTab.DEBUG)
-                            RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), newPropertyValuef.ToString(), isInt);
+                        
+                        //if(getSet == 1)
+                            RefreshManager.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), newPropertyValuef.ToString(), false);
+                        //else if(ParametarsWindowViewModel.TabControlIndex == (int)eTab.DEBUG)
+                        //    RefreshManger.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), newPropertyValuef.ToString(), isInt);
 
 #if(DEBUG && DEBUG_OPERATION)
 #if DEBUG_SET
@@ -604,6 +574,7 @@ namespace MotorController.Models.ParserBlock
 #endif
 #endif
                     }
+#endif
                 }
                 else if(commandId == 67) // Save driver parameters to file, Load parameters to driver from file
                 {
@@ -633,48 +604,20 @@ namespace MotorController.Models.ParserBlock
                 }
             }
         }
-        //float calcFactor(short dataSample, int ChNo)
-        //{
-        //    string plotType = "";
-        //    if(OscilloscopeParameters.plotType_ls.Count != 0)
-        //    {
-        //        switch(ChNo)
-        //        {
-        //            case 1:
-        //                plotType = OscilloscopeParameters.plotType_ls.ElementAt(OscilloscopeViewModel.GetInstance.Ch1SelectedIndex);
-        //                break;
-        //            case 2:
-        //                plotType = OscilloscopeParameters.plotType_ls.ElementAt(OscilloscopeViewModel.GetInstance.Ch2SelectedIndex);
-        //                break;
-        //        }
-        //        switch(plotType)
-        //        {
-        //            case "Integer":
-        //                return dataSample * IntegerFactor;
-        //            case "Float":
-        //            case "Iq24":
-        //            case "Iq15":
-        //            default:
-        //                return dataSample * iqFactor;
-        //        }
-        //    }
-        //    else
-        //        return dataSample;
-        //}
 
         public void ParsePlot(List<byte[]> PlotList)
         {
             // In order to achive best performance using good old-fashioned for loop: twice faster! then "foreach (byte[] packet in PlotList)"
             //Debug.WriteLine("ParsePlot 1" + DateTime.Now.ToString("h:mm:ss.fff"));
-            string plotType_ch1 = "", plotType_ch2 = "";
+            List<string> _ch_plot_type = new List<string>();
             try
             {
-                if(OscilloscopeParameters.plotType_ls.Count != 0)
+                for(int j = 0; j < Commands.GetInstance.GenericCommandsGroup["ChannelsList"].Count; j++)
                 {
-                    plotType_ch1 = OscilloscopeParameters.plotType_ls.ElementAt(OscilloscopeViewModel.GetInstance.Ch1SelectedIndex);
-                    plotType_ch2 = OscilloscopeParameters.plotType_ls.ElementAt(OscilloscopeViewModel.GetInstance.Ch2SelectedIndex);
-
-                    // maked plotType_ch1 or plotType_ch2 empty in case one of them is pause
+                    _ch_plot_type.Add(((UC_ChannelViewModel)Commands.GetInstance.GenericCommandsList[
+                        new Tuple<int, int>(
+                            ((int)((UC_ChannelViewModel)Commands.GetInstance.GenericCommandsGroup["ChannelsList"][j]).CommandId),
+                            ((int)((UC_ChannelViewModel)Commands.GetInstance.GenericCommandsGroup["ChannelsList"][j]).CommandSubId))]).PlotType);
                 }
             }
             catch { }
@@ -682,15 +625,10 @@ namespace MotorController.Models.ParserBlock
             {
                 lock(PlotListLock)
                 {
-#if New_Packet_Plot
-                    //if(PlotList[i][2] == 0 && PlotList[i][3] == 0 && PlotList[i][4] == 0 && PlotList[i][5] == 0 && PlotList[i][6] == 0 && PlotList[i][7] == 0 && PlotList[i][8] == 0 && PlotList[i][9] == 0)
-                    //{
-
-                    //}
                     #region New_Packet_Plot
                     if(OscilloscopeParameters.ChanTotalCounter == 1)
                     {
-                        if(plotType_ch1 == "Int32" || plotType_ch1 == "Float32" || plotType_ch2 == "Int32" || plotType_ch2 == "Float32")
+                        if(_ch_plot_type.Contains("Int32") || _ch_plot_type.Contains("Float32"))
                         {
                             var element = ((PlotList[i][5] << 24) | (PlotList[i][4] << 16) | (PlotList[i][3] << 8) | (PlotList[i][2]));
                             //First
@@ -718,7 +656,7 @@ namespace MotorController.Models.ParserBlock
                     }
                     else if(OscilloscopeParameters.ChanTotalCounter == 2)
                     {
-                        if(plotType_ch1 == "Int32" || plotType_ch1 == "Float32")
+                        if(_ch_plot_type.ElementAt(0) == "Int32" || _ch_plot_type.ElementAt(0) == "Float32")
                         {
                             var element = ((PlotList[i][5] << 24) | (PlotList[i][4] << 16) | (PlotList[i][3] << 8) | (PlotList[i][2]));
                             //First
@@ -733,7 +671,7 @@ namespace MotorController.Models.ParserBlock
                             //Second
                             FifoplotList.Enqueue((short)((PlotList[i][5] << 8) | PlotList[i][4]));
                         }
-                        if(plotType_ch2 == "Int32" || plotType_ch2 == "Float32")
+                        if(_ch_plot_type.ElementAt(1) == "Int32" || _ch_plot_type.ElementAt(1) == "Float32")
                         {
                             var element = ((PlotList[i][9] << 24) | (PlotList[i][8] << 16) | (PlotList[i][7] << 8) | (PlotList[i][6]));
                             //Third
@@ -750,33 +688,10 @@ namespace MotorController.Models.ParserBlock
                         }
                     }
                     #endregion New_Packet_Plot
-#else//#endif  // New_Packet_Plot
-
-                    //First
-                    FifoplotList.Enqueue((short)((PlotList[i][3] << 8) | PlotList[i][2]));
-
-                    //Second
-                    if(OscilloscopeParameters.ChanTotalCounter == 1)
-                        FifoplotList.Enqueue((short)((PlotList[i][5] << 8) | PlotList[i][4]));
-                    else if(OscilloscopeParameters.ChanTotalCounter == 2)
-                        FifoplotListCh2.Enqueue((short)((PlotList[i][5] << 8) | PlotList[i][4]));
-
-                    //Third
-                    FifoplotList.Enqueue((short)((PlotList[i][7] << 8) | PlotList[i][6]));
-
-                    //Fourth
-                    if(OscilloscopeParameters.ChanTotalCounter == 1)
-                        FifoplotList.Enqueue((short)((PlotList[i][9] << 8) | PlotList[i][8]));
-                    else if(OscilloscopeParameters.ChanTotalCounter == 2)
-                        FifoplotListCh2.Enqueue((short)((PlotList[i][9] << 8) | PlotList[i][8]));
-#endif
                 }
-
             }
             PlotList.Clear();
-            //Debug.WriteLine("ParsePlot 2" + DateTime.Now.ToString("h:mm:ss.fff"));
         }
-
     }//Class
 }//NameSpace
 

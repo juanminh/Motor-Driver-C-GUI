@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using MotorController.CommandsDB;
+using MotorController.Common;
 using MotorController.Models.DriverBlock;
 using System.Threading;
 using System.Threading.Tasks;
@@ -194,28 +194,6 @@ namespace MotorController.ViewModels
                         SubID = Convert.ToInt16(10),
                         IsSet = true,
                         IsFloat = false
-                    }
-                    );
-                }
-                OnPropertyChanged();
-            }
-        }
-        private bool _enableLoder;
-        public bool EnableLoder
-        {
-            get { return _enableLoder; }
-            set
-            {
-                if(LeftPanelViewModel._app_running)
-                {
-                    _enableLoder = value;
-                    Rs232Interface.GetInstance.SendToParser(new PacketFields
-                    {
-                        Data2Send = true ? 1 : 0,
-                        ID = 65,
-                        SubID = Convert.ToInt16(0),
-                        IsSet = true,
-                        IsFloat = true
                     }
                     );
                 }
@@ -1014,5 +992,16 @@ namespace MotorController.ViewModels
             }
         }
         public static string _redoState = "";
+
+        #region NewToggleSwitch
+        public ObservableCollection<object> MaintenanceOperation
+        {
+
+            get
+            {
+                return Commands.GetInstance.GenericCommandsGroup["MaintenanceOperation"];
+            }
+        }
+        #endregion NewToggleSwitch
     }
 }

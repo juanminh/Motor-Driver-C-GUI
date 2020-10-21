@@ -8,7 +8,7 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Abt.Controls.SciChart;
-using MotorController.CommandsDB;
+using MotorController.Common;
 using MotorController.Models.DriverBlock;
 using MotorController.Views;
 using MotorController.Helpers;
@@ -18,6 +18,7 @@ using Timer = System.Timers.Timer;
 using System.Collections.Generic;
 using System.Windows.Threading;
 using System.Linq;
+using MotorController.Models;
 
 namespace MotorController.ViewModels
 {
@@ -129,7 +130,7 @@ namespace MotorController.ViewModels
         {
             bool plotResult = false;
             StarterPlotFlag = true;
-            OscilloscopeViewModel.GetInstance.ChComboEn = false;
+            //OscilloscopeViewModel.GetInstance.ChComboEn = false;
             Thread.Sleep(10);
 
             Rs232Interface.GetInstance.SendToParser(new PacketFields
@@ -161,7 +162,7 @@ namespace MotorController.ViewModels
                 plotResult = false;
             }
 
-            OscilloscopeViewModel.GetInstance.ChComboEn = true;
+            //OscilloscopeViewModel.GetInstance.ChComboEn = true;
             //StarterPlotFlag = false;
             return plotResult;
 
@@ -171,7 +172,7 @@ namespace MotorController.ViewModels
             #region Operations
             StarterOperationFlag = true;
             StarterCount = 0;
-            RefreshManger.ConnectionCount = 0;
+            RefreshManager.ConnectionCount = 0;
             Thread.Sleep(100);
 
             if(!plotList())
@@ -258,45 +259,17 @@ namespace MotorController.ViewModels
             VerifyConnectionTicks(STOP);
             VerifyConnectionTicks(START);
 #endif
-            if(RefreshManger.GetInstance.DisconnectedFlag)
-            {
-                //Thread.Sleep(10);
-                //Rs232Interface.GetInstance.SendToParser(new PacketFields
-                //{
-                //    Data2Send = RefreshManger.GetInstance.ch1.ToString(),
-                //    ID = Convert.ToInt16(60),
-                //    SubID = Convert.ToInt16(1),
-                //    IsSet = true,
-                //    IsFloat = false
-                //});
-                //Thread.Sleep(10);
 
-                //Rs232Interface.GetInstance.SendToParser(new PacketFields
-                //{
-                //    Data2Send = RefreshManger.GetInstance.ch2.ToString(),
-                //    ID = Convert.ToInt16(60),
-                //    SubID = Convert.ToInt16(2),
-                //    IsSet = true,
-                //    IsFloat = false
-                //});
-                //Thread.Sleep(10);
-                //Rs232Interface.GetInstance.SendToParser(new PacketFields
-                //{
-                //    Data2Send = "1",
-                //    ID = Convert.ToInt16(64),
-                //    SubID = Convert.ToInt16(0),
-                //    IsSet = true,
-                //    IsFloat = false
-                //});
-            }
             Thread.Sleep(10);
-            RefreshManger.GetInstance.DisconnectedFlag = false;
+            RefreshManager.GetInstance.DisconnectedFlag = false;
 
             BlinkLedsTicks(STOP);
             BlinkLedsTicks(START);
 
             RefreshParamsTick(STOP);
-            RefreshManger.GetInstance.BuildGenericCommandsList_Func();
+            Debug.WriteLine("Starter Op");
+
+            RefreshManager.GetInstance.BuildGenericCommandsList_Func();
             if(DebugViewModel.GetInstance.EnRefresh)
                 RefreshParamsTick(START);
 
@@ -326,43 +299,15 @@ namespace MotorController.ViewModels
             {
                 return Commands.GetInstance.GenericCommandsGroup["LPCommands List"];
             }
-            //set
-            //{
-            //    _lpCommandsList = value;
-            //    OnPropertyChanged();
-            //}
-        }
-#endregion
-
-        private float _setCurrentPid;
-        public float SetCurrentPid
-        {
-            get { return _setCurrentPid; }
             set
             {
-                if(_setCurrentPid == value)
-                    return;
-                _setCurrentPid = value;
-                OnPropertyChanged("SetCurrentPid");
-
-
+                _lpCommandsList = value;
+                OnPropertyChanged();
             }
         }
-        private float _currentPid;
-        public float CurrentPid
-        {
-            get { return _currentPid; }
-            set
-            {
-                if(_currentPid == value)
-                    return;
+        #endregion
 
-                _currentPid = value;
-                OnPropertyChanged("CurrentPid");
-            }
-        }
-
-#region Send_Button
+        #region Send_Button
         private String _sendButtonContent;
         public String SendButtonContent
         {
@@ -394,7 +339,7 @@ namespace MotorController.ViewModels
 #endregion
 
 #region MotorON_Switch
-        public static bool MotorOnOff_flag = false;
+        //public static bool MotorOnOff_flag = false;
         private bool _motorOnToggleChecked = false;
         private int _ledMotorStatus;
 
@@ -430,7 +375,7 @@ namespace MotorController.ViewModels
                     //        IsFloat = false
                     //    });
                     //}
-                    MotorOnOff_flag = false;
+                    //MotorOnOff_flag = false;
                     OnPropertyChanged("MotorONToggleChecked");
                 }
             }
@@ -443,16 +388,16 @@ namespace MotorController.ViewModels
             }
             set
             {
-                if(value == 0)
-                {
-                    MotorOnOff_flag = true;
-                    MotorOnToggleChecked = false;
-                }
-                else if(value == 1)
-                {
-                    MotorOnOff_flag = true;
-                    MotorOnToggleChecked = true;
-                }
+                //if(value == 0)
+                //{
+                //    MotorOnOff_flag = true;
+                //    MotorOnToggleChecked = false;
+                //}
+                //else if(value == 1)
+                //{
+                //    MotorOnOff_flag = true;
+                //    MotorOnToggleChecked = true;
+                //}
                 _ledMotorStatus = value;
                 RaisePropertyChanged("LedMotorStatus");
             }
@@ -672,16 +617,7 @@ namespace MotorController.ViewModels
                 busy = true;
                 lock(ConnectLock)
                 {
-                    // Erase textboxs content, reset all default.
-                    foreach(var element in Commands.GetInstance.DataViewCommandsList)
-                    {
-                        element.Value.CommandValue = "";
-                    }
-                    foreach(var element in Commands.GetInstance.CalibartionCommandsList)
-                    {
-                        element.Value.ButtonContent = "Run";
-                        element.Value.CommandValue = "";
-                    }
+                    Commands.GetInstance._reset_data();
                     LogText = "";
                     Task task = new Task(Rs232Interface.GetInstance.AutoConnect);
                     task.Start();
@@ -858,7 +794,7 @@ namespace MotorController.ViewModels
         {
             if((_app_running && DebugViewModel.GetInstance.EnRefresh) || (_app_running && DebugViewModel.GetInstance.DebugRefresh))
             {
-                RefreshManger.GetInstance.StartRefresh();
+                RefreshManager.GetInstance.StartRefresh();
             }
         }
 
@@ -876,7 +812,7 @@ namespace MotorController.ViewModels
                             lock(_VerifyConnectionTimer)
                             {
                                 _VerifyConnectionTimer.Stop();
-                                _VerifyConnectionTimer.Elapsed -= RefreshManger.GetInstance.VerifyConnection;
+                                _VerifyConnectionTimer.Elapsed -= RefreshManager.GetInstance.VerifyConnection;
                                 _VerifyConnectionTimer = null;
                                 Thread.Sleep(10);
                             }
@@ -890,7 +826,7 @@ namespace MotorController.ViewModels
                         {
                             Thread.Sleep(100);
                             _VerifyConnectionTimer = new Timer(_VerifyConnectionInterval) { AutoReset = true };
-                            _VerifyConnectionTimer.Elapsed += RefreshManger.GetInstance.VerifyConnection;
+                            _VerifyConnectionTimer.Elapsed += RefreshManager.GetInstance.VerifyConnection;
                             _VerifyConnectionTimer.Start();
                         });
                     }

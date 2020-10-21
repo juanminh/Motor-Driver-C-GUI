@@ -1,29 +1,15 @@
 ﻿#define TEST_LOADER_MODE
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO.Ports;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using Abt.Controls.SciChart;
-using Abt.Controls.SciChart.Example.Common;
-using Abt.Controls.SciChart.Example.Data;
-using MotorController.CommandsDB;
-using MotorController.Data;
-using MotorController.Models.DriverBlock;
-using MotorController.Models.ParserBlock;
-using MotorController.Models.SataticClaass;
-using MotorController.ViewModels;
-using MotorController.Views;
-using System.Globalization;
 using MotorController.Common;
-using System.Windows;
+using MotorController.Models.ParserBlock;
+using MotorController.Models.StaticClass;
+using MotorController.ViewModels;
 using MotorController.Helpers;
-using System.Windows.Threading;
-using System.Windows.Media;
 
 namespace MotorController.Models.DriverBlock
 {
@@ -77,20 +63,10 @@ namespace MotorController.Models.DriverBlock
         {
             //Create queue object and set queue size
             GuiUpdateQueue stundartUpdateQueue = new GuiUpdateQueue();
-
-            //for (int i = 0; i < 200; i++)
-            //{
-            //    xyPointBuff[i]=new XYPoint();
-            //}
-
-            //Counter = 0;
-
-
-            //ParserRayonM1.GetInstanceofParser.Parser2Send += SendDataHendler;
         }
         public override void Disconnect(int mode = 0)
         {
-            RefreshManger.GetInstance.DisconnectedFlag = true;
+            RefreshManager.GetInstance.DisconnectedFlag = true;
             switch(mode)
             {
                 case 0:
@@ -152,7 +128,7 @@ namespace MotorController.Models.DriverBlock
                             LeftPanelViewModel.busy = false;
                         }
                         _comPort = null;
-                        OscilloscopeViewModel.GetInstance.ChComboEn = false;
+                        //OscilloscopeViewModel.GetInstance.ChComboEn = false;
                     }
                     else
                     {
@@ -170,7 +146,7 @@ namespace MotorController.Models.DriverBlock
                         LeftPanelViewModel.busy = false;
 
                         _comPort = null;
-                        OscilloscopeViewModel.GetInstance.ChComboEn = false;
+                        //OscilloscopeViewModel.GetInstance.ChComboEn = false;
                     }
                     break;
                 case 1:
@@ -257,7 +233,7 @@ namespace MotorController.Models.DriverBlock
                                     {
                                         _comPort.DiscardInBuffer();        //Reset internal rx buffer
                                         //DataViewModel temp = (DataViewModel)Commands.GetInstance.DebugCommandsListbySubGroup["DeviceSynchCommand"][3]; // [0]: 64[0], [1]: 64[1], [2]: 1[0], [3]: 61[1]
-                                        DataViewModel temp = (DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(61, 1)];
+                                        EnumViewModel temp = (EnumViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(61, 1)];
                                         Commands.AssemblePacket(out RxPacket, Int16.Parse(temp.CommandId), Int16.Parse(temp.CommandSubId), false, false, 0);
                                         for(int i = 0; i < 3; i++)
                                         {
@@ -369,72 +345,6 @@ namespace MotorController.Models.DriverBlock
         }
 
         #endregion
-
-        #region Manual_Connect
-
-        //This method manually and open connection
-        //
-        //
-        //
-        //
-        //
-        //********************************************************
-
-        public virtual bool ManualConnect()
-        {
-
-            if(_isSynced == false) //Driver is not synchronized
-            {
-                //Gets aviable ports list and initates them
-                _comDevicesList =
-                    (SerialPort.GetPortNames()).Select(o => new ComDevice { Portname = o, Baudrate = 921600 }).ToList();
-
-                //Iterates though  the ports,Looks for apropriate Com Port ( where the driver connected)
-                foreach(var comDevice in _comDevicesList)
-                {
-                    var tmpcom = new SerialPort
-                    {
-                        PortName = comDevice.Portname,
-                        DataBits = comDevice.DataBits,
-                        StopBits = comDevice.StopBits
-                    };
-                    try
-                    {
-                        tmpcom.Open(); //Try to open
-                        if(tmpcom.IsOpen)
-                        {
-                            foreach(var baudRate in BaudRates) //Iterate though baud rates
-                            {
-                                tmpcom.BaudRate = baudRate;
-                                //tmpcom.DataReceived += SyncDataReceived;
-
-                                //Moves to parser block
-                                //ProtocolParser.GetInstance.BuildPacketToSend("0", "400" /*CommandId*/, "0" /* subid*/,
-                                //    true /*IsSet*/);
-
-                                Thread.Sleep(50);
-                                // tmpcom.DataReceived -= SyncDataReceived;
-
-                                if(_isSynced)
-                                {
-                                    return true;
-                                }
-                            }
-                        }
-                        tmpcom.Close();
-                    }
-                    catch(Exception)
-                    {
-                        tmpcom.Close();
-                        tmpcom.Dispose();
-                        return false;
-                    }
-                }
-            }
-            return _isSynced;
-        }
-        #endregion
-
         #region Send_Mechanism
 
         //     public void SendData(byte[] packetToSend)
@@ -490,10 +400,6 @@ namespace MotorController.Models.DriverBlock
                                 Debug.WriteLine("SendData data: " + transit);
                             }
                         }
-                        //else
-                        //{
-
-                        //}
 #endif
                         serialPort.DiscardOutBuffer();
                     }
@@ -507,17 +413,6 @@ namespace MotorController.Models.DriverBlock
         public void SendToParser(PacketFields messege)
         {
             RxtoParser?.Invoke(this, new Rs232InterfaceEventArgs(messege)); // then go to "void parseOutdata(object sender, Rs232InterfaceEventArgs e)"
-            //if(Commands.GetInstance.DataViewCommandsList.ContainsKey(new Tuple<int, int>(Convert.ToInt16(messege.ID), Convert.ToInt16(messege.SubID)))
-            //            && Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(messege.ID), Convert.ToInt16(messege.SubID))].IsSelected == false)
-            //{
-                //Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.ApplicationIdle, new Action(() =>
-                //{
-                //    Debug.WriteLine("black");
-                //    Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(Convert.ToInt16(messege.ID), Convert.ToInt16(messege.SubID))].Foreground = new SolidColorBrush(Colors.Black);
-                //}));
-            //}
-            //if(messege.IsSet)
-            //  Debug.WriteLine("{0} {1}[{2}]={3} {4}.", messege.IsSet ? "Set" : "Get", messege.ID, messege.SubID, messege.Data2Send, messege.IsFloat ? "F" : "I");
         }
 
         #endregion
@@ -550,22 +445,11 @@ namespace MotorController.Models.DriverBlock
                 catch(Exception er)
                 {
                     Debug.WriteLine(er.Message);
-
                 }
                 if(Rx2Packetizer != null && buffer.Length > 0)
-                {
-                    //for(int i = 0; i < buffer.Length;i++)
-                    //    Debug.Write(buffer[i].ToString());
-                    //Debug.WriteLine("");
                     Rx2Packetizer(this, new Rs232InterfaceEventArgs(buffer)); // Go to Packetizer -> MakePacketsBuff function
-                }
             }
         }
-        //public void Connect()
-        //{
-        //    _comPort.DataReceived += DataReceived;
-        //}
-
         #endregion
 
         //STATIC METHODS  STATIC METHODS   STATIC METHODS   STATIC METHODS   STATIC METHODS   STATIC METHODS   STATIC METHODS   STATIC METHODS   STATIC METHODS   STATIC METHODS    

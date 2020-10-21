@@ -7,7 +7,7 @@ using System.Collections.ObjectModel;
 using System.Threading;
 using System.Windows.Media.Animation;
 using System.Diagnostics;
-using MotorController.CommandsDB;
+using MotorController.Common;
 
 namespace MotorController.Views
 {
@@ -313,12 +313,10 @@ namespace MotorController.Views
             {
                 SingleChanelFreqC = Convert.ToSingle(transit);
                 ChanelFreq = SingleChanelFreqC;
-                Step = 1 / SingleChanelFreqC;
+                Step = (1 / SingleChanelFreqC) * 1000; // ms
                 LeftPanelViewModel.GetInstance.StarterCount += 1;
                 LeftPanelViewModel.GetInstance.StarterOperationFlag = false;
             }
         }
-
     }
-
 }

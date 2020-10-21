@@ -5,9 +5,14 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MotorController.Views"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
-             xmlns:models="clr-namespace:MotorController.Models"
+             xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:Helpers="clr-namespace:MotorController.Helpers"
              mc:Ignorable="d" 
              d:DesignHeight="30" d:DesignWidth="300">
+    <UserControl.Resources>
+        <!-- Variables -->
+        <SolidColorBrush x:Key="_borderbrush" Color="#D6D5D5" />
+    </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -15,18 +20,17 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <Border Grid.Column="0" BorderBrush="White" BorderThickness="1" Width="25" Height="22" CornerRadius="1,0,0,1">
+        <Border Grid.Column="0" BorderBrush="{StaticResource _borderbrush}" BorderThickness="1" Width="25" Height="22" CornerRadius="1,0,0,1">
             <TextBlock Foreground="White" Text="{Binding Label}" Background="{Binding ChBackground}" FontSize="12"/>
         </Border>
-        <Border Grid.Column="1" MinWidth="100" Height="22" BorderBrush="White" BorderThickness="1" CornerRadius="0" Margin="0,0,0,0">
+        <Border Grid.Column="1" MinWidth="100" Height="22" BorderBrush="{StaticResource _borderbrush}" BorderThickness="1" CornerRadius="0" Margin="0,0,0,0">
             <ComboBox SelectedItem="{Binding ChSelectedItem, Mode=TwoWay}" 
                               SelectedIndex="{Binding ChSelectedIndex, Mode=TwoWay}"
-            		          ItemsSource="{Binding ChItemsSource, Mode=TwoWay}" 
-                              Width="100"
+            		          ItemsSource="{Binding ChItemsSource, Mode=TwoWay}"
                               BorderBrush="#FFF9F9F9" 
                               Background="#FFF0EEEE" 
                               IsEnabled="{Binding IsEnabled, Mode=TwoWay}" 
-                              FontSize="12" >
+                              FontSize="12">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding ChSelectionChanged}"/>
@@ -40,13 +44,13 @@
                 </i:Interaction.Triggers>
             </ComboBox>
         </Border>
-        <Border Grid.Column="2" BorderBrush="White" BorderThickness="1" Margin="0,0,0,0" Width="26" Height="22" CornerRadius="0">
+        <Border Grid.Column="2" BorderBrush="{StaticResource _borderbrush}" BorderThickness="1" Margin="0,0,0,0" Width="26" Height="22" CornerRadius="0">
             <TextBlock Height="22" Foreground="White" Text="Gain" Background="{Binding ChBackground}" FontSize="12"/>
         </Border>
-        <Border Grid.Column="3" BorderBrush="White" BorderThickness="1" Margin="0,0,0,0" Width="Auto" Height="22" CornerRadius="0,1,1,0">
-            <TextBox Width="25" Text="{Binding Gain, Mode=TwoWay}" BorderThickness="0" >
+        <Border Grid.Column="3" BorderBrush="{StaticResource _borderbrush}" BorderThickness="1" Margin="0,0,0,0" Width="Auto" Height="22" CornerRadius="0,1,1,0">
+            <TextBox Width="25" Text="{Binding Gain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" >
                 <i:Interaction.Behaviors>
-                    <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
+                    <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
                 </i:Interaction.Behaviors>
             </TextBox>
         </Border>

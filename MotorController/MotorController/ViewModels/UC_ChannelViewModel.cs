@@ -17,9 +17,9 @@ namespace MotorController.ViewModels
 {
     public class UC_ChannelViewModel : ViewModelBase
     {
-        private string _label = "", _gain = "";
+        private string _label = "", _gain = "", _plot_type = "";
         private short _command_id = 0, _command_subid = 0;
-        private bool _isEnbaled = true;
+        private bool _isEnbaled = false;
         private string _y_axis_title;
         private SolidColorBrush _chBackground = new SolidColorBrush(Colors.Transparent);
 
@@ -28,8 +28,9 @@ namespace MotorController.ViewModels
         public short CommandSubId { get { return _command_subid; } set { _command_subid = value; OnPropertyChanged(); } }
         public bool IsEnabled { get { return _isEnbaled; } set { _isEnbaled = value; OnPropertyChanged(); } }
         public SolidColorBrush ChBackground { get { return _chBackground; } set { _chBackground = value; OnPropertyChanged(); } }
-        public string Gain { get { return _gain; } set { _gain = value; OnPropertyChanged(); } }
+        public string Gain { get { return _gain; } set { if(String.IsNullOrEmpty(value)) return; _gain = value; OnPropertyChanged(); } }
         public string Y_Axis_Title { get { return _y_axis_title; } set { _y_axis_title = value; OnPropertyChanged(); } }
+        public string PlotType { get { return _plot_type; } set { _plot_type = value; OnPropertyChanged(); } }
 
         private int _getCount = -1;
         public int GetCount
@@ -97,6 +98,8 @@ namespace MotorController.ViewModels
                     Y_Axis_Title = "CH " + CommandSubId.ToString() + ": " + OscilloscopeViewModel.GetInstance.ChannelYtitles.First(x => x.Key == ChSelectedItem).Value;
                 else
                     Y_Axis_Title = "";
+                PlotType = value == 0 ? "" :OscilloscopeParameters.plotType_ls.ElementAt(value);
+                IsEnabled = true;
                 OnPropertyChanged();
             }
         }
@@ -121,35 +124,28 @@ namespace MotorController.ViewModels
             {
                 _selectedItem = value;
                 OnPropertyChanged();
-                StackTrace stackTrace = new StackTrace();
+                //StackTrace stackTrace = new StackTrace();
 
-                //if(!LeftPanelViewModel.GetInstance.StarterOperationFlag)
+                lock(ParserRayonM1.PlotListLock)
                 {
-                    lock(ParserRayonM1.PlotListLock)
+                    OscilloscopeViewModel.GetInstance.ChannelsYaxeMerge(_itemsSource.IndexOf(_selectedItem), CommandSubId);
+
+                    if(Rs232Interface.GetInstance.IsSynced)
                     {
-                        OscilloscopeViewModel.GetInstance.ChannelsYaxeMerge(_itemsSource.IndexOf(_selectedItem), CommandSubId);
+                        PacketFields RxPacket;
+                        RxPacket.ID = CommandId;
+                        RxPacket.IsFloat = false;
+                        RxPacket.IsSet = true;
+                        RxPacket.SubID = CommandSubId;
+                        RxPacket.Data2Send = _itemsSource.IndexOf(_selectedItem);
 
-                        if(Rs232Interface.GetInstance.IsSynced)
-                        {
-                            PacketFields RxPacket;
-                            RxPacket.ID = CommandId;
-                            RxPacket.IsFloat = false;
-                            RxPacket.IsSet = true;
-                            RxPacket.SubID = CommandSubId;
-                            RxPacket.Data2Send = _itemsSource.IndexOf(_selectedItem);
-
-                            Rs232Interface.GetInstance.SendToParser(RxPacket);
-                            OscilloscopeViewModel.GetInstance.ChannelsplotActivationMerge();
-                        }
+                        Rs232Interface.GetInstance.SendToParser(RxPacket);
+                        OscilloscopeViewModel.GetInstance.ChannelsplotActivationMerge();
                     }
                 }
-                //update step
                 OscilloscopeViewModel.GetInstance.StepRecalcMerge();
-                //update y axes
-                //OscilloscopeViewModel.GetInstance.ChannelYtitles.TryGetValue(value, out "");
-                //OscilloscopeViewModel.GetInstance.YaxeTitle = _ch1Title == _ch2Title ? _ch1Title : "";
-
             }
         }
+        
     }
 }

@@ -4,7 +4,7 @@ using Abt.Controls.SciChart.Example.Common;
 using Abt.Controls.SciChart.Example.Data;
 using Abt.Controls.SciChart.Model.DataSeries;
 using Abt.Controls.SciChart.Visuals.Axes;
-using MotorController.CommandsDB;
+using MotorController.Common;
 using MotorController.Data;
 using MotorController.Models.DriverBlock;
 using MotorController.ViewModels;
@@ -60,7 +60,6 @@ namespace MotorController.ViewModels
         private ObservableCollection<object> _bodeStart;
         public ObservableCollection<object> BodeStart
         {
-
             get
             {
                 return Commands.GetInstance.GenericCommandsGroup["BodeStart"];
@@ -76,48 +75,23 @@ namespace MotorController.ViewModels
             }
             set
             {
-                if(!LeftPanelViewModel._app_running)
+                if(!LeftPanelViewModel._app_running || _bodeStartStop == value)
                     return;
-                //_bodeStartStop = value;
-                // get call stack
-                StackTrace stackTrace = new StackTrace();
-                if(stackTrace.GetFrame(1).GetMethod().Name == "UpdateModel")
+
+                _bodeStartStop = value;
+                OnPropertyChanged();
+
+                if(value)
                 {
-                    _bodeStartStop = value;
-                    OnPropertyChanged();
-                }
-                else if(stackTrace.GetFrame(1).GetMethod().Name != "UpdateModel")
-                {
-                    Rs232Interface.GetInstance.SendToParser(new PacketFields
-                    {
-                        Data2Send = value ? 1 : 0,
-                        ID = Convert.ToInt16(6),
-                        SubID = Convert.ToInt16(15),
-                        IsSet = true,
-                        IsFloat = false
-                    });
-                    if(value)
-                    {
-                        ChartData = new XyDataSeries<float, float>();
-                        ChartData1 = new XyDataSeries<float, float>();
-                        X_List.Clear();
-                        Y1_List.Clear();
-                        Y2_List.Clear();
-                        //Task WaitSave = Task.Run((Action)GetInstance.Wait);
-                        OnBodeStart();
-                    }
-                    else
-                    {
-                        //Task WaitSave = Task.Run((Action)GetInstance.Wait);
-                        //OnBodeStop();
-                    }
+                    ChartData = new XyDataSeries<float, float>();
+                    ChartData1 = new XyDataSeries<float, float>();
+                    X_List.Clear();
+                    Y1_List.Clear();
+                    Y2_List.Clear();
+
+                    OnBodeStart();
                 }
             }
-        }
-        private void Wait()
-        {
-            Thread.Sleep(100);
-            BodeStartStop = !_bodeStartStop;
         }
         private IAxis _xAxis1;
         public IAxis XAxis1
@@ -602,12 +576,12 @@ namespace MotorController.ViewModels
                 _phaseVisibleRange = new DoubleRange(-200, 20);
                 _xAxisDoubleRange = new DoubleRange(0.5, 2000);
 
-                if(!String.IsNullOrEmpty(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue) &&
-                    !String.IsNullOrEmpty(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue))
-                    _xAxisDoubleRange = new DoubleRange(Convert.ToSingle(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue) -
-                        0.1 * Convert.ToSingle(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue),
-                        Convert.ToSingle(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue) +
-                        0.1 * Convert.ToSingle(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue));
+                if(!String.IsNullOrEmpty(((DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(15, 2)]).CommandValue) &&
+                    !String.IsNullOrEmpty(((DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(15, 3)]).CommandValue))
+                    _xAxisDoubleRange = new DoubleRange(Convert.ToSingle(((DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(15, 2)]).CommandValue) -
+                        0.1 * Convert.ToSingle(((DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(15, 2)]).CommandValue),
+                        Convert.ToSingle(((DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(15, 3)]).CommandValue) +
+                        0.1 * Convert.ToSingle(((DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(15, 3)]).CommandValue));
 
                 InitializeAxes();
             }
