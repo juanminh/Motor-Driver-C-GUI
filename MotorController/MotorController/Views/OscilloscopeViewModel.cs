@@ -148,7 +148,7 @@ namespace MotorController.Views
                     AnimatedVisibleRange = _xVisibleRange,
                     VisibleRangeLimit = _xVisibleRange,
                     AxisTitle = "Time (ms)",
-                    DrawMajorBands = true,
+                    DrawMajorBands = false,
                     DrawMinorGridLines = false,
                     DrawMajorTicks = true,
                     DrawMinorTicks = true,

@@ -72,7 +72,7 @@
         <Border BorderThickness="1" CornerRadius="4,0,0,4" Background="#7F000000"><!---->
             <Border.Style>
                 <Style TargetType="Border">
-                    <Setter Property="BorderBrush" Value="#D6D5D5"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/><!--#D6D5D5-->
                     <Setter Property="Height" Value="24"/>
                     <Style.Triggers>
                         <MultiDataTrigger>
@@ -120,9 +120,10 @@
                     <TextBlock   Text="{Binding Path=CommandName}"
                              Foreground="#FFF9F6F6" 
                              FontSize="{Binding FontSize}"
+                             HorizontalAlignment="Left"
                              VerticalAlignment="Center"
                              Focusable="True"
-                            Margin="0">
+                             Margin="0">
                         <TextBlock.Style>
                         <Style TargetType="TextBlock" BasedOn="{x:Null}">
                             <Setter Property="HorizontalAlignment" Value="Center"/>
@@ -153,7 +154,7 @@
                       SelectedValue="{Binding Path=SelectedValue}" SelectedItem="{Binding Path=SelectedValue}"-->
             <Border.Style>
                 <Style TargetType="Border">
-                    <Setter Property="BorderBrush" Value="#D6D5D5"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/><!--#D6D5D5-->
                         <Setter Property="Height" Value="24"/>
                         <Style.Triggers>
                         <MultiDataTrigger>

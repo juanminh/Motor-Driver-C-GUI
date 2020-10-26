@@ -136,41 +136,45 @@
             <TabItem Name="Motor" Header="Control" TabIndex="1" Background="Black" Foreground="White">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50*"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="40*"/>
-                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="0.55*"/>
+                        <ColumnDefinition Width="20"/>
+                        <ColumnDefinition Width="0.45*"/>
+                        <ColumnDefinition Width="10"/>
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0" >
+                    <Grid Grid.Column="1" >
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="19"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <GroupBox  Header="Control" Grid.Row="0">
-                            <ItemsControl ItemsSource="{Binding ControlList}" 
+                        <TextBlock Text="Control" Grid.Row="0" Foreground="White" Background="Transparent" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
+                        <ItemsControl Grid.Row="1" ItemsSource="{Binding ControlList}" 
                                           ItemTemplate="{StaticResource EnumViewModel}"/>
-                        </GroupBox>
-                        <GroupBox Header="Motor" Grid.Row="2"
-                            FocusManager.IsFocusScope="True">
-                            <ItemsControl ItemsSource="{Binding MotorlList}" 
+
+                        <TextBlock Text="Motor" Grid.Row="3" FocusManager.IsFocusScope="True" Foreground="White" Background="Transparent" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
+                        <ItemsControl Grid.Row="4" ItemsSource="{Binding MotorlList}" 
                                           ItemTemplate="{StaticResource DataViewModel}"/>
-                        </GroupBox>
+
                     </Grid>
-                    <Grid Grid.Column="2" >
+                    <Grid Grid.Column="3" >
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="10"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <GroupBox Header="Motor Limit"  Grid.Row="0">
-                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                <ItemsControl ItemsSource="{Binding MotorLimitlList}" ItemTemplate="{StaticResource DataViewModel}" />
-                            </ScrollViewer>
-                        </GroupBox>
-                        <GroupBox Grid.Row="2" Header="Current Limit" >
-                            <ItemsControl ItemsSource="{Binding CurrentLimitList}" ItemTemplate="{StaticResource DataViewModel}" />
-                        </GroupBox>
+                        <TextBlock Text="Motor Limit"  Grid.Row="0" Foreground="White" Background="Transparent" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
+                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                            <ItemsControl ItemsSource="{Binding MotorLimitlList}" ItemTemplate="{StaticResource DataViewModel}" />
+                        </ScrollViewer>
+                        <!--</TextBlock>-->
+                        <TextBlock Grid.Row="3" Text="Current Limit" Foreground="White" Background="Transparent" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
+                        <ItemsControl Grid.Row="4" ItemsSource="{Binding CurrentLimitList}" ItemTemplate="{StaticResource DataViewModel}" />
+
                     </Grid>
                 </Grid>
             </TabItem>
@@ -373,8 +377,8 @@
             <TabItem Header="Filter" TabIndex="4" Background="Black" Foreground="White" DataContext="{Binding FilterViewModel}">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="250"/>
-                        <ColumnDefinition Width="250"/>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
                         <Grid.RowDefinitions>
@@ -397,8 +401,8 @@
             <TabItem Header="Device" TabIndex="5" Background="Black" Foreground="White">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="190"/>
-                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="300"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
                         <Grid.RowDefinitions>
@@ -419,7 +423,7 @@
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="300"/>
-                        <ColumnDefinition Width="160"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="0">
                         <Grid.RowDefinitions>
@@ -868,7 +872,7 @@
                                      VerticalContentAlignment="Center"
                                      HorizontalContentAlignment="Left"
                                      BorderThickness="0">
-                                     Serial Programmer</TextBox>
+                                Serial Programmer</TextBox>
                             <CheckBox Style="{StaticResource CheckBoxStyle2}" IsChecked="{Binding SerialProgrammerCheck}"/>
                             <Separator Width="15" Height="0"/>
                             <TextBox BorderBrush="Wheat" 

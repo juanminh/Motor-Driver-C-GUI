@@ -69,7 +69,7 @@
         <Border BorderThickness="1" CornerRadius="4,0,0,4" Grid.Column="0" Background="#7F000000">
             <Border.Style>
                 <Style TargetType="Border">
-                    <Setter Property="BorderBrush" Value="#D6D5D5"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/><!--#D6D5D5-->
                     <Setter Property="Height" Value="24"/>
                     <Style.Triggers>
                         <MultiDataTrigger>
@@ -103,6 +103,7 @@
                 </Border>
                 <TextBlock Text="{Binding CommandName}" 
                        Foreground="#FFF9F6F6" 
+                       HorizontalAlignment="Left"
                        FontSize="{Binding FontSize}" 
                        Focusable="True"
                        Width="Auto" Height="Auto">
@@ -127,7 +128,7 @@
         <Border BorderThickness="1" CornerRadius="0,4,4,0" Grid.Column="1">
             <Border.Style>
                 <Style TargetType="Border">
-                    <Setter Property="BorderBrush" Value="#D6D5D5"/>
+                    <Setter Property="BorderBrush" Value="Transparent"/><!--#D6D5D5-->
                     <Setter Property="Height" Value="23"/>
                     <Style.Triggers>
                         <MultiDataTrigger>

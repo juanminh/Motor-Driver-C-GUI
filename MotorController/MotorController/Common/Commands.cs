@@ -15,9 +15,9 @@ namespace MotorController.Common
     {
         ID = 62,
         Serial_Number = 1,
-        Hardware_Rev = 2,
-        CanNode_ID = 8,
-        FW_Rev = 3
+        HW_Rev = 2,
+        FW_Rev = 3,
+        CanNode_ID = 8
     };
     enum eBaudRate
     {
@@ -121,15 +121,27 @@ namespace MotorController.Common
                     CommandName = EnumHelper.GetNames(Enum.GetNames(typeof(eDeviceInfo))).ElementAt(i),
                     CommandId = ((int)eDeviceInfo.ID).ToString(),//((int)EnumHelper.GetEnumValue<eDeviceInfo>(Enum.GetNames(typeof(eDeviceInfo)).ElementAt(0))).ToString(),
                     CommandSubId = ((int)EnumHelper.GetEnumValue<eDeviceInfo>(Enum.GetNames(typeof(eDeviceInfo)).ElementAt(i))).ToString(),
-                    IsFloat = false
+                    IsFloat = false,
+                    FontSize = DataViewModel_FontSize,
+                    ReadOnly = true
                 };
                 addData(typeof(DataViewModel), Data, "DeviceSerial");
                 
-                if(i < 2)
+                //if(i < 3)
                     addData(typeof(DataViewModel), Data, "LPCommands List");
-                if(i == 1)
-                    i++;
             }
+
+            //Data = new DataViewModel
+            //{
+            //    CommandName = "FW Rev",
+            //    CommandId = "62",
+            //    CommandSubId = "3",
+            //    CommandValue = "",
+            //    IsFloat = false,
+            //    FontSize = DataViewModel_FontSize,
+            //    ReadOnly = true
+            //};
+            //addData(typeof(DataViewModel), Data, "LPCommands List");
 
             Enums.Add("Baudrate", EnumHelper.GetNames(Enum.GetNames(typeof(eBaudRate))).ToList());
 
@@ -458,8 +470,8 @@ namespace MotorController.Common
              {
                 "Brushed",
                 "BL with Hall",
-                "BL with Hall and Incremental encoder",
-                "BL with Absolute encoder",
+                "BL with Hall and Inc. encoder",
+                "BL with Abs. encoder",
                 "BL Stepper Sensorless"
              };
             Enums.Add("Electrical Commutation Type", tmp2);
@@ -993,15 +1005,7 @@ namespace MotorController.Common
             //    GenericCommandsList.Add(new Tuple<int, int>(Convert.ToInt16(Data.CommandId), Convert.ToInt16(Data.CommandSubId)), Data);
             //DataCommandsListbySubGroup["LPCommands List"].Add(data);
 
-            Data = new DataViewModel
-            {
-                CommandName = "FW Rev",
-                CommandId = "62",
-                CommandSubId = "3",
-                CommandValue = "",
-                IsFloat = false
-            };
-            addData(typeof(DataViewModel), Data, "LPCommands List");
+            
 
             //DataViewCommandsListLP.Add(new Tuple<int, int>(62, 3), data);
             //DataViewCommandsList.Add(new Tuple<int, int>(62, 3), data);
