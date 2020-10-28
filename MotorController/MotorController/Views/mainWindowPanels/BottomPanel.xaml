@@ -647,15 +647,22 @@
                     <ColumnDefinition Width="3"></ColumnDefinition>
                     <ColumnDefinition Width="0.4*"></ColumnDefinition>
                 </Grid.ColumnDefinitions>
-                <ScrollViewer Grid.Column="0" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" MaxWidth="250">
-                    <ItemsControl HorizontalContentAlignment="Stretch" 
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="Feedbacks" Foreground="White" Background="Transparent" HorizontalAlignment="Stretch" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold" MaxWidth="250"/>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" MaxWidth="250">
+                        <ItemsControl HorizontalContentAlignment="Stretch" 
                                   HorizontalAlignment="Stretch" 
                                   VerticalAlignment="Top"  
                                   ItemsSource="{Binding MotionStatusList}" 
                                   ItemTemplate="{StaticResource DataViewModel}"/>
-                </ScrollViewer>
+                    </ScrollViewer>
+                </Grid>
                 <ScrollViewer Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" MaxWidth="250">
-                    <Grid Grid.Column="1">
+                    <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"></RowDefinition>
                             <RowDefinition Height="Auto"></RowDefinition>

@@ -330,7 +330,9 @@ namespace MotorController.ViewModels
             {
                 calibElement = new CalibrationWizardViewModel
                 {
+#if !DEBUG
                     AdvanceMode_Calibration = CalibrationAdvancedMode,
+#endif
                     CalibrationEnabled = i == 0 ? false : true,
                     CalibrationPerform = CalibrationAdvancedMode ? i == 0 ? true : false : true,
                     CalibrationName = calibOperation.ElementAt(i).Key,
@@ -382,7 +384,8 @@ namespace MotorController.ViewModels
             {
                 for(int i = 0; i < GetInstance.CalibrationWizardList.Count; i++)
                 {
-                    GetInstance.CalibrationWizardList.ElementAt(i).Value.CalibrationEnabled = true;
+                    if(i > 0)
+                        GetInstance.CalibrationWizardList.ElementAt(i).Value.CalibrationEnabled = true;
                     if(GetInstance.CalibrationWizardList.ElementAt(i).Value.CalibStatus == RoundBoolLed.RUNNING)
                         updateCalibrationStatus(new Tuple<int, int>(Convert.ToInt32(GetInstance.CalibrationWizardList.ElementAt(i).Value.CommandId), Convert.ToInt32(GetInstance.CalibrationWizardList.ElementAt(i).Value.CommandSubId)), RoundBoolLed.STOPPED.ToString());
                 }
@@ -403,11 +406,11 @@ namespace MotorController.ViewModels
                 StartButtonStop();
                 return;
             }
-            #region InitVariables
+#region InitVariables
             DataViewModel operation = new DataViewModel();
             Int32 commandId = 0, commandSubId = 0;
             GetInstance.Count = 0;
-            #endregion InitVariables
+#endregion InitVariables
 
             GetInstance.CalibrationWizardList[new Tuple<int, int>(6, -1)].CalibStatus = RoundBoolLed.RUNNING;
             Thread.Sleep(50);
@@ -429,7 +432,7 @@ namespace MotorController.ViewModels
 
             GetInstance.OperationList.Clear();
 
-            #region BuildOperationList
+#region BuildOperationList
             string id_fdbck_cmd_temp = "", id_ext_fdbck_cmd_temp = "", comutation_source = "", index_analog_command_value = "";
             long max_speed, min_speed;
 
@@ -607,130 +610,132 @@ namespace MotorController.ViewModels
             GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
 
             /*update  "External Encoder Type" parameter*/
-            operation = new DataViewModel { CommandName = "External Encoder Type", CommandId = "50", CommandSubId = "4", IsFloat = false, CommandValue = ExternalEncoder.ToString() };
-            Int32.TryParse(operation.CommandId, out commandId);
-            Int32.TryParse(operation.CommandSubId, out commandSubId);
-            GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
-
-            /*update  "External Encoder Resolution" parameter*/
-            switch(ExternalEncoder)
+            if(AdvancedConfig)
             {
-                case (int)eEncSel.Enc_Fdb_Inc1:
-                    id_ext_fdbck_cmd_temp = "71";
-                    break;
-                case (int)eEncSel.Enc_Fdb_Inc_Sin_Cos:
-                    id_ext_fdbck_cmd_temp = "71";
-                    break;
-                case (int)eEncSel.Enc_Fdb_Abs_Sin_Cos:
-                    id_ext_fdbck_cmd_temp = "71";
-                    break;
-                case (int)eEncSel.Enc_Fdb_Inc2:
-                    id_ext_fdbck_cmd_temp = "72";
-                    break;
-                case (int)eEncSel.Enc_Fdb_Ssi:
-                    id_ext_fdbck_cmd_temp = "73";
-                    EncoderBits = ExternalResolution;
-                    EncoderResolutionTemp = (Math.Pow(2, Convert.ToInt32(ExternalResolution))).ToString();
-                    break;
-                default:
-                    id_ext_fdbck_cmd_temp = "";
-                    break;
-            }
-            if(id_ext_fdbck_cmd_temp != "")
-            {
-                //EncoderResolutionTemp = ExternalResolution;
-
-                operation = new DataViewModel { CommandName = "External Encoder Resolution", CommandId = id_ext_fdbck_cmd_temp, CommandSubId = "5", IsFloat = false, CommandValue = EncoderResolutionTemp };
+                operation = new DataViewModel { CommandName = "External Encoder Type", CommandId = "50", CommandSubId = "4", IsFloat = false, CommandValue = ExternalEncoder.ToString() };
                 Int32.TryParse(operation.CommandId, out commandId);
                 Int32.TryParse(operation.CommandSubId, out commandSubId);
                 GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
 
-                operation = new DataViewModel { CommandName = "Roll High", CommandId = id_ext_fdbck_cmd_temp, CommandSubId = "2", IsFloat = false, CommandValue = (Convert.ToInt32(EncoderResolutionTemp) - 1).ToString() };
-                Int32.TryParse(operation.CommandId, out commandId);
-                Int32.TryParse(operation.CommandSubId, out commandSubId);
-                GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
-
-                operation = new DataViewModel { CommandName = "Roll Low", CommandId = id_ext_fdbck_cmd_temp, CommandSubId = "3", IsFloat = false, CommandValue = "0" };
-                Int32.TryParse(operation.CommandId, out commandId);
-                Int32.TryParse(operation.CommandSubId, out commandSubId);
-                GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
-
-                /*update SSI "Packet len" parameter*/
-                if(ExternalEncoder == (int)eEncSel.Enc_Fdb_Ssi) //Motor feedback
+                /*update  "External Encoder Resolution" parameter*/
+                switch(ExternalEncoder)
                 {
-                    operation = new DataViewModel { CommandName = "PacketLenght", CommandId = "73", CommandSubId = "8", IsFloat = false, CommandValue = (Convert.ToInt32(EncoderBits)).ToString() };
+                    case (int)eEncSel.Enc_Fdb_Inc1:
+                        id_ext_fdbck_cmd_temp = "71";
+                        break;
+                    case (int)eEncSel.Enc_Fdb_Inc_Sin_Cos:
+                        id_ext_fdbck_cmd_temp = "71";
+                        break;
+                    case (int)eEncSel.Enc_Fdb_Abs_Sin_Cos:
+                        id_ext_fdbck_cmd_temp = "71";
+                        break;
+                    case (int)eEncSel.Enc_Fdb_Inc2:
+                        id_ext_fdbck_cmd_temp = "72";
+                        break;
+                    case (int)eEncSel.Enc_Fdb_Ssi:
+                        id_ext_fdbck_cmd_temp = "73";
+                        EncoderBits = ExternalResolution;
+                        EncoderResolutionTemp = (Math.Pow(2, Convert.ToInt32(ExternalResolution))).ToString();
+                        break;
+                    default:
+                        id_ext_fdbck_cmd_temp = "";
+                        break;
+                }
+                if(id_ext_fdbck_cmd_temp != "")
+                {
+                    //EncoderResolutionTemp = ExternalResolution;
+
+                    operation = new DataViewModel { CommandName = "External Encoder Resolution", CommandId = id_ext_fdbck_cmd_temp, CommandSubId = "5", IsFloat = false, CommandValue = EncoderResolutionTemp };
+                    Int32.TryParse(operation.CommandId, out commandId);
+                    Int32.TryParse(operation.CommandSubId, out commandSubId);
+                    GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
+
+                    operation = new DataViewModel { CommandName = "Roll High", CommandId = id_ext_fdbck_cmd_temp, CommandSubId = "2", IsFloat = false, CommandValue = (Convert.ToInt32(EncoderResolutionTemp) - 1).ToString() };
+                    Int32.TryParse(operation.CommandId, out commandId);
+                    Int32.TryParse(operation.CommandSubId, out commandSubId);
+                    GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
+
+                    operation = new DataViewModel { CommandName = "Roll Low", CommandId = id_ext_fdbck_cmd_temp, CommandSubId = "3", IsFloat = false, CommandValue = "0" };
+                    Int32.TryParse(operation.CommandId, out commandId);
+                    Int32.TryParse(operation.CommandSubId, out commandSubId);
+                    GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
+
+                    /*update SSI "Packet len" parameter*/
+                    if(ExternalEncoder == (int)eEncSel.Enc_Fdb_Ssi) //Motor feedback
+                    {
+                        operation = new DataViewModel { CommandName = "PacketLenght", CommandId = "73", CommandSubId = "8", IsFloat = false, CommandValue = (Convert.ToInt32(EncoderBits)).ToString() };
+                        Int32.TryParse(operation.CommandId, out commandId);
+                        Int32.TryParse(operation.CommandSubId, out commandSubId);
+                        GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
+                    }
+
+                }
+
+                /*update  "PI Speed Loop Feedback" parameter*/
+                if(id_fdbck_cmd_temp == "")
+                {
+                    if(id_ext_fdbck_cmd_temp != "")
+                        ExternalSpeedLoop = 2; //external encoder
+                    else if(MotorType == (int)eMotorType.Three_Phase_Brushless)
+                        ExternalSpeedLoop = 0; //use hall
+                    else
+                        ExternalSpeedLoop = -1; //  1. remove PI Speed/Position/direction calibrations, 2. set unit mode to current
+                }
+
+                operation = new DataViewModel { CommandName = "PI Speed Loop Feedback", CommandId = "50", CommandSubId = "6", IsFloat = false, CommandValue = (ExternalSpeedLoop + 1).ToString() };
+                Int32.TryParse(operation.CommandId, out commandId);
+                Int32.TryParse(operation.CommandSubId, out commandSubId);
+                GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
+
+                /*update  "PI Position Loop Feedback" parameter*/
+                if(id_fdbck_cmd_temp == "")
+                {
+                    if(id_ext_fdbck_cmd_temp != "")
+                        ExternalPositionLoop = 2; //external encoder
+                    else if(MotorType == (int)eMotorType.Three_Phase_Brushless)
+                        ExternalPositionLoop = 0; //use hall
+                    else
+                        ExternalPositionLoop = -1; //  1. remove PI Speed/Position/direction calibrations, 2. set unit mode to current
+                }
+
+                operation = new DataViewModel { CommandName = "PI Position Loop Feedback", CommandId = "50", CommandSubId = "7", IsFloat = false, CommandValue = (ExternalPositionLoop + 1).ToString() };
+                Int32.TryParse(operation.CommandId, out commandId);
+                Int32.TryParse(operation.CommandSubId, out commandSubId);
+                GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
+
+                operation = new DataViewModel { CommandName = "Drive Mode", CommandId = "50", CommandSubId = "1", IsFloat = false, CommandValue = (ExternalDriveMode + 1).ToString() };
+                Int32.TryParse(operation.CommandId, out commandId);
+                Int32.TryParse(operation.CommandSubId, out commandSubId);
+                GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
+
+                operation = new DataViewModel { CommandName = "Command Source", CommandId = "50", CommandSubId = "5", IsFloat = false, CommandValue = (ExternalCommandSource + 1).ToString() };
+                Int32.TryParse(operation.CommandId, out commandId);
+                Int32.TryParse(operation.CommandSubId, out commandSubId);
+                GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
+
+                if(ExternalCommandSource == (int)eCommandSource.Analog)
+                {
+                    switch(ExternalDriveMode)
+                    {
+                        case (int)eDriveMode.Current_Control:
+                            index_analog_command_value = "0";
+                            break;
+                        case (int)eDriveMode.Speed_Control:
+                            index_analog_command_value = "1";
+                            break;
+                        case (int)eDriveMode.Position_Control:
+                            index_analog_command_value = "2";
+                            break;
+                        default:
+                            index_analog_command_value = "";
+                            break;
+                    }
+                    operation = new DataViewModel { CommandName = "Analog Command Value", CommandId = "110", CommandSubId = index_analog_command_value, IsFloat = true, CommandValue = AnalogCommandValue };
                     Int32.TryParse(operation.CommandId, out commandId);
                     Int32.TryParse(operation.CommandSubId, out commandSubId);
                     GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
                 }
-
             }
-
-            /*update  "PI Speed Loop Feedback" parameter*/
-            if(id_fdbck_cmd_temp == "")
-            {
-                if(id_ext_fdbck_cmd_temp != "")
-                    ExternalSpeedLoop = 2; //external encoder
-                else if(MotorType == (int)eMotorType.Three_Phase_Brushless)
-                    ExternalSpeedLoop = 0; //use hall
-                else
-                    ExternalSpeedLoop = -1; //  1. remove PI Speed/Position/direction calibrations, 2. set unit mode to current
-            }
-
-            operation = new DataViewModel { CommandName = "PI Speed Loop Feedback", CommandId = "50", CommandSubId = "6", IsFloat = false, CommandValue = (ExternalSpeedLoop + 1).ToString() };
-            Int32.TryParse(operation.CommandId, out commandId);
-            Int32.TryParse(operation.CommandSubId, out commandSubId);
-            GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
-
-            /*update  "PI Position Loop Feedback" parameter*/
-            if(id_fdbck_cmd_temp == "")
-            {
-                if(id_ext_fdbck_cmd_temp != "")
-                    ExternalPositionLoop = 2; //external encoder
-                else if(MotorType == (int)eMotorType.Three_Phase_Brushless)
-                    ExternalPositionLoop = 0; //use hall
-                else
-                    ExternalPositionLoop = -1; //  1. remove PI Speed/Position/direction calibrations, 2. set unit mode to current
-            }
-
-            operation = new DataViewModel { CommandName = "PI Position Loop Feedback", CommandId = "50", CommandSubId = "7", IsFloat = false, CommandValue = (ExternalPositionLoop + 1).ToString() };
-            Int32.TryParse(operation.CommandId, out commandId);
-            Int32.TryParse(operation.CommandSubId, out commandSubId);
-            GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
-
-            operation = new DataViewModel { CommandName = "Drive Mode", CommandId = "50", CommandSubId = "1", IsFloat = false, CommandValue = (ExternalDriveMode + 1).ToString() };
-            Int32.TryParse(operation.CommandId, out commandId);
-            Int32.TryParse(operation.CommandSubId, out commandSubId);
-            GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
-
-            operation = new DataViewModel { CommandName = "Command Source", CommandId = "50", CommandSubId = "5", IsFloat = false, CommandValue = (ExternalCommandSource + 1).ToString() };
-            Int32.TryParse(operation.CommandId, out commandId);
-            Int32.TryParse(operation.CommandSubId, out commandSubId);
-            GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
-
-            if(ExternalCommandSource == (int)eCommandSource.Analog)
-            {
-                switch(ExternalDriveMode)
-                {
-                    case (int)eDriveMode.Current_Control:
-                        index_analog_command_value = "0";
-                        break;
-                    case (int)eDriveMode.Speed_Control:
-                        index_analog_command_value = "1";
-                        break;
-                    case (int)eDriveMode.Position_Control:
-                        index_analog_command_value = "2";
-                        break;
-                    default:
-                        index_analog_command_value = "";
-                        break;
-                }
-                operation = new DataViewModel { CommandName = "Analog Command Value", CommandId = "110", CommandSubId = index_analog_command_value, IsFloat = true, CommandValue = AnalogCommandValue };
-                Int32.TryParse(operation.CommandId, out commandId);
-                Int32.TryParse(operation.CommandSubId, out commandSubId);
-                GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
-            }
-
 
             //operation = new DataViewModel { CommandName = "Save", CommandId = "63", CommandSubId = "0", IsFloat = false, CommandValue = "1" };
             //Int32.TryParse(operation.CommandId, out commandId);
@@ -753,11 +758,11 @@ namespace MotorController.ViewModels
             Int32.TryParse(operation.CommandId, out commandId);
             Int32.TryParse(operation.CommandSubId, out commandSubId);
             GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation); // Restart Plot
-            #endregion BuildOperationList
+#endregion BuildOperationList
 
-            #region Save_parameters_to_ini_file
+#region Save_parameters_to_ini_file
             saveWizardParams();
-            #endregion Save_parameters_to_ini_file
+#endregion Save_parameters_to_ini_file
 
             sendPreStartOperation();
 
@@ -789,7 +794,6 @@ namespace MotorController.ViewModels
                 GetInstance.send_update_parameters = false;
                 GetInstance.CalibrationWizardList[new Tuple<int, int>(6, -1)].CalibStatus = RoundBoolLed.PASSED;
             };
-            Thread.Sleep(300);
 
             GetInstance.OperationList.Clear();
 
@@ -812,6 +816,12 @@ namespace MotorController.ViewModels
                 }
             }
 
+            if(GetInstance.OperationList.Count == 0)
+            {
+                StartButtonStop();
+                return;
+            }
+            Thread.Sleep(2500);
             DebugViewModel.updateList = true;
             RefreshManager.GetInstance.BuildGenericCommandsList_Func();
 
@@ -909,8 +919,8 @@ namespace MotorController.ViewModels
                 return Commands.GetInstance.GenericCommandsGroup["WizardOperation"];
             }
         }
-        #endregion Calibration
-        #region AdvancedConfiguration
+#endregion Calibration
+#region AdvancedConfiguration
         private bool _calibrationAdvancedMode = false;
         public bool CalibrationAdvancedMode
         {
@@ -1047,8 +1057,8 @@ namespace MotorController.ViewModels
                 OnPropertyChanged("AnalogCommandValue");
             }
         }
-        #endregion AdvancedConfiguration
-        #region Tasks
+#endregion AdvancedConfiguration
+#region Tasks
         private bool _motorParameters = false;
         public void VerifyValidOperation()
         {
@@ -1198,7 +1208,7 @@ namespace MotorController.ViewModels
             }
         }
 
-        #region Task_NOT_IN_USE
+#region Task_NOT_IN_USE
         public const int START = 1;
         public const int STOP = 0;
 
@@ -1234,7 +1244,7 @@ namespace MotorController.ViewModels
                     break;
             }
         }
-        #endregion Task_NOT_IN_USE
+#endregion Task_NOT_IN_USE
 
         private int Count = 0;
         private void CalibrationStart()
@@ -1374,7 +1384,7 @@ namespace MotorController.ViewModels
                 Thread.Sleep(30);
             }
         }
-        #endregion Tasks
+#endregion Tasks
 
         string _section = "Wizard";
         public void saveWizardParams()
@@ -1386,7 +1396,7 @@ namespace MotorController.ViewModels
             string _file_name = "WizardParameters.ini";
             iniFile _wizard_parameters_file = new iniFile(path + _file_name);
 
-            #region Save_Parameters
+#region Save_Parameters
 
             _wizard_parameters_file.Write("Motor Type", Enum.GetNames(typeof(eMotorType)).ElementAt(MotorType), _section);
             _wizard_parameters_file.Write("Pole Paire", PolePair, _section);
@@ -1396,9 +1406,9 @@ namespace MotorController.ViewModels
             _wizard_parameters_file.Write("Encoder Feedback", Enum.GetNames(typeof(eEncSel)).ElementAt(EncoderFeedback), _section);
             _wizard_parameters_file.Write("Encoder Resolution", EncoderResolution, _section);
 
-            #endregion Save_Parameters
+#endregion Save_Parameters
 
-            #region Advanced_Configuration
+#region Advanced_Configuration
 
             _wizard_parameters_file.Write("External Encoder Feedback", Enum.GetNames(typeof(eEncSel)).ElementAt(ExternalEncoder), _section);
             _wizard_parameters_file.Write("External Encoder Resolution", ExternalResolution, _section);
@@ -1407,7 +1417,7 @@ namespace MotorController.ViewModels
             _wizard_parameters_file.Write("Drive Mode", Enum.GetNames(typeof(eDriveMode)).ElementAt(ExternalDriveMode), _section);
             _wizard_parameters_file.Write("Command Source", Enum.GetNames(typeof(eCommandSource)).ElementAt(ExternalCommandSource), _section);
 
-            #endregion Advanced_Configuration
+#endregion Advanced_Configuration
 
             /*
             string tempar = Enum.GetNames(typeof(eMotorType)).ElementAt(MotorType); // Get string name of enum with int value. 
@@ -1427,7 +1437,7 @@ namespace MotorController.ViewModels
             {
                 iniFile _wizard_parameters_file = new iniFile(_file_name);
 
-                #region Read_Parameters
+#region Read_Parameters
 
                 MotorType = (int)EnumHelper.GetEnumValue<eMotorType>(_wizard_parameters_file.Read("Motor Type", _section));
                 PolePair = _wizard_parameters_file.Read("Pole Paire", _section);
@@ -1437,9 +1447,9 @@ namespace MotorController.ViewModels
                 EncoderFeedback = (int)EnumHelper.GetEnumValue<eEncSel>(_wizard_parameters_file.Read("Encoder Feedback", _section));
                 EncoderResolution = _wizard_parameters_file.Read("Encoder Resolution", _section);
 
-                #endregion Read_Parameters
+#endregion Read_Parameters
 
-                #region Advanced_Configuration
+#region Advanced_Configuration
 
                 ExternalEncoder = (int)EnumHelper.GetEnumValue<eEncSel>(_wizard_parameters_file.Read("External Encoder Feedback", _section));
                 ExternalResolution = _wizard_parameters_file.Read("External Encoder Resolution", _section);
@@ -1448,7 +1458,7 @@ namespace MotorController.ViewModels
                 ExternalDriveMode = (int)EnumHelper.GetEnumValue<eDriveMode>(_wizard_parameters_file.Read("Drive Mode", _section));
                 ExternalCommandSource = (int)EnumHelper.GetEnumValue<eCommandSource>(_wizard_parameters_file.Read("Command Source", _section));
 
-                #endregion Advanced_Configuration
+#endregion Advanced_Configuration
             }
         }
 

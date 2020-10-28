@@ -30,6 +30,7 @@ namespace MotorController.ViewModels
         //private WindowState _windowState = WindowState.Normal;
 
         private WindowState _windowState = WindowState.Maximized;
+
         public WindowState WindowState
         {
             get { return _windowState; }

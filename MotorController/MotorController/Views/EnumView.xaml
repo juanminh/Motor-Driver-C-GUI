@@ -178,10 +178,13 @@
                       FontSize="{Binding FontSize}">
                     <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding SelectedItemChanged1}"  />
+                        <i:InvokeCommandAction Command="{Binding SelectedItemChanged}"  />
                     </i:EventTrigger>
                     <i:EventTrigger EventName="DropDownOpened">
                         <i:InvokeCommandAction Command="{Binding ComboDropDownOpened}"  />
+                    </i:EventTrigger>
+                    <i:EventTrigger EventName="DropDownClosed">
+                        <i:InvokeCommandAction Command="{Binding ComboDropDownClosed}"  />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
             </ComboBox>

@@ -40,7 +40,11 @@ namespace MotorController.ViewModels
                 OnPropertyChanged("CalibTimeout");
             }
         }
+//#if DEBUG
+        //private bool _advanceMode_Calibration = true;
+//#else
         private bool _advanceMode_Calibration = false;
+//#endif
         public bool AdvanceMode_Calibration {
             get { return _advanceMode_Calibration; }
             set

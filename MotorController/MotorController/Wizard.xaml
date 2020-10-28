@@ -8,7 +8,7 @@
         xmlns:viewModels="clr-namespace:MotorController.ViewModels"
         xmlns:models="clr-namespace:MotorController.Models"
         mc:Ignorable="d"
-        Title="Wizard" Height="560" Width="620"
+        Title="Wizard" Height="560" Width="650"
         ResizeMode="NoResize"
         Icon="pack://application:,,,/Images/Wizard1.png"
         WindowStartupLocation="CenterScreen"
@@ -276,7 +276,7 @@
             </Grid.RowDefinitions>
             <Grid Grid.Row="0" Height="15"/>
             <!--#region Parameters-->
-            <Border Grid.Row="1" Width="290" Height="auto" BorderBrush="Gray" BorderThickness="1" CornerRadius="4" VerticalAlignment="Top">
+            <Border Grid.Row="1" Width="310" Height="auto" BorderBrush="Gray" BorderThickness="1" CornerRadius="4" VerticalAlignment="Top">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
@@ -523,7 +523,7 @@
                                             <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="{StaticResource RegexInt}" MaxLength="12"/>
                                         </i:Interaction.Behaviors>
                                     </TextBox>
-                                    <TextBlock Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="White" FontSize="9" Width="Auto" Text="[Counts] = [Encoder Lines  x  4]"></TextBlock>
+                                    <TextBlock Grid.Row="2" HorizontalAlignment="Left" VerticalAlignment="Center" Foreground="Gray" FontSize="9" Width="Auto" Text="[Counts] = [Encoder Lines  x  4]"></TextBlock>
                                     <!--<TextBox Grid.Row="2" HorizontalAlignment="Right" BorderThickness="0" Foreground="White"
                                             Width="{StaticResource MotorParametersWidth}" 
                                             FontSize="12"

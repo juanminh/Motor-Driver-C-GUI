@@ -172,7 +172,7 @@ namespace MotorController.ViewModels
 
                         _xAxisLog = new LogarithmicNumericAxis
                         {
-                            TextFormatting = "#0.00#",
+                            TextFormatting = "#0#",
                             ScientificNotation = ScientificNotation.Normalized,
                             VisibleRange = _xAxisDoubleRange,
                             GrowBy = new DoubleRange(0.1, 0.1),
@@ -188,7 +188,7 @@ namespace MotorController.ViewModels
                         XAxis1 = _xAxisLog;
                         _xAxisLog = new LogarithmicNumericAxis
                         {
-                            TextFormatting = "#0.00#",
+                            TextFormatting = "#0#",
                             ScientificNotation = ScientificNotation.Normalized,
                             VisibleRange = _xAxisDoubleRange,
                             GrowBy = new DoubleRange(0.1, 0.1),

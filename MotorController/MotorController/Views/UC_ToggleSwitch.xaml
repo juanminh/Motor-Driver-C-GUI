@@ -120,7 +120,7 @@
                         <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxStyle}">
                             <Setter Property="TextDecorations" Value="None" />
                             <Setter Property="FontWeight" Value="Normal" />
-                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                            <Setter Property="HorizontalAlignment" Value="Left"/>
                             <Style.Triggers>
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>
@@ -145,7 +145,7 @@
                 </TextBox>
             </Grid>
         </Border>
-        <Border Grid.Column="1" Background="#7F000000" BorderThickness="0" CornerRadius="0,4,4,0" Width="Auto">
+        <Border Grid.Column="1"  BorderThickness="0" CornerRadius="0,4,4,0" Width="Auto"><!--Background="#7F000000"-->
             <Border.Style>
                 <Style TargetType="Border">
                     <Setter Property="BorderBrush" Value="#D6D5D5"/>

@@ -119,6 +119,8 @@
         <System:Double x:Key="MaintenanceLabelWidth">160</System:Double>
         <System:Double x:Key="MaintenancePathWidth">200</System:Double>
 
+        <SolidColorBrush x:Key="HeaderTextblockBackground" Color="Transparent" />
+
     </Window.Resources>
 
     <Grid >
@@ -150,11 +152,11 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Text="Control" Grid.Row="0" Foreground="White" Background="Transparent" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
+                        <TextBlock Text="Control" Grid.Row="0" Foreground="White" Background="{StaticResource HeaderTextblockBackground}" FontSize="14" TextDecorations="Underline" FontWeight="DemiBold"/>
                         <ItemsControl Grid.Row="1" ItemsSource="{Binding ControlList}" 
                                           ItemTemplate="{StaticResource EnumViewModel}"/>
 
-                        <TextBlock Text="Motor" Grid.Row="3" FocusManager.IsFocusScope="True" Foreground="White" Background="Transparent" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
+                        <TextBlock Text="Motor" Grid.Row="3" FocusManager.IsFocusScope="True" Foreground="White" Background="{StaticResource HeaderTextblockBackground}" FontSize="14" TextDecorations="Underline" FontWeight="DemiBold"/>
                         <ItemsControl Grid.Row="4" ItemsSource="{Binding MotorlList}" 
                                           ItemTemplate="{StaticResource DataViewModel}"/>
 
@@ -167,12 +169,11 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Text="Motor Limit"  Grid.Row="0" Foreground="White" Background="Transparent" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
+                        <TextBlock Text="Motor Limit"  Grid.Row="0" Foreground="White" Background="{StaticResource HeaderTextblockBackground}" FontSize="14" TextDecorations="Underline" FontWeight="DemiBold"/>
                         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
                             <ItemsControl ItemsSource="{Binding MotorLimitlList}" ItemTemplate="{StaticResource DataViewModel}" />
                         </ScrollViewer>
-                        <!--</TextBlock>-->
-                        <TextBlock Grid.Row="3" Text="Current Limit" Foreground="White" Background="Transparent" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
+                        <TextBlock Grid.Row="3" Text="Current Limit" Foreground="White" Background="{StaticResource HeaderTextblockBackground}" FontSize="14" TextDecorations="Underline" FontWeight="DemiBold"/>
                         <ItemsControl Grid.Row="4" ItemsSource="{Binding CurrentLimitList}" ItemTemplate="{StaticResource DataViewModel}" />
 
                     </Grid>
@@ -181,6 +182,7 @@
             <TabItem Header="Feed Backs" TabIndex="2" Background="Black" Foreground="White" DataContext="{Binding FeedBackViewModel}" Height="22" VerticalAlignment="Top" >
                 <Grid>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
                         <ColumnDefinition Width="0.3*"/>
                         <ColumnDefinition Width="0.03*"/>
                         <ColumnDefinition Width="0.3*"/>
@@ -188,140 +190,55 @@
                         <ColumnDefinition Width="0.3*"/>
                         <ColumnDefinition Width="0.03*"/>
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
+                    <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="5"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <GroupBox Grid.Row="0" Header="Hall" HorizontalContentAlignment="Center">
-                            <i:Interaction.Triggers>
-                                <i:EventTrigger EventName="LostFocus" >
-                                    <i:InvokeCommandAction Command="{Binding ResetValue}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <ItemsControl Grid.Row="1" ItemsSource="{Binding HallFeedBackList}" 
+                        <TextBlock Grid.Row="0" Text="Hall" Foreground="White" Background="{StaticResource HeaderTextblockBackground}" FontSize="14" TextDecorations="Underline" FontWeight="DemiBold"/>
+                        <ItemsControl Grid.Row="1" ItemsSource="{Binding HallFeedBackList}" 
                                               ItemTemplate="{StaticResource DataViewModel}"/>
-                            </Grid>
-                        </GroupBox>
-                        <GroupBox Grid.Row="2" Header="Feedback Sync" HorizontalContentAlignment="Center">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <!--<Border Grid.Row="0" BorderThickness="1" BorderBrush="White" CornerRadius="4">
-                                    <Grid>
-                                        <TextBlock Text="External interpolation" VerticalAlignment="Center"/>
-                                        <wpfSpark:ToggleSwitch Width="80" Height="22" HorizontalAlignment="Right" VerticalAlignment="Center"
-                                                    FontSize="9" UncheckedText="Off" CheckedText="On"
-                                                    IsChecked="{Binding External_interpolation, Mode=TwoWay}"/>
-                                    </Grid>
-                                </Border>-->
-                                <ItemsControl Grid.Row="0"
+                        <TextBlock Grid.Row="3" Text="Feedback Sync" Foreground="White" Background="{StaticResource HeaderTextblockBackground}" FontSize="14" TextDecorations="Underline" FontWeight="DemiBold"/>
+                        <ItemsControl Grid.Row="4"
                                   ItemsSource="{Binding ExternalInterpolation, Mode=TwoWay}"
                                   ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}"></ItemsControl>
-                                <ItemsControl Grid.Row="1" ItemsSource="{Binding FeedbackSyncList}" ItemTemplate="{StaticResource DataViewModel}" />
-                            </Grid>
-                        </GroupBox>
+                        <ItemsControl Grid.Row="5" ItemsSource="{Binding FeedbackSyncList}" ItemTemplate="{StaticResource DataViewModel}" />
                     </Grid>
-                    <Grid Grid.Column="2">
+                    <Grid Grid.Column="3">
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="5"/>
                             <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <GroupBox Grid.Row="0" Header="Encoder Input 1">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <!--<RowDefinition Height="30"></RowDefinition>-->
-                                </Grid.RowDefinitions>
-                                <!--<CheckBox Grid.Row="0" Style="{StaticResource CheckBoxStyle1}"  IsChecked="{Binding IsQep1FeedBackEnabled}" />-->
-                                <!--<ScrollViewer Grid.Row="1" Background="Transparent" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">-->
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                        <RowDefinition Height="Auto"></RowDefinition>
-                                    </Grid.RowDefinitions>
-                                    <ItemsControl Grid.Row="0" ItemsSource="{Binding Qep1FeedBackList}" ItemTemplate="{StaticResource DataViewModel}"/>
-                                    <ItemsControl Grid.Row="1" ItemsSource="{Binding Qep1FdBckList}" 
-                                          ItemTemplate="{StaticResource EnumViewModel}">
-                                    </ItemsControl>
-                                </Grid>
-                                <!--</ScrollViewer>-->
-                            </Grid>
-                        </GroupBox>
-                        <GroupBox Grid.Row="2" Header="Encoder Input 2">
-                            <!--<ScrollViewer VerticalScrollBarVisibility="Visible">-->
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <!--<ScrollViewer Grid.Row="0" Background="Transparent" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">-->
-
-
-                                <ItemsControl Grid.Row="0" ItemsSource="{Binding Qep2FeedBackList}" ItemTemplate="{StaticResource DataViewModel}"/>
-
-                                <!--</ScrollViewer>-->
-                                <ItemsControl Grid.Row="1" ItemsSource="{Binding Qep2FdBckList}" ItemTemplate="{StaticResource EnumViewModel}"/>
-
-                            </Grid>
-                            <!--</ScrollViewer>-->
-                        </GroupBox>
-                    </Grid>
-                    <Grid Grid.Column="4">
-                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <GroupBox Grid.Row="0" Header="SSI Feedback">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
-                                    <!--<CheckBox Grid.Row="0" Style="{StaticResource CheckBoxStyle1}" IsChecked="{Binding IsSsiFeedbackEnabled}"/>  Grid.ColumnSpan="2"  -->
-                                    <ItemsControl ItemsSource="{Binding SsiFeedbackFeedBackList}" ItemTemplate="{StaticResource DataViewModel}"/>
-                                </ScrollViewer>
-                            </Grid>
-                        </GroupBox>
-                        <!--<GroupBox Grid.Row="0" Header="Digital"  Background="Transparent" >
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="155"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <CheckBox Grid.Row="0" Style="{StaticResource CheckBoxStyle1}"  IsChecked="{Binding IsDigitalFeedbackEnabled}"/>
-                                <ScrollViewer Grid.Row="1" Background="Transparent" HorizontalScrollBarVisibility="Auto">
-                                    <ItemsControl ItemsSource="{Binding Qep1FeedBackList}" ItemTemplate="{StaticResource DataViewModel}"/>
-                                </ScrollViewer>
-                            </Grid>
-                        </GroupBox>-->
-                        <!--<GroupBox Grid.Row="2"    Header="Analog"  Background="Transparent">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <CheckBox Grid.Row="0" Style="{StaticResource CheckBoxStyle1}" IsChecked="{Binding IsAnalogFeddbackEnabled}"/>
-                                <ItemsControl Grid.Row="1" ItemsSource="{Binding Qep2FeedBackList}" ItemTemplate="{StaticResource DataViewModel}"/>
-                            </Grid>
-                        </GroupBox>-->
+                        <TextBlock Grid.Row="0" Text="Encoder Input 1" Foreground="White" Background="{StaticResource HeaderTextblockBackground}" FontSize="14" TextDecorations="Underline" FontWeight="DemiBold"/>
+                        <ItemsControl Grid.Row="1" ItemsSource="{Binding Qep1FeedBackList}" ItemTemplate="{StaticResource DataViewModel}"/>
+                        <ItemsControl Grid.Row="2" ItemsSource="{Binding Qep1FdBckList}" ItemTemplate="{StaticResource EnumViewModel}"/>
+                        <TextBlock Grid.Row="4" Text="Encoder Input 2" Foreground="White" Background="{StaticResource HeaderTextblockBackground}" FontSize="14" TextDecorations="Underline" FontWeight="DemiBold"/>
+                        <ItemsControl Grid.Row="5" ItemsSource="{Binding Qep2FeedBackList}" ItemTemplate="{StaticResource DataViewModel}"/>
+                        <ItemsControl Grid.Row="6" ItemsSource="{Binding Qep2FdBckList}" ItemTemplate="{StaticResource EnumViewModel}"/>
+                    </Grid>
+                    <Grid Grid.Column="5">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Text="SSI Feedback" Foreground="White" Background="{StaticResource HeaderTextblockBackground}" FontSize="14" TextDecorations="Underline" FontWeight="DemiBold"/>
+                        <ItemsControl Grid.Row="1" ItemsSource="{Binding SsiFeedbackFeedBackList}" ItemTemplate="{StaticResource DataViewModel}"/>
                     </Grid>
                 </Grid>
             </TabItem>
             <TabItem Header="PID" TabIndex="3" Background="Black" Foreground="White" DataContext="{Binding PIDViewModel}">
                 <Grid>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
                         <ColumnDefinition Width="0.3*"/>
                         <ColumnDefinition Width="0.03*"/>
                         <ColumnDefinition Width="0.3*"/>
@@ -329,166 +246,128 @@
                         <ColumnDefinition Width="0.3*"/>
                         <ColumnDefinition Width="0.03*"/>
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
+                    <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <GroupBox Grid.Row="0" Header="Speed">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <ItemsControl Grid.Row="0" ItemsSource="{Binding PidSpeedList}" ItemTemplate="{StaticResource DataViewModel}"/>
-                                <ItemsControl Grid.Row="1" ItemsSource="{Binding PID_speed_loop, Mode=TwoWay}" 
-                                              ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}"/>
-                            </Grid>
-                        </GroupBox>
-                        <GroupBox  Grid.Row="1" Header="Current" Margin="0,10,0,0">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <ItemsControl Grid.Row="0" ItemsSource="{Binding PidCurrentList}" ItemTemplate="{StaticResource DataViewModel}"/>
-                                <ItemsControl Grid.Row="1" ItemsSource="{Binding PID_current_loop, Mode=TwoWay}" ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}"/>
-                            </Grid>
-                        </GroupBox>
+                        <TextBlock Grid.Row="0" Text="Speed" Foreground="White" Background="{StaticResource HeaderTextblockBackground}" FontSize="14" TextDecorations="Underline" FontWeight="DemiBold"/>
+                        <ItemsControl Grid.Row="1" ItemsSource="{Binding PidSpeedList}" ItemTemplate="{StaticResource DataViewModel}"/>
+                        <ItemsControl Grid.Row="2" ItemsSource="{Binding PID_speed_loop, Mode=TwoWay}" ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}"/>
+                        <TextBlock Grid.Row="4" Text="Current" Foreground="White" Background="{StaticResource HeaderTextblockBackground}" FontSize="14" TextDecorations="Underline" FontWeight="DemiBold"/>
+                        <ItemsControl Grid.Row="5" ItemsSource="{Binding PidCurrentList}" ItemTemplate="{StaticResource DataViewModel}"/>
+                        <ItemsControl Grid.Row="6" ItemsSource="{Binding PID_current_loop, Mode=TwoWay}" ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}"/>
                     </Grid>
-                    <Grid Grid.Column="2">
+                    <Grid Grid.Column="3">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <GroupBox Grid.Row="0"    Header="Position"  Background="Transparent">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <ItemsControl Grid.Row="0" ItemsSource="{Binding PidPositionList}" ItemTemplate="{StaticResource DataViewModel}"/>
-                                <ItemsControl Grid.Row="1" ItemsSource="{Binding PID_position_loop, Mode=TwoWay}" ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}"/>
-                            </Grid>
-                        </GroupBox>
+                        <TextBlock Grid.Row="0" Text="Position" Foreground="White" Background="{StaticResource HeaderTextblockBackground}" FontSize="14" TextDecorations="Underline" FontWeight="DemiBold"/>
+                        <ItemsControl Grid.Row="1" ItemsSource="{Binding PidPositionList}" ItemTemplate="{StaticResource DataViewModel}"/>
+                        <ItemsControl Grid.Row="2" ItemsSource="{Binding PID_position_loop, Mode=TwoWay}" ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}"/>
                     </Grid>
                 </Grid>
             </TabItem>
             <TabItem Header="Filter" TabIndex="4" Background="Black" Foreground="White" DataContext="{Binding FilterViewModel}">
                 <Grid>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
                         <ColumnDefinition Width="300"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
+                    <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <GroupBox  Grid.Row="0" Header="Current Reference IIR Filter">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                    <RowDefinition Height="Auto"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <ItemsControl Grid.Row="0" ItemsSource="{Binding FilterList}" ItemTemplate="{StaticResource DataViewModel}"/>
-                                <ItemsControl Grid.Row="1" ItemsSource="{Binding Filter_Enable, Mode=TwoWay}" ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}"/>
-                            </Grid>
-                        </GroupBox>
+                        <TextBlock Grid.Row="0" Text="Current Reference IIR Filter" Foreground="White" Background="{StaticResource HeaderTextblockBackground}" FontSize="14" TextDecorations="Underline" FontWeight="DemiBold"/>
+                        <ItemsControl Grid.Row="1" ItemsSource="{Binding FilterList}" ItemTemplate="{StaticResource DataViewModel}"/>
+                        <ItemsControl Grid.Row="2" ItemsSource="{Binding Filter_Enable, Mode=TwoWay}" ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}"/>
                     </Grid>
                 </Grid>
             </TabItem>
             <TabItem Header="Device" TabIndex="5" Background="Black" Foreground="White">
                 <Grid>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
                         <ColumnDefinition Width="300"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
+                    <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <GroupBox Grid.Row="0" Header="Device Info" >
-                            <StackPanel Background="Transparent" Orientation="Vertical" >
-                                <ItemsControl ItemsSource="{Binding DeviceSerialList}" ItemTemplate="{StaticResource DataViewModel}"/>
-                                <ItemsControl ItemsSource="{Binding BaudrateList}" 
-                                          ItemTemplate="{StaticResource EnumViewModel}">
-                                </ItemsControl>
-                            </StackPanel>
-                        </GroupBox>
+                        <TextBlock Grid.Row="0" Text="Position" Foreground="White" Background="{StaticResource HeaderTextblockBackground}" FontSize="14" TextDecorations="Underline" FontWeight="DemiBold"/>
+                        <ItemsControl Grid.Row="1" ItemsSource="{Binding DeviceSerialList}" ItemTemplate="{StaticResource DataViewModel}"/>
+                        <ItemsControl Grid.Row="2" ItemsSource="{Binding BaudrateList}" ItemTemplate="{StaticResource EnumViewModel}"/>
                     </Grid>
                 </Grid>
             </TabItem>
             <TabItem Header="I/O" TabIndex="6" DataContext="{Binding IOViewModel}" Background="Black" Foreground="White" >
                 <Grid>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
                         <ColumnDefinition Width="300"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
+                    <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <GroupBox Grid.Row="0" Header="Analog Command" >
-                            <ItemsControl ItemsSource="{Binding AnalogCommandList}" ItemTemplate="{StaticResource DataViewModel}"/>
-                        </GroupBox>
+                        <TextBlock Grid.Row="0" Text="Analog Command" Foreground="White" Background="{StaticResource HeaderTextblockBackground}" FontSize="14" TextDecorations="Underline" FontWeight="DemiBold"/>
+                        <ItemsControl Grid.Row="1" ItemsSource="{Binding AnalogCommandList}" ItemTemplate="{StaticResource DataViewModel}"/>
                     </Grid>
                 </Grid>
             </TabItem>
             <TabItem Header="Calibration" TabIndex="7" DataContext="{Binding CalibrationViewModel}" Foreground="White">
                 <Grid>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
+                    <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <Border Grid.Row="1">
-                            <GroupBox>
-                                <GroupBox.Header>
-                                    <Border Width="auto">
-                                        <Grid Width="Auto">
-                                            <TextBlock Text="Automatic Calibration Menu" HorizontalAlignment="Center"/>
-                                        </Grid>
-                                    </Border>
-                                </GroupBox.Header>
-                                <Grid Width="Auto">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="250"/>
-                                        <ColumnDefinition Width="135"/>
-                                    </Grid.ColumnDefinitions>
-                                    <!--<ItemsControl Grid.Column="0" Width="Auto" ItemsSource="{Binding CalibrationList}" 
-                                                  ItemTemplate="{StaticResource CalibrationButtonModel}"/>-->
-                                    <!--ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}"-->
-                                    <ItemsControl Grid.Column="0" Width="Auto" Height="auto" ItemsSource="{Binding CalibrationList_ToggleSwitch}" 
-                                                  ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}">
-                                        <ItemsControl.ItemContainerStyle>
-                                            <Style>
-                                                <Setter Property="Control.Width" Value="Auto"/>
-                                                <Setter Property="Control.Margin" Value="3"/>
-                                            </Style>
-                                        </ItemsControl.ItemContainerStyle>
-                                    </ItemsControl>
-                                    <!--<ItemsControl Grid.Column="1" Width="Auto" ItemsSource="{Binding CalibrationResultList}" ItemTemplate="{StaticResource DataViewModel}"/>-->
-                                    <ItemsControl Grid.Column="1" Width="Auto" 
+                        <TextBlock Grid.Row="0" Text="Automatic Calibration Menu" Foreground="White" Background="{StaticResource HeaderTextblockBackground}" FontSize="14" TextDecorations="Underline" FontWeight="DemiBold"/>
+                        <Grid Grid.Row="1" Width="Auto">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="250"/>
+                                <ColumnDefinition Width="135"/>
+                            </Grid.ColumnDefinitions>
+                            <ItemsControl Grid.Column="0" Width="Auto" Height="auto" ItemsSource="{Binding CalibrationList_ToggleSwitch}" ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}">
+                                <ItemsControl.ItemContainerStyle>
+                                    <Style>
+                                        <Setter Property="Control.Width" Value="Auto"/>
+                                        <Setter Property="Control.Margin" Value="3"/>
+                                    </Style>
+                                </ItemsControl.ItemContainerStyle>
+                            </ItemsControl>
+                            <ItemsControl Grid.Column="1" Width="Auto" 
                                                   ItemsSource="{Binding CalibrationResultList}" 
                                                   ItemTemplate="{StaticResource CalibrationWizardViewModel}" 
                                                   Margin="-1,0,0,0">
-                                        <ItemsControl.ItemContainerStyle>
-                                            <Style>
-                                                <Setter Property="Control.Width" Value="Auto"/>
-                                                <Setter Property="Control.Margin" Value="3"/>
-                                            </Style>
-                                        </ItemsControl.ItemContainerStyle>
-                                    </ItemsControl>
-                                </Grid>
-                                <!--<StackPanel Background="Transparent" Orientation="Vertical" >
-                                    <ItemsControl ItemsSource="{Binding CalibrationList}" ItemTemplate="{StaticResource CalibrationButtonModel}"/>
-                                </StackPanel>-->
-                            </GroupBox>
-                        </Border>
+                                <ItemsControl.ItemContainerStyle>
+                                    <Style>
+                                        <Setter Property="Control.Width" Value="Auto"/>
+                                        <Setter Property="Control.Margin" Value="3"/>
+                                    </Style>
+                                </ItemsControl.ItemContainerStyle>
+                            </ItemsControl>
+                        </Grid>
                     </Grid>
                 </Grid>
             </TabItem>
@@ -498,7 +377,7 @@
                         <ColumnDefinition Width="5"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="5"/>
-                        <ColumnDefinition Width="230"/>
+                        <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
                     <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
@@ -622,15 +501,15 @@
                             <RowDefinition Height="5"/>
                             <RowDefinition Height="auto"/>
                         </Grid.RowDefinitions>
-                        <Border Grid.Row="0" BorderBrush="Gray" BorderThickness="1" CornerRadius="3" Width="230" HorizontalAlignment="Left">
+                        <Border Grid.Row="0" BorderBrush="Gray" BorderThickness="0" CornerRadius="3" Width="230" HorizontalAlignment="Left">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
-
-                                <TextBlock Grid.Row="0" Width="230" Text="Graph tools palette" Foreground="White" Background="Gray" HorizontalAlignment="Left"/>
+                                <TextBlock Grid.Row="0" Text="Graph tools palette" Foreground="White" Background="{StaticResource HeaderTextblockBackground}" FontSize="14" TextDecorations="Underline" FontWeight="DemiBold"/>
+                                <!--<TextBlock Grid.Row="0" Width="230" Text="Graph tools palette" Foreground="White" Background="Gray" HorizontalAlignment="Left"/>-->
                                 <Grid Grid.Row="1" HorizontalAlignment="Center">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto"/>
@@ -685,7 +564,7 @@
                                 </Grid>
                             </Grid>
                         </Border>
-                        <Border Grid.Row="2" BorderBrush="Gray" BorderThickness="1" CornerRadius="3" Width="230" HorizontalAlignment="Center">
+                        <Border Grid.Row="2" BorderBrush="Gray" BorderThickness="0" CornerRadius="3" Width="230" HorizontalAlignment="Center">
                             <Grid>
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="auto"/>
@@ -697,7 +576,8 @@
                                     <RowDefinition Height="5"/>
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Text="Parameters" Foreground="White" Background="Gray" Margin="0,0,-1,0"/>
+                                <TextBlock Grid.Row="0" Text="Parameters" Foreground="White" Background="{StaticResource HeaderTextblockBackground}" FontSize="14" TextDecorations="Underline" FontWeight="DemiBold"/>
+                                <!--<TextBlock Grid.Row="0" Text="Parameters" Foreground="White" Background="Gray" Margin="0,0,-1,0"/>-->
                                 <Grid Grid.Row="2">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
@@ -773,11 +653,12 @@
             <TabItem Header="Maintenance" TabIndex="9" DataContext="{Binding MaintenanceViewModel}" Background="Black" Foreground="White" >
                 <Grid>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="5"/>
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
+                    <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
@@ -905,11 +786,12 @@
             <TabItem Header="Debug" TabIndex="10" DataContext="{Binding DebugViewModel}" Background="Black" Foreground="White" >
                 <Grid>
                     <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
                         <ColumnDefinition Width="Auto"/>
                         <ColumnDefinition Width="5"/>
                         <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
+                    <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
@@ -1023,7 +905,7 @@
                             </Border>
                         </Grid>
                     </Grid>
-                    <Grid Grid.Column="2">
+                    <Grid Grid.Column="3">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="10"/>

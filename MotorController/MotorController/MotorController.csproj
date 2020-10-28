@@ -663,6 +663,28 @@
   <ItemGroup>
     <Resource Include="MotorController.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Redler Upper 2.png" />
+    <Resource Include="Images\Redler Upper.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\Redler Logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\RedlerLogo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="gui_icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\gui_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\ICON-removebg-preview.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\motor.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath32)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

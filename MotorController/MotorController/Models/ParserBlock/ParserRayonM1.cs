@@ -1,5 +1,5 @@
-﻿//#define DEBUG_OPERATION
-//#define DEBUG_SET
+﻿#define DEBUG_OPERATION
+#define DEBUG_SET
 //#define DEBUG_GET
 #define New_Packet_Plot
 
@@ -249,7 +249,7 @@ namespace MotorController.Models.ParserBlock
         {
 #if(DEBUG && DEBUG_OPERATION)
 #if DEBUG_SET
-            if(IsSet)
+            if(IsSet && Id != 64)
                 Debug.WriteLine("{0} {1}[{2}]={3} {4}.", IsSet ? "Set" : "Get", Id, SubId, Data2Send, IsFloat ? "F" : "I");
 #endif
 #if DEBUG_GET
@@ -537,6 +537,11 @@ namespace MotorController.Models.ParserBlock
                     ParametarsWindowViewModel.TabControlIndex == (int)eTab.DEBUG)
                 {
                     RefreshManager.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), isInt ? transit.ToString() : newPropertyValuef.ToString(), isInt);
+#if(DEBUG && DEBUG_OPERATION)
+                    if(getSet == 0 && commandId != 64)
+                        Debug.WriteLine("{0} {1}[{2}]={3} {4} {5}.", "Drv", commandId, commandSubId,  isInt ? transit.ToString() : newPropertyValuef.ToString(), "I", getSet == 0 ? "Set" : "Get");
+#endif
+
 #if OLD
                     if(isInt)
                     {

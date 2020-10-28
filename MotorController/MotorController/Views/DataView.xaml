@@ -66,11 +66,12 @@
             <ColumnDefinition Width="0.6*"/>
             <ColumnDefinition Width="0.3*"/>
         </Grid.ColumnDefinitions>
-        <Border BorderThickness="1" CornerRadius="4,0,0,4" Grid.Column="0" Background="#7F000000">
+        <Border BorderThickness="1" CornerRadius="4,0,0,4" Grid.Column="0" ><!--Background="#7F000000"-->
             <Border.Style>
                 <Style TargetType="Border">
                     <Setter Property="BorderBrush" Value="Transparent"/><!--#D6D5D5-->
                     <Setter Property="Height" Value="24"/>
+                    <Setter Property="Background" Value="#7F000000"/>
                     <Style.Triggers>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
@@ -80,6 +81,14 @@
                                 <Setter Property="BorderBrush" Value="Transparent"/>
                                 <Setter Property="Height" Value="20"/>
                             </MultiDataTrigger.Setters>
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                        <MultiDataTrigger.Conditions>
+                            <Condition Binding="{Binding ReadOnly}" Value="True"/>
+                        </MultiDataTrigger.Conditions>
+                        <MultiDataTrigger.Setters>
+                            <Setter Property="Background" Value="Transparent"/>
+                        </MultiDataTrigger.Setters>
                         </MultiDataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -149,12 +158,12 @@
                              VerticalContentAlignment="Center"
                              FontSize="{Binding FontSize}"
                              Text="{Binding CommandValue, UpdateSourceTrigger=PropertyChanged}" 
-                             Background="{Binding Background}"
                              IsReadOnly="{Binding ReadOnly}"
-                             Focusable="True">
+                             Focusable="True">                             <!--Background="{Binding Background}"-->
                 <TextBox.Style>
                     <Style TargetType="TextBox">
                         <Setter Property="Foreground" Value="White" />
+                        <Setter Property="Background" Value="{Binding Background}" />
                         <Style.Triggers>
                             <MultiDataTrigger>
                                 <MultiDataTrigger.Conditions>
@@ -162,6 +171,14 @@
                                 </MultiDataTrigger.Conditions>
                                 <MultiDataTrigger.Setters>
                                     <Setter Property="Foreground" Value="Yellow" />
+                                </MultiDataTrigger.Setters>
+                            </MultiDataTrigger>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding ReadOnly}" Value="True" />
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.Setters>
+                                    <Setter Property="Background" Value="Transparent" />
                                 </MultiDataTrigger.Setters>
                             </MultiDataTrigger>
                         </Style.Triggers>

@@ -60,7 +60,7 @@ namespace MotorController.ViewModels
         }
         public string CommandId { get { return _baseModel.CommandID; } set { _baseModel.CommandID = value; } }
         public string CommandSubId { get { return _baseModel.CommandSubID; } set { _baseModel.CommandSubID = value; } }
-        public ICommand SelectedItemChanged1
+        public ICommand SelectedItemChanged
         {
             get
             {
@@ -71,10 +71,18 @@ namespace MotorController.ViewModels
         {
             get { return new RelayCommand(ComboDropDownOpenedFunc, IsEnabled); }
         }
+        public ICommand ComboDropDownClosed
+        {
+            get { return new RelayCommand(ComboDropDownClosedFunc, IsEnabled); }
+        }
         private static bool _isOpened = false;
         private void ComboDropDownOpenedFunc()
         {
             _isOpened = true;
+        }
+        private void ComboDropDownClosedFunc()
+        {
+            _isOpened = false;
         }
         private void SendData()
         {
@@ -97,8 +105,8 @@ namespace MotorController.ViewModels
             //            }
             //        }
             //    }
-
-            BuildPacketTosend(/*(ListIndex + StartIndex).ToString()*/);
+            if(_isOpened)
+                BuildPacketTosend(/*(ListIndex + StartIndex).ToString()*/);
             //        _isOpened = false;
             //    }
             //}

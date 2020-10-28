@@ -127,7 +127,7 @@ namespace MotorController.Common
                 };
                 addData(typeof(DataViewModel), Data, "DeviceSerial");
                 
-                //if(i < 3)
+                if(i < 3)
                     addData(typeof(DataViewModel), Data, "LPCommands List");
             }
 
@@ -1391,8 +1391,8 @@ namespace MotorController.Common
                     CommandId = 63,
                     CommandSubId = subID[i],
                     CheckedBackground_final = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2a5ed5")),
-                    CheckedText = "I",
-                    UnCheckedText = "O"
+                    CheckedText = "ON",
+                    UnCheckedText = "OFF"
                 };
                 addData(typeof(UC_ToggleSwitchViewModel), ToggleSwitchData, "MaintenanceOperation");
                 if(i < 2)
