@@ -802,7 +802,7 @@
                             BorderThickness="0.5" 
                             Width="50" Height="15"
                             Background="Orange"
-                            IsEnabled="{ Binding StartEnable, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            IsEnabled="{Binding StartEnable, Mode=TwoWay}"
                             Command="{Binding Start}">
                         <Button.Style>
                             <Style TargetType="Button" BasedOn="{StaticResource CalibButtonStyle}">
@@ -819,11 +819,6 @@
                                 </Style.Triggers>
                             </Style>
                         </Button.Style>
-                        <!--<i:Interaction.Triggers>
-                                <i:EventTrigger EventName="Click">
-                                    <i:InvokeCommandAction Command="{Binding Start}"/>
-                                </i:EventTrigger>
-                            </i:Interaction.Triggers>-->
                         <TextBlock Text="Start" VerticalAlignment="Center" Margin="0,-2,0,0"/>
                     </Button>
                     <Button FontSize="10" Grid.Column="5"
@@ -831,11 +826,9 @@
                             VerticalAlignment="Center" HorizontalAlignment="Left" 
                             BorderThickness="0.5" 
                             Width="50" Height="15"
-                                Background="Red">
+                            Background="Red">
                         <Button.Style>
                             <Style TargetType="Button" BasedOn="{StaticResource CalibButtonStyle}">
-                                <!--<Setter Property="Foreground" Value="White"/>
-                                    <Setter Property="IsEnabled" Value="False"/>-->
                                 <Style.Triggers>
                                     <MultiDataTrigger>
                                         <MultiDataTrigger.Conditions>

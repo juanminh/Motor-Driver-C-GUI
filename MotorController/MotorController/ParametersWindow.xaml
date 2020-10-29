@@ -26,6 +26,9 @@
         <i:EventTrigger EventName="Closing" >
             <i:InvokeCommandAction Command="{Binding ParametersWindowClosed}"/>
         </i:EventTrigger>
+        <i:EventTrigger EventName="MouseDown">
+            <i:InvokeCommandAction Command="{Binding MouseDownEvent}" CommandParameter="{Binding ElementName=ParametersWindow}"/>
+        </i:EventTrigger>
     </i:Interaction.Triggers>
     <Window.Background>
         <ImageBrush ImageSource="pack://siteoforigin:,,,/Views/HomeBackground.jpg"/>
@@ -523,7 +526,7 @@
                                     <Button Grid.Column="1" Width="75"
                                                   Command="{Binding SaveBodeToExcel}" 
                                                   BorderThickness="0.5" 
-                                                  VerticalAlignment="Center">
+                                                  VerticalAlignment="Center" FontSize="12" Height="25">
                                         <Button.Style>
                                             <Style TargetType="Button" BasedOn="{StaticResource ExampleToolbarButtonStyle}">
                                                 <Setter Property="IsEnabled" Value="True" />
@@ -548,17 +551,17 @@
                                     <Button Grid.Column="5" Width="70"  
                                             Command="{Binding ResetZoomBode}" 
                                             Style="{StaticResource ExampleToolbarButtonStyle}" 
-                                            VerticalAlignment="Center" BorderThickness="0.5">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Margin="3" Text="Reset Zoom" FontSize="12"/>
+                                            VerticalAlignment="Center" BorderThickness="0.5" Height="25">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Margin="0" Text="Reset Zoom" FontSize="12"/>
                                         </StackPanel>
                                     </Button>
                                     <Button Grid.Column="6" Width="65"  
                                             Command="{Binding AutoScaleBode}" 
                                             Style="{StaticResource ExampleToolbarButtonStyle}" 
-                                            VerticalAlignment="Center" BorderThickness="0.5">
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock Margin="3" Text="Auto Scale" FontSize="12"/>
+                                            VerticalAlignment="Center" BorderThickness="0.5" Height="25">
+                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                                            <TextBlock Margin="0" Text="Auto Scale" FontSize="12"/>
                                         </StackPanel>
                                     </Button>
                                 </Grid>

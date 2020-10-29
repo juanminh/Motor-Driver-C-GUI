@@ -7,6 +7,7 @@ using MotorController.Models.DriverBlock;
 using System;
 using System.Threading;
 using System.Diagnostics;
+using System.Windows.Controls;
 
 namespace MotorController.ViewModels
 {

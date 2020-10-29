@@ -19,10 +19,12 @@
     Icon="pack://application:,,,/Images/MotorController.png"
     FontSize="12"
     WindowStartupLocation="CenterScreen">
-
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="SizeChanged" >
             <i:InvokeCommandAction Command="{Binding MainWindowResized}" />
+        </i:EventTrigger>
+        <i:EventTrigger EventName="MouseDown">
+            <i:InvokeCommandAction Command="{Binding MouseDownEvent}" CommandParameter="{Binding ElementName=MainAppWindow}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Window.Background>

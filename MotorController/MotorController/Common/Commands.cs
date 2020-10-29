@@ -462,7 +462,9 @@ namespace MotorController.Common
                 CommandId = "50",
                 CommandSubId = "1",
                 CommandList = Enums["Drive Mode"],
-                CommandValue = "1",//first enum in list
+                CommandValue = "1",//first enum in list,
+                FontSize = DataViewModel_FontSize
+
             };
             addData(typeof(EnumViewModel), eData, "Control");
             
@@ -482,7 +484,8 @@ namespace MotorController.Common
                 CommandId = "50",
                 CommandSubId = "2",
                 CommandValue = "0", //first enum in list
-                CommandList = Enums["Electrical Commutation Type"]
+                CommandList = Enums["Electrical Commutation Type"],
+                FontSize = DataViewModel_FontSize
             };
             addData(typeof(EnumViewModel), eData, "Control");
 
@@ -499,7 +502,8 @@ namespace MotorController.Common
                 CommandId = "70",
                 CommandSubId = "1",
                 CommandValue = "0", //first enum in list
-                CommandList = Enums["Motor Hall"]
+                CommandList = Enums["Motor Hall"],
+                FontSize = DataViewModel_FontSize
             };
             addData(typeof(EnumViewModel), eData, "Control");
 
@@ -522,7 +526,8 @@ namespace MotorController.Common
                 CommandId = "50",
                 CommandSubId = "3",
                 CommandValue = "0", //first enum in list
-                CommandList = Enums["Motor encoder"]
+                CommandList = Enums["Motor encoder"],
+                FontSize = DataViewModel_FontSize
             };
             addData(typeof(EnumViewModel), eData, "Control");
 
@@ -533,7 +538,8 @@ namespace MotorController.Common
                 CommandId = "50",
                 CommandSubId = "4",
                 CommandValue = "0", //first enum in list
-                CommandList = Enums["External encoder"]
+                CommandList = Enums["External encoder"],
+                FontSize = DataViewModel_FontSize
             };
             addData(typeof(EnumViewModel), eData, "Control");
 
@@ -553,7 +559,8 @@ namespace MotorController.Common
                 CommandId = "50",
                 CommandSubId = "5",
                 CommandValue = "1", //first enum in list
-                CommandList = Enums["Command Source"]
+                CommandList = Enums["Command Source"],
+                FontSize = DataViewModel_FontSize
             };
             addData(typeof(EnumViewModel), eData, "Control");
 
@@ -571,7 +578,8 @@ namespace MotorController.Common
                 CommandId = "50",
                 CommandSubId = "6",
                 CommandValue = "1", //first enum in list
-                CommandList = Enums["Speed loop Fdb"]
+                CommandList = Enums["Speed loop Fdb"],
+                FontSize = DataViewModel_FontSize
             };
             addData(typeof(EnumViewModel), eData, "Control");
 
@@ -582,7 +590,8 @@ namespace MotorController.Common
                 CommandId = "50",
                 CommandSubId = "7",
                 CommandValue = "1", //first enum in list
-                CommandList = Enums["Position loop Fdb"]
+                CommandList = Enums["Position loop Fdb"],
+                FontSize = DataViewModel_FontSize
             };
             addData(typeof(EnumViewModel), eData, "Control");
 
@@ -1114,7 +1123,8 @@ namespace MotorController.Common
                 CommandId = "15",
                 CommandSubId = "1",
                 CommandList = Enums["Control Loop"],
-                CommandValue = "1",//first enum in list
+                CommandValue = "1",//first enum in list,
+                FontSize = DataViewModel_FontSize
             };
             addData(typeof(EnumViewModel), eData, "EnumBodeList");
 
@@ -1132,7 +1142,8 @@ namespace MotorController.Common
                 CommandId = "15",
                 CommandSubId = "6",
                 CommandList = Enums["Bode Fdbck"],
-                CommandValue = "0",//first enum in list
+                CommandValue = "0",//first enum in list,
+                FontSize = DataViewModel_FontSize
             };
             addData(typeof(EnumViewModel), eData, "EnumBodeList");
         }

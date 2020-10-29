@@ -18,7 +18,7 @@ namespace MotorController.ViewModels
     public class DataViewModel : ViewModelBase
     {
 
-        private SolidColorBrush _background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#333333")); // Gray  333333
+        public static SolidColorBrush _background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#333333")); // Gray  333333
         private SolidColorBrush _backgroundStdby = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#333333")); // Gray
 
         private SolidColorBrush _backgroundSelected = new SolidColorBrush(Colors.Red);
@@ -125,15 +125,20 @@ namespace MotorController.ViewModels
                 return new RelayCommand(MouseDoubleClick_Func);
             }
         }
-        private void BuildPacketTosend()
+        private void BuildPacketTosend(object sender)
         {
             if(LeftPanelViewModel.GetInstance.ConnectButtonContent == "Disconnect")
             {
+                UInt32 _data = 0;
+                if(!IsFloat)
+                    if(!UInt32.TryParse(CommandValue, out _data))
+                        return;
+
                 if(CommandValue != "")
                 {
                     var tmp = new PacketFields
                     {
-                        Data2Send = CommandValue,
+                        Data2Send = IsFloat ? CommandValue : _data.ToString(),
                         ID = Convert.ToInt16(CommandId),
                         SubID = Convert.ToInt16(CommandSubId),
                         IsSet = true,
@@ -144,6 +149,8 @@ namespace MotorController.ViewModels
                 ((DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(Convert.ToInt16(CommandId), Convert.ToInt16(CommandSubId))]).IsSelected = false;
                 ((DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(Convert.ToInt16(CommandId), Convert.ToInt16(CommandSubId))]).Background = _background;
             }
+            var _tb = sender as TextBox;
+            _tb.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
         }
         public ICommand MouseLeftClickCommand
         {
@@ -176,7 +183,7 @@ namespace MotorController.ViewModels
                 ((DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(Convert.ToInt16(CommandId), Convert.ToInt16(CommandSubId))]).Background = _backgroundSelected;
             }
         }
-        private void MouseLeaveCommandFunc()
+        private void MouseLeaveCommandFunc(object sender)
         {
             foreach(var list in Commands.GetInstance.GenericCommandsList)
             {
@@ -193,6 +200,8 @@ namespace MotorController.ViewModels
 
                 }
             }
+            var _tb = sender as TextBox;
+            _tb.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
         }
         private void MouseDoubleClick_Func(object sender)
         {

@@ -231,5 +231,34 @@ namespace MotorController.ViewModels
                 //OnPropertyChanged(); 
             }
         }
+
+        public ICommand MouseDownEvent
+        {
+            get
+            {
+                return new RelayCommand(MouseDownEventFunc);
+            }
+        }
+        private void MouseDownEventFunc(object sender)
+        {
+            var _tb = sender as UIElement;
+            _tb.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+            Keyboard.ClearFocus();
+            foreach(var list in Commands.GetInstance.GenericCommandsList)
+            {
+                try
+                {
+                    if(list.Value.GetType().Name == "DataViewModel")
+                    {
+                        ((DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(Convert.ToInt16(((DataViewModel)list.Value).CommandId), Convert.ToInt16(((DataViewModel)list.Value).CommandSubId))]).IsSelected = false;
+                        ((DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(Convert.ToInt16(((DataViewModel)list.Value).CommandId), Convert.ToInt16(((DataViewModel)list.Value).CommandSubId))]).Background = DataViewModel._background;
+                    }
+                }
+                catch(Exception)
+                {
+
+                }
+            }
+        }
     }
 }

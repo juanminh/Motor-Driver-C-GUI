@@ -191,16 +191,16 @@
                     <i:EventTrigger EventName="GotFocus" >
                         <i:InvokeCommandAction Command="{Binding MouseLeftClickCommand}" />
                     </i:EventTrigger>
-                    <i:EventTrigger EventName="LostFocus" >
-                        <i:InvokeCommandAction Command="{Binding ResetValue}" />
-                    </i:EventTrigger>
+                    <!--<i:EventTrigger EventName="LostFocus" >
+                        <i:InvokeCommandAction Command="{Binding ResetValue}" CommandParameter="{Binding ElementName=SetValTB}"/>
+                    </i:EventTrigger>-->
                     <i:EventTrigger EventName="MouseDoubleClick" >
                         <i:InvokeCommandAction Command="{Binding MouseDoubleClick}" CommandParameter="{Binding ElementName=SetValTB}"/>
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <TextBox.InputBindings>
-                    <KeyBinding Key="Enter" Command="{Binding SendData}"></KeyBinding>
-                    <KeyBinding Key="Esc"  Command="{Binding ResetValue}"></KeyBinding>
+                    <KeyBinding Key="Enter" Command="{Binding SendData}" CommandParameter="{Binding ElementName=SetValTB}"></KeyBinding>
+                    <KeyBinding Key="Esc"  Command="{Binding ResetValue}" CommandParameter="{Binding ElementName=SetValTB}"></KeyBinding>
                 </TextBox.InputBindings>
             </TextBox>
         </Border>

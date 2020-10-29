@@ -18,8 +18,11 @@ namespace MotorController.Helpers
             AssociatedObject.PreviewTextInput += OnPreviewTextInput;
             DataObject.AddPastingHandler(AssociatedObject, OnPaste);
         }
+        TextBox _tb_call;
         void OnPreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
         {
+            _tb_call = sender as TextBox;
+            
             e.Handled = !IsValid(e.Text, false);
         }
 
@@ -131,9 +134,9 @@ namespace MotorController.Helpers
                         return false;
                     break;
                 case "-":
-                    //if(this.AssociatedObject.Text.Length != 0)
-                    //   return false;
-                    break;
+                    if(_tb_call.SelectedText == _tb_call.Text)
+                        return true;
+                        break;
             }
             
             return !ExceedsMaxLength(newText, paste) && Regex.IsMatch(newText, RegularExpression);
