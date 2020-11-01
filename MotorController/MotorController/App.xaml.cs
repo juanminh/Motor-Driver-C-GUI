@@ -128,8 +128,7 @@ namespace MotorController
             Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Normal;
 
             // raise selection change event even when there's no change in index
-            EventManager.RegisterClassHandler(typeof(ComboBoxItem), UIElement.PreviewMouseLeftButtonDownEvent,
-                                              new MouseButtonEventHandler(ComboBoxSelfSelection), true);
+            //EventManager.RegisterClassHandler(typeof(ComboBoxItem), UIElement.PreviewMouseLeftButtonDownEvent, new MouseButtonEventHandler(ComboBoxSelfSelection), true);
 
             base.OnStartup(e);
         }

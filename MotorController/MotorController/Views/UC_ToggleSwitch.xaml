@@ -170,7 +170,7 @@
                                ThumbGlowColor="Gray"
                                ThumbBackground="Gray"
                                CheckedForeground="White"
-                               UncheckedForeground="Black"
+                               UncheckedForeground="White"
                                 
                                 
                                CheckedBackground="{Binding CheckedBackground}"

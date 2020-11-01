@@ -11,6 +11,7 @@ using MotorController.ViewModels;
 using MotorController.Views;
 using System.ComponentModel;
 using System.Windows;
+using MotorController.Helpers;
 
 namespace MotorController.ViewModels
 {
@@ -191,9 +192,15 @@ namespace MotorController.ViewModels
                 return new RelayCommand(ParametersWindowClosed_Func);
             }
         }
-        private void RebuildGenericCommandsList()
+        private void RebuildGenericCommandsList(object sender)
         {
+            var _tabItem = sender as TabItem;
+            
             Debug.WriteLine("RebuildGenericCommandsList");
+            int _ind = (int)Enum.Parse(typeof(eTab), ((TabItem)((TabControl)sender).SelectedItem).Header.ToString().ToUpper().Replace(" ", "_").Replace("/", "_"));
+
+            if(TabControlIndex == _old_tab)
+                return;
 
             LeftPanelViewModel.GetInstance.cancelRefresh = new CancellationToken(true);
             RefreshManager.GetInstance.BuildGenericCommandsList_Func();
@@ -223,10 +230,12 @@ namespace MotorController.ViewModels
         //    set { _tabControlIndex = value; OnPropertyChanged(); }
         //}
         private TabItem _tabControlItem;
+        private int _old_tab = -1;
         public TabItem TabControlItem
         {
             get { return _tabControlItem; }
             set { _tabControlItem = value;
+                _old_tab = TabControlIndex;
                 TabControlIndex = value.TabIndex;
                 //OnPropertyChanged(); 
             }

@@ -940,6 +940,17 @@ namespace MotorController.ViewModels
                 OnPropertyChanged("DriverStat");
             }
         }
+
+        private string _logo = Consts._project == Consts.eProject.REDLER ? "/Motor Controller;component/Images/RedlerLogo.png" : "/Motor Controller;component/Images/stxi_logo.png"; 
+        public string Logo
+        {
+            get { return _logo; }
+            set
+            {
+                _logo = value;
+                OnPropertyChanged("Logo");
+            }
+        }
 #endregion
     }
 }

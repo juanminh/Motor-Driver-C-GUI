@@ -88,30 +88,8 @@ namespace MotorController.ViewModels
         {
             if(LeftPanelViewModel.GetInstance.ConnectButtonContent != "Disconnect")
                 return;
-            //if(_isOpened)
-            //{
-            //if(Count == 0 && SelectedIndex != null && Convert.ToInt16(SelectedIndex) >= 0) // SelectedValue SelectedValue
-            //{
-            //    int StartIndex = 0;
-            //    int ListIndex = Convert.ToInt16(SelectedIndex); //SelectedValue
-            //    foreach(var List in Commands.GetInstance.EnumViewCommandsList)
-            //    {
-            //        if((ListIndex < List.Value.CommandList.Count() && List.Value.CommandList[ListIndex] == CommandList[Convert.ToInt16(SelectedIndex)]) || (ListIndex == 0 && List.Value.CommandList[ListIndex] == SelectedItem)) // SelectedValue SelectedValue
-            //        {
-            //            if(List.Value.CommandValue != "")
-            //            {
-            //                StartIndex = Convert.ToInt16(List.Value.CommandValue);
-            //                break;
-            //            }
-            //        }
-            //    }
             if(_isOpened)
-                BuildPacketTosend(/*(ListIndex + StartIndex).ToString()*/);
-            //        _isOpened = false;
-            //    }
-            //}
-            //else
-            //    _isOpened = false;
+                BuildPacketTosend();
 
             if(Count == -1)
                 Count = 0;
@@ -121,12 +99,15 @@ namespace MotorController.ViewModels
             return true;
         }
         private string _selectedItem;
-        public string SelectedItem {
+        public string SelectedItem
+        {
             get { return _selectedItem; }
-            set { _selectedItem = value; OnPropertyChanged("SelectedItem"); } }
+            set { _selectedItem = value; OnPropertyChanged("SelectedItem"); }
+        }
 
         private string _selectedIndex = "0";
-        public string SelectedIndex {
+        public string SelectedIndex
+        {
             get { return _selectedIndex; }
             set { _selectedIndex = value; OnPropertyChanged("SelectedIndex"); }
         }
@@ -240,23 +221,20 @@ namespace MotorController.ViewModels
         {
             // TODO: Complete member initialization
         }
-        private void BuildPacketTosend(/*string val*/)
+        private void BuildPacketTosend()
         {
-            //if(LeftPanelViewModel.GetInstance.ConnectButtonContent == "Disconnect")
+            Task.Factory.StartNew(action: () =>
             {
-                Task.Factory.StartNew(action: () =>
+                var tmp = new PacketFields
                 {
-                    var tmp = new PacketFields
-                    {
-                        Data2Send = Convert.ToInt16(SelectedIndex) + Convert.ToInt16(CommandValue),
-                        ID = Convert.ToInt16(CommandId),
-                        SubID = Convert.ToInt16(CommandSubId),
-                        IsSet = true,
-                        IsFloat = false
-                    };
-                    Rs232Interface.GetInstance.SendToParser(tmp);
-                });
-            }
+                    Data2Send = Convert.ToInt16(SelectedIndex) + Convert.ToInt16(CommandValue),
+                    ID = Convert.ToInt16(CommandId),
+                    SubID = Convert.ToInt16(CommandSubId),
+                    IsSet = true,
+                    IsFloat = false
+                };
+                Rs232Interface.GetInstance.SendToParser(tmp);
+            });
         }
     }
 }

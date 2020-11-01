@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -21,16 +22,18 @@ namespace MotorController.ViewModels
         private short _command_id = 0, _command_subid = 0;
         private bool _isEnbaled = false;
         private string _y_axis_title;
-        private SolidColorBrush _chBackground = new SolidColorBrush(Colors.Transparent);
+        private Color _chBackground = Colors.Transparent;
+        private static bool _isOpened = false;
 
         public string Label { get { return _label; } set { _label = value; OnPropertyChanged(); } }
         public short CommandId { get { return _command_id; } set { _command_id = value; OnPropertyChanged(); } }
         public short CommandSubId { get { return _command_subid; } set { _command_subid = value; OnPropertyChanged(); } }
         public bool IsEnabled { get { return _isEnbaled; } set { _isEnbaled = value; OnPropertyChanged(); } }
-        public SolidColorBrush ChBackground { get { return _chBackground; } set { _chBackground = value; OnPropertyChanged(); } }
+        public Color ChBackground { get { return _chBackground; } set { _chBackground = value; OnPropertyChanged(); } }
         public string Gain { get { return _gain; } set { if(String.IsNullOrEmpty(value)) return; _gain = value; OnPropertyChanged(); } }
         public string Y_Axis_Title { get { return _y_axis_title; } set { _y_axis_title = value; OnPropertyChanged(); } }
         public string PlotType { get { return _plot_type; } set { _plot_type = value; OnPropertyChanged(); } }
+        public bool IsOpened { get { return _isOpened; } set { _isOpened = value; OnPropertyChanged(); } }
 
         private int _getCount = -1;
         public int GetCount
@@ -60,7 +63,7 @@ namespace MotorController.ViewModels
         #region ICommand
         public ICommand ChSelectionChanged
         {
-            get { return new RelayCommand(Send_Plot1); }
+            get { return new RelayCommand(Send_Plot, _is_opened); }
         }
         public ICommand ChComboDropDownOpened
         {
@@ -71,28 +74,34 @@ namespace MotorController.ViewModels
             get { return new RelayCommand(ComboDropDownClosedFunc); }
         }
         #endregion ICommand
-        private static bool _isOpened = false;
         private void ComboDropDownOpenedFunc()
         {
-            _isOpened = true;
+            this.IsOpened = true;
         }
         private void ComboDropDownClosedFunc()
         {
-            _isOpened = false;
+            this.IsOpened = false;
         }
-        private void Send_Plot1()
+        private bool _is_opened()
         {
-            ChSelectedItem = ChItemsSource.ElementAt(ChSelectedIndex);
+            return this.IsOpened;
+        }
+        private void Send_Plot()
+        {
+            if(this.IsOpened)
+                ChSelectedItem = ChItemsSource.ElementAt(ChSelectedIndex);
         }
         public ObservableCollection<string> _itemsSource = new ObservableCollection<string>();
         private string _selectedItem;
-        private int _chSelectedIndex = 0, _ch2Index = 0;
+        private int _chSelectedIndex = 0;
 
         public int ChSelectedIndex
         {
             get { return _chSelectedIndex; }
             set
             {
+                Debug.WriteLine("Get - Ch: {0}, Index: {1} - isOpened: {2}", Label, value, this.IsOpened ? "true" : "false");
+                
                 _chSelectedIndex = value;
                 if(value > 0 && ChSelectedItem != null)
                     Y_Axis_Title = "CH " + CommandSubId.ToString() + ": " + OscilloscopeViewModel.GetInstance.ChannelYtitles.First(x => x.Key == ChSelectedItem).Value;
@@ -100,6 +109,15 @@ namespace MotorController.ViewModels
                     Y_Axis_Title = "";
                 PlotType = value == 0 ? "" :OscilloscopeParameters.plotType_ls.ElementAt(value);
                 IsEnabled = true;
+                OscilloscopeViewModel.GetInstance._update_channel_count(_chSelectedIndex, CommandSubId);
+
+                if(OscilloscopeViewModel.GetInstance._timer == null)
+                {
+                    OscilloscopeViewModel.GetInstance.ChannelsYaxeMerge(_chSelectedIndex, CommandSubId);
+                    OscilloscopeViewModel.GetInstance.ChannelsplotActivationMerge();
+                    OscilloscopeViewModel.GetInstance.StepRecalcMerge();
+                }
+
                 OnPropertyChanged();
             }
         }
@@ -122,9 +140,12 @@ namespace MotorController.ViewModels
             get { return _selectedItem; }
             set
             {
+                if(_selectedItem == value || !IsOpened)
+                    return;
                 _selectedItem = value;
                 OnPropertyChanged();
-                //StackTrace stackTrace = new StackTrace();
+                
+                Debug.WriteLine("Send - Ch: {0}, Index: {1} - isOpened: {2}", Label, value, this.IsOpened ? "true" : "false");
 
                 lock(ParserRayonM1.PlotListLock)
                 {

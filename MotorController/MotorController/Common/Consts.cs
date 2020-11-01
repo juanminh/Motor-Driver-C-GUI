@@ -8,10 +8,6 @@ namespace MotorController.Common
 {
     public class Consts
     {
-        private static Consts _instance = new Consts();
-
-
-
         #region CONSTS
         public const int BOOL_IDLE = 0;
         public const int BOOL_PASSED = 1;
@@ -26,15 +22,19 @@ namespace MotorController.Common
 
         public const int KEY_HISTORY_DIR = 1;
         public const int KEY_PARAMS_DIR = 2;
+        
 
-
-
-        private Dictionary<int, string> dic_paths = new Dictionary<int, string>()
+        public static Dictionary<int, string> dic_paths = new Dictionary<int, string>()
                                                                    {
                                                                        {KEY_HISTORY_DIR,Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\MotorController\\SuperMotorController_Params"},
                                                                        {KEY_PARAMS_DIR, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\MotorController\\SuperMotorControllerHistory"}
                                                                    };
-        public static Dictionary<int, string> Dic_paths { get { return _instance.dic_paths; } }
+        public enum eProject
+        {
+            REDLER = 0,
+            STXI = 1
+        };
+        public static eProject _project = eProject.REDLER;
         #endregion
 
 

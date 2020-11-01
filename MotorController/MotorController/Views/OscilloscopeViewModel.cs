@@ -27,6 +27,7 @@ using System.Windows.Data;
 using Abt.Controls.SciChart.Visuals.Axes;
 using MotorController.Data;
 using Abt.Controls.SciChart.Example.Data;
+using System.Windows.Media;
 
 //Cntl+M and Control+O for close regions
 namespace MotorController.Views
@@ -96,7 +97,7 @@ namespace MotorController.Views
         private ModifierType _chartModifier;
         //private bool _isDigitalLine = true;
 
-        private Timer _timer;
+        public Timer _timer;
 
         private ResamplingMode _resamplingMode;
         private bool _canExecuteRollover;
@@ -914,9 +915,8 @@ namespace MotorController.Views
                 OnExampleExit();
             }
         }
-        public void ChannelsYaxeMerge(int ch, int comboBox)
+        public void _update_channel_count(int ch, int comboBox)
         {
-
             if(comboBox == 1)
                 ch1 = ch;
             else
@@ -939,6 +939,11 @@ namespace MotorController.Views
                         break;
                 }
             }
+        }
+        public void ChannelsYaxeMerge(int ch, int comboBox)
+        {
+            _update_channel_count(ch, comboBox);
+
             OscilloscopeParameters.ChanTotalCounter = _chan1Counter + _chan2Counter;
 
             if(OscilloscopeParameters.ChanTotalCounter == 1)
@@ -1043,6 +1048,37 @@ namespace MotorController.Views
         }
         #endregion Channels
 
+        private string _graphTheme = Consts._project == Consts.eProject.REDLER ? "Oscilloscope" : "ExpressionDark";/*ExpressionDark*/
+        public string GraphTheme
+        {
+            get { return _graphTheme; }
+            set
+            {
+                _graphTheme = value;
+                OnPropertyChanged("GraphTheme");
+            }
+        }
+        private Color _colorChart1 = ((UC_ChannelViewModel)Commands.GetInstance.GenericCommandsGroup["ChannelsList"][0]).ChBackground;
+        private Color _colorChart2 = ((UC_ChannelViewModel)Commands.GetInstance.GenericCommandsGroup["ChannelsList"][1]).ChBackground;
+
+        public Color ColorChart1
+        {
+            get { return _colorChart1; }
+            set
+            {
+                _colorChart1 = value;
+                OnPropertyChanged("ColorChart1");
+            }
+        }
+        public Color ColorChart2
+        {
+            get { return _colorChart2; }
+            set
+            {
+                _colorChart2 = value;
+                OnPropertyChanged("ColorChart2");
+            }
+        }
 
         public IXyDataSeries<float, float> ChartData
         {
@@ -1758,9 +1794,10 @@ namespace MotorController.Views
                                                 }
                                             }
                                         }
-
-                                        AllYData.RemoveRange(0, temp.Length - 1);
-                                        AllYData2.RemoveRange(0, temp2.Length - 1);
+                                        if(AllYData.Count > 0)
+                                            AllYData.RemoveRange(0, temp.Length - 1);
+                                        if(AllYData2.Count > 0)
+                                            AllYData2.RemoveRange(0, temp2.Length - 1);
                                         #endregion case2
                                         break;
                                     case (4):

@@ -1443,9 +1443,10 @@ namespace MotorController.Common
                 Label = "Ch1",
                 CommandId = 60,
                 CommandSubId = 1,
-                ChBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#82F7E31D")),
+                ChBackground = Consts._project == Consts.eProject.REDLER ? (Color)ColorConverter.ConvertFromString("#CCF7E31D") : (Color)ColorConverter.ConvertFromString("#CCF7E31D"),
                 Gain = "1",
-                IsEnabled = false
+                IsEnabled = false,
+                IsOpened = false
             };
             addData(typeof(UC_ChannelViewModel), Channel, "ChannelsList");
 
@@ -1454,9 +1455,10 @@ namespace MotorController.Common
                 Label = "Ch2",
                 CommandId = 60,
                 CommandSubId = 2,
-                ChBackground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7F1810D4")),
+                ChBackground = Consts._project == Consts.eProject.REDLER ? (Color)ColorConverter.ConvertFromString("#7F1810D4") : Colors.CornflowerBlue,
                 Gain = "1",
-                IsEnabled = false
+                IsEnabled = false,
+                IsOpened = false
             };
             addData(typeof(UC_ChannelViewModel), Channel, "ChannelsList");
         }

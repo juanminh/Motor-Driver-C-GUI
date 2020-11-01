@@ -170,7 +170,7 @@
                                     <Condition Binding="{Binding GetCount_bool}" Value="True" />
                                 </MultiDataTrigger.Conditions>
                                 <MultiDataTrigger.Setters>
-                                    <Setter Property="Foreground" Value="Yellow" />
+                                    <Setter Property="Foreground" Value="Gray" />
                                 </MultiDataTrigger.Setters>
                             </MultiDataTrigger>
                             <MultiDataTrigger>

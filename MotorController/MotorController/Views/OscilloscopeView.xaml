@@ -281,10 +281,10 @@
                 <Line Grid.Column="19" Margin="2,0" Stroke="#FFD6D5D5" Y2="16" VerticalAlignment="Center" Fill="#FFC1C1C1" />
                 <Grid Grid.Column="20"/>
                 <Grid Grid.Column="21" HorizontalAlignment="Right">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
-                        <TextBlock Text="The He" Foreground="#1875BA" FontWeight="DemiBold" FontSize="20"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center"><!--#1875BA-->
+                        <TextBlock Text="The He" Foreground="Red" FontWeight="DemiBold" FontSize="20"/>
                         <TextBlock Text="art " Foreground="White" FontWeight="DemiBold" FontSize="20"/>
-                        <TextBlock Text="of Power and Motion" Foreground="#1875BA" FontWeight="DemiBold" FontSize="20"/>
+                        <TextBlock Text="of Power and Motion" Foreground="Red" FontWeight="DemiBold" FontSize="20"/>
                     </StackPanel>
                 </Grid>
                 <Grid Grid.Column="22" Width="100"/>
@@ -296,21 +296,22 @@
                            Grid.RowSpan="2"
                            RenderPriority="Normal" 
                            MaxFrameRate="25"
-                           s:ThemeManager.Theme="Oscilloscope"
+                           s:ThemeManager.Theme="{Binding GraphTheme}"
                            ClipModifierSurface="True"
                            XAxis="{Binding XAxis, Mode=OneWay}"
-                           ><!---->
+                           >
+            <!-- Oscilloscope-->
 
             <s:SciChartSurface.RenderableSeries>
                 <s:FastLineRenderableSeries DataSeries="{Binding ChartData}"
-                                            SeriesColor="Yellow"
+                                            SeriesColor="{Binding ColorChart1}"
                                             AntiAliasing="False"
                                             IsDigitalLine="False"
                                             ResamplingMode="MinMax"
                                             StrokeThickness="1"
                                             Style="{StaticResource LineSeriesStyle}"/>
                 <s:FastLineRenderableSeries DataSeries="{Binding ChartData1}"
-                                            SeriesColor="CornflowerBlue"
+                                            SeriesColor="{Binding ColorChart2}"
                                             AntiAliasing="False"
                                             IsDigitalLine="False"
                                             ResamplingMode="MinMax"

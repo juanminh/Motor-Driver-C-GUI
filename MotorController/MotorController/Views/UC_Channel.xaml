@@ -21,7 +21,11 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Border Grid.Column="0" BorderBrush="{StaticResource _borderbrush}" BorderThickness="1" Width="25" Height="22" CornerRadius="1,0,0,1">
-            <TextBlock Foreground="White" Text="{Binding Label}" Background="{Binding ChBackground}" FontSize="12"/>
+            <TextBlock Foreground="White" Text="{Binding Label}" FontSize="12">
+                <TextBlock.Background>
+                    <SolidColorBrush Color="{Binding ChBackground}"/>
+                </TextBlock.Background>
+            </TextBlock>
         </Border>
         <Border Grid.Column="1" MinWidth="100" Height="22" BorderBrush="{StaticResource _borderbrush}" BorderThickness="1" CornerRadius="0" Margin="0,0,0,0">
             <ComboBox SelectedItem="{Binding ChSelectedItem, Mode=TwoWay}" 
@@ -35,17 +39,21 @@
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding ChSelectionChanged}"/>
                     </i:EventTrigger>
-                    <!--<i:EventTrigger EventName="DropDownOpened">
+                    <i:EventTrigger EventName="DropDownOpened">
                         <i:InvokeCommandAction Command="{Binding ChComboDropDownOpened}"  />
                     </i:EventTrigger>
                     <i:EventTrigger EventName="DropDownClosed">
                         <i:InvokeCommandAction Command="{Binding ChComboDropDownClosed}"  />
-                    </i:EventTrigger>-->
+                    </i:EventTrigger>
                 </i:Interaction.Triggers>
             </ComboBox>
         </Border>
         <Border Grid.Column="2" BorderBrush="{StaticResource _borderbrush}" BorderThickness="1" Margin="0,0,0,0" Width="26" Height="22" CornerRadius="0">
-            <TextBlock Height="22" Foreground="White" Text="Gain" Background="{Binding ChBackground}" FontSize="12"/>
+            <TextBlock Height="22" Foreground="White" Text="Gain" FontSize="12">
+                <TextBlock.Background>
+                    <SolidColorBrush Color="{Binding ChBackground}"/>
+                </TextBlock.Background>
+            </TextBlock>
         </Border>
         <Border Grid.Column="3" BorderBrush="{StaticResource _borderbrush}" BorderThickness="1" Margin="0,0,0,0" Width="Auto" Height="22" CornerRadius="0,1,1,0">
             <TextBox Width="25" Text="{Binding Gain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" >
