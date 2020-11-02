@@ -128,7 +128,7 @@ namespace MotorController
             Process.GetCurrentProcess().PriorityClass = ProcessPriorityClass.Normal;
 
             // raise selection change event even when there's no change in index
-            //EventManager.RegisterClassHandler(typeof(ComboBoxItem), UIElement.PreviewMouseLeftButtonDownEvent, new MouseButtonEventHandler(ComboBoxSelfSelection), true);
+            EventManager.RegisterClassHandler(typeof(ComboBoxItem), UIElement.PreviewMouseLeftButtonDownEvent, new MouseButtonEventHandler(ComboBoxSelfSelection), true);
 
             base.OnStartup(e);
         }
@@ -145,13 +145,14 @@ namespace MotorController
 
             if(comboBox == null)
                 return;
+            //((EnumViewModel)comboBox).IsOpened = true;
 
             // fire SelectionChangedEvent if two value are the same
             if((string)comboBox.Name != "ComboboxCOM")
             {
                 if((string)comboBox.SelectedValue.ToString() == (string)item.Content)
                 {
-                    comboBox.IsDropDownOpen = false;
+                    comboBox.IsDropDownOpen = true;
                     comboBox.RaiseEvent(new SelectionChangedEventArgs(Selector.SelectionChangedEvent, new List<object>(), new List<object>()));
                 }
             }

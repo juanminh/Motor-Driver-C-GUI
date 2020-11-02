@@ -131,7 +131,7 @@
         <TabControl x:Name="TabCtrl" TabStripPlacement="Top"  Margin="1,0,-1,0" FontSize="12" 
                     SelectedItem="{Binding TabControlItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
             <i:Interaction.Triggers>
-                <i:EventTrigger EventName="SelectionChanged" >
+                <i:EventTrigger EventName="SelectionChanged" ><!---->
                     <i:InvokeCommandAction Command="{Binding ParametersWindowTabSelection}" CommandParameter="{Binding ElementName=TabCtrl}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>

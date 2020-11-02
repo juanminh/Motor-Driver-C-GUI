@@ -43,7 +43,7 @@ namespace MotorController.Models
             string[] PanelElements = new string[] { "DriverStatus List", "Channel List", "MotionCommand List2", "MotionCommand List",
                                                     "Profiler Mode", "S.G.List", "S.G.Type", "BP_ToggleSwitch",
                                                     "MotionStatus List", "Digital Input List", "Position counters List",
-                                                    "UpperMainPan List", "LPCommands List", "ChannelsList" };
+                                                    "UpperMainPan List", "LPCommands List", "ChannelsList", "MotorControl" };
             string[] arr = new string[] { };
             if(DebugViewModel.GetInstance.EnRefresh)
             {
@@ -594,7 +594,7 @@ namespace MotorController.Models
                                 if(!String.IsNullOrEmpty(sub_temp))
                                     temp += sub_temp;
                             }
-                            OscilloscopeViewModel.GetInstance.YAxisUnits = temp;
+                            //OscilloscopeViewModel.GetInstance.YAxisUnits = temp;
                             break;
                     }
                 }

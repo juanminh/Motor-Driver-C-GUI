@@ -1,4 +1,5 @@
 ﻿using MotorController.Common;
+using MotorController.Helpers;
 using MotorController.Models;
 using MotorController.Models.DriverBlock;
 using System;
@@ -40,6 +41,7 @@ namespace MotorController.ViewModels
                     CheckedBackground = CheckedBackground_final;
                     _is_checked = value;
                     _special_command(value);
+                    GetCount = -1;
                 }
                 else
                 {
@@ -54,8 +56,9 @@ namespace MotorController.ViewModels
             if(CommandId == 6 && CommandSubId == 15)
                 BodeViewModel.GetInstance.BodeStartStop = Convert.ToBoolean(Convert.ToInt16(_val));
             if(CommandId == 1 && CommandSubId == 0 && !DebugViewModel.GetInstance._forceConnectMode)
+            {
                 RefreshManager.GetInstance.updateConnectionStatus(_val);
-
+            }
         }
         private void BuildPacketTosend()
         {
@@ -138,7 +141,21 @@ namespace MotorController.ViewModels
             set
             {
                 _getCount_bool = value;
+                _special_led_indicator();
                 OnPropertyChanged();
+            }
+        }
+        private void _special_led_indicator()
+        {
+            if(((UC_ToggleSwitchViewModel)Commands.GetInstance.GenericCommandsList[
+                    new Tuple<int, int>(
+                        ((int)((UC_ToggleSwitchViewModel)Commands.GetInstance.GenericCommandsGroup["MotorControl"][0]).CommandId),
+                        ((int)((UC_ToggleSwitchViewModel)Commands.GetInstance.GenericCommandsGroup["MotorControl"][0]).CommandSubId))]).GetCount_bool)
+            {
+                if(LeftPanelViewModel.GetInstance.LedMotorStatus == 0)
+                    LeftPanelViewModel.GetInstance.LedMotorStatus = RoundBoolLed.DISC_OFF;
+                else if(LeftPanelViewModel.GetInstance.LedMotorStatus == 1)
+                    LeftPanelViewModel.GetInstance.LedMotorStatus = RoundBoolLed.DISC_ON;
             }
         }
         private double _fontSize = 13;

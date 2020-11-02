@@ -398,6 +398,7 @@ namespace MotorController.ViewModels
                 //    MotorOnOff_flag = true;
                 //    MotorOnToggleChecked = true;
                 //}
+                
                 _ledMotorStatus = value;
                 RaisePropertyChanged("LedMotorStatus");
             }
@@ -694,6 +695,9 @@ namespace MotorController.ViewModels
                 _param_window = new ParametarsWindow();
             else if(_param_window.Visibility == System.Windows.Visibility.Visible)
                 _param_window.Activate();
+            if(_param_window.WindowState == System.Windows.WindowState.Minimized)
+                _param_window.WindowState = System.Windows.WindowState.Normal;
+
             _param_window.Visibility = System.Windows.Visibility.Visible;
         }
 
@@ -706,6 +710,9 @@ namespace MotorController.ViewModels
                 _wizard_window = new Wizard();
             else if(_wizard_window.Visibility == System.Windows.Visibility.Visible)
                 _wizard_window.Activate();
+            if(_wizard_window.WindowState == System.Windows.WindowState.Minimized)
+                _wizard_window.WindowState = System.Windows.WindowState.Normal;
+
             _wizard_window.Visibility = System.Windows.Visibility.Visible;
             //if(Wizard.WindowsOpen != true)
             //{
@@ -941,7 +948,7 @@ namespace MotorController.ViewModels
             }
         }
 
-        private string _logo = Consts._project == Consts.eProject.REDLER ? "/Motor Controller;component/Images/RedlerLogo.png" : "/Motor Controller;component/Images/stxi_logo.png"; 
+        private string _logo = Consts._project == Consts.eProject.REDLER ? "/Motor Controller;component/Images/RedlerGray.png" : "/Motor Controller;component/Images/stxi_logo.png"; 
         public string Logo
         {
             get { return _logo; }

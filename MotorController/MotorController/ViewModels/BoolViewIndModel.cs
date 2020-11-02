@@ -10,6 +10,7 @@ using System.Windows.Media;
 using System.Threading.Tasks;
 using System.Linq;
 using MotorController.Common;
+using MotorController.Helpers;
 
 namespace MotorController.ViewModels
 {
@@ -20,7 +21,11 @@ namespace MotorController.ViewModels
         public string CommandName { get { return _baseModel.CommandName; } set { _baseModel.CommandName = value; } }
 
         private int _commandValue = 0;
-        public int CommandValue { get { return _commandValue;  } set { _commandValue = value; OnPropertyChanged(); }  }
+        public int CommandValue {
+            get {
+                GetCount = -1;
+                return _commandValue;
+            } set { _commandValue = value; OnPropertyChanged(); }  }
         public string CommandId { get { return _baseModel.CommandID; } set { _baseModel.CommandID = value; } }
 
         public string CommandSubId { get { return _baseModel.CommandSubID; } set { _baseModel.CommandSubID = value; } }
@@ -34,9 +39,17 @@ namespace MotorController.ViewModels
             {
                 _getCount = value;
                 if(_getCount >= 1)
+                {
                     GetCount_bool = true;
+                    if(CommandValue == 0)
+                        CommandValue = RoundBoolLed.DISC_OFF;
+                    else if(CommandValue == 1)
+                        CommandValue = RoundBoolLed.DISC_ON;
+                }
                 else
+                {
                     GetCount_bool = false;
+                }
 
                 OnPropertyChanged();
             }

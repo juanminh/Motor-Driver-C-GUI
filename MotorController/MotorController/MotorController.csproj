@@ -688,6 +688,9 @@
   <ItemGroup>
     <Resource Include="Images\stxi_logo.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\RedlerGray.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath32)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

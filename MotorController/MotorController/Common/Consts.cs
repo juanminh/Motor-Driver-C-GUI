@@ -15,6 +15,8 @@ namespace MotorController.Common
         public const int BOOL_DISABLED = 3;
         public const int BOOL_RUNNING = 4;
         public const int BOOL_STOPPED = 5;
+        public const int BOOL_DISC_OFF = 6;
+        public const int BOOL_DISC_ON = 7;
 
         public const int INTERFACE_RS232 = 1;
         public const int CAN_DRIVER_KVASER = 0;

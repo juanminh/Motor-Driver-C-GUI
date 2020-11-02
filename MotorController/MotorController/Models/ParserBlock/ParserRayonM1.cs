@@ -87,13 +87,13 @@ namespace MotorController.Models.ParserBlock
 #endif
         public void parseOutdata(object sender, Rs232InterfaceEventArgs e)
         {
-#if DEBUG_OPERATION
-            if(e.PacketRx.ID == DebugOutput.GetInstance.ID && e.PacketRx.SubID == DebugOutput.GetInstance.subID && e.PacketRx.IsSet == true)
-            {
-                CurrentCmdCounterTx++;
-                Debug.WriteLine("CurrentCmdCounterTx: " + CurrentCmdCounterTx + " Value: " + e.PacketRx.Data2Send);
-            }
-#endif
+//#if DEBUG_OPERATION
+//            if(e.PacketRx.ID == DebugOutput.GetInstance.ID && e.PacketRx.SubID == DebugOutput.GetInstance.subID && e.PacketRx.IsSet == true)
+//            {
+//                CurrentCmdCounterTx++;
+//                Debug.WriteLine("CurrentCmdCounterTx: " + CurrentCmdCounterTx + " Value: " + e.PacketRx.Data2Send);
+//            }
+//#endif
             if(sender is Rs232Interface)//RayonM3 Parser
             {
                 ParseOutputData(e.PacketRx.Data2Send, e.PacketRx.ID, e.PacketRx.SubID, e.PacketRx.IsSet,
@@ -250,7 +250,10 @@ namespace MotorController.Models.ParserBlock
 #if(DEBUG && DEBUG_OPERATION)
 #if DEBUG_SET
             if(IsSet && Id != 64)
+            {
+                Debug.Write(DateTime.Now.ToString("hh.mm.ss.ffffff"));
                 Debug.WriteLine("{0} {1}[{2}]={3} {4}.", IsSet ? "Set" : "Get", Id, SubId, Data2Send, IsFloat ? "F" : "I");
+            }
 #endif
 #if DEBUG_GET
             Debug.WriteLine("{0} {1}[{2}]={3} {4}.", IsSet ? "Set" : "Get", Id, SubId, Data2Send, IsFloat ? "F" : "I");
@@ -539,7 +542,10 @@ namespace MotorController.Models.ParserBlock
                     RefreshManager.GetInstance.UpdateModel(new Tuple<int, int>(commandId, commandSubId), isInt ? transit.ToString() : newPropertyValuef.ToString(), isInt);
 #if(DEBUG && DEBUG_OPERATION)
                     if(getSet == 0 && commandId != 64)
-                        Debug.WriteLine("{0} {1}[{2}]={3} {4} {5}.", "Drv", commandId, commandSubId,  isInt ? transit.ToString() : newPropertyValuef.ToString(), "I", getSet == 0 ? "Set" : "Get");
+                    {
+                        Debug.Write(DateTime.Now.ToString("hh.mm.ss.ffffff"));
+                        Debug.WriteLine("{0} {1}[{2}]={3} {4} {5}.", "Drv", commandId, commandSubId, isInt ? transit.ToString() : newPropertyValuef.ToString(), "I", getSet == 0 ? "Set" : "Get");
+                    }
 #endif
 
 #if OLD

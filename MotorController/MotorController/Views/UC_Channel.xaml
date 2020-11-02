@@ -8,7 +8,7 @@
              xmlns:System="clr-namespace:System;assembly=mscorlib"
              xmlns:Helpers="clr-namespace:MotorController.Helpers"
              mc:Ignorable="d" 
-             d:DesignHeight="30" d:DesignWidth="300">
+             d:DesignHeight="30" d:DesignWidth="350">
     <UserControl.Resources>
         <!-- Variables -->
         <SolidColorBrush x:Key="_borderbrush" Color="#D6D5D5" />
@@ -19,22 +19,34 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Border Grid.Column="0" BorderBrush="{StaticResource _borderbrush}" BorderThickness="1" Width="25" Height="22" CornerRadius="1,0,0,1">
-            <TextBlock Foreground="White" Text="{Binding Label}" FontSize="12">
+            <TextBlock Foreground="White" Text="{Binding Label}" FontSize="12" VerticalAlignment="Stretch">
                 <TextBlock.Background>
                     <SolidColorBrush Color="{Binding ChBackground}"/>
                 </TextBlock.Background>
             </TextBlock>
         </Border>
-        <Border Grid.Column="1" MinWidth="100" Height="22" BorderBrush="{StaticResource _borderbrush}" BorderThickness="1" CornerRadius="0" Margin="0,0,0,0">
+        <Border Grid.Column="1" MinWidth="120" Height="22" BorderBrush="{StaticResource _borderbrush}" BorderThickness="1" CornerRadius="0" Margin="0,0,0,0">
             <ComboBox SelectedItem="{Binding ChSelectedItem, Mode=TwoWay}" 
                               SelectedIndex="{Binding ChSelectedIndex, Mode=TwoWay}"
             		          ItemsSource="{Binding ChItemsSource, Mode=TwoWay}"
                               BorderBrush="#FFF9F9F9" 
                               Background="#FFF0EEEE" 
                               IsEnabled="{Binding IsEnabled, Mode=TwoWay}" 
-                              FontSize="12">
+                              FontSize="11">
+                <ComboBox.Style>
+                    <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                        <Setter Property="Foreground" Value="White" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding GetCount_bool}" Value="True" >
+                                <Setter Property="Foreground" Value="Gray" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ComboBox.Style>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding ChSelectionChanged}"/>
@@ -49,14 +61,28 @@
             </ComboBox>
         </Border>
         <Border Grid.Column="2" BorderBrush="{StaticResource _borderbrush}" BorderThickness="1" Margin="0,0,0,0" Width="26" Height="22" CornerRadius="0">
-            <TextBlock Height="22" Foreground="White" Text="Gain" FontSize="12">
+            <TextBlock Foreground="White" Text="Gain" FontSize="12" VerticalAlignment="Stretch">
                 <TextBlock.Background>
                     <SolidColorBrush Color="{Binding ChBackground}"/>
                 </TextBlock.Background>
             </TextBlock>
         </Border>
-        <Border Grid.Column="3" BorderBrush="{StaticResource _borderbrush}" BorderThickness="1" Margin="0,0,0,0" Width="Auto" Height="22" CornerRadius="0,1,1,0">
-            <TextBox Width="25" Text="{Binding Gain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" >
+        <Border Grid.Column="3" BorderBrush="{StaticResource _borderbrush}" BorderThickness="1" Margin="0,0,0,0" Width="Auto" Height="22" CornerRadius="0">
+            <TextBox Width="55" Text="{Binding Gain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" >
+                <i:Interaction.Behaviors>
+                    <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
+                </i:Interaction.Behaviors>
+            </TextBox>
+        </Border>
+        <Border Grid.Column="4" BorderBrush="{StaticResource _borderbrush}" BorderThickness="1" Margin="0,0,0,0" Width="26" Height="22" CornerRadius="0">
+            <TextBlock Foreground="White" Text="Unit" FontSize="12" VerticalAlignment="Stretch">
+                <TextBlock.Background>
+                    <SolidColorBrush Color="{Binding ChBackground}"/>
+                </TextBlock.Background>
+            </TextBlock>
+        </Border>
+        <Border Grid.Column="5" BorderBrush="{StaticResource _borderbrush}" BorderThickness="1" Margin="0,0,0,0" Width="Auto" Height="22" CornerRadius="0,1,1,0">
+            <TextBox Width="85" Text="{Binding Y_Axis_Title, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" BorderThickness="0" >
                 <i:Interaction.Behaviors>
                     <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
                 </i:Interaction.Behaviors>

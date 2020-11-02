@@ -69,23 +69,24 @@
             <ColumnDefinition Width="32*"/>
             <ColumnDefinition Width="47*"/>
         </Grid.ColumnDefinitions>
-        <Border BorderThickness="1" CornerRadius="4,0,0,4" Background="#7F000000"><!---->
+        <Border BorderThickness="1" CornerRadius="4,0,0,4" Background="#7F000000">
+            <!---->
             <Border.Style>
                 <Style TargetType="Border">
                     <Setter Property="BorderBrush" Value="Transparent"/><!--#D6D5D5-->
-                    <Setter Property="Height" Value="24"/>
-                    <Style.Triggers>
-                        <MultiDataTrigger>
-                            <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding FontSize}" Value="11"/>
-                            </MultiDataTrigger.Conditions>
-                            <MultiDataTrigger.Setters>
-                                <Setter Property="BorderBrush" Value="Transparent"/>
-                                <Setter Property="Height" Value="20"/>
-                            </MultiDataTrigger.Setters>
-                        </MultiDataTrigger>
-                    </Style.Triggers>
-                </Style>
+            <Setter Property="Height" Value="24"/>
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding FontSize}" Value="11"/>
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="BorderBrush" Value="Transparent"/>
+                        <Setter Property="Height" Value="20"/>
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
+            </Style.Triggers>
+            </Style>
             </Border.Style>
             <Border BorderThickness="1" CornerRadius="4,0,0,4"  d:IsHidden="True">
                 <Grid Margin="0,-1">
@@ -125,20 +126,20 @@
                              Focusable="True"
                              Margin="0">
                         <TextBlock.Style>
-                        <Style TargetType="TextBlock" BasedOn="{x:Null}">
-                            <Setter Property="HorizontalAlignment" Value="Center"/>
-                            <Style.Triggers>
-                                <MultiDataTrigger>
-                                    <MultiDataTrigger.Conditions>
-                                        <Condition Binding="{Binding FontSize}" Value="11"/>
-                                    </MultiDataTrigger.Conditions>
-                                    <MultiDataTrigger.Setters>
-                                        <Setter Property="HorizontalAlignment" Value="Left"/>
-                                    </MultiDataTrigger.Setters>
-                                </MultiDataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
+                            <Style TargetType="TextBlock" BasedOn="{x:Null}">
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding FontSize}" Value="11"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <MultiDataTrigger.Setters>
+                                            <Setter Property="HorizontalAlignment" Value="Left"/>
+                                        </MultiDataTrigger.Setters>
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
                     </TextBlock>
                 </Grid>
             </Border>
@@ -150,21 +151,23 @@
         -->
         <!-- ComboBox -->
 
-        <Border BorderThickness="1" CornerRadius="0,4,4,0" Grid.Column="1"><!--" SelectedIndex="0"
+        <Border BorderThickness="1" CornerRadius="0,4,4,0" Grid.Column="1">
+            <!--" SelectedIndex="0"
                       SelectedValue="{Binding Path=SelectedValue}" SelectedItem="{Binding Path=SelectedValue}"-->
             <Border.Style>
                 <Style TargetType="Border">
-                    <Setter Property="BorderBrush" Value="Transparent"/><!--#D6D5D5-->
-                        <Setter Property="Height" Value="24"/>
-                        <Style.Triggers>
+                    <Setter Property="BorderBrush" Value="Transparent"/>
+                    <!--#D6D5D5-->
+                    <Setter Property="Height" Value="24"/>
+                    <Style.Triggers>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
                                 <Condition Binding="{Binding FontSize}" Value="11"/>
                             </MultiDataTrigger.Conditions>
                             <MultiDataTrigger.Setters>
-                                    <Setter Property="BorderBrush" Value="Transparent"/>
-                                    <Setter Property="Height" Value="20"/>
-                                </MultiDataTrigger.Setters>
+                                <Setter Property="BorderBrush" Value="Transparent"/>
+                                <Setter Property="Height" Value="20"/>
+                            </MultiDataTrigger.Setters>
                         </MultiDataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -176,7 +179,17 @@
                       SelectedItem="{Binding Path=SelectedItem}"
                       SelectedIndex="{Binding Path=SelectedIndex}" 
                       FontSize="{Binding FontSize}">
-                    <i:Interaction.Triggers>
+                    <ComboBox.Style>
+                    <Style TargetType="ComboBox" BasedOn="{StaticResource {x:Type ComboBox}}">
+                            <Setter Property="Foreground" Value="White" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding GetCount_bool}" Value="True" >
+                                    <Setter Property="Foreground" Value="Gray" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ComboBox.Style>
+                <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding SelectedItemChanged}"  />
                     </i:EventTrigger>

@@ -54,12 +54,13 @@ namespace MotorController.ViewModels
             set
             {
                 _baseModel.CommandValue = value;
-                GetCount = -1;
                 OnPropertyChanged();
             }
         }
         public string CommandId { get { return _baseModel.CommandID; } set { _baseModel.CommandID = value; } }
         public string CommandSubId { get { return _baseModel.CommandSubID; } set { _baseModel.CommandSubID = value; } }
+        public bool IsOpened { get { return _isOpened; } set { _isOpened = value; OnPropertyChanged(); } }
+
         public ICommand SelectedItemChanged
         {
             get
@@ -78,17 +79,17 @@ namespace MotorController.ViewModels
         private static bool _isOpened = false;
         private void ComboDropDownOpenedFunc()
         {
-            _isOpened = true;
+            IsOpened = true;
         }
         private void ComboDropDownClosedFunc()
         {
-            _isOpened = false;
+            IsOpened = false;
         }
         private void SendData()
         {
             if(LeftPanelViewModel.GetInstance.ConnectButtonContent != "Disconnect")
                 return;
-            if(_isOpened)
+            if(IsOpened)
                 BuildPacketTosend();
 
             if(Count == -1)
@@ -101,7 +102,10 @@ namespace MotorController.ViewModels
         private string _selectedItem;
         public string SelectedItem
         {
-            get { return _selectedItem; }
+            get {
+                GetCount = -1;
+                return _selectedItem;
+            }
             set { _selectedItem = value; OnPropertyChanged("SelectedItem"); }
         }
 
@@ -235,6 +239,7 @@ namespace MotorController.ViewModels
                 };
                 Rs232Interface.GetInstance.SendToParser(tmp);
             });
+            IsOpened = false;
         }
     }
 }

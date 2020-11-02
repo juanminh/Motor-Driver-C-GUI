@@ -29,6 +29,8 @@ namespace MotorController.Helpers
         public const int DISABLED = 3;
         public const int RUNNING = 4;
         public const int STOPPED = 5;
+        public const int DISC_OFF = 6;
+        public const int DISC_ON = 7;
 
         #endregion
         #region FIELDS
@@ -43,6 +45,9 @@ namespace MotorController.Helpers
         protected RadialGradientBrush _rg_fail = makeRadialGradient(Color.FromArgb(0xFF, 0xFF, 0xCC, 0xCC), Color.FromArgb(0xFF, 0xFF, 0x00, 0x00), Color.FromArgb(0x00, 0xf0, 0xf0, 0xf0));
         protected RadialGradientBrush _rg_disabled = makeRadialGradient(Color.FromArgb(0xFF, 0x38, 0x38, 0x38), Color.FromArgb(0xFF, 0x00, 0x00, 0x00), Color.FromArgb(0x00, 0xf0, 0xf0, 0xf0));
         protected RadialGradientBrush _rg_wait = makeRadialGradient(Color.FromArgb(0xFF, 0xF9, 0xF9, 0xBF), Color.FromArgb(0xFF, 0xEA, 0xF5, 0x06), Color.FromArgb(0x00, 0xf0, 0xf0, 0xf0));
+
+        protected RadialGradientBrush _rg_disconnected_off = makeRadialGradient(Color.FromArgb(0xFF, 0x38, 0x38, 0x38), Color.FromArgb(0xFF, 0x00, 0x00, 0x00), Color.FromArgb(0x00, 0xf0, 0xf0, 0xf0));
+        protected RadialGradientBrush _rg_disconnected_on = makeRadialGradient(Color.FromArgb(0xFF, 0xb4, 0xb4, 0xb4), Color.FromArgb(0xFF, 0x00, 0x00, 0x00), Color.FromArgb(0x00, 0xf0, 0xf0, 0xf0));
 
         #endregion
 
@@ -190,11 +195,15 @@ namespace MotorController.Helpers
                     break;
                 case Consts.BOOL_DISABLED:
                     myBackgroundBrush = _rg_disabled;
-
                     break;
                 case Consts.BOOL_IDLE:
                     myBackgroundBrush = _rg_iddle;
-
+                    break;
+                case Consts.BOOL_DISC_OFF:
+                    myBackgroundBrush = _rg_disconnected_off;
+                    break;
+                case Consts.BOOL_DISC_ON:
+                    myBackgroundBrush = _rg_disconnected_on;
                     break;
                 default:
                     break;

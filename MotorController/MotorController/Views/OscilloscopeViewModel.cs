@@ -940,6 +940,38 @@ namespace MotorController.Views
                 }
             }
         }
+        public void _update_pivot_buffer()
+        {
+            OscilloscopeParameters.ChanelFreq = OscilloscopeParameters.ChanTotalCounter == 0 ? OscilloscopeParameters.SingleChanelFreqC : OscilloscopeParameters.SingleChanelFreqC / OscilloscopeParameters.ChanTotalCounter;
+            int ActualPOintstoPlot = POintstoPlot;//Actual points to plot transit value
+            POintstoPlot = (int)(OscilloscopeParameters.ChanelFreq * _duration);
+            if(ActualPOintstoPlot != POintstoPlot)//Reset
+            {
+                ActChenCount = 1;
+                _isFull = false;
+                pivot = 0;
+                if(ChartData == null)
+                    ChartData = new XyDataSeries<float, float>();
+                if(ChartData1 == null)
+                    ChartData1 = new XyDataSeries<float, float>();
+                //if(_series0 == null)
+                //    _series0 = new XyDataSeries<float, float>();
+                //if(_series1 == null)
+                //    _series1 = new XyDataSeries<float, float>();
+
+                using(ChartData.SuspendUpdates())
+                {
+                    using(ChartData1.SuspendUpdates())
+                    {
+                        ChartData.Clear();
+                        ChartData1.Clear();
+                    }
+                }
+                _yFloats = new float[0];
+                _yFloats2 = new float[0];
+                AllYData.Clear();
+            }
+        }
         public void ChannelsYaxeMerge(int ch, int comboBox)
         {
             _update_channel_count(ch, comboBox);
@@ -993,6 +1025,8 @@ namespace MotorController.Views
                 }
             }
 
+            _update_pivot_buffer();
+            /*
             OscilloscopeParameters.ChanelFreq = OscilloscopeParameters.ChanTotalCounter == 0 ? OscilloscopeParameters.SingleChanelFreqC : OscilloscopeParameters.SingleChanelFreqC / OscilloscopeParameters.ChanTotalCounter;
             int ActualPOintstoPlot = POintstoPlot;//Actual points to plot transit value
             POintstoPlot = (int)(OscilloscopeParameters.ChanelFreq * _duration);
@@ -1023,6 +1057,8 @@ namespace MotorController.Views
                 _yFloats2 = new float[0];
                 AllYData.Clear();
             }
+
+            */
         }
         public void StepRecalcMerge()
         {
@@ -1048,7 +1084,7 @@ namespace MotorController.Views
         }
         #endregion Channels
 
-        private string _graphTheme = Consts._project == Consts.eProject.REDLER ? "Oscilloscope" : "ExpressionDark";/*ExpressionDark*/
+        private string _graphTheme = Consts._project == Consts.eProject.REDLER ? "Oscilloscope" : "ExpressionDark";/*Oscilloscope*/
         public string GraphTheme
         {
             get { return _graphTheme; }

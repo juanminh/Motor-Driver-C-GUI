@@ -129,9 +129,9 @@ namespace MotorController.ViewModels
         {
             if(LeftPanelViewModel.GetInstance.ConnectButtonContent == "Disconnect")
             {
-                UInt32 _data = 0;
+                Int32 _data = 0;
                 if(!IsFloat)
-                    if(!UInt32.TryParse(CommandValue, out _data))
+                    if(!Int32.TryParse(CommandValue, out _data))
                         return;
 
                 if(CommandValue != "")

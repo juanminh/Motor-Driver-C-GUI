@@ -281,13 +281,13 @@
                 <Line Grid.Column="19" Margin="2,0" Stroke="#FFD6D5D5" Y2="16" VerticalAlignment="Center" Fill="#FFC1C1C1" />
                 <Grid Grid.Column="20"/>
                 <Grid Grid.Column="21" HorizontalAlignment="Right">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center"><!--#1875BA-->
-                        <TextBlock Text="The He" Foreground="Red" FontWeight="DemiBold" FontSize="20"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Center">
+                        <TextBlock Text="The He" Foreground="Gray" FontWeight="DemiBold" FontSize="20"/>
                         <TextBlock Text="art " Foreground="White" FontWeight="DemiBold" FontSize="20"/>
-                        <TextBlock Text="of Power and Motion" Foreground="Red" FontWeight="DemiBold" FontSize="20"/>
+                        <TextBlock Text="of Power and Motion" Foreground="Gray" FontWeight="DemiBold" FontSize="20"/>
                     </StackPanel>
                 </Grid>
-                <Grid Grid.Column="22" Width="100"/>
+                <Grid Grid.Column="22" Width="100"/><!--#1875BA-->
             </Grid>
         </ScrollViewer>
 
@@ -326,8 +326,7 @@
                                DrawMinorGridLines="False"
                                DrawMinorTicks="False"
                                DrawMajorTicks="False"
-                               StrokeThickness="1"
-                               AxisTitle="{Binding YAxisUnits, Mode=OneWay}"/>
+                               StrokeThickness="1"/><!--AxisTitle="{Binding YAxisUnits, Mode=OneWay}"-->
             </s:SciChartSurface.YAxis>
             <!--Create ChartModifiers, which are enabled or disabled from the ViewModel via the ChartModifier property and IsModifierTypeConverter-->
             <s:SciChartSurface.ChartModifier>

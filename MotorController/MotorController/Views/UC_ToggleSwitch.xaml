@@ -169,10 +169,7 @@
                                Height="{Binding Height}"
                                ThumbGlowColor="Gray"
                                ThumbBackground="Gray"
-                               CheckedForeground="White"
-                               UncheckedForeground="White"
-                                
-                                
+                
                                CheckedBackground="{Binding CheckedBackground}"
                                UncheckedBackground="{Binding UnCheckedBackground}"
                                
@@ -191,6 +188,23 @@
                                FontWeight="Normal"
                                HorizontalAlignment="Stretch"
                                IsChecked="{Binding IsChecked}">
+                <wpfspark:ToggleSwitch.Style>
+                    <Style TargetType="wpfspark:ToggleSwitch">
+                        <Setter Property="CheckedForeground" Value="White" />
+                        <Setter Property="UncheckedForeground" Value="White" />
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding GetCount_bool}" Value="True" />
+                                </MultiDataTrigger.Conditions>
+                                <MultiDataTrigger.Setters>
+                                    <Setter Property="CheckedForeground" Value="Gray" />
+                                    <Setter Property="UncheckedForeground" Value="Gray" />
+                                </MultiDataTrigger.Setters>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </wpfspark:ToggleSwitch.Style>
             </wpfspark:ToggleSwitch>
         </Border>
     </Grid>

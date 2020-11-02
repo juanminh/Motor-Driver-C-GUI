@@ -100,23 +100,28 @@ namespace MotorController.ViewModels
             get { return _chSelectedIndex; }
             set
             {
-                Debug.WriteLine("Get - Ch: {0}, Index: {1} - isOpened: {2}", Label, value, this.IsOpened ? "true" : "false");
-                
-                _chSelectedIndex = value;
-                if(value > 0 && ChSelectedItem != null)
-                    Y_Axis_Title = "CH " + CommandSubId.ToString() + ": " + OscilloscopeViewModel.GetInstance.ChannelYtitles.First(x => x.Key == ChSelectedItem).Value;
-                else
-                    Y_Axis_Title = "";
-                PlotType = value == 0 ? "" :OscilloscopeParameters.plotType_ls.ElementAt(value);
-                IsEnabled = true;
-                OscilloscopeViewModel.GetInstance._update_channel_count(_chSelectedIndex, CommandSubId);
-
-                if(OscilloscopeViewModel.GetInstance._timer == null)
+                //Debug.WriteLine("Get - Ch: {0}, Index: {1} - isOpened: {2}", Label, value, this.IsOpened ? "true" : "false");
+                GetCount = -1;
+                if((_chSelectedIndex == value || IsOpened) && IsEnabled)
                 {
-                    OscilloscopeViewModel.GetInstance.ChannelsYaxeMerge(_chSelectedIndex, CommandSubId);
-                    OscilloscopeViewModel.GetInstance.ChannelsplotActivationMerge();
                     OscilloscopeViewModel.GetInstance.StepRecalcMerge();
+                    return;
                 }
+                _chSelectedIndex = value;
+                /*if(value > 0)
+                    Y_Axis_Title = "CH " + CommandSubId.ToString() + ": " + OscilloscopeViewModel.GetInstance.ChannelYtitles.Values.ElementAt(value);
+                else
+                    Y_Axis_Title = "";*/
+                PlotType = value == 0 ? "" : OscilloscopeParameters.plotType_ls.ElementAt(value);
+                if(value > 0)
+                    Y_Axis_Title = OscilloscopeViewModel.GetInstance.ChannelYtitles.Values.ElementAt(value);
+                IsEnabled = true;
+                
+                //OscilloscopeViewModel.GetInstance._update_channel_count(_chSelectedIndex, CommandSubId);
+
+                OscilloscopeViewModel.GetInstance.ChannelsYaxeMerge(_chSelectedIndex, CommandSubId);
+                OscilloscopeViewModel.GetInstance.ChannelsplotActivationMerge();
+                OscilloscopeViewModel.GetInstance.StepRecalcMerge();
 
                 OnPropertyChanged();
             }
@@ -140,12 +145,12 @@ namespace MotorController.ViewModels
             get { return _selectedItem; }
             set
             {
-                if(_selectedItem == value || !IsOpened)
+                if(!IsOpened)
                     return;
                 _selectedItem = value;
                 OnPropertyChanged();
-                
-                Debug.WriteLine("Send - Ch: {0}, Index: {1} - isOpened: {2}", Label, value, this.IsOpened ? "true" : "false");
+
+                //Debug.WriteLine("Send - Ch: {0}, Index: {1} - isOpened: {2}", Label, value, this.IsOpened ? "true" : "false");
 
                 lock(ParserRayonM1.PlotListLock)
                 {
@@ -165,8 +170,9 @@ namespace MotorController.ViewModels
                     }
                 }
                 OscilloscopeViewModel.GetInstance.StepRecalcMerge();
+                IsOpened = false;
             }
         }
-        
+
     }
 }

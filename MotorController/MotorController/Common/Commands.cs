@@ -458,7 +458,7 @@ namespace MotorController.Common
 
             eData = new EnumViewModel
             {
-                CommandName = "Drive Mode",
+                CommandName = "Operation Mode",
                 CommandId = "50",
                 CommandSubId = "1",
                 CommandList = Enums["Drive Mode"],
@@ -1418,8 +1418,8 @@ namespace MotorController.Common
                 CommandId = 1,
                 CommandSubId = 1,
                 CheckedBackground_final = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2a5ed5")),
-                CheckedText = "STOP",
-                UnCheckedText = "START",
+                CheckedText = "ON",
+                UnCheckedText = "OFF",
                 FontSize = DataViewModel_FontSize
             };
             addData(typeof(UC_ToggleSwitchViewModel), ToggleSwitchData, "BP_ToggleSwitch");
@@ -1443,7 +1443,7 @@ namespace MotorController.Common
                 Label = "Ch1",
                 CommandId = 60,
                 CommandSubId = 1,
-                ChBackground = Consts._project == Consts.eProject.REDLER ? (Color)ColorConverter.ConvertFromString("#CCF7E31D") : (Color)ColorConverter.ConvertFromString("#CCF7E31D"),
+                ChBackground = Consts._project == Consts.eProject.REDLER ? /*(Color)ColorConverter.ConvertFromString("#CCF7E31D")*/ Colors.Orange : Colors.Orange /*(Color)ColorConverter.ConvertFromString("#CCF7E31D")*/,
                 Gain = "1",
                 IsEnabled = false,
                 IsOpened = false
@@ -1455,7 +1455,7 @@ namespace MotorController.Common
                 Label = "Ch2",
                 CommandId = 60,
                 CommandSubId = 2,
-                ChBackground = Consts._project == Consts.eProject.REDLER ? (Color)ColorConverter.ConvertFromString("#7F1810D4") : Colors.CornflowerBlue,
+                ChBackground = Consts._project == Consts.eProject.REDLER ? /*(Color)ColorConverter.ConvertFromString("#7F1810D4")*/Colors.Red : Colors.CornflowerBlue,
                 Gain = "1",
                 IsEnabled = false,
                 IsOpened = false
@@ -1560,7 +1560,7 @@ namespace MotorController.Common
                         ((BoolViewIndModel)GenericCommandsList.ElementAt(i).Value).CommandValue = 0;
                         break;
                     case "UC_ChannelViewModel":
-                        ((UC_ChannelViewModel)GenericCommandsList.ElementAt(i).Value).ChSelectedIndex = 0;
+                        //((UC_ChannelViewModel)GenericCommandsList.ElementAt(i).Value).ChSelectedIndex = 0;
                         break;
                 }
             }

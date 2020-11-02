@@ -194,14 +194,13 @@ namespace MotorController.ViewModels
         }
         private void RebuildGenericCommandsList(object sender)
         {
-            var _tabItem = sender as TabItem;
-            
-            Debug.WriteLine("RebuildGenericCommandsList");
-            int _ind = (int)Enum.Parse(typeof(eTab), ((TabItem)((TabControl)sender).SelectedItem).Header.ToString().ToUpper().Replace(" ", "_").Replace("/", "_"));
-
             if(TabControlIndex == _old_tab)
                 return;
+            //var _tabItem = sender as TabItem;
+            Debug.WriteLine("RebuildGenericCommandsList");
+            //int _ind = (int)Enum.Parse(typeof(eTab), ((TabItem)((TabControl)sender).SelectedItem).Header.ToString().ToUpper().Replace(" ", "_").Replace("/", "_"));
 
+            _old_tab = TabControlIndex;
             LeftPanelViewModel.GetInstance.cancelRefresh = new CancellationToken(true);
             RefreshManager.GetInstance.BuildGenericCommandsList_Func();
         }
@@ -209,13 +208,13 @@ namespace MotorController.ViewModels
         {
             Debug.WriteLine("ParametersWindowLoaded_Func");
 
-            TabControlIndex = 1;
+            _old_tab = TabControlIndex = 1;
             LeftPanelViewModel.GetInstance.cancelRefresh = new CancellationToken(true);
             RefreshManager.GetInstance.BuildGenericCommandsList_Func();
         }
         private void ParametersWindowClosed_Func()
         {
-            TabControlIndex = -1;
+            _old_tab = TabControlIndex = -1;
             Debug.WriteLine("ParametersWindowClosed_Func");
 
             LeftPanelViewModel.GetInstance._param_window.Visibility = Visibility.Hidden;
