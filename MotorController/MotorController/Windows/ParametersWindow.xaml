@@ -11,7 +11,7 @@
         xmlns:ToggleSwitch="clr-namespace:ToggleSwitch;assembly=ToggleSwitch"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d" 
-        x:Class="MotorController.Views.ParametarsWindow"
+        x:Class="MotorController.Windows.ParametarsWindow"
         xmlns:UserControl="clr-namespace:MotorController.Views"
         xmlns:Helpers="clr-namespace:MotorController.Helpers"
         ResizeMode="CanMinimize"
@@ -310,7 +310,7 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Text="Position" Foreground="White" Background="{StaticResource HeaderTextblockBackground}" FontSize="14" TextDecorations="Underline" FontWeight="DemiBold"/>
+                        <TextBlock Grid.Row="0" Text="Device Info" Foreground="White" Background="{StaticResource HeaderTextblockBackground}" FontSize="14" TextDecorations="Underline" FontWeight="DemiBold"/>
                         <ItemsControl Grid.Row="1" ItemsSource="{Binding DeviceSerialList}" ItemTemplate="{StaticResource DataViewModel}"/>
                         <ItemsControl Grid.Row="2" ItemsSource="{Binding BaudrateList}" ItemTemplate="{StaticResource EnumViewModel}"/>
                     </Grid>
@@ -588,10 +588,6 @@
                                         <ColumnDefinition Width="Auto"/>
                                         <ColumnDefinition Width="5"/>
                                     </Grid.ColumnDefinitions>
-                                    <!--<TextBlock Grid.Column="0" Text="  Bode Operation" HorizontalAlignment="Left" VerticalAlignment="Center"/>
-                                    <wpfSpark:ToggleSwitch Grid.Column="2" Width="55" Height="25" HorizontalAlignment="Right" VerticalAlignment="Center" 
-                                                    FontSize="9" UncheckedText="Start" CheckedText="Stop"
-                                                    IsChecked="{Binding BodeStartStop, Mode=TwoWay}"/>-->
                                     <ItemsControl Grid.Column="0" ItemsSource="{Binding BodeStart}" ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}"/>
                                     <Helpers:RoundBoolLed Grid.Column="2" Width="15" Height="15" VerticalAlignment="Stretch">
                                         <Helpers:RoundBoolLed.Style>

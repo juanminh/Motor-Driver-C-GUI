@@ -513,106 +513,110 @@
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="0.5*"/>
-                <ColumnDefinition Width="20"/>
+                <ColumnDefinition Width="0"/>
                 <ColumnDefinition Width="0.5*"/>
             </Grid.ColumnDefinitions>
-            <Grid Grid.Column="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="20"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Text="Commands" HorizontalAlignment="Center" Foreground="White" FontSize="14" FontWeight="Bold"></TextBlock>
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.33*"></ColumnDefinition>
-                        <ColumnDefinition Width="0.33*"></ColumnDefinition>
-                        <ColumnDefinition Width="0.33*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <ScrollViewer Grid.Column="0" MaxWidth="250" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
-                        <ItemsControl 
+            <Border Grid.Column="0" BorderThickness="1,1,0,1" BorderBrush="#D6D5D5">
+                <Grid Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Text="Commands" HorizontalAlignment="Center" Foreground="White" FontSize="14" FontWeight="Bold"></TextBlock>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.33*"></ColumnDefinition>
+                            <ColumnDefinition Width="0.33*"></ColumnDefinition>
+                            <ColumnDefinition Width="0.33*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <ScrollViewer Grid.Column="0" MaxWidth="250" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                            <ItemsControl 
                                       ItemsSource="{Binding MotionCommandList}" 
                                       ItemTemplate="{StaticResource DataViewModel}"/>
-                    </ScrollViewer>
-                    <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" MaxWidth="250" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
-                        <StackPanel >
-                            <ItemsControl   
+                        </ScrollViewer>
+                        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" MaxWidth="250" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                            <StackPanel >
+                                <ItemsControl   
                                             ItemsSource="{Binding MotionCommandList2}" 
                                             ItemTemplate="{StaticResource DataViewModel}">
-                            </ItemsControl>
-                            <ItemsControl ItemsSource="{Binding ProfilerModeList}" 
+                                </ItemsControl>
+                                <ItemsControl ItemsSource="{Binding ProfilerModeList}" 
                                             ItemTemplate="{StaticResource EnumViewModel}"/>
-                        </StackPanel>
-                    </ScrollViewer>
-                    <ScrollViewer  Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" MaxWidth="250" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="10"/>
-                                <RowDefinition Height="Auto"/>
-                                <RowDefinition Height="Auto"/>
-                            </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Width="Auto" Text="Signal Generator" Foreground="White" Background="Transparent" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
-                            <ItemsControl Grid.Row="1" 
+                            </StackPanel>
+                        </ScrollViewer>
+                        <ScrollViewer  Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" MaxWidth="250" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="10"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Width="Auto" Text="Signal Generator" Foreground="White" Background="Transparent" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
+                                <ItemsControl Grid.Row="1" 
                                                             ItemsSource="{Binding SGList}" 
                                                             ItemTemplate="{StaticResource DataViewModel}"/>
-                            <ItemsControl Grid.Row="2" 
+                                <ItemsControl Grid.Row="2" 
                                                     ItemsSource="{Binding SGTypeList}" 
                                                     ItemTemplate="{StaticResource EnumViewModel}"/>
-                            <TextBlock Grid.Row="4" Text="Operations" Foreground="White" Background="Transparent" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
-                            <ItemsControl Grid.Row="5" ItemsSource="{Binding ToggleOperationList}" ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}"/>
-                        </Grid>
-                    </ScrollViewer>
-                </Grid>
-            </Grid>
-            <Separator Grid.Column="1" HorizontalAlignment="Center" Height="100" VerticalAlignment="Center" Width="2" BorderThickness="1" BorderBrush="#D6D5D5"/>
-            <Grid Grid.Column="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="20"></RowDefinition>
-                    <RowDefinition Height="*"></RowDefinition>
-                </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Height="17" Text="Reports" HorizontalAlignment="Center" Foreground="White" FontSize="14" FontWeight="Bold"></TextBlock>
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="0.4*"></ColumnDefinition>
-                        <ColumnDefinition Width="0.2*"/>
-                        <ColumnDefinition Width="0.4*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Text="Feedbacks" Foreground="White" Background="Transparent" HorizontalAlignment="Stretch" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold" MaxWidth="250"/>
-                        <ScrollViewer Grid.Row="1"  MaxWidth="250" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
-                            <ItemsControl 
-                                ItemsSource="{Binding MotionStatusList}" 
-                                ItemTemplate="{StaticResource DataViewModel}"/>
+                                <TextBlock Grid.Row="4" Text="Operations" Foreground="White" Background="Transparent" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
+                                <ItemsControl Grid.Row="5" ItemsSource="{Binding ToggleOperationList}" ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}"/>
+                            </Grid>
                         </ScrollViewer>
                     </Grid>
-                    <ScrollViewer Grid.Column="1" MaxWidth="250" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Text="Digital Input" Foreground="White" Background="Transparent" HorizontalAlignment="Stretch" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
-                            <ItemsControl Grid.Row="1" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" ItemsSource="{Binding DigitalInputList}" ItemTemplate="{StaticResource BoolViewIndModel}"/>
-                        </Grid>
-                    </ScrollViewer>
-                    <ScrollViewer Grid.Column="2"  MaxWidth="250" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
-                        <Grid Grid.Column="1">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                                <RowDefinition Height="Auto"></RowDefinition>
-                            </Grid.RowDefinitions>
-                            <TextBlock Grid.Row="0" Text="Position Counters" Foreground="White" Background="Transparent" HorizontalAlignment="Stretch" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
-                            <ItemsControl Grid.Row="1" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" ItemsSource="{Binding PositionCountersList}" ItemTemplate="{StaticResource DataViewModel}"/>
-                        </Grid>
-                    </ScrollViewer>
                 </Grid>
-            </Grid>
+            </Border>
+            <Separator Grid.Column="1" HorizontalAlignment="Center" Height="100" VerticalAlignment="Center" Width="2" BorderThickness="1" BorderBrush="#D6D5D5"/>
+            <Border Grid.Column="2" BorderThickness="1" BorderBrush="#D6D5D5">
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="20"></RowDefinition>
+                        <RowDefinition Height="*"></RowDefinition>
+                    </Grid.RowDefinitions>
+                    <TextBlock Grid.Row="0" Height="17" Text="Reports" HorizontalAlignment="Center" Foreground="White" FontSize="14" FontWeight="Bold"></TextBlock>
+                    <Grid Grid.Row="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.4*"></ColumnDefinition>
+                            <ColumnDefinition Width="0.2*"/>
+                            <ColumnDefinition Width="0.4*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="Feedbacks" Foreground="White" Background="Transparent" HorizontalAlignment="Stretch" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold" MaxWidth="250"/>
+                            <ScrollViewer Grid.Row="1"  MaxWidth="250" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                                <ItemsControl 
+                                ItemsSource="{Binding MotionStatusList}" 
+                                ItemTemplate="{StaticResource DataViewModel}"/>
+                            </ScrollViewer>
+                        </Grid>
+                        <ScrollViewer Grid.Column="1" MaxWidth="250" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="Digital Input" Foreground="White" Background="Transparent" HorizontalAlignment="Stretch" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
+                                <ItemsControl Grid.Row="1" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" ItemsSource="{Binding DigitalInputList}" ItemTemplate="{StaticResource BoolViewIndModel}"/>
+                            </Grid>
+                        </ScrollViewer>
+                        <ScrollViewer Grid.Column="2"  MaxWidth="250" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                            <Grid Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                    <RowDefinition Height="Auto"></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <TextBlock Grid.Row="0" Text="Position Counters" Foreground="White" Background="Transparent" HorizontalAlignment="Stretch" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
+                                <ItemsControl Grid.Row="1" HorizontalContentAlignment="Stretch" HorizontalAlignment="Stretch" ItemsSource="{Binding PositionCountersList}" ItemTemplate="{StaticResource DataViewModel}"/>
+                            </Grid>
+                        </ScrollViewer>
+                    </Grid>
+                </Grid>
+            </Border>
         </Grid>
     </Grid>
 </UserControl>

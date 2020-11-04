@@ -85,7 +85,7 @@ namespace MotorController.ViewModels
                 return Commands.GetInstance.GenericCommandsGroup["Motor"];
             }
         }
-        private ObservableCollection<object> _motorLimitlList;
+        //private ObservableCollection<object> _motorLimitlList;
         public ObservableCollection<object> MotorLimitlList
         {
             get
@@ -93,7 +93,7 @@ namespace MotorController.ViewModels
                 return Commands.GetInstance.GenericCommandsGroup["Motion Limit"];
             }
         }
-        private ObservableCollection<object> _currentLimitList;
+        //private ObservableCollection<object> _currentLimitList;
         public ObservableCollection<object> CurrentLimitList
         {
             get
@@ -115,7 +115,7 @@ namespace MotorController.ViewModels
                 return Commands.GetInstance.GenericCommandsGroup["Analog"];
             }
         }
-        private ObservableCollection<object> _baudrateList;
+        //private ObservableCollection<object> _baudrateList;
         public ObservableCollection<object> DeviceSerialList
         {
             get
@@ -170,7 +170,7 @@ namespace MotorController.ViewModels
         {
             get { return _bodeViewModel; }
         }
-       
+
         public virtual ICommand ParametersWindowTabSelection
         {
             get
@@ -197,7 +197,7 @@ namespace MotorController.ViewModels
             if(TabControlIndex == _old_tab)
                 return;
             //var _tabItem = sender as TabItem;
-            Debug.WriteLine("RebuildGenericCommandsList");
+            //Debug.WriteLine("RebuildGenericCommandsList");
             //int _ind = (int)Enum.Parse(typeof(eTab), ((TabItem)((TabControl)sender).SelectedItem).Header.ToString().ToUpper().Replace(" ", "_").Replace("/", "_"));
 
             _old_tab = TabControlIndex;
@@ -206,7 +206,7 @@ namespace MotorController.ViewModels
         }
         private void ParametersWindowLoaded_Func()
         {
-            Debug.WriteLine("ParametersWindowLoaded_Func");
+            //Debug.WriteLine("ParametersWindowLoaded_Func");
 
             _old_tab = TabControlIndex = 1;
             LeftPanelViewModel.GetInstance.cancelRefresh = new CancellationToken(true);
@@ -215,7 +215,7 @@ namespace MotorController.ViewModels
         private void ParametersWindowClosed_Func()
         {
             _old_tab = TabControlIndex = -1;
-            Debug.WriteLine("ParametersWindowClosed_Func");
+            //Debug.WriteLine("ParametersWindowClosed_Func");
 
             LeftPanelViewModel.GetInstance._param_window.Visibility = Visibility.Hidden;
 
@@ -240,7 +240,7 @@ namespace MotorController.ViewModels
             }
         }
 
-        public ICommand MouseDownEvent
+        public new ICommand MouseDownEvent
         {
             get
             {

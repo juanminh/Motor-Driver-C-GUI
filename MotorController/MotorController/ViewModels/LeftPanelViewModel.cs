@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Windows.Threading;
 using System.Linq;
 using MotorController.Models;
+using MotorController.Windows;
 
 namespace MotorController.ViewModels
 {
@@ -41,6 +42,7 @@ namespace MotorController.ViewModels
 
         public ParametarsWindow _param_window;
         public Wizard _wizard_window;
+        public Bode _bode_window;
         #endregion
         #region Actions
         public ActionCommand SetAutoConnectActionCommandCommand
@@ -50,6 +52,9 @@ namespace MotorController.ViewModels
         public ActionCommand ForceStop { get { return new ActionCommand(FStop); } }
         public ActionCommand Showwindow { get { return new ActionCommand(ShowParametersWindow); } }
         public ActionCommand ShowWizard { get { return new ActionCommand(ShowWizardWindow); } }
+        public ActionCommand ShowBode { get { return new ActionCommand(ShowBodedWindow); } }
+
+        
         public ActionCommand ClearLogCommand
         {
             get { return new ActionCommand(ClearLog); }
@@ -149,7 +154,7 @@ namespace MotorController.ViewModels
                 timeOutPlot++;
             } while(OscilloscopeParameters.plotCount_temp != 0 && timeOutPlot <= 50);
 
-            Debug.WriteLine("TimeOutPlot: " + timeOutPlot);
+            //Debug.WriteLine("TimeOutPlot: " + timeOutPlot);
             if(OscilloscopeParameters.plotCount_temp == 0)
             {
                 EventRiser.Instance.RiseEevent(string.Format($"Success"));
@@ -196,7 +201,7 @@ namespace MotorController.ViewModels
                     IsFloat = false
                 });
                 Thread.Sleep(50);
-                Debug.WriteLine("param i: " + i);
+                //Debug.WriteLine("param i: " + i);
             }
             
             #endregion  Operations
@@ -267,7 +272,7 @@ namespace MotorController.ViewModels
             BlinkLedsTicks(START);
 
             RefreshParamsTick(STOP);
-            Debug.WriteLine("Starter Op");
+            //Debug.WriteLine("Starter Op");
 
             RefreshManager.GetInstance.BuildGenericCommandsList_Func();
             if(DebugViewModel.GetInstance.EnRefresh)
@@ -418,7 +423,7 @@ namespace MotorController.ViewModels
                 OnPropertyChanged();
             }
         }
-        private ObservableCollection<object> _driverStatusList;
+        //private ObservableCollection<object> _driverStatusList;
         public ObservableCollection<object> DriverStatusList
         {
 
@@ -629,12 +634,12 @@ namespace MotorController.ViewModels
                 busy = true;
                 lock(ConnectLock)
                 {
-                    if(Rs232Interface._comPort != null)
-                    {
-                        Debug.WriteLine("IsOpen When Disc: " + Rs232Interface._comPort.IsOpen.ToString());
-                    }
-                    else
-                        Debug.WriteLine("IsOpen When Disc: null");
+                    //if(Rs232Interface._comPort != null)
+                    //{
+                    //    Debug.WriteLine("IsOpen When Disc: " + Rs232Interface._comPort.IsOpen.ToString());
+                    //}
+                    //else
+                    //    Debug.WriteLine("IsOpen When Disc: null");
                     Rs232Interface.GetInstance.Disconnect();
                 }
             }
@@ -659,7 +664,7 @@ namespace MotorController.ViewModels
                 RaisePropertyChanged("LogText");
             }
         }
-
+        
         private string _comToolTipText;
         public string ComToolTipText
         {
@@ -700,8 +705,21 @@ namespace MotorController.ViewModels
 
             _param_window.Visibility = System.Windows.Visibility.Visible;
         }
+        private void ShowBodedWindow()
+        {
+            if(_bode_window == null)
+                _bode_window = new Bode();
+            else if(_bode_window.Visibility == System.Windows.Visibility.Hidden)
+                _bode_window = new Bode();
+            else if(_bode_window.Visibility == System.Windows.Visibility.Visible)
+                _bode_window.Activate();
+            if(_bode_window.WindowState == System.Windows.WindowState.Minimized)
+                _bode_window.WindowState = System.Windows.WindowState.Normal;
 
+            _bode_window.Visibility = System.Windows.Visibility.Visible;
+        }
         //public static Wizard WizardWindow;
+        
         private void ShowWizardWindow()
         {
             if(_wizard_window == null)

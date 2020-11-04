@@ -20,7 +20,6 @@ using MotorController.Models.ParserBlock;
 using System.Diagnostics;
 using MotorController.Helpers;
 using System.Collections.ObjectModel;
-using MotorController.Common;
 using System.Windows.Input;
 using MotorController.Models;
 using System.Windows.Data;
@@ -36,12 +35,12 @@ namespace MotorController.Views
     public class OscilloscopeViewModel : BaseViewModel
     {
         #region members
-        private string _yaxeTitle;
+        //private string _yaxeTitle;
         public Dictionary<string, string> ChannelYtitles = new Dictionary<string, string>();
 
         //CH1 ComboBox
         int ch1;
-        private string _ch1Title;
+        //private string _ch1Title;
         public ObservableCollection<string> _channel1SourceItems = new ObservableCollection<string>();
         public ObservableCollection<string> Channel1SourceItems
         {
@@ -63,7 +62,7 @@ namespace MotorController.Views
 
         //CH2 ComboBox
         int ch2;
-        private string _ch2Title;
+        //private string _ch2Title;
         //public ObservableCollection<string> Channel2SourceItems
         //{
         //    get
@@ -100,7 +99,7 @@ namespace MotorController.Views
         public Timer _timer;
 
         private ResamplingMode _resamplingMode;
-        private bool _canExecuteRollover;
+        //private bool _canExecuteRollover;
 
         private int POintstoPlot = 33000; //5 sec min
 
@@ -126,7 +125,7 @@ namespace MotorController.Views
         private NumericAxis _xAxisNum;
 
         private IAxis _xAxis;
-        private IAxis _yAxis;
+        //private IAxis _yAxis;
         public IAxis XAxis
         {
             get { return _xAxis; }
@@ -175,7 +174,7 @@ namespace MotorController.Views
         }
         public void YDirMinus()
         {
-            Debug.WriteLine("YDirMinus");
+            //Debug.WriteLine("YDirMinus");
 
             if(_yzoom > 0.002)
             {
@@ -186,7 +185,7 @@ namespace MotorController.Views
         }
         public void YDirPlus()
         {
-            Debug.WriteLine("YDirPlus");
+            //Debug.WriteLine("YDirPlus");
 
             _yzoom = _yzoom * 2;
             YLimit = new DoubleRange(-_yzoom, _yzoom); //ubdate visible limits        
@@ -706,7 +705,7 @@ namespace MotorController.Views
         private IXyDataSeries<float, float> _series0;
         private IXyDataSeries<float, float> _series1;
 
-        private int _ch1Index = 0, _ch2Index = 0;
+        //private int _ch1Index = 0, _ch2Index = 0;
 
         #region detect_same_index_seleted_in_plot_combobox
         //public ICommand SelectedItemChanged_Plot1
@@ -1931,7 +1930,7 @@ namespace MotorController.Views
             }
             catch(Exception ex)
             {
-                Debug.WriteLine("Excep _____ : " + ex.Message);
+                //Debug.WriteLine("Excep _____ : " + ex.Message);
             }
 
         }

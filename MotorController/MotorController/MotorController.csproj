@@ -230,6 +230,7 @@
     <Compile Include="Helpers\RecLed.cs" />
     <Compile Include="Helpers\RoundBoolLed.cs" />
     <Compile Include="ViewModels\BodeViewModel.cs" />
+    <Compile Include="ViewModels\BodeWindowViewModel.cs" />
     <Compile Include="ViewModels\BoolViewIndModel.cs" />
     <Compile Include="ViewModels\BottomPanelViewModel.cs" />
     <Compile Include="ViewModels\CalibrationWizardViewModel.cs" />
@@ -281,9 +282,6 @@
     <Compile Include="Common\Enums.cs" />
     <Compile Include="Data\DoubleSeries.cs" />
     <Compile Include="Data\XYPoint.cs" />
-    <Compile Include="EnumPattern.xaml.cs">
-      <DependentUpon>EnumPattern.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\mainWindowPanels\LeftPanelView.xaml.cs">
       <DependentUpon>LeftPanelView.xaml</DependentUpon>
     </Compile>
@@ -322,10 +320,13 @@
     <Compile Include="Views\OscilloscopeView.xaml.cs">
       <DependentUpon>OscilloscopeView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ParametersWindow.xaml.cs">
+    <Compile Include="Windows\Bode.xaml.cs">
+      <DependentUpon>Bode.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\ParametersWindow.xaml.cs">
       <DependentUpon>ParametersWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Wizard.xaml.cs">
+    <Compile Include="Windows\Wizard.xaml.cs">
       <DependentUpon>Wizard.xaml</DependentUpon>
     </Compile>
     <Page Include="Views\UC_CalibrationWizard.xaml">
@@ -357,10 +358,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Views\mainWindowPanels\BottomPanel.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="EnumPattern.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -411,11 +408,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="ParametersWindow.xaml">
+    <Page Include="Windows\Bode.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Wizard.xaml">
+    <Page Include="Windows\ParametersWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Wizard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -691,6 +692,7 @@
   <ItemGroup>
     <Resource Include="Images\RedlerGray.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath32)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

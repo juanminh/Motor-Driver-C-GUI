@@ -1,13 +1,11 @@
 ﻿using Abt.Controls.SciChart;
-using Abt.Controls.SciChart.ChartModifiers;
 using Abt.Controls.SciChart.Example.Common;
 using Abt.Controls.SciChart.Example.Data;
 using Abt.Controls.SciChart.Model.DataSeries;
 using Abt.Controls.SciChart.Visuals.Axes;
 using MotorController.Common;
 using MotorController.Data;
-using MotorController.Models.DriverBlock;
-using MotorController.ViewModels;
+using MotorController.Models;
 using MotorController.Views;
 using System;
 using System.Collections.Concurrent;
@@ -24,19 +22,33 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
-using System.Windows.Media;
+using System.Windows.Input;
 using System.Windows.Threading;
-using Timer = System.Timers.Timer;
 
 namespace MotorController.ViewModels
 {
-    public partial class BodeViewModel : BaseViewModel
-    {    
+    public partial class BodeWindowViewModel : BaseViewModel //INotifyPropertyChanged
+    {
+        //public event PropertyChangedEventHandler PropertyChanged = delegate { };
+        //public void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        //{
+        //    PropertyChangedEventHandler handler = PropertyChanged;
+
+        //    if(handler != null)
+        //        handler(this, new PropertyChangedEventArgs(propertyName));
+        //}
+        //public void OnPropertyChanged(PropertyChangedEventArgs e)
+        //{
+        //    if(PropertyChanged != null)
+        //    {
+        //        PropertyChanged(this, e);
+        //    }
+        //}
         private static readonly object Synlock = new object();
         public static readonly object PlotBodeListLock = new object();             //Singletone variable
 
-        private static BodeViewModel _instance;
-        public static BodeViewModel GetInstance
+        private static BodeWindowViewModel _instance;
+        public static BodeWindowViewModel GetInstance
         {
             get
             {
@@ -44,7 +56,7 @@ namespace MotorController.ViewModels
                 {
                     if(_instance != null)
                         return _instance;
-                    _instance = new BodeViewModel();
+                    _instance = new BodeWindowViewModel();
                     return _instance;
                 }
             }
@@ -53,19 +65,30 @@ namespace MotorController.ViewModels
                 _instance = value;
             }
         }
-        private BodeViewModel()
+        public BodeWindowViewModel()
         {
             InitializeAxes();
-
-            //Load();
         }
-        //private ObservableCollection<object> _bodeStart;
         public ObservableCollection<object> BodeStart
         {
             get
             {
                 return Commands.GetInstance.GenericCommandsGroup["BodeStart"];
             }
+        }
+        private System.Threading.Timer _timer;
+        public async void update_bode_indicator(bool val)
+        {
+            await Task.Run(() => BodeStartStop = val);
+            System.Windows.Application.Current.Dispatcher.Invoke((Action)delegate
+            {
+                BodeStartStop = val;
+                GetInstance.BodeStartStop = val;
+            });
+            BodeStartStop = val;
+            GetInstance.BodeStartStop = val;
+            
+            _timer = new System.Threading.Timer((x) => System.Windows.Application.Current.Dispatcher.Invoke(new Action(() => BodeStartStop = val)), null, 100, 0);
         }
         private bool _bodeStartStop = false;
 
@@ -77,12 +100,12 @@ namespace MotorController.ViewModels
             }
             set
             {
-                if(!LeftPanelViewModel._app_running || _bodeStartStop == value)
-                    return;
+                //if(!LeftPanelViewModel._app_running || _bodeStartStop == value)
+                //    return;
 
                 _bodeStartStop = value;
                 OnPropertyChanged();
-
+                return;
                 if(value)
                 {
                     ChartData = new XyDataSeries<float, float>();
@@ -90,7 +113,6 @@ namespace MotorController.ViewModels
                     X_List.Clear();
                     Y1_List.Clear();
                     Y2_List.Clear();
-
                     OnBodeStart();
                 }
             }
@@ -115,22 +137,9 @@ namespace MotorController.ViewModels
                 OnPropertyChanged("XAxis2");
             }
         }
-        private AxisCollection _chartYAxes = new AxisCollection();
-
-        public AxisCollection ChartYAxes
-        {
-            get { return _chartYAxes; }
-            set
-            {
-                _chartYAxes = value;
-                OnPropertyChanged("ChartYAxes");
-            }
-        }
-
         private LogarithmicNumericAxis _xAxisLog;
         private static readonly object _lockAxes = new object();
         private DoubleRange _xAxisDoubleRange = new DoubleRange(0.6, 1000);
-        // new DoubleRange(Convert.ToInt32(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 2)].CommandValue), Convert.ToInt32(Commands.GetInstance.DataViewCommandsList[new Tuple<int, int>(15, 3)].CommandValue));
 
         public DoubleRange XAxisDoubleRange
         {
@@ -210,88 +219,8 @@ namespace MotorController.ViewModels
                 });
             }
             catch { }
-            //Load();
-
-            //_yAxisLog = new LogarithmicNumericAxis
-            //{
-            //    TextFormatting = "#.#E+0",
-            //    ScientificNotation = ScientificNotation.LogarithmicBase,
-            //    AxisAlignment = AxisAlignment.Left,
-            //    GrowBy = new DoubleRange(0.1, 0.1),
-            //    DrawMajorBands = false
-            //};
-#if Yaxes
-                NumericAxis Y1 = new NumericAxis()
-                {
-                    
-                    Id = "Y1_Magnitude",
-                    TextFormatting = "0.00",
-                    ScientificNotation = ScientificNotation.Normalized,
-                    AxisAlignment = AxisAlignment.Left,
-                    GrowBy = new DoubleRange(0.2, 0.2),
-                    VisibleRange = new DoubleRange(-50, 20),
-                    AnimatedVisibleRange = new DoubleRange(-50, 20),
-                    AxisTitle = "Magnitude (dB)",
-                    TickTextBrush = new SolidColorBrush(Colors.White),
-                    DrawMajorBands = false,
-                    DrawMinorGridLines = false,
-                    DrawMajorTicks = false,
-                    DrawMinorTicks = false,
-                    StrokeThickness = 1
-
-                };
-                NumericAxis Y2 = new NumericAxis()
-                {
-                    Id = "Y2_Phase",
-                    TextFormatting = "0.00",
-                    ScientificNotation = ScientificNotation.Normalized,
-                    AxisAlignment = AxisAlignment.Right,
-                    GrowBy = new DoubleRange(0.2, 0.2),
-                    VisibleRange = new DoubleRange(-200, 200),
-                    AutoRange = AutoRange.Always,
-                    AnimatedVisibleRange = new DoubleRange(-200, 200),
-                    AxisTitle = "Phase (Degree)",
-                    TickTextBrush = new SolidColorBrush(Colors.White),
-                    DrawMajorBands = false,
-                    DrawMinorGridLines = false,
-                    DrawMajorTicks = false,
-                    DrawMinorTicks = false,
-                    StrokeThickness = 1
-                };
-                //ChartYAxes.Add(new NumericAxis() {
-                    //Id = "DefaultAxisId",
-                    //Visibility = Visibility.Hidden
-                //});
-                //ChartYAxes.Add(Y1);
-                //ChartYAxes.Add(Y2);
-#endif
         }
-        private void Load()
-        {
-            // Create some DataSeries of type X=double, Y=double
-            ChartData2 = new XyDataSeries<float, float>();
 
-            var data1 = GetExponentialCurve(1.8, 25);
-
-            ChartData2.Clear();
-            // Append data to series.
-            ChartData2.Append(data1.XData_f, data1.YData_f);
-        }
-        public DoubleSeries GetExponentialCurve(double power, int pointCount)
-        {
-            var doubleSeries = new DoubleSeries(pointCount);
-
-            double x = 0.1;
-            const double fudgeFactor = 1.5;
-            for(int i = 0; i < pointCount; i++)
-            {
-                x *= fudgeFactor;
-                double y = 1;// Math.Pow((double)i + 1, power);
-                doubleSeries.Add(new XYPoint() { X_f = (float)x, Y_f = (float)y });
-            }
-
-            return doubleSeries;
-        }
         private IXyDataSeries<float, float> _series0 = new XyDataSeries<float, float>();
         private IXyDataSeries<float, float> _series1 = new XyDataSeries<float, float>();
         private IXyDataSeries<float, float> _series2 = new XyDataSeries<float, float>();
@@ -314,39 +243,6 @@ namespace MotorController.ViewModels
                 OnPropertyChanged("ChartData1");
             }
         }
-        public IXyDataSeries<float, float> ChartData2
-        {
-            get { return _series2; }
-            set
-            {
-                _series2 = value;
-                OnPropertyChanged("ChartData2");
-            }
-        }
-        private string _ch1Gain = "1";
-        public string Ch1Gain
-        {
-            get { return _ch1Gain; }
-            set
-            {
-                if(value == _ch1Gain || value == "")
-                    return;
-                _ch1Gain = value;
-                OnPropertyChanged("Ch1Gain");
-            }
-        }
-        private string _ch2Gain = "1";
-        public string Ch2Gain
-        {
-            get { return _ch2Gain; }
-            set
-            {
-                if(value == _ch2Gain || value == "")
-                    return;
-                _ch2Gain = value;
-                OnPropertyChanged("Ch2Gain");
-            }
-        }
         private ModifierType _chartModifier;
         public ModifierType ChartModifier
         {
@@ -359,36 +255,13 @@ namespace MotorController.ViewModels
                 OnPropertyChanged("IsCursorSelected");
             }
         }
-        private DoubleRange _yVisibleRange;
-        public DoubleRange YVisibleRange
-        {
-            get { return _yVisibleRange; }
-            set
-            {
-                if(_yVisibleRange == value)
-                    return;
-
-                _yVisibleRange = value;
-                OnPropertyChanged("YVisibleRange");
-            }
-        }
-
-        private ObservableCollection<object> _dataBodeList;
         public ObservableCollection<object> DataBodeList
         {
-
             get
             {
                 return Commands.GetInstance.GenericCommandsGroup["DataBodeList"];
             }
-            set
-            {
-                _dataBodeList = value;
-                OnPropertyChanged();
-            }
-
         }
-        private ObservableCollection<object> _enumBodeList;
         public ObservableCollection<object> EnumBodeList
         {
 
@@ -396,12 +269,6 @@ namespace MotorController.ViewModels
             {
                 return Commands.GetInstance.GenericCommandsGroup["EnumBodeList"];
             }
-            set
-            {
-                _enumBodeList = value;
-                OnPropertyChanged();
-            }
-
         }
         public ConcurrentQueue<float> FifoplotBodeListX = new ConcurrentQueue<float>();
         public ConcurrentQueue<float> FifoplotBodeListY1 = new ConcurrentQueue<float>();
@@ -436,7 +303,7 @@ namespace MotorController.ViewModels
                     }
                     newPropertyValuef = System.BitConverter.ToSingle(dataAray, 0);
                     FifoplotBodeListX.Enqueue((float)newPropertyValuef);
-                    //Debug.WriteLine("X: " + (newPropertyValuef).ToString());
+                    Debug.WriteLine("X: " + (newPropertyValuef).ToString());
                     // Y1
                     element = ((PlotList[i][6] << 24) | (PlotList[i][7] << 16) | (PlotList[i][8] << 8) | (PlotList[i][9]));
                     dataAray = new byte[4];
@@ -447,12 +314,12 @@ namespace MotorController.ViewModels
                     newPropertyValuef = 20 * Math.Log10(System.BitConverter.ToSingle(dataAray, 0));
                     newPropertyValuef = newPropertyValuef < -100 ? -100 : newPropertyValuef;
                     FifoplotBodeListY1.Enqueue((float)newPropertyValuef);
-                    //Debug.WriteLine("Y1: " + newPropertyValuef.ToString());
+                    Debug.WriteLine("Y1: " + newPropertyValuef.ToString());
 
                     // Y2
                     element = ((PlotList[i][10] << 24) | (PlotList[i][11] << 16) | (PlotList[i][12] << 8) | (PlotList[i][13]));
                     FifoplotBodeListY2.Enqueue((element / iqFactor) * 360);
-                    //Debug.WriteLine("Y2: " + ((element / iqFactor) * 360).ToString());
+                    Debug.WriteLine("Y2: " + ((element / iqFactor) * 360).ToString());
 
                 }
             }
@@ -464,25 +331,7 @@ namespace MotorController.ViewModels
         //private Timer _timer;
         private const double TimerIntervalMs = 100;
         public static bool _chartRunning = false;
-        public void OnBodeStop()
-        {
-            /*
-            lock(this)
-            {
-                if(_timer != null)
-                {
-                    lock(_timer)
-                    {
-                        _timer.Stop();
-                        _timer.Elapsed -= OnTick;
-                        _chartRunning = false;
-                        _timer = null;
-                        Thread.Sleep(10);
-                    }
-                }
-            }
-            */
-        }
+
         // Setup start condition when the example enters
         public void OnBodeStart()
         {
@@ -490,32 +339,6 @@ namespace MotorController.ViewModels
             _excel_Y1_List.Clear();
             _excel_Y2_List.Clear();
             ResetZoom();
-            /*
-            if(_timer == null)
-            {
-                Task.Factory.StartNew(action: () =>
-                {
-                    Thread.Sleep(100);
-                    _timer = new Timer(TimerIntervalMs) { AutoReset = true };
-                    _timer.Elapsed += OnTick;
-                    _chartRunning = true;
-                    _timer.Start();
-                });
-            }
-            */
-        }
-        private void OnTick(object sender, EventArgs e)
-        {
-            //Rs232Interface.GetInstance.SendToParser(new PacketFields
-            //{
-            //    Data2Send = "0",
-            //    ID = 6,
-            //    SubID = 15,
-            //    IsSet = false,
-            //    IsFloat = false
-            //});
-
-            plotSubFunction();
         }
         private void plotSubFunction()
         {
@@ -551,21 +374,10 @@ namespace MotorController.ViewModels
                 Y2_List.Clear();
             }
         }
-        private bool _startBodeEnable = true;
-        private bool _stopBodeEnable = false;
+
         private string filePath;
         string delimiter = ",";
 
-        public bool StartBodeEnable
-        {
-            get { return _startBodeEnable; }
-            set { _startBodeEnable = value; OnPropertyChanged(); }
-        }
-        public bool StopBodeEnable
-        {
-            get { return _stopBodeEnable; }
-            set { _stopBodeEnable = value; OnPropertyChanged(); }
-        }
         public ActionCommand ResetZoomBode
         {
             get { return new ActionCommand(ResetZoom); }
@@ -574,6 +386,8 @@ namespace MotorController.ViewModels
         {
             try
             {
+                GetInstance.update_bode_indicator(true);
+                return;
                 _magVisibleRange = new DoubleRange(-50, 20);
                 _phaseVisibleRange = new DoubleRange(-200, 20);
                 _xAxisDoubleRange = new DoubleRange(0.5, 2000);
@@ -699,5 +513,33 @@ namespace MotorController.ViewModels
             t.Start();
         }
 
+        public virtual ICommand BodeWindowLoaded
+        {
+            get
+            {
+                return new RelayCommand(BodeWindowLoaded_Func);
+            }
+        }
+        public ICommand BodeWindowClosed
+        {
+            get
+            {
+                return new RelayCommand(BodeWindowClosed_Func);
+            }
+        }
+        public static bool _is_bode_window_opened = false;
+        private void BodeWindowLoaded_Func()
+        {
+            DebugViewModel.updateList = true;
+            LeftPanelViewModel.GetInstance.cancelRefresh = new CancellationToken(true);
+            RefreshManager.GetInstance.BuildGenericCommandsList_Func();
+        }
+        private void BodeWindowClosed_Func()
+        {
+            LeftPanelViewModel.GetInstance._bode_window.Visibility = Visibility.Hidden;
+            LeftPanelViewModel.GetInstance.cancelRefresh = new CancellationToken(true);
+            DebugViewModel.updateList = true;
+            RefreshManager.GetInstance.BuildGenericCommandsList_Func();
+        }
     }
 }

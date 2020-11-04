@@ -293,7 +293,7 @@ namespace MotorController.ViewModels
             }
             catch
             {
-                Debug.WriteLine("Error: " + DateTime.Now.ToString() + "." + DateTime.Now.Millisecond.ToString());
+                //Debug.WriteLine("Error: " + DateTime.Now.ToString() + "." + DateTime.Now.Millisecond.ToString());
             }
             if(timeout == MAX_TIMEOUT_CS)
                 return false;

@@ -83,25 +83,25 @@ namespace MotorController.ViewModels
         Analog = 1
     };
 
-    public partial class WizardWindowViewModel : INotifyPropertyChanged
+    public partial class WizardWindowViewModel : BaseViewModel
     {
-        public event PropertyChangedEventHandler PropertyChanged = delegate { };
-        public void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChangedEventHandler handler = PropertyChanged;
+        //public event PropertyChangedEventHandler PropertyChanged = delegate { };
+        //public void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        //{
+        //    PropertyChangedEventHandler handler = PropertyChanged;
 
-            if(handler != null)
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            if(propertyName != "ValidOperations")
-                VerifyValidOperation();
-        }
-        public void OnPropertyChanged(PropertyChangedEventArgs e)
-        {
-            if(PropertyChanged != null)
-            {
-                PropertyChanged(this, e);
-            }
-        }
+        //    if(handler != null)
+        //        handler(this, new PropertyChangedEventArgs(propertyName));
+        //    if(propertyName != "ValidOperations")
+        //        VerifyValidOperation();
+        //}
+        //public void OnPropertyChanged(PropertyChangedEventArgs e)
+        //{
+        //    if(PropertyChanged != null)
+        //    {
+        //        PropertyChanged(this, e);
+        //    }
+        //}
         public Dictionary<Tuple<int, int>, CalibrationWizardViewModel> CalibrationWizardList = new Dictionary<Tuple<int, int>, CalibrationWizardViewModel>();
         public Dictionary<string, ObservableCollection<object>> CalibrationWizardListbySubGroup = new Dictionary<string, ObservableCollection<object>>();
         public Dictionary<Tuple<int, int>, DataViewModel> OperationList = new Dictionary<Tuple<int, int>, DataViewModel>();
@@ -1267,7 +1267,7 @@ namespace MotorController.ViewModels
                     IsSet = true,
                     IsFloat = false
                 });
-                Debug.WriteLine(GetInstance.OperationList.ElementAt(GetInstance.Count).Value.CommandId + "[" + Convert.ToInt16(Convert.ToInt16(GetInstance.OperationList.ElementAt(GetInstance.Count).Value.CommandSubId) - 1) + "]");
+                //Debug.WriteLine(GetInstance.OperationList.ElementAt(GetInstance.Count).Value.CommandId + "[" + Convert.ToInt16(Convert.ToInt16(GetInstance.OperationList.ElementAt(GetInstance.Count).Value.CommandSubId) - 1) + "]");
             }
         }
         private void CalibrationGetStatus()
@@ -1300,7 +1300,7 @@ namespace MotorController.ViewModels
                 //Debug.WriteLine(GetInstance.OperationList.ElementAt(GetInstance.Count).Value.CommandId + "[" + Convert.ToInt16(GetInstance.OperationList.ElementAt(GetInstance.Count).Value.CommandSubId) + "]");
                 Thread.Sleep(1000);
                 calibration_timeout--;
-                Debug.WriteLine("timeout" + calibration_timeout);
+                //Debug.WriteLine("timeout" + calibration_timeout);
             }
         }
         public async void updateCalibrationStatus(Tuple<int, int> commandidentifier, string newPropertyValue)
@@ -1372,7 +1372,7 @@ namespace MotorController.ViewModels
             {
                 if(cancellationTokenCalib.IsCancellationRequested)
                 {
-                    Debug.WriteLine("sendPreStartOperation Stopped");
+                    //Debug.WriteLine("sendPreStartOperation Stopped");
                     GetInstance.CalibrationWizardList.ElementAt(0).Value.CalibStatus = RoundBoolLed.STOPPED;
                     return;
                 };
@@ -1384,7 +1384,7 @@ namespace MotorController.ViewModels
                     IsSet = true,
                     IsFloat = GetInstance.OperationList.ElementAt(i).Value.IsFloat
                 });
-                Debug.WriteLine("Operation: " + GetInstance.OperationList.ElementAt(i).Value.CommandId + "[" + GetInstance.OperationList.ElementAt(i).Value.CommandSubId + "] = " + GetInstance.OperationList.ElementAt(i).Value.CommandValue + " - " + GetInstance.OperationList.ElementAt(i).Value.IsFloat.ToString());
+                //Debug.WriteLine("Operation: " + GetInstance.OperationList.ElementAt(i).Value.CommandId + "[" + GetInstance.OperationList.ElementAt(i).Value.CommandSubId + "] = " + GetInstance.OperationList.ElementAt(i).Value.CommandValue + " - " + GetInstance.OperationList.ElementAt(i).Value.IsFloat.ToString());
                 if(GetInstance.OperationList.ElementAt(i).Value.CommandName == "Load Default" ||
                     GetInstance.OperationList.ElementAt(i).Value.CommandName == "Save" ||
                     GetInstance.OperationList.ElementAt(i).Value.CommandName == "Reset")
@@ -1484,17 +1484,17 @@ namespace MotorController.ViewModels
                 return new RelayCommand(WizardWindowClosed_Func);
             }
         }
-        public static bool _is_wizard_window_opened = false;
+        //public static bool _is_wizard_window_opened = false;
         private void WizardWindowLoaded_Func()
         {
-            LeftPanelViewModel.GetInstance.cancelRefresh = new CancellationToken(true);
-            RefreshManager.GetInstance.BuildGenericCommandsList_Func();
+            //LeftPanelViewModel.GetInstance.cancelRefresh = new CancellationToken(true);
+            //RefreshManager.GetInstance.BuildGenericCommandsList_Func();
         }
         private void WizardWindowClosed_Func()
         {
             LeftPanelViewModel.GetInstance._wizard_window.Visibility = Visibility.Hidden;
-            LeftPanelViewModel.GetInstance.cancelRefresh = new CancellationToken(true);
-            RefreshManager.GetInstance.BuildGenericCommandsList_Func();
+            //LeftPanelViewModel.GetInstance.cancelRefresh = new CancellationToken(true);
+            //RefreshManager.GetInstance.BuildGenericCommandsList_Func();
         }
     }
 }

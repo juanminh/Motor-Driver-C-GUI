@@ -1,4 +1,4 @@
-﻿#define DEBUG_OPERATION
+﻿//#define DEBUG_OPERATION
 #define DEBUG_SET
 //#define DEBUG_GET
 #define New_Packet_Plot
@@ -73,7 +73,7 @@ namespace MotorController.Models.ParserBlock
         public ParserRayonM1()
         {
             Rs232Interface.GetInstance.RxtoParser += parseOutdata;
-            Rs232Interface.GetInstance.TxtoParser += parseIndata;
+            //Rs232Interface.GetInstance.TxtoParser += parseIndata;
             Packetizer packetizer = new Packetizer();
 
             foreach(var element in exceptionID_Arr)
@@ -83,17 +83,17 @@ namespace MotorController.Models.ParserBlock
 
         //TODO here will switch between parsers depends on sender object
 #if DEBUG_OPERATION
-        int CurrentCmdCounterTx = 0;
+        //int CurrentCmdCounterTx = 0;
 #endif
         public void parseOutdata(object sender, Rs232InterfaceEventArgs e)
         {
-//#if DEBUG_OPERATION
-//            if(e.PacketRx.ID == DebugOutput.GetInstance.ID && e.PacketRx.SubID == DebugOutput.GetInstance.subID && e.PacketRx.IsSet == true)
-//            {
-//                CurrentCmdCounterTx++;
-//                Debug.WriteLine("CurrentCmdCounterTx: " + CurrentCmdCounterTx + " Value: " + e.PacketRx.Data2Send);
-//            }
-//#endif
+#if DEBUG_OPERATION
+            if(e.PacketRx.ID == DebugOutput.GetInstance.ID && e.PacketRx.SubID == DebugOutput.GetInstance.subID && e.PacketRx.IsSet == true)
+            {
+                CurrentCmdCounterTx++;
+                Debug.WriteLine("CurrentCmdCounterTx: " + CurrentCmdCounterTx + " Value: " + e.PacketRx.Data2Send);
+            }
+#endif
             if(sender is Rs232Interface)//RayonM3 Parser
             {
                 ParseOutputData(e.PacketRx.Data2Send, e.PacketRx.ID, e.PacketRx.SubID, e.PacketRx.IsSet,
@@ -466,13 +466,9 @@ namespace MotorController.Models.ParserBlock
                     Rs232Interface.GetInstance.IsSynced = true;
                 else
                     Rs232Interface.GetInstance.IsSynced = false;
-                Debug.WriteLine("Receive: " + transit.ToString());
-                Debug.WriteLine("Baudrate Receive: " + Rs232Interface._comPort.BaudRate.ToString());
-
-                if(Rs232Interface._comPort.BaudRate == 460800)
-                {
-
-                }
+                //Debug.WriteLine("Receive: " + transit.ToString());
+                //Debug.WriteLine("Baudrate Receive: " + Rs232Interface._comPort.BaudRate.ToString());
+                
                 mre.Set();
             }
         }
@@ -526,7 +522,7 @@ namespace MotorController.Models.ParserBlock
                     {
                         WizardWindowViewModel.GetInstance.send_operation_count++;
                         WizardWindowViewModel.operation_echo.Remove(new Tuple<int, int>(commandId, commandSubId));
-                        Debug.WriteLine("Op Removed: {0}[{1}]={2} {3} {4}.", commandId, commandSubId, transit, "I", getSet == 0 ? "Set" : "Get");
+                        //Debug.WriteLine("Op Removed: {0}[{1}]={2} {3} {4}.", commandId, commandSubId, transit, "I", getSet == 0 ? "Set" : "Get");
                     }
                 }
 

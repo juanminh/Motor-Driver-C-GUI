@@ -99,11 +99,16 @@ namespace MotorController.Models
                 if(LeftPanelViewModel.GetInstance._wizard_window.Visibility == System.Windows.Visibility.Visible)
                     arr = arr.Concat(new string[] { "WizardOperation" }).ToArray();
             }
-            Debug.WriteLine("");
-            Debug.Write(DateTime.Now.ToString());
-            for(int i = 0; i < arr.Length; i++)
-                Debug.Write(arr[i] + " - ");
-            Debug.WriteLine("");
+            if(LeftPanelViewModel.GetInstance._bode_window != null && LeftPanelViewModel.GetInstance._bode_window.Visibility != System.Windows.Visibility.Hidden)
+            {
+                if(LeftPanelViewModel.GetInstance._bode_window.Visibility == System.Windows.Visibility.Visible)
+                    arr = arr.Concat(new string[] { "DataBodeList", "BodeStart", "EnumBodeList" }).ToArray();
+            }
+            //Debug.WriteLine("");
+            //Debug.Write(DateTime.Now.ToString());
+            //for(int i = 0; i < arr.Length; i++)
+            //    Debug.Write(arr[i] + " - ");
+            //Debug.WriteLine("");
 
             return arr;
         }
@@ -115,13 +120,9 @@ namespace MotorController.Models
             {
                 _iteratorRefresh = -1;
                 tab = ParametarsWindowViewModel.TabControlIndex;
-                //if(ParametarsWindow.WindowsOpen == false)
-                //    tab = -1;
-                /*else*/
-                //if(ParametarsWindowViewModel.TabControlIndex == -1)
-                //    tab = 0;
-                StackTrace _stck = new StackTrace();
-                Debug.WriteLine("BuildGenericCommandsList_Func called - tab = " + tab + "TempTab = " + TempTab);
+                
+                //StackTrace _stck = new StackTrace();
+                //Debug.WriteLine("BuildGenericCommandsList_Func called - tab = " + tab + "TempTab = " + TempTab);
 
                 if(tab != TempTab || DebugViewModel.updateList)
                 {
@@ -507,7 +508,7 @@ namespace MotorController.Models
             {
                 if(LeftPanelViewModel.GetInstance.StarterOperationFlag)
                 {
-                    Debug.WriteLine("Starter: " + commandidentifier.Item1.ToString() + ' ' + commandidentifier.Item2.ToString());
+                    //Debug.WriteLine("Starter: " + commandidentifier.Item1.ToString() + ' ' + commandidentifier.Item2.ToString());
 
                     switch(commandidentifier.Item1)
                     {
@@ -625,7 +626,7 @@ namespace MotorController.Models
             }
             catch(Exception error)
             {
-                Debug.WriteLine(error.Message + " - Op:" + commandidentifier.Item1.ToString() + "[" + commandidentifier.Item2.ToString() + "]");
+                //Debug.WriteLine(error.Message + " - Op:" + commandidentifier.Item1.ToString() + "[" + commandidentifier.Item2.ToString() + "]");
             }
         }
 

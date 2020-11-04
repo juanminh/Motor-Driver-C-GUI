@@ -22,7 +22,7 @@ namespace MotorController.Models.DriverBlock
         //TOdo move global members to base clase, and create there ctor (lesson interfase)
         //MEMBERS
         public event Rs232RxHandler RxtoParser;
-        public event Rs232RxHandler TxtoParser;
+        //public event Rs232RxHandler TxtoParser;
         public event Rs232RxHandler Driver2Mainmodel;
 
         public event Rs232RxHandler Rx2Packetizer;
@@ -238,7 +238,7 @@ namespace MotorController.Models.DriverBlock
                                         for(int i = 0; i < 3; i++)
                                         {
                                             RxtoParser(this, new Rs232InterfaceEventArgs(RxPacket));
-                                            Debug.WriteLine("Baudrate Send: " + _comPort.BaudRate.ToString());
+                                            //Debug.WriteLine("Baudrate Send: " + _comPort.BaudRate.ToString());
                                             Thread.Sleep(50);
                                             if(_isSynced)
                                             {
@@ -395,10 +395,10 @@ namespace MotorController.Models.DriverBlock
                             transit <<= 8;
                             transit |= packetToSend[5];
 
-                            if(commandId == DebugOutput.GetInstance.ID && commandSubId == DebugOutput.GetInstance.subID && getSet == 0)
-                            {
-                                Debug.WriteLine("SendData data: " + transit);
-                            }
+                            //if(commandId == DebugOutput.GetInstance.ID && commandSubId == DebugOutput.GetInstance.subID && getSet == 0)
+                            //{
+                            //    Debug.WriteLine("SendData data: " + transit);
+                            //}
                         }
 #endif
                         serialPort.DiscardOutBuffer();

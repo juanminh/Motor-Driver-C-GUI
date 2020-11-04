@@ -1443,7 +1443,7 @@ namespace MotorController.Common
                 Label = "Ch1",
                 CommandId = 60,
                 CommandSubId = 1,
-                ChBackground = Consts._project == Consts.eProject.REDLER ? /*(Color)ColorConverter.ConvertFromString("#CCF7E31D")*/ Colors.Orange : Colors.Orange /*(Color)ColorConverter.ConvertFromString("#CCF7E31D")*/,
+                ChBackground = Consts._project == Consts.eProject.REDLER ? (Color)ColorConverter.ConvertFromString("#CCF7E31D") : Colors.Orange /*(Color)ColorConverter.ConvertFromString("#CCF7E31D")*/,
                 Gain = "1",
                 IsEnabled = false,
                 IsOpened = false
@@ -1455,7 +1455,7 @@ namespace MotorController.Common
                 Label = "Ch2",
                 CommandId = 60,
                 CommandSubId = 2,
-                ChBackground = Consts._project == Consts.eProject.REDLER ? /*(Color)ColorConverter.ConvertFromString("#7F1810D4")*/Colors.Red : Colors.CornflowerBlue,
+                ChBackground = Consts._project == Consts.eProject.REDLER ? (Color)ColorConverter.ConvertFromString("#CC2990EB") : Colors.CornflowerBlue,/*1810D4*/
                 Gain = "1",
                 IsEnabled = false,
                 IsOpened = false

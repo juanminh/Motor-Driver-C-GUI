@@ -6,7 +6,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.IO;
-using MotorController.Common;
 using MotorController.Helpers;
 using System.Linq;
 using MotorController.Views;
@@ -788,18 +787,18 @@ namespace MotorController.ViewModels
             _serial_programmer_parameters.Write("Firmware Path", pathFWtemp, "Programmer");
             _serial_programmer_parameters.Write("FlashBaud", FlashBaudRate, "Programmer");
         }
-        public void SerialProgrammerApp()
-        {
-            Process[] Proc = Process.GetProcessesByName("Serial Programmer");
-            while(Proc.Length != 0)
-            {
-                Proc = Process.GetProcessesByName("Serial Programmer");
-                Thread.Sleep(500);
-                Debug.WriteLine("app");
-            }
-            Debug.WriteLine("app closed");
-            LeftPanelViewModel.GetInstance.AutoConnectCommand();
-        }
+        //public void SerialProgrammerApp()
+        //{
+        //    Process[] Proc = Process.GetProcessesByName("Serial Programmer");
+        //    while(Proc.Length != 0)
+        //    {
+        //        Proc = Process.GetProcessesByName("Serial Programmer");
+        //        Thread.Sleep(500);
+        //        Debug.WriteLine("app");
+        //    }
+        //    Debug.WriteLine("app closed");
+        //    LeftPanelViewModel.GetInstance.AutoConnectCommand();
+        //}
         private ObservableCollection<string> _flashBaudrateList = new ObservableCollection<string>();
         public ObservableCollection<string> FlashBaudrateList
         {

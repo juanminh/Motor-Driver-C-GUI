@@ -1,21 +1,5 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using MotorController.Common;
-using MotorController.Models.DriverBlock;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.IO;
-using MotorController.Common;
-using MotorController.Helpers;
-using System.Linq;
-using MotorController.Views;
-using Microsoft.Win32;
-using System.Windows.Forms;
-using System.Text.RegularExpressions;
-using System.Diagnostics;
-using Abt.Controls.SciChart;
-
 
 namespace MotorController.ViewModels
 {

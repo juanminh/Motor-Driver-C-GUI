@@ -752,7 +752,12 @@
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
-        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" Grid.Column="0">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" 
+                      HorizontalScrollBarVisibility="Disabled" 
+                      Grid.Column="0" 
+                      HorizontalAlignment="Stretch" 
+                      HorizontalContentAlignment="Stretch" 
+                      MaxWidth="160">
             <Grid HorizontalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"></RowDefinition>
@@ -765,9 +770,9 @@
                     <!--3-->
                     <RowDefinition Height="auto"></RowDefinition>
                     <!--4-->
-                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"/>
                     <!--5-->
-                    <RowDefinition Height="auto"></RowDefinition>
+                    <RowDefinition Height="auto"/>
                     <!--6-->
                     <RowDefinition Height="auto"></RowDefinition>
                     <!--7-->
@@ -797,31 +802,43 @@
                     <!--19-->
                     <RowDefinition Height="auto"></RowDefinition>
                     <!--20-->
-                    <RowDefinition Height="*"></RowDefinition>  <!--21-->
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <!--21-->
                     <RowDefinition Height="auto"></RowDefinition>
                     <!--22-->
                     <RowDefinition Height="auto"></RowDefinition>
                     <!--23-->
                     <RowDefinition Height="auto"></RowDefinition>
                     <!--24-->
-                    <RowDefinition Height="5"></RowDefinition>
+                    <RowDefinition Height="auto"></RowDefinition>
                     <!--25-->
+                    <RowDefinition Height="auto"></RowDefinition>
+                    <!--26-->
+                    <RowDefinition Height="*"></RowDefinition>
+                    <!--27-->
                 </Grid.RowDefinitions>
-                <Grid Grid.Row="0">
+                <Grid Grid.Row="0" Height="10">
                     <!--(&#x3B2;)-->
-                    <TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="MOTOR" VerticalAlignment="Bottom" Width="70" FontWeight="Bold" FontSize="15" Foreground="White"/>
+                    <!--<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="MOTOR" VerticalAlignment="Bottom" Width="70" FontWeight="Bold" FontSize="15" Foreground="White"/>-->
                 </Grid>
-                <Grid Grid.Row="1">
-                    <TextBlock HorizontalAlignment="Left" Text="Controller           Version 1.3.16" VerticalAlignment="Top" Width="Auto" Foreground="White" FontSize="12"/>
-                </Grid>
-                <Grid Grid.Row="2" Height="10">
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Height="100">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center">
+                        <TextBlock HorizontalAlignment="Center" Text="MOTOR" Foreground="White" FontSize="20" FontWeight="Bold"/>
+                        <Grid Height="3"/>
+                        <TextBlock HorizontalAlignment="Center" Text="Controller" Foreground="White" FontSize="16"/>
+                        <Grid Height="25"/>
+                        <TextBlock HorizontalAlignment="Center" Text="Ver. 1.3.16" Foreground="White" FontSize="14"/>
+                    </StackPanel>
+                    <Image Margin="0,0,0,0" HorizontalAlignment="Left" Source="{Binding Logo}" Width="100" Height="100"/>
+                </StackPanel>
+                <Grid Grid.Row="2" Height="20">
                 </Grid>
                 <Grid Grid.Row="3">
                     <TextBlock Text="Communication" HorizontalAlignment="Center" Foreground="White" FontSize="12"></TextBlock>
                 </Grid>
                 <Grid Grid.Row="4">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="35"></ColumnDefinition>
                         <ColumnDefinition Width="*"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <TextBox Grid.Column="0" Text="PORT" FontSize="12"
@@ -850,202 +867,208 @@
                         </i:Interaction.Triggers>
                     </ComboBox>
                 </Grid>
-                <Grid Grid.Row="5" Margin="0,2,0,0">
-                    <!--Connect motorController-->
-                    <Button
-                Content="{Binding ConnectButtonContent, Mode=TwoWay}"
-                Name="ConnectButton"
-				BorderThickness="5,1" 
-				Command="{Binding SetAutoConnectActionCommandCommand}"
-				Template="{DynamicResource GlassButton}"  
-                Height="30" 
-				FontFamily="Bell MT" 
-				FontSize="12" Width="70" 
-                HorizontalAlignment="Left"  VerticalAlignment="Top"
-                        IsEnabled="{Binding ConnectButtonEnable}">
+                <Grid Grid.Row="5" Height="5"/>
+                <Grid Grid.Row="6" Margin="0,0,0,0">
+                    <!--Connect motorController
+                        Template="{DynamicResource GlassButton}"  -->
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Button Grid.Column="0"
+                            Name="ConnectButton"
+                            Command="{Binding SetAutoConnectActionCommandCommand}"
+                            Height="30" 
+                            FontFamily="Bell MT" 
+                            FontSize="12" 
+                            Width="70"
+                            IsEnabled="{Binding ConnectButtonEnable}"
+                            Content="{Binding ConnectButtonContent, Mode=TwoWay}">
                         <Button.Style>
-                            <Style TargetType="Button">
+                            <Style TargetType="Button" BasedOn="{StaticResource ExampleToolbarButtonStyle}">
+                                <Setter Property="Background" Value="Black"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Path=Content, ElementName=ConnectButton}" Value="Connect">
                                         <Setter Property="Foreground" Value="White"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding Path=Content, ElementName=ConnectButton}" Value="Disconnect">
-                                        <Setter Property="Foreground" Value="Red"/>
+                                        <Setter Property="Foreground" Value="#FFFF0000"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </Button.Style>
                     </Button>
-                    <Helpers:RoundBoolLed Width="10" Height="10" CurrStatus="{Binding LedStatusTx}" VerticalAlignment="Top" Margin="70,2,81,0"/>
-                    <TextBlock HorizontalAlignment="Center" Text="Tx" VerticalAlignment="Top" FontSize="10" Margin="80,0,72,0" Foreground="White"></TextBlock>
-                    <TextBox 
-                        Text="{Binding ConnectTextBoxContent, Mode=TwoWay}"  
+                    <Grid Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                            <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Helpers:RoundBoolLed Grid.Column="0" Width="10" Height="10" CurrStatus="{Binding LedStatusTx}" VerticalAlignment="Top" Margin="0,2,0,0"/>
+                        <Helpers:RoundBoolLed Grid.Column="0" Width="10" Height="10" CurrStatus="{Binding LedStatusRx}" VerticalAlignment="Bottom" Margin="0,0,0,2"/>
+                        <TextBlock Grid.Column="1" HorizontalAlignment="Center" Text="Tx" VerticalAlignment="Top" FontSize="11" Foreground="White" Margin="0,-1,0,0"></TextBlock>
+                        <TextBlock Grid.Column="1" HorizontalAlignment="Center" Text="Rx" VerticalAlignment="Bottom" FontSize="11" Foreground="White" Margin="0,0,0,-1"></TextBlock>
+                        <!---->
+                        <TextBox Grid.Column="2"
+                        Text="{Binding ConnectTextBoxContent, Mode=TwoWay}"
                         Background="Transparent" 
                         BorderThickness="0"
+                        Margin="-13,3,0,0"                                                              
                         Height="20"
-                        Foreground="White" 
-                        Margin="90,0,0,0"
-                        HorizontalAlignment="Center"
+                        Width="80"      
+                        HorizontalContentAlignment="Center"
+                        Foreground="White"
                         TextWrapping="NoWrap"
                         IsHitTestVisible="False"
                         IsReadOnly="True"
                         FontSize="11">
-                    </TextBox>
-                    <Helpers:RoundBoolLed Width="10" Height="10" CurrStatus="{Binding LedStatusRx}" VerticalAlignment="Bottom" Margin="70,0,81,2"/>
-                    <TextBlock HorizontalAlignment="Center" Text="Rx" VerticalAlignment="Bottom" FontSize="10" Margin="80,0,70,1" Foreground="White"></TextBlock>
+                        </TextBox>
+                    </Grid>
                 </Grid>
-                <Grid Grid.Row="6">
-                    <ItemsControl Height="auto"
+                <Grid Grid.Row="7" Height="30">
+                    <Separator Width="65" Height="1"></Separator>
+                </Grid>
+                <Grid Grid.Row="8">
+                    <ItemsControl 
                               ItemsSource="{Binding LPCommandsList}" 
-                              ItemTemplate="{StaticResource DataViewModel}" IsHitTestVisible="False" Focusable="False">
-                        <ItemsControl.ItemContainerStyle>
+                              ItemTemplate="{StaticResource DataViewModel}" >
+                        <!--<ItemsControl.ItemContainerStyle>
                             <Style>
                                 <Setter Property="Control.Background" Value="Transparent"/>
                                 <Setter Property="Control.BorderBrush" Value="Transparent"/>
                             </Style>
-                        </ItemsControl.ItemContainerStyle>
-                    </ItemsControl>
-                </Grid>
-                <Grid Grid.Row="7" Height="10">
-                </Grid>
-                <Grid Grid.Row="8">
-                    <Separator Width="65" Height="1"></Separator>
-                </Grid>
-                <Grid Grid.Row="9">
-                    <TextBlock Height="17" Text="Log" HorizontalAlignment="Center" Foreground="White" FontSize="12"></TextBlock>
-                </Grid>
-                <Grid Grid.Row="10" HorizontalAlignment="Stretch" Height="190" MaxWidth="170">
-                    <!-- Log -->
-                    <TextBox IsReadOnly="True" Foreground="White" BorderBrush="White" TextWrapping="Wrap"  Text="{Binding LogText}"
-                 ScrollViewer.VerticalScrollBarVisibility="Auto"
-                 ScrollViewer.CanContentScroll="True" FontSize="11"/>
-                </Grid>
-                <Grid Grid.Row="11" Height="auto" >
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="33*"/>
-                        <ColumnDefinition Width="33*"/>
-                        <ColumnDefinition Width="33*"/>
-                    </Grid.ColumnDefinitions>
-                    <Button FontSize="10" 
+                        </ItemsControl.ItemContainerStyle>-->
+                        </ItemsControl>
+                    </Grid>
+                    <Grid Grid.Row="9" >
+                    </Grid>
+                    <Grid Grid.Row="10" Height="30">
+                        <Separator Width="65" Height="1"></Separator>
+                    </Grid>
+                    <Grid Grid.Row="11">
+                        <TextBlock Height="17" Text="Log" HorizontalAlignment="Center" Foreground="White" FontSize="12"></TextBlock>
+                    </Grid>
+                    <Grid Grid.Row="12" HorizontalAlignment="Stretch" Height="190">
+                        <!-- Log -->
+                        <TextBox 
+                            IsReadOnly="True" 
+                                 Foreground="White" 
+                                 BorderThickness="0" 
+                                 BorderBrush="White" 
+                                 TextWrapping="Wrap"  
+                                 Text="{Binding LogText}"
+                                 ScrollViewer.VerticalScrollBarVisibility="Auto"
+                                 ScrollViewer.CanContentScroll="True" 
+                                 FontSize="11"/>
+                    </Grid>
+                    <Grid Grid.Row="13">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.4*"/>
+                            <ColumnDefinition Width="0.6*"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0"
+                                FontSize="10" Width="50"
                             Command="{Binding ClearLogCommand}" 
                             Style="{StaticResource ExampleToolbarButtonStyle}" 
-                            VerticalAlignment="Top" HorizontalAlignment="Left" 
-                            BorderThickness="0.5" 
-                            Width="50" Height="15"
-                            Grid.Column="0">
-                        <TextBlock Text="Clear Log" VerticalAlignment="Center" Margin="0,-2,0,0"/>
-                    </Button>
-                </Grid>
-                <Grid Grid.Row="12" Height="10">
-                </Grid>
-                <Grid Grid.Row="13" Height="50">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="30*"/>
-                        <ColumnDefinition Width="5*"/>
-                        <ColumnDefinition Width="30*"/>
-                        <ColumnDefinition Width="5*"/>
-                        <ColumnDefinition Width="30*"/>
-                    </Grid.ColumnDefinitions>
-                    <!-- Wizard -->
-                    <Button Grid.Column="0" Command ="{Binding ShowWizard}"
+                            HorizontalAlignment="Left" 
+                            BorderThickness="0" 
+                            Height="15"
+                            Content="Clear Log">
+                        </Button>
+                    </Grid>
+                    <Grid Grid.Row="14" Height="30">
+                        <Separator Width="65" Height="1"></Separator>
+                    </Grid>
+                    <Grid Grid.Row="15" Height="50">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.33*"/>
+                            <ColumnDefinition Width="0.02*"/>
+                            <ColumnDefinition Width="0.33*"/>
+                            <ColumnDefinition Width="0.02*"/>
+                            <ColumnDefinition Width="0.33*"/>
+                        </Grid.ColumnDefinitions>
+                        <!-- Wizard -->
+                        <Button Grid.Column="0" Command ="{Binding ShowWizard}"
                                 Style="{StaticResource CalibButtonStyle}" 
                                 Width="50" 
                                 Height="50"
                                 BorderThickness="0" 
                                 Margin="0">
-                        <Image Source="pack://application:,,,/Images/Wizard1.png"/>
-                    </Button>
-                    <!-- Param And Action -->
-                    <Button Grid.Column="2"
+                            <Image Source="pack://application:,,,/Images/Wizard1.png"/>
+                        </Button>
+                        <!-- Param And Action -->
+                        <Button Grid.Column="2"
                             Command="{Binding Showwindow}" 
                             Style="{StaticResource CalibButtonStyle}" 
                             Width="50" 
                             Height="50"
                             BorderThickness="0" Margin="0">
                             <Image Source="pack://application:,,,/Images/alt-parameters-icone-9469-64.png"/>
-                    </Button>
-                    <!-- Bode Command ="{Binding Showwindow}"-->
-                    <!--<Button Grid.Column="4"
-                            Command="{Binding Showwindow}" 
+                        </Button>
+                        <Button Grid.Column="4"
+                            Command="{Binding ShowBode}" 
                             Style="{StaticResource CalibButtonStyle}" 
                             Width="50" 
                             Height="50"
                             BorderThickness="0" Margin="0">
-                        <Image Source="pack://application:,,,/Images/bode.png"/>
-                    </Button>-->
-                    <!-- Monitor -->
-                    <!--<Border Grid.Column="5" CornerRadius="15" BorderBrush="Gray" BorderThickness="1" Width="50">
-                        <Button Grid.Column="5" Command ="{Binding Showwindow}"
-                            Background="Transparent" 
-                            Foreground="Transparent"
-                            BorderThickness="0"
-                            Padding="0">
-                            <Image Source="pack://application:,,,/Images/monitor.png"></Image>
+                            <Image Source="pack://application:,,,/Images/bode.png"/>
                         </Button>
-                    </Border>-->
-                </Grid>
-                <Grid Grid.Row="14" Height="10">
-                    <TextBlock Text="     Wizard           Parameters              " Foreground="White" FontSize="8" FontWeight="Bold"/>
-                </Grid>
-                <Grid Grid.Row="15">
-                    <Separator Width="65"></Separator>
-                </Grid>
-                <Grid Grid.Row="16" Height="5">
-                </Grid>
-                <Grid Grid.Row="17">
-                    <TextBlock Foreground="White" HorizontalAlignment="Center" FontWeight="Bold" FontSize="13">Driver Status</TextBlock>
-                </Grid>
-                <Grid Grid.Row="18" HorizontalAlignment="Stretch">
-                    <!--<ItemsControl ItemsSource="{Binding DriverStatusList}" ItemTemplate="{StaticResource DataViewSmallFontInd}" FontSize="20"/>-->
-                    <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="0.5">
-                        <TextBlock Name="DrvSt" HorizontalAlignment="Stretch" Text="{Binding DriverStat}" FontSize="12" FontWeight="Bold">
-                            <TextBlock.Style>
-                                <Style TargetType="TextBlock">
-                                    <Setter Property="Foreground" Value="Red" />
-                                    <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding DriverStat}" Value="All OK !" />
-                                            </MultiDataTrigger.Conditions>
-                                            <MultiDataTrigger.Setters>
-                                                <Setter Property="Foreground" Value="Green" />
-                                            </MultiDataTrigger.Setters>
-                                        </MultiDataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                    </Border>
-                </Grid>
-                <Grid Grid.Row="19" Height="5">
-                </Grid>
-                <Grid Grid.Row="20" Height="30">
-                    <Grid.ColumnDefinitions>
-                        <!--<ColumnDefinition Width="0.2*"></ColumnDefinition>
-                        <ColumnDefinition Width="1"></ColumnDefinition>
-                        <ColumnDefinition Width="0.4*"></ColumnDefinition>
-                        <ColumnDefinition Width="1"></ColumnDefinition>
-                        <ColumnDefinition Width="0.4*"></ColumnDefinition>-->
-                        <ColumnDefinition Width="0.8*"></ColumnDefinition>
-                        <ColumnDefinition Width="0.2*"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                    <!--<TextBlock Grid.Column="0" TextDecorations="Underline" FontWeight="Bold" FontSize="13" 
-                               VerticalAlignment="Center" Foreground="White" Margin="0,0,0,3">Motor</TextBlock>
-                    <wpfSpark:ToggleSwitch Grid.Column="2" Width="100" Height="25"  VerticalAlignment="Center" IsChecked="{Binding MotorOnToggleChecked, Mode=TwoWay}" />-->
-                    <!--<Views:UC_ToggleSwitch Grid.Column="0" />-->
-                    <ItemsControl Grid.Column="0" VerticalAlignment="Center"
+                    </Grid>
+                    <Grid Grid.Row="16" Height="15">
+                        <TextBlock Text="   Wizard   Parameters     Bode " Foreground="White" FontSize="10.7" FontWeight="DemiBold"/>
+                    </Grid>
+                    <Grid Grid.Row="17" Height="30">
+                        <Separator Width="65"></Separator>
+                    </Grid>
+                    <Grid Grid.Row="18" Height="0">
+                    </Grid>
+                    <Grid Grid.Row="19">
+                        <TextBlock Foreground="White" HorizontalAlignment="Center" FontWeight="Bold" FontSize="13">Driver Status</TextBlock>
+                    </Grid>
+                    <Grid Grid.Row="20" HorizontalAlignment="Stretch">
+                        <!--<ItemsControl ItemsSource="{Binding DriverStatusList}" ItemTemplate="{StaticResource DataViewSmallFontInd}" FontSize="20"/>-->
+                        <Border BorderBrush="Gray" BorderThickness="1" CornerRadius="1">
+                            <TextBlock Name="DrvSt" HorizontalAlignment="Stretch" Text="{Binding DriverStat}" FontSize="12" FontWeight="Bold">
+                                <TextBlock.Style>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="Foreground" Value="Red" />
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding DriverStat}" Value="All OK !" />
+                                                </MultiDataTrigger.Conditions>
+                                                <MultiDataTrigger.Setters>
+                                                    <Setter Property="Foreground" Value="Green" />
+                                                </MultiDataTrigger.Setters>
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Border>
+                    </Grid>
+                    <Grid Grid.Row="21" Height="10">
+                    </Grid>
+                    <Grid Grid.Row="22" Height="30">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.85*"></ColumnDefinition>
+                            <ColumnDefinition Width="0.15*"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <ItemsControl Grid.Column="0"
                                   ItemsSource="{Binding MotorControlTogglewitch, Mode=TwoWay}"
-                                  ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}"></ItemsControl>
-                    <Helpers:RoundBoolLed Grid.Column="1" VerticalAlignment="Center" CurrStatus="{Binding LedMotorStatus}" Width="20" Height="20"/>
-                </Grid>
-                <Grid Grid.Row="21"/>
-                <Grid Grid.Row="22" HorizontalAlignment="Center" VerticalAlignment="Center">
-                    <StackPanel Orientation="Horizontal">
-                        <Image Margin="0"
+                                  ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}" VerticalAlignment="Center" VerticalContentAlignment="Center">
+                        </ItemsControl>
+                        <Helpers:RoundBoolLed Grid.Column="1" CurrStatus="{Binding LedMotorStatus}" 
+                                              Width="20" Height="20" VerticalAlignment="Center"/>
+                    </Grid>
+                    <Grid Grid.Row="23"/>
+                    <Grid Grid.Row="24" HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <!--<StackPanel Orientation="Horizontal">
+                            <Image Margin="0"
             			Source="{Binding Logo}" Width="130" Height="Auto" Stretch="Fill" />
-                    </StackPanel>
+                        </StackPanel>-->
+                    </Grid>
                 </Grid>
-            </Grid>
         </ScrollViewer>
 
         <Helpers:CollapsableGridSplitter Grid.Column="1"              

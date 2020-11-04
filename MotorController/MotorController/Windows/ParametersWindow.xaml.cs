@@ -17,7 +17,7 @@ using System.Windows.Controls.Primitives;
 using System.Diagnostics;
 using System.Windows.Interop;
 
-namespace MotorController.Views
+namespace MotorController.Windows
 {
     /// <summary>
     /// Interaction logic for ParametarsWindow.xaml

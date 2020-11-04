@@ -97,7 +97,8 @@ namespace MotorController.Models.ParserBlock
                     }               //send to plot parser  
                     if(PlotBodePacketsList.Count > 0)
                     {
-                        BodeViewModel.GetInstance.ParseBodePlot(PlotBodePacketsList);
+                        //BodeViewModel.GetInstance.ParseBodePlot(PlotBodePacketsList);
+                        BodeWindowViewModel.GetInstance.ParseBodePlot(PlotBodePacketsList);
                         PlotBodePacketsList.Clear();
                     }
                     if(StandartPacketsListNew.Count > 0)
@@ -116,11 +117,12 @@ namespace MotorController.Models.ParserBlock
 
                     length = e.DataChunk.Length;
                     data = e.DataChunk;
+#if DEBUG_DATA
                     StringBuilder hex = new StringBuilder(length * 2);
                     foreach(byte b in data)
                         hex.AppendFormat("{0:X2} ", b);
                     Debug.WriteLine(hex.ToString());
-
+#endif
 
                     for(int i = 0; i < length; i++)
                     {
