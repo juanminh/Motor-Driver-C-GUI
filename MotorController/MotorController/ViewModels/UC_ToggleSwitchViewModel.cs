@@ -55,8 +55,7 @@ namespace MotorController.ViewModels
         {
             if(CommandId == 6 && CommandSubId == 15 /*&& LeftPanelViewModel.GetInstance._bode_window.Visibility == System.Windows.Visibility.Visible*/)
             {
-                //BodeViewModel.GetInstance.BodeStartStop = Convert.ToBoolean(Convert.ToInt16(_val));
-                BodeWindowViewModel.GetInstance.update_bode_indicator(Convert.ToBoolean(Convert.ToInt16(_val)));
+                BodeViewModel.GetInstance.BodeStartStop = Convert.ToBoolean(Convert.ToInt16(_val));
             }
             if(CommandId == 1 && CommandSubId == 0 && !DebugViewModel.GetInstance._forceConnectMode)
             {

@@ -79,6 +79,11 @@ namespace MotorController.ViewModels
                 }
             }
         }
+        private string _version = Consts.Version;
+        public string Version
+        {
+            get { return _version; }
+        }
         public bool ValueChange = false;
         //WizardWindowViewModel _wizardWindow = WizardWindowViewModel.GetInstance;
         public LeftPanelViewModel()

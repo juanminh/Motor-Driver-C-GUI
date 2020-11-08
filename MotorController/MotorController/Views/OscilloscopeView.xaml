@@ -124,29 +124,52 @@
         <ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Disabled" Grid.ColumnSpan="2">
             <Grid Grid.Row="0" Background="#7F595957">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"></ColumnDefinition> <!-- 0 -->
-                    <ColumnDefinition Width="Auto"></ColumnDefinition> <!-- 1 -->
-                    <ColumnDefinition Width="Auto"></ColumnDefinition> <!-- 2 -->
-                    <ColumnDefinition Width="Auto"></ColumnDefinition> <!-- 3 -->
-                    <ColumnDefinition Width="Auto"></ColumnDefinition> <!-- 4 -->
-                    <ColumnDefinition Width="Auto"></ColumnDefinition> <!-- 5 -->
-                    <ColumnDefinition Width="Auto"></ColumnDefinition> <!-- 6 -->
-                    <ColumnDefinition Width="Auto"></ColumnDefinition> <!-- 7 -->
-                    <ColumnDefinition Width="Auto"></ColumnDefinition> <!-- 8 -->
-                    <ColumnDefinition Width="Auto"></ColumnDefinition> <!-- 9 -->
-                    <ColumnDefinition Width="Auto"></ColumnDefinition> <!-- 10 -->
-                    <ColumnDefinition Width="Auto"></ColumnDefinition> <!-- 11 -->
-                    <ColumnDefinition Width="Auto"></ColumnDefinition> <!-- 12 -->
-                    <ColumnDefinition Width="Auto"></ColumnDefinition> <!-- 13 -->
-                    <ColumnDefinition Width="Auto"></ColumnDefinition> <!-- 14 -->
-                    <ColumnDefinition Width="Auto"></ColumnDefinition> <!-- 15 -->
-                    <ColumnDefinition Width="Auto"></ColumnDefinition> <!-- 16 -->
-                    <ColumnDefinition Width="Auto"></ColumnDefinition> <!-- 17 -->
-                    <ColumnDefinition Width="Auto"></ColumnDefinition> <!-- 18 -->
-                    <ColumnDefinition Width="Auto"></ColumnDefinition> <!-- 19 -->
-                    <ColumnDefinition Width="*"></ColumnDefinition> <!-- 20 -->
-                    <ColumnDefinition Width="Auto"></ColumnDefinition> <!-- 21 -->
-                    <ColumnDefinition Width="Auto"></ColumnDefinition> <!-- 22 -->
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <!-- 0 -->
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <!-- 1 -->
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <!-- 2 -->
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <!-- 3 -->
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <!-- 4 -->
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <!-- 5 -->
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <!-- 6 -->
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <!-- 7 -->
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <!-- 8 -->
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <!-- 9 -->
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <!-- 10 -->
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <!-- 11 -->
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <!-- 12 -->
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <!-- 13 -->
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <!-- 14 -->
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <!-- 15 -->
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <!-- 16 -->
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <!-- 17 -->
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <!-- 18 -->
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <!-- 19 -->
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <!-- 20 -->
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <!-- 21 -->
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                    <!-- 22 -->
                 </Grid.ColumnDefinitions>
                 <Line Grid.Column="0" Margin="13,8,5,8" Stroke="Gray" Y2="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
                 <Line Grid.Column="1" Margin="5,0,6,0" Stroke="Gray" Y2="16" HorizontalAlignment="Center" VerticalAlignment="Center" />
@@ -298,9 +321,8 @@
                            MaxFrameRate="25"
                            s:ThemeManager.Theme="{Binding GraphTheme}"
                            ClipModifierSurface="True"
-                           XAxis="{Binding XAxis, Mode=OneWay}"
-                           >
-            <!-- Oscilloscope-->
+                           XAxis="{Binding XAxis, Mode=OneWay}">
+        <!-- Oscilloscope Background="{Binding ChartBackground}"-->
 
             <s:SciChartSurface.RenderableSeries>
                 <s:FastLineRenderableSeries DataSeries="{Binding ChartData}"
@@ -319,6 +341,7 @@
                                             Style="{StaticResource LineSeriesStyle}"/>
             </s:SciChartSurface.RenderableSeries>
             <!--Create default X and Y axes. Optional bands give a cool look and feel for minimal performance impact-->
+
             <s:SciChartSurface.YAxis>
                 <s:NumericAxis AnimatedVisibleRange="{Binding YVisibleRange, Mode=OneWay}"
                                AxisAlignment="Left"
@@ -326,20 +349,20 @@
                                DrawMinorGridLines="False"
                                DrawMinorTicks="False"
                                DrawMajorTicks="False"
-                               StrokeThickness="1"/><!--AxisTitle="{Binding YAxisUnits, Mode=OneWay}"-->
+                               StrokeThickness="1"/>
             </s:SciChartSurface.YAxis>
             <!--Create ChartModifiers, which are enabled or disabled from the ViewModel via the ChartModifier property and IsModifierTypeConverter-->
             <s:SciChartSurface.ChartModifier>
                 <s:ModifierGroup>
-                    <s:XAxisDragModifier />
-                    <!--<s:YAxisDragModifier />-->
-                    <s:RolloverModifier IsEnabled="{Binding ChartModifier, ConverterParameter=Rollover, Converter={StaticResource IsModifierTypeConverter}, Mode=TwoWay}" TooltipLabelTemplate="{StaticResource RolloverLabelTemplate}" />
-                    <s:ZoomPanModifier IsEnabled="{Binding ChartModifier, ConverterParameter=ZoomPan, Converter={StaticResource IsModifierTypeConverter}, Mode=TwoWay}" />
-                    <s:CursorModifier AxisLabelTemplate="{StaticResource CursorAxisLabelTemplate}" IsEnabled="{Binding ChartModifier, ConverterParameter=CrosshairsCursor, Converter={StaticResource IsModifierTypeConverter}, Mode=TwoWay}" />
-                    <s:RubberBandXyZoomModifier IsEnabled="{Binding ChartModifier, ConverterParameter=RubberBandZoom, Converter={StaticResource IsModifierTypeConverter}, Mode=TwoWay}" IsXAxisOnly="False" />
-                    <s:MouseWheelZoomModifier  XyDirection="XYDirection"/>
+                    <!--<s:XAxisDragModifier />
+                    <s:YAxisDragModifier />-->
+                    <!--<s:RolloverModifier IsEnabled="{Binding ChartModifier, ConverterParameter=Rollover, Converter={StaticResource IsModifierTypeConverter}, Mode=TwoWay}" TooltipLabelTemplate="{StaticResource RolloverLabelTemplate}" />
+                    <s:ZoomPanModifier IsEnabled="{Binding ChartModifier, ConverterParameter=ZoomPan, Converter={StaticResource IsModifierTypeConverter}, Mode=TwoWay}" />-->
+                    <!--<s:CursorModifier AxisLabelTemplate="{StaticResource CursorAxisLabelTemplate}" IsEnabled="{Binding ChartModifier, ConverterParameter=CrosshairsCursor, Converter={StaticResource IsModifierTypeConverter}, Mode=TwoWay}" />-->
+                    <s:MouseWheelZoomModifier x:Name="MouseWheelName" XyDirection="XYDirection"/>
+                    <!--<Helpers:AxisMouseWheelModifier AxisId="DefaultAxisId" IsPan="True"/>-->
                     <s:ZoomExtentsModifier />
-                    <s:RubberBandXyZoomModifier IsEnabled="True" />
+                    <s:RubberBandXyZoomModifier IsEnabled="{Binding IsFreeze}" />
                 </s:ModifierGroup>
             </s:SciChartSurface.ChartModifier>
         </s:SciChartSurface>

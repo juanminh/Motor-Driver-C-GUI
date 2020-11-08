@@ -32,37 +32,40 @@ namespace MotorController.ViewModels
                 }
             }
         }
-        private ObservableCollection<object> _motionCommandList;
-        private ObservableCollection<object> _motionCommandList2;
-
-        private ObservableCollection<object> _motionStatusList;
-        private ObservableCollection<object> _digitalInputList;
-        private ObservableCollection<object> _SGList;
-        private ObservableCollection<object> _positionCountersList;
-
-        public ObservableCollection<object> MotionCommandList
+        
+        public ObservableCollection<object> TorqueControl
         {
             get
             {
-                return Commands.GetInstance.GenericCommandsGroup["MotionCommand List"]; //Motion Limit
-            }
-            set
-            {
-                _motionCommandList = value;
-                OnPropertyChanged();
+                return Commands.GetInstance.GenericCommandsGroup["TorqueControl"];
             }
         }
-
+        public ObservableCollection<object> SpeedControl
+        {
+            get
+            {
+                return Commands.GetInstance.GenericCommandsGroup["SpeedControl"];
+            }
+        }
+        public ObservableCollection<object> PositionControl
+        {
+            get
+            {
+                return Commands.GetInstance.GenericCommandsGroup["PositionControl"];
+            }
+        }
+        public ObservableCollection<object> OpMode
+        {
+            get
+            {
+                return Commands.GetInstance.GenericCommandsGroup["BPOpMode"];
+            }
+        }
         public ObservableCollection<object> MotionCommandList2
         {
             get
             {
-                return Commands.GetInstance.GenericCommandsGroup["MotionCommand List2"]; //Motion Limit
-            }
-            set
-            {
-                _motionCommandList2 = value;
-                OnPropertyChanged();
+                return Commands.GetInstance.GenericCommandsGroup["MotionCommand List2"];
             }
         }
         public ObservableCollection<object> ToggleOperationList
@@ -78,11 +81,6 @@ namespace MotorController.ViewModels
             {
                 return Commands.GetInstance.GenericCommandsGroup["Digital Input List"]; //Motion Limit
             }
-            set
-            {
-                _digitalInputList = value;
-                OnPropertyChanged();
-            }
         }
 
         public ObservableCollection<object> PositionCountersList
@@ -91,11 +89,6 @@ namespace MotorController.ViewModels
             {
                 return Commands.GetInstance.GenericCommandsGroup["Position counters List"]; //Motion Limit
             }
-            set
-            {
-                _positionCountersList = value;
-                OnPropertyChanged();
-            }
         }
 
         public ObservableCollection<object> MotionStatusList
@@ -103,11 +96,6 @@ namespace MotorController.ViewModels
             get
             {
                 return Commands.GetInstance.GenericCommandsGroup["MotionStatus List"];
-            }
-            set
-            {
-                _motionStatusList = value;
-                OnPropertyChanged();
             }
         }
         public ObservableCollection<object> ControlList
@@ -144,11 +132,6 @@ namespace MotorController.ViewModels
             get
             {
                 return Commands.GetInstance.GenericCommandsGroup["S.G.List"];
-            }
-            set
-            {
-                _SGList = value;
-                OnPropertyChanged();
             }
         }
     }

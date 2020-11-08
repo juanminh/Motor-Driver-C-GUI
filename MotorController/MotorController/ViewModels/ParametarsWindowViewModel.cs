@@ -36,7 +36,7 @@ namespace MotorController.ViewModels
         private FeedBackViewModel _feedBackViewModel;
         private DebugViewModel _debugViewModel;
         private IOViewModel _ioViewModel;
-        private BodeViewModel _bodeViewModel;
+        //private BodeViewModel _bodeViewModel;
         private FilterViewModel _filterViewModel;
         private PIDViewModel _pidViewModel;
 
@@ -66,7 +66,7 @@ namespace MotorController.ViewModels
             _feedBackViewModel = FeedBackViewModel.GetInstance;
             _debugViewModel = DebugViewModel.GetInstance;
             _ioViewModel = IOViewModel.GetInstance;
-            _bodeViewModel = BodeViewModel.GetInstance;
+            //_bodeViewModel = BodeViewModel.GetInstance;
             _pidViewModel = PIDViewModel.GetInstance;
         }
         ~ParametarsWindowViewModel() { }
@@ -166,10 +166,10 @@ namespace MotorController.ViewModels
         {
             get { return _debugViewModel; }
         }
-        public BodeViewModel BodeViewModel
-        {
-            get { return _bodeViewModel; }
-        }
+        //public BodeViewModel BodeViewModel
+        //{
+        //    get { return _bodeViewModel; }
+        //}
 
         public virtual ICommand ParametersWindowTabSelection
         {

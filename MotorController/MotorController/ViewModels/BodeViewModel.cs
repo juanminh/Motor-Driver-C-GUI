@@ -82,7 +82,6 @@ namespace MotorController.ViewModels
 
                 _bodeStartStop = value;
                 OnPropertyChanged();
-
                 if(value)
                 {
                     ChartData = new XyDataSeries<float, float>();
@@ -210,16 +209,6 @@ namespace MotorController.ViewModels
                 });
             }
             catch { }
-            //Load();
-
-            //_yAxisLog = new LogarithmicNumericAxis
-            //{
-            //    TextFormatting = "#.#E+0",
-            //    ScientificNotation = ScientificNotation.LogarithmicBase,
-            //    AxisAlignment = AxisAlignment.Left,
-            //    GrowBy = new DoubleRange(0.1, 0.1),
-            //    DrawMajorBands = false
-            //};
 #if Yaxes
                 NumericAxis Y1 = new NumericAxis()
                 {
@@ -266,32 +255,7 @@ namespace MotorController.ViewModels
                 //ChartYAxes.Add(Y2);
 #endif
         }
-        private void Load()
-        {
-            // Create some DataSeries of type X=double, Y=double
-            ChartData2 = new XyDataSeries<float, float>();
 
-            var data1 = GetExponentialCurve(1.8, 25);
-
-            ChartData2.Clear();
-            // Append data to series.
-            ChartData2.Append(data1.XData_f, data1.YData_f);
-        }
-        public DoubleSeries GetExponentialCurve(double power, int pointCount)
-        {
-            var doubleSeries = new DoubleSeries(pointCount);
-
-            double x = 0.1;
-            const double fudgeFactor = 1.5;
-            for(int i = 0; i < pointCount; i++)
-            {
-                x *= fudgeFactor;
-                double y = 1;// Math.Pow((double)i + 1, power);
-                doubleSeries.Add(new XYPoint() { X_f = (float)x, Y_f = (float)y });
-            }
-
-            return doubleSeries;
-        }
         private IXyDataSeries<float, float> _series0 = new XyDataSeries<float, float>();
         private IXyDataSeries<float, float> _series1 = new XyDataSeries<float, float>();
         private IXyDataSeries<float, float> _series2 = new XyDataSeries<float, float>();

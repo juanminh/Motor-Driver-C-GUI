@@ -827,9 +827,9 @@
                         <Grid Height="3"/>
                         <TextBlock HorizontalAlignment="Center" Text="Controller" Foreground="White" FontSize="16"/>
                         <Grid Height="25"/>
-                        <TextBlock HorizontalAlignment="Center" Text="Ver. 1.3.16" Foreground="White" FontSize="14"/>
+                        <TextBlock HorizontalAlignment="Center" Text="{Binding Version}" Foreground="White" FontSize="14"/>
                     </StackPanel>
-                    <Image Margin="0,0,0,0" HorizontalAlignment="Left" Source="{Binding Logo}" Width="100" Height="100"/>
+                    <Image Margin="0,0,0,0" HorizontalAlignment="Left" Source="{Binding Logo}" Width="90" Height="100"/>
                 </StackPanel>
                 <Grid Grid.Row="2" Height="20">
                 </Grid>
@@ -979,7 +979,7 @@
                     <Grid Grid.Row="14" Height="30">
                         <Separator Width="65" Height="1"></Separator>
                     </Grid>
-                    <Grid Grid.Row="15" Height="50">
+                    <Grid Grid.Row="15" Height="Auto">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="0.33*"/>
                             <ColumnDefinition Width="0.02*"/>
@@ -988,34 +988,42 @@
                             <ColumnDefinition Width="0.33*"/>
                         </Grid.ColumnDefinitions>
                         <!-- Wizard -->
-                        <Button Grid.Column="0" Command ="{Binding ShowWizard}"
+                        <StackPanel Grid.Column="0" Orientation="Vertical">
+                            <Button Command ="{Binding ShowWizard}"
                                 Style="{StaticResource CalibButtonStyle}" 
                                 Width="50" 
                                 Height="50"
                                 BorderThickness="0" 
                                 Margin="0">
-                            <Image Source="pack://application:,,,/Images/Wizard1.png"/>
-                        </Button>
+                                <Image Source="pack://application:,,,/Images/Wizard1.png"/>
+                            </Button>
+                            <TextBlock FontSize="10" Foreground="White" FontWeight="DemiBold" HorizontalAlignment="Center">Wizard</TextBlock>
+                        </StackPanel>
                         <!-- Param And Action -->
-                        <Button Grid.Column="2"
+                        <StackPanel Grid.Column="2">
+                            <Button
                             Command="{Binding Showwindow}" 
                             Style="{StaticResource CalibButtonStyle}" 
                             Width="50" 
                             Height="50"
                             BorderThickness="0" Margin="0">
-                            <Image Source="pack://application:,,,/Images/alt-parameters-icone-9469-64.png"/>
-                        </Button>
-                        <Button Grid.Column="4"
+                                <Image Source="pack://application:,,,/Images/alt-parameters-icone-9469-64.png"/>
+                            </Button>
+                            <TextBlock FontSize="10" Foreground="White" FontWeight="DemiBold" HorizontalAlignment="Center">Parameters</TextBlock>
+                        </StackPanel>
+                        <StackPanel Grid.Column="4">
+                            <Button
                             Command="{Binding ShowBode}" 
                             Style="{StaticResource CalibButtonStyle}" 
                             Width="50" 
                             Height="50"
                             BorderThickness="0" Margin="0">
-                            <Image Source="pack://application:,,,/Images/bode.png"/>
-                        </Button>
+                                <Image Source="pack://application:,,,/Images/bode.png"/>
+                            </Button>
+                            <TextBlock FontSize="10" Foreground="White" FontWeight="DemiBold" HorizontalAlignment="Center">Bode</TextBlock>
+                        </StackPanel>
                     </Grid>
                     <Grid Grid.Row="16" Height="15">
-                        <TextBlock Text="   Wizard   Parameters     Bode " Foreground="White" FontSize="10.7" FontWeight="DemiBold"/>
                     </Grid>
                     <Grid Grid.Row="17" Height="30">
                         <Separator Width="65"></Separator>

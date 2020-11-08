@@ -530,12 +530,32 @@
                             <ColumnDefinition Width="0.33*"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                         <ScrollViewer Grid.Column="0" MaxWidth="250" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
-                            <ItemsControl 
-                                      ItemsSource="{Binding MotionCommandList}" 
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="Torque Control" Foreground="White" Background="Transparent" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
+                                <ItemsControl 
+                                      ItemsSource="{Binding TorqueControl}" 
                                       ItemTemplate="{StaticResource DataViewModel}"/>
+                                <Grid Height="5"/>
+                                
+                                <TextBlock Text="Position Control" Foreground="White" Background="Transparent" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
+                                <ItemsControl 
+                                      ItemsSource="{Binding PositionControl}" 
+                                      ItemTemplate="{StaticResource DataViewModel}"/>
+                                <Grid Height="5"/>
+                                <TextBlock Text="Drive Control" Foreground="White" Background="Transparent" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
+                                <ItemsControl 
+                                      ItemsSource="{Binding OpMode}" 
+                                      ItemTemplate="{StaticResource EnumViewModel}"/>
+                            </StackPanel>
                         </ScrollViewer>
                         <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" MaxWidth="250" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
                             <StackPanel >
+                                <TextBlock Text="Speed Control" Foreground="White" Background="Transparent" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
+                                <ItemsControl 
+                                      ItemsSource="{Binding SpeedControl}" 
+                                      ItemTemplate="{StaticResource DataViewModel}"/>                                
+                                <Grid Height="5"/>
+                                <TextBlock Text="Profiler" Foreground="White" Background="Transparent" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
                                 <ItemsControl   
                                             ItemsSource="{Binding MotionCommandList2}" 
                                             ItemTemplate="{StaticResource DataViewModel}">

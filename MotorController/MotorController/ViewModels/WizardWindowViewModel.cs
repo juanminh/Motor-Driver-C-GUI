@@ -83,25 +83,18 @@ namespace MotorController.ViewModels
         Analog = 1
     };
 
-    public partial class WizardWindowViewModel : BaseViewModel
+    public partial class WizardWindowViewModel : INotifyPropertyChanged
     {
-        //public event PropertyChangedEventHandler PropertyChanged = delegate { };
-        //public void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        //{
-        //    PropertyChangedEventHandler handler = PropertyChanged;
+        public event PropertyChangedEventHandler PropertyChanged = delegate { };
+        public void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        {
+            PropertyChangedEventHandler handler = PropertyChanged;
 
-        //    if(handler != null)
-        //        handler(this, new PropertyChangedEventArgs(propertyName));
-        //    if(propertyName != "ValidOperations")
-        //        VerifyValidOperation();
-        //}
-        //public void OnPropertyChanged(PropertyChangedEventArgs e)
-        //{
-        //    if(PropertyChanged != null)
-        //    {
-        //        PropertyChanged(this, e);
-        //    }
-        //}
+            if(handler != null)
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            if(propertyName != "ValidOperations")
+                VerifyValidOperation();
+        }
         public Dictionary<Tuple<int, int>, CalibrationWizardViewModel> CalibrationWizardList = new Dictionary<Tuple<int, int>, CalibrationWizardViewModel>();
         public Dictionary<string, ObservableCollection<object>> CalibrationWizardListbySubGroup = new Dictionary<string, ObservableCollection<object>>();
         public Dictionary<Tuple<int, int>, DataViewModel> OperationList = new Dictionary<Tuple<int, int>, DataViewModel>();
@@ -267,7 +260,7 @@ namespace MotorController.ViewModels
             set
             {
                 _validOperations = value;
-                OnPropertyChanged("ValidOperations");
+                OnPropertyChanged();
             }
         }
         private bool _startEnable = true;
@@ -604,15 +597,15 @@ namespace MotorController.ViewModels
                 Int32.TryParse(operation.CommandSubId, out commandSubId);
                 GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
             }
-
-            /*update  "Continuous Current" parameter*/
-            operation = new DataViewModel { CommandName = "Continuous Current", CommandId = "52", CommandSubId = "1", IsFloat = true, CommandValue = ContinuousCurrent };
+            
+            /*update  "Peak Current" parameter*/
+            operation = new DataViewModel { CommandName = "Peak Current", CommandId = "52", CommandSubId = "2", IsFloat = true, CommandValue = ContinuousCurrent };
             Int32.TryParse(operation.CommandId, out commandId);
             Int32.TryParse(operation.CommandSubId, out commandSubId);
             GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
 
-            /*update  "Peak Current" parameter*/
-            operation = new DataViewModel { CommandName = "Peak Current", CommandId = "52", CommandSubId = "2", IsFloat = true, CommandValue = ContinuousCurrent };
+            /*update  "Continuous Current" parameter*/
+            operation = new DataViewModel { CommandName = "Continuous Current", CommandId = "52", CommandSubId = "1", IsFloat = true, CommandValue = ContinuousCurrent };
             Int32.TryParse(operation.CommandId, out commandId);
             Int32.TryParse(operation.CommandSubId, out commandSubId);
             GetInstance.OperationList.Add(new Tuple<int, int>(commandId, commandSubId), operation);
@@ -1387,7 +1380,8 @@ namespace MotorController.ViewModels
                 //Debug.WriteLine("Operation: " + GetInstance.OperationList.ElementAt(i).Value.CommandId + "[" + GetInstance.OperationList.ElementAt(i).Value.CommandSubId + "] = " + GetInstance.OperationList.ElementAt(i).Value.CommandValue + " - " + GetInstance.OperationList.ElementAt(i).Value.IsFloat.ToString());
                 if(GetInstance.OperationList.ElementAt(i).Value.CommandName == "Load Default" ||
                     GetInstance.OperationList.ElementAt(i).Value.CommandName == "Save" ||
-                    GetInstance.OperationList.ElementAt(i).Value.CommandName == "Reset")
+                    GetInstance.OperationList.ElementAt(i).Value.CommandName == "Reset" ||
+                    GetInstance.OperationList.ElementAt(i).Value.CommandName == "Peak Current")
                     Thread.Sleep(2000);
                 Thread.Sleep(30);
             }

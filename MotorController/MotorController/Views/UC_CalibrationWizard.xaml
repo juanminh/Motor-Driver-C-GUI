@@ -81,7 +81,7 @@
                  HorizontalContentAlignment="Center">
                     <TextBox.Style>
                         <Style TargetType="TextBox" BasedOn="{StaticResource {x:Type TextBox}}">
-                            <Setter Property="Text" Value="idle" />
+                            <Setter Property="Text" Value="Idle" />
                             <Style.Triggers>
                                 <MultiDataTrigger>
                                     <MultiDataTrigger.Conditions>

@@ -31,6 +31,7 @@ namespace MotorController.Common
                                                                        {KEY_HISTORY_DIR,Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\MotorController\\SuperMotorController_Params"},
                                                                        {KEY_PARAMS_DIR, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\MotorController\\SuperMotorControllerHistory"}
                                                                    };
+        public static string Version = "Ver. 1.3.17";
         public enum eProject
         {
             REDLER = 0,

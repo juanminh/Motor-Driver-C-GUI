@@ -35,12 +35,10 @@ namespace MotorController.Views
     public class OscilloscopeViewModel : BaseViewModel
     {
         #region members
-        //private string _yaxeTitle;
         public Dictionary<string, string> ChannelYtitles = new Dictionary<string, string>();
 
         //CH1 ComboBox
         int ch1;
-        //private string _ch1Title;
         public ObservableCollection<string> _channel1SourceItems = new ObservableCollection<string>();
         public ObservableCollection<string> Channel1SourceItems
         {
@@ -62,21 +60,6 @@ namespace MotorController.Views
 
         //CH2 ComboBox
         int ch2;
-        //private string _ch2Title;
-        //public ObservableCollection<string> Channel2SourceItems
-        //{
-        //    get
-        //    {
-        //        if(_channel1SourceItems == null)
-        //            _channel1SourceItems = new ObservableCollection<string>();
-        //        return _channel1SourceItems;
-        //    }
-        //    set
-        //    {
-        //        _channel1SourceItems = value;
-        //        OnPropertyChanged("Channel2SourceItems");
-        //    }
-        //}
         private string _selectedCh2DataSource;
 
         private UInt16 plotActivationstate;
@@ -94,12 +77,10 @@ namespace MotorController.Views
         private DoubleRange _yVisibleRange;
 
         private ModifierType _chartModifier;
-        //private bool _isDigitalLine = true;
 
         public Timer _timer;
 
         private ResamplingMode _resamplingMode;
-        //private bool _canExecuteRollover;
 
         private int POintstoPlot = 33000; //5 sec min
 
@@ -125,7 +106,6 @@ namespace MotorController.Views
         private NumericAxis _xAxisNum;
 
         private IAxis _xAxis;
-        //private IAxis _yAxis;
         public IAxis XAxis
         {
             get { return _xAxis; }
@@ -152,7 +132,7 @@ namespace MotorController.Views
                     DrawMinorGridLines = false,
                     DrawMajorTicks = true,
                     DrawMinorTicks = true,
-                    StrokeThickness = 1,
+                    StrokeThickness = 1
                 };
                 XAxis = _xAxisNum;
             }
@@ -175,6 +155,11 @@ namespace MotorController.Views
         public void YDirMinus()
         {
             //Debug.WriteLine("YDirMinus");
+            if(_timer == null)
+            {
+                EventRiser.Instance.RiseEevent(string.Format($"No plot detected !"));
+                return;
+            }
 
             if(_yzoom > 0.002)
             {
@@ -186,7 +171,11 @@ namespace MotorController.Views
         public void YDirPlus()
         {
             //Debug.WriteLine("YDirPlus");
-
+            if(_timer == null)
+            {
+                EventRiser.Instance.RiseEevent(string.Format($"No plot detected !"));
+                return;
+            }
             _yzoom = _yzoom * 2;
             YLimit = new DoubleRange(-_yzoom, _yzoom); //ubdate visible limits        
             YVisibleRange = YLimit;
@@ -218,151 +207,10 @@ namespace MotorController.Views
                 _yFloats = new float[0];
                 _yFloats2 = new float[0];
             }
-#if OLD
-            switch((int)_duration)
-            {
-                case (10)://Initial duration is 1 sec [1000ms]
-                    {
-                        if(_timer != null)
-                        {
-                            lock(_timer)
-                            {
-                                //  MinimumChank = 33000;
-                                _duration = 100; //update x axe
-                                POintstoPlot = (int)(OscilloscopeParameters.ChanelFreq * 0.1);  //update resolution
-                            }
 
-                        }
-                        else
-                        {
-                            _duration = 100; //update x axe
-                            POintstoPlot = (int)(OscilloscopeParameters.ChanelFreq * 0.1);  //update resolution
-                            _yFloats = new float[0];
-                            _yFloats2 = new float[0];
-                        }
-
-                        break;
-                    }
-
-                case (100)://Initial duration is 1 sec [1000ms]
-                    {
-                        if(_timer != null)
-                        {
-                            lock(_timer)
-                            {
-                                //  MinimumChank = 33000;
-                                _duration = 1000; //update x axe
-                                POintstoPlot = (int)(OscilloscopeParameters.ChanelFreq);  //update resolution
-                            }
-
-                        }
-                        else
-                        {
-                            _duration = 1000; //update x axe
-                            POintstoPlot = (int)(OscilloscopeParameters.ChanelFreq);  //update resolution
-                            _yFloats = new float[0];
-                            _yFloats2 = new float[0];
-                        }
-
-                        break;
-                    }
-                case (1000)://Initial duration is 1 sec [1000ms]
-                    {
-                        if(_timer != null)
-                        {
-                            lock(_timer)
-                            {
-                                //  MinimumChank = 33000;
-                                _duration = 5000; //update x axe
-                                POintstoPlot = (int)OscilloscopeParameters.ChanelFreq * 5;  //update resolution
-                            }
-
-                        }
-                        else
-                        {
-                            _duration = 5000; //update x axe
-                            POintstoPlot = (int)OscilloscopeParameters.ChanelFreq * 5;  //update resolution
-                            _yFloats = new float[0];
-                            _yFloats2 = new float[0];
-                        }
-
-                        break;
-                    }
-
-                case (5000)://Initial duration is 5 sec [5000ms]
-                    {
-                        if(_timer != null)
-                        {
-                            lock(_timer)
-                            {
-                                _duration = _duration * 2; //update x axe           
-                                POintstoPlot = (int)OscilloscopeParameters.ChanelFreq * 10;  //update resolution
-                            }
-
-                        }
-                        else
-                        {
-                            _duration = _duration * 2; //update x axe           
-                            POintstoPlot = (int)OscilloscopeParameters.ChanelFreq * 10;  //update resolution
-                            _yFloats = new float[0];
-                            _yFloats2 = new float[0];
-                        }
-
-                        break;
-                    }
-                case (10000)://is 10 seconds, goes to be 30 seconds
-                    {
-
-                        if(_timer != null)
-                        {
-                            lock(_timer)
-                            {
-                                POintstoPlot = (int)OscilloscopeParameters.ChanelFreq * 30;  //update resolution                           
-                                _duration = _duration * 3; //update x axe
-                            }
-                        }
-                        else
-                        {
-                            {
-                                POintstoPlot = (int)OscilloscopeParameters.ChanelFreq * 30;  //update resolution   
-                                _duration = _duration * 3; //update x axe
-                                _yFloats = new float[0];
-                                _yFloats2 = new float[0];
-                            }
-                        }
-
-
-                        break;
-                    }
-                case (30000):///is 30 seconds, goes to be 90 seconds
-                    {
-                        if(_timer != null)
-                        {
-                            lock(_timer)
-                            {
-                                POintstoPlot = (int)OscilloscopeParameters.ChanelFreq * 90;  //update resolution   
-                                _duration = _duration * 3; //update x axe
-                            }
-                        }
-                        else
-                        {
-                            POintstoPlot = (int)OscilloscopeParameters.ChanelFreq * 90;  //update resolution   
-                            _duration = _duration * 3; //update x axe
-                            _yFloats = new float[0];
-                            _yFloats2 = new float[0];
-
-                        }
-                        break;
-
-                    }
-            }
-#endif
             float _temp_duration = _duration;
             _temp_duration *= 1000;
             _xVisibleRange = new DoubleRange(0, _temp_duration); //ubdate visible limits        
-            //XVisibleRange = XLimit;
-
-            //pivot = (int)0;
 
             _isFull = false;
             InitializeAxes();
@@ -386,124 +234,10 @@ namespace MotorController.Views
                 _yFloats = new float[0];
                 _yFloats2 = new float[0];
             }
-#if OLD
-            switch((int)_duration)
-            {
-                case (100):
-                    {
-                        if(_timer != null)
-                        {
-                            lock(_timer)
-                            {
-                                _duration = 10; //update x axe
-                                POintstoPlot = (int)(OscilloscopeParameters.ChanelFreq * 0.01);
-                            } //update resolution                   
-                        }
-                        else
-                        {
-                            _duration = 10; //update x axe
-                            POintstoPlot = (int)(OscilloscopeParameters.ChanelFreq * 0.01);  //update resolution             
-                        }
-                        break;
-                    }
-                case (1000):
-                    {
-                        if(_timer != null)
-                        {
-                            lock(_timer)
-                            {
-                                _duration = 100; //update x axe
-                                POintstoPlot = (int)(OscilloscopeParameters.ChanelFreq * 0.1);
-                            } //update resolution                   
-                        }
-                        else
-                        {
-                            _duration = 100; //update x axe
-                            POintstoPlot = (int)(OscilloscopeParameters.ChanelFreq * 0.1);  //update resolution             
-                        }
-                        break;
-                    }
-                case (5000):
-                    {
-                        if(_timer != null)
-                        {
-                            lock(_timer)
-                            {
-                                _duration = 1000; //update x axe
-                                POintstoPlot = (int)OscilloscopeParameters.ChanelFreq;
-                            } //update resolution                   
-                        }
-                        else
-                        {
-                            _duration = 1000; //update x axe
-                            POintstoPlot = (int)OscilloscopeParameters.ChanelFreq;  //update resolution             
-                        }
-                        break;
-                    }
 
-                case (10000):
-                    {
-                        if(_timer != null)
-                        {
-                            lock(_timer)
-                            {
-                                POintstoPlot = (int)OscilloscopeParameters.ChanelFreq * 5;  //update resolution    
-                                _duration = _duration / 2; //update x axe
-                            }
-                        }
-                        else
-                        {
-                            POintstoPlot = (int)OscilloscopeParameters.ChanelFreq * 5;  //update resolution    
-                            _duration = _duration / 2; //update x axe
-                        }
-
-                        break;
-                    }
-                case (30000)://Initial duration is 30 sec [30000ms], will be 10
-                    {
-                        if(_timer != null)
-                        {
-                            lock(_timer)
-                            {
-                                POintstoPlot = (int)OscilloscopeParameters.ChanelFreq * 10;  //update resolution  
-                                _duration = _duration / 3; //update x axe
-                            }
-                        }
-                        else
-                        {
-                            {
-                                POintstoPlot = (int)OscilloscopeParameters.ChanelFreq * 10;  //update resolution  
-                                _duration = _duration / 3; //update x axe
-                            }
-                        }
-                        break;
-                    }
-                case (90000)://Initial will be 30 sec [15000ms]
-                    {
-                        if(_timer != null)
-                        {
-                            lock(_timer)
-                            {
-                                POintstoPlot = (int)OscilloscopeParameters.ChanelFreq * 30;  //update resolution  
-                                _duration = _duration / 3; //update x axe
-                            }
-                        }
-                        else
-                        {
-                            POintstoPlot = (int)OscilloscopeParameters.ChanelFreq * 30;  //update resolution  
-                            _duration = _duration / 3; //update x axe
-                        }
-                        break;
-                    }
-                default:
-                    return;
-
-            }
-#endif
             float _temp_duration = _duration;
             _temp_duration *= 1000;
             _xVisibleRange = new DoubleRange(0, _temp_duration); //ubdate visible limits        
-            //XVisibleRange = XLimit;
             _undesample = 1;
             pivot = (int)0; //update pivote and move to initial state
             _isFull = false;
@@ -641,10 +375,6 @@ namespace MotorController.Views
         {
             get { return new ActionCommand(() => SetModifier(ModifierType.Null)); }
         }
-        //public ActionCommand SetDigitalLineCommand
-        //{
-        //    get { return new ActionCommand(() => IsDigitalLine = !IsDigitalLine); }
-        //}
         public ActionCommand ResetZoomCommand
         {
             get { return new ActionCommand(ResetZoom); }
@@ -653,49 +383,7 @@ namespace MotorController.Views
         {
             get { return new ActionCommand(ClearGraph); }
         }
-        //public ActionCommand PlotReset
-        //{
-        //    get { return new ActionCommand(() => isReset = true); }
-        //}
         #endregion
-
-        //public bool IsRolloverSelected
-        //{
-        //    get { return ChartModifier == ModifierType.Rollover; }
-        //}
-        //public bool IsCursorSelected
-        //{
-        //    get { return ChartModifier == ModifierType.CrosshairsCursor; }
-        //}
-        //public bool CanExecuteRollover
-        //{
-        //    get { return _canExecuteRollover; }
-        //    set
-        //    {
-        //        if(_canExecuteRollover == value)
-        //            return;
-        //        _canExecuteRollover = value;
-        //        OnPropertyChanged("CanExecuteRollover");
-        //    }
-        //}
-
-        //public new EventHandler doubleClick;
-        //private object isReset = false;
-        //public object IsReset
-        //{
-        //    get
-        //    {
-        //        // System.Windows.Forms.Button temp = new System.Windows.Forms.Button();
-        //        return isReset;
-        //    }
-        //    set
-        //    {
-        //        isReset = value;
-        //        SetModifier(ModifierType.ZoomPan);
-        //        OnPropertyChanged("IsReset");
-        //    }
-        //}
-
         private int ActChenCount = 0;
 
         #region Channels
@@ -705,193 +393,6 @@ namespace MotorController.Views
         private IXyDataSeries<float, float> _series0;
         private IXyDataSeries<float, float> _series1;
 
-        //private int _ch1Index = 0, _ch2Index = 0;
-
-        #region detect_same_index_seleted_in_plot_combobox
-        //public ICommand SelectedItemChanged_Plot1
-        //{
-        //    get
-        //    {
-        //        return new RelayCommand(Send_Plot1, IsEnabled);
-        //    }
-        //}
-        //public ICommand SelectedItemChanged_Plot2
-        //{
-        //    get
-        //    {
-        //        return new RelayCommand(Send_Plot2, IsEnabled);
-        //    }
-        //}
-        //private bool IsEnabled()
-        //{
-        //    return true;
-        //}
-        //private void Send_Plot1()
-        //{
-        //    if(_isOpened)
-        //    {
-        //        SelectedCh1DataSource = Channel1SourceItems.ElementAt(Ch1SelectedIndex);
-        //        _isOpened = false;
-        //    }
-        //    else
-        //        _isOpened = false;
-        //}
-        //private void Send_Plot2()
-        //{
-        //    if(_isOpened)
-        //    {
-        //        SelectedCh2DataSource = Channel2SourceItems.ElementAt(Ch2SelectedIndex);
-        //        _isOpened = false;
-        //    }
-        //    else
-        //        _isOpened = false;
-        //}
-        //public ICommand ComboDropDownOpened
-        //{
-        //    get { return new RelayCommand(ComboDropDownOpenedFunc, IsEnabled); }
-        //}
-        //public ICommand ComboDropDownClosed
-        //{
-        //    get { return new RelayCommand(ComboDropDownClosedFunc, IsEnabled); }
-        //}
-        //private static bool _isOpened = false;
-        //private void ComboDropDownOpenedFunc()
-        //{
-        //    _isOpened = true;
-        //}
-        //private void ComboDropDownClosedFunc()
-        //{
-        //    _isOpened = false;
-        //}
-        //private bool _chComboEn = false;
-        //public bool ChComboEn
-        //{
-        //    get { return _chComboEn; }
-        //    set { if(_chComboEn == value) return; _chComboEn = value; OnPropertyChanged("ChComboEn"); }
-        //}
-        #endregion detect_same_index_seleted_in_plot_combobox
-        //public int Ch1SelectedIndex
-        //{
-        //    get { return _ch1Index; }
-        //    set
-        //    {
-        //        if(value < 0)
-        //            value = 0;
-        //        _ch1Index = value;
-        //        OnPropertyChanged("Ch1SelectedIndex");
-        //    }
-        //}
-        //public int Ch2SelectedIndex
-        //{
-        //    get { return _ch2Index; }
-        //    set
-        //    {
-        //        if(value < 0)
-        //            value = 0;
-        //        _ch2Index = value;
-        //        OnPropertyChanged("Ch2SelectedIndex");
-        //    }
-        //}
-        //public string SelectedCh1DataSource
-        //{
-        //    get { return _selectedCh1DataSource; }
-        //    set
-        //    {
-        //        _selectedCh1DataSource = value;
-        //        StackTrace stackTrace = new StackTrace();
-
-        //        if(stackTrace.GetFrame(1).GetMethod().Name != "UpdateModel" || LeftPanelViewModel.GetInstance.StarterOperationFlag)
-        //        {
-        //            lock(ParserRayonM1.PlotListLock)
-        //            {
-        //                ch1 = _channel1SourceItems.IndexOf(_selectedCh1DataSource);
-        //                ChannelsYaxeMerge(ch1, 1);
-
-        //                //y axle update
-        //                if(Rs232Interface.GetInstance.IsSynced)
-        //                {
-        //                    //Send command to the target 
-        //                    PacketFields RxPacket;
-        //                    RxPacket.ID = 60;
-        //                    RxPacket.IsFloat = false;
-        //                    RxPacket.IsSet = true;
-        //                    RxPacket.SubID = 1;
-        //                    RxPacket.Data2Send = ch1;
-        //                    //rise event
-        //                    Rs232Interface.GetInstance.SendToParser(RxPacket);
-        //                    ChannelsplotActivationMerge();
-        //                }
-        //                else
-        //                {
-        //                    if(OscilloscopeParameters.ScaleAndGainList.Count != 0)
-        //                    {
-        //                        _yzoom = OscilloscopeParameters.ScaleAndGainList[ch1].Item2;
-        //                        YLimit = new DoubleRange(-_yzoom, _yzoom); //ubdate visible limits        
-        //                        YVisibleRange = YLimit;
-        //                    }
-        //                }
-        //            }
-        //        }
-
-        //        //update step
-        //        StepRecalcMerge();
-        //        //update y axes
-        //        ChannelYtitles.TryGetValue(_selectedCh1DataSource, out _ch1Title);
-        //        YaxeTitle = _ch1Title == _ch2Title ? _ch1Title : "";
-
-        //        OnPropertyChanged("SelectedCh1DataSource");
-
-        //    }
-        //}
-        //public string SelectedCh2DataSource
-        //{
-        //    get { return _selectedCh2DataSource; }
-        //    set
-        //    {
-        //        _selectedCh2DataSource = value;
-        //        StackTrace stackTrace = new StackTrace();
-        //        if(stackTrace.GetFrame(1).GetMethod().Name != "UpdateModel" || LeftPanelViewModel.GetInstance.StarterOperationFlag)
-        //        {
-        //            lock(ParserRayonM1.PlotListLock)
-        //            {
-        //                ch2 = _channel1SourceItems.IndexOf(_selectedCh2DataSource);
-        //                //y axle update
-        //                ChannelsYaxeMerge(ch2, 2);
-
-        //                if(Rs232Interface.GetInstance.IsSynced)
-        //                {
-        //                    //Send command to the target 
-        //                    PacketFields RxPacket;
-        //                    RxPacket.ID = 60;
-        //                    RxPacket.IsFloat = false;
-        //                    RxPacket.IsSet = true;
-        //                    RxPacket.SubID = 2;
-        //                    RxPacket.Data2Send = ch2;
-        //                    //rise event
-        //                    Rs232Interface.GetInstance.SendToParser(RxPacket);
-        //                    ChannelsplotActivationMerge();
-        //                }
-        //                else
-        //                {
-        //                    if(OscilloscopeParameters.ScaleAndGainList.Count != 0)
-        //                    {
-        //                        _yzoom = OscilloscopeParameters.ScaleAndGainList[ch2].Item2;
-        //                        YLimit = new DoubleRange(-_yzoom, _yzoom); //ubdate visible limits        
-        //                        YVisibleRange = YLimit;
-        //                    }
-        //                }
-        //            }
-        //        }
-        //        //update step
-        //        StepRecalcMerge();
-        //        //update y axes
-        //        ChannelYtitles.TryGetValue(_selectedCh2DataSource, out _ch2Title);
-        //        //update tittle
-        //        YaxeTitle = _ch1Title == _ch2Title ? _ch1Title : "";
-
-        //        OnPropertyChanged("SelectedCh2DataSource");
-        //    }
-        //}
         public void ChannelsplotActivationMerge()
         {
             //Activate plot
@@ -899,11 +400,6 @@ namespace MotorController.Views
             {
                 ChartData = new XyDataSeries<float, float>();
                 ChartData1 = new XyDataSeries<float, float>();
-
-                //_series0.Clear();
-                //ChartData = _series0;
-                //_series1.Clear();
-                //ChartData1 = _series1;
 
                 OnExampleEnter();
                 plotActivationstate = 1;
@@ -953,10 +449,6 @@ namespace MotorController.Views
                     ChartData = new XyDataSeries<float, float>();
                 if(ChartData1 == null)
                     ChartData1 = new XyDataSeries<float, float>();
-                //if(_series0 == null)
-                //    _series0 = new XyDataSeries<float, float>();
-                //if(_series1 == null)
-                //    _series1 = new XyDataSeries<float, float>();
 
                 using(ChartData.SuspendUpdates())
                 {
@@ -1025,39 +517,6 @@ namespace MotorController.Views
             }
 
             _update_pivot_buffer();
-            /*
-            OscilloscopeParameters.ChanelFreq = OscilloscopeParameters.ChanTotalCounter == 0 ? OscilloscopeParameters.SingleChanelFreqC : OscilloscopeParameters.SingleChanelFreqC / OscilloscopeParameters.ChanTotalCounter;
-            int ActualPOintstoPlot = POintstoPlot;//Actual points to plot transit value
-            POintstoPlot = (int)(OscilloscopeParameters.ChanelFreq * _duration);
-
-            if(ActualPOintstoPlot != POintstoPlot)//Reset
-            {
-                ActChenCount = 1;
-                _isFull = false;
-                pivot = 0;
-                if(ChartData == null)
-                    ChartData = new XyDataSeries<float, float>();
-                if(ChartData1 == null)
-                    ChartData1 = new XyDataSeries<float, float>();
-                //if(_series0 == null)
-                //    _series0 = new XyDataSeries<float, float>();
-                //if(_series1 == null)
-                //    _series1 = new XyDataSeries<float, float>();
-
-                using(ChartData.SuspendUpdates())
-                {
-                    using(ChartData1.SuspendUpdates())
-                    {
-                        ChartData.Clear();
-                        ChartData1.Clear();
-                    }
-                }
-                _yFloats = new float[0];
-                _yFloats2 = new float[0];
-                AllYData.Clear();
-            }
-
-            */
         }
         public void StepRecalcMerge()
         {
@@ -1137,6 +596,8 @@ namespace MotorController.Views
         {
             try
             {
+                if(ChartData == null || ChartData1 == null)
+                    return;
                 float maxval = 0, minval = 0;
                 _xVisibleRange = new DoubleRange(0, _duration * 1000);
 
@@ -1160,6 +621,8 @@ namespace MotorController.Views
             {
                 try
                 {
+                    if(ChartData == null || ChartData1 == null)
+                        return;
                     using(this.ChartData.SuspendUpdates())
                     {
                         using(this.ChartData1.SuspendUpdates())
@@ -1176,32 +639,6 @@ namespace MotorController.Views
                 catch(Exception) { }
             }
         }
-        //public string YaxeTitle
-        //{
-        //    get { return _yaxeTitle; }
-        //    set
-        //    {
-        //        if(_yaxeTitle == value)
-        //            return;
-        //        else
-        //        {
-        //            _yaxeTitle = value;
-        //        }
-        //        OnPropertyChanged("YaxeTitle");
-        //    }
-        //}
-        //public bool IsDigitalLine
-        //{
-        //    get { return _isDigitalLine; }
-        //    set
-        //    {
-        //        if(_isDigitalLine == value)
-        //            return;
-
-        //        _isDigitalLine = value;
-        //        OnPropertyChanged("IsDigitalLine");
-        //    }
-        //}
         public DoubleRange YVisibleRange
         {
             get { return _yVisibleRange; }
@@ -1214,68 +651,18 @@ namespace MotorController.Views
                 OnPropertyChanged("YVisibleRange");
             }
         }
-        private string _yAxisUnits = "";
-        public string YAxisUnits
-        {
-            get { return _yAxisUnits; }
-            set
-            {
-                if(_yAxisUnits == value)
-                    return;
-                _yAxisUnits = value;
-                OnPropertyChanged("YAxisUnits");
-#if OLD
-                if(_yAxisUnits != null)
-                {
-                    char[] separator = { ':', ',' };
-                    string[] words = _yAxisUnits.Split(separator);
-                    string[] newWords = value.Split(separator);
-                    if(words[0] == "" && newWords[0] == "CH1" && newWords[1] != " ")
-                    {
-                        value = "CH1:" + newWords[1];
-                    }
-                    else if(words[0] == "CH1" && newWords[0] == "CH1")
-                    {
-                        if(words.Length < 3 && newWords[1] != " ")
-                            value = "CH1:" + newWords[1];
-                        else if(newWords[1] == " " && words.Length > 3)
-                            value = "CH2:" + words[3];
-                        else if(words.Length > 3)
-                            value = "CH1:" + newWords[1] + ", CH2:" + words[3];
-                        else if(words.Length < 3 && newWords[1] == " ")
-                            value = "";
-                    }
-                    else if(words[0] == "CH1" && newWords[0] == "CH2")
-                    {
-                        if(words[1] == " " && newWords[1] == " ")
-                            value = "";
-                        else if(words[1] == " " && newWords[1] != " ")
-                            value = "CH2:" + newWords[1];
-                        else if(words[1] != " " && newWords[1] == " ")
-                            value = "CH1:" + words[1];
-                        else
-                            value = "CH1:" + words[1] + ", CH2:" + newWords[1];
-                    }
-                    else if(words[0] == "CH2" && newWords[0] == "CH1")
-                    {
-                        value = "CH1:" + newWords[1] + ", CH2:" + words[1];
-                    }
-                    else if(words[0] == "CH2" && newWords[0] == "CH2")
-                    {
-                        if(words.Length < 3 && newWords[1] != " ")
-                            value = "CH2:" + newWords[1];
-                        else
-                            value = "";
-                    }
-                    else
-                        value = "";
-                    _yAxisUnits = value;
-                }
-
-                OnPropertyChanged("YAxisUnits");
-#endif
-            }
-        }
+        //private string _yAxisUnits = "";
+        //public string YAxisUnits
+        //{
+        //    get { return _yAxisUnits; }
+        //    set
+        //    {
+        //        if(_yAxisUnits == value)
+        //            return;
+        //        _yAxisUnits = value;
+        //        OnPropertyChanged("YAxisUnits");
+        //    }
+        //}
         public ModifierType ChartModifier
         {
             get { return _chartModifier; }
@@ -1285,17 +672,6 @@ namespace MotorController.Views
                 OnPropertyChanged("ChartModifier");
                 OnPropertyChanged("IsRolloverSelected");
                 OnPropertyChanged("IsCursorSelected");
-            }
-        }
-        public ResamplingMode SeriesResamplingMode
-        {
-            get { return _resamplingMode; }
-            set
-            {
-                if(_resamplingMode == value)
-                    return;
-                _resamplingMode = value;
-                OnPropertyChanged("SeriesResamplingMode");
             }
         }
         private void SetModifier(ModifierType modifierType)
@@ -1348,9 +724,8 @@ namespace MotorController.Views
         private float[] yDataTemp;
         private float[] yDataTemp2;
         public static bool _chartRunning = false;
-        /* On ticj function */
-        //float item;
-        //float item2;
+        /* On tick function */
+
         List<float> ytemp = new List<float>();
         List<float> ytemp2 = new List<float>();
 
@@ -1361,61 +736,22 @@ namespace MotorController.Views
         private int IntegerFactor = 1;
         float calcFactor(float dataSample, int ChNo)
         {
-            //string plotType = "";
-            //if((OscilloscopeParameters.plotType_ls.Count != 0)/* && (Ch1SelectedIndex > 0 || Ch2SelectedIndex > 0)*/)
+            switch(/*plotType*/((UC_ChannelViewModel)Commands.GetInstance.GenericCommandsList[
+                    new Tuple<int, int>(
+                        ((int)((UC_ChannelViewModel)Commands.GetInstance.GenericCommandsGroup["ChannelsList"][ChNo - 1]).CommandId),
+                        ((int)((UC_ChannelViewModel)Commands.GetInstance.GenericCommandsGroup["ChannelsList"][ChNo - 1]).CommandSubId))]).PlotType)
             {
-                //switch(ChNo)
-                //{
-                //    case 1:
-                //        plotType = OscilloscopeParameters.plotType_ls.ElementAt(Ch1SelectedIndex);
-                //        break;
-                //    case 2:
-                //        plotType = OscilloscopeParameters.plotType_ls.ElementAt(Ch2SelectedIndex);
-                //        break;
-                //}
-                switch(/*plotType*/((UC_ChannelViewModel)Commands.GetInstance.GenericCommandsList[
-                        new Tuple<int, int>(
-                            ((int)((UC_ChannelViewModel)Commands.GetInstance.GenericCommandsGroup["ChannelsList"][ChNo - 1]).CommandId),
-                            ((int)((UC_ChannelViewModel)Commands.GetInstance.GenericCommandsGroup["ChannelsList"][ChNo - 1]).CommandSubId))]).PlotType)
-                {
-                    case "Integer":
-                        return dataSample * IntegerFactor;
-                    case "Int32":
-                        return dataSample;
-                    case "Float":
-                    case "Iq24":
-                    case "Iq15":
-                    default:
-                        return dataSample * iqFactor;
-                }
+                case "Integer":
+                    return dataSample * IntegerFactor;
+                case "Int32":
+                    return dataSample;
+                case "Float":
+                case "Iq24":
+                case "Iq15":
+                default:
+                    return dataSample * iqFactor;
             }
-            //else
-            //  return dataSample * iqFactor;
         }
-        //private string _ch1Gain = "1";
-        //public string Ch1Gain
-        //{
-        //    get { return _ch1Gain; }
-        //    set
-        //    {
-        //        if(value == _ch1Gain || value == "")
-        //            return;
-        //        _ch1Gain = value;
-        //        OnPropertyChanged("Ch1Gain");
-        //    }
-        //}
-        //private string _ch2Gain = "1";
-        //public string Ch2Gain
-        //{
-        //    get { return _ch2Gain; }
-        //    set
-        //    {
-        //        if(value == _ch2Gain || value == "")
-        //            return;
-        //        _ch2Gain = value;
-        //        OnPropertyChanged("Ch2Gain");
-        //    }
-        //}
         float SubGain1 = 1, SubGain2 = 1;
         private void OnTick(object sender, EventArgs e)
         {
@@ -1429,9 +765,6 @@ namespace MotorController.Views
                         new Tuple<int, int>(
                             ((int)((UC_ChannelViewModel)Commands.GetInstance.GenericCommandsGroup["ChannelsList"][1]).CommandId),
                             ((int)((UC_ChannelViewModel)Commands.GetInstance.GenericCommandsGroup["ChannelsList"][1]).CommandSubId))]).Gain);
-                //float SubGain1 = Convert.ToSingle(Ch1Gain);
-                //float SubGain2 = Convert.ToSingle(Ch2Gain);
-
                 if(!IsFreeze)
                 {
                     lock(_timer)
@@ -1934,24 +1267,7 @@ namespace MotorController.Views
             }
 
         }
-        //public static float[] SubArray(float[] data, int index, int length)
-        //{
-        //    float[] result = new float[length];
-        //    Array.Copy(data, index, result, 0, length);
-        //    return result;
-        //}
-        //private DoubleRange _xLimit;
-        //public DoubleRange XLimit
-        //{
-        //    get { return _xLimit; }
-        //    set
-        //    {
-        //        if(_xLimit == value)
-        //            return;
-        //        _xLimit = value;
-        //        OnPropertyChanged("XLimit");
-        //    }
-        //}
+       
         private DoubleRange _yLimit;
         public DoubleRange YLimit
         {
@@ -2245,6 +1561,17 @@ namespace MotorController.Views
                 _channelsList = value;
                 OnPropertyChanged();
             }
+        }
+        public ICommand MouseWheelChart
+        {
+            get
+            {
+                return new RelayCommand(MouseWheelChartFunc);
+            }
+        }
+        private void MouseWheelChartFunc(object sender)
+        {
+
         }
     }
 }

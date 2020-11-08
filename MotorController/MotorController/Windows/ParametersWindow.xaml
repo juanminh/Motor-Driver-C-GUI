@@ -374,7 +374,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Bode" TabIndex="8" DataContext="{Binding BodeViewModel}" Background="Black" Foreground="White" >
+            <!--<TabItem Header="Bode" TabIndex="8" DataContext="{Binding BodeViewModel}" Background="Black" Foreground="White" >
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="5"/>
@@ -389,9 +389,9 @@
                             <RowDefinition Height="0.01*"/>
                             <RowDefinition Height="0.5*"/>
                         </Grid.RowDefinitions>
-                        <!--http://support.scichart.com/index.php?/Knowledgebase/Article/View/17227/36/performance-tips-and-tricks-->
+                        --><!--http://support.scichart.com/index.php?/Knowledgebase/Article/View/17227/36/performance-tips-and-tricks-->
 
-                        <!---->
+                        <!----><!--
                         <s:SciChartSurface 
                             Name="Y1_Magnitude"
                             Grid.Row="1"
@@ -431,7 +431,7 @@
                                     </s:NumericAxis.GrowBy>
                                 </s:NumericAxis>
                             </s:SciChartSurface.YAxis>
-                            <!--Create ChartModifiers, which are enabled or disabled from the ViewModel via the ChartModifier property and IsModifierTypeConverter-->
+                            --><!--Create ChartModifiers, which are enabled or disabled from the ViewModel via the ChartModifier property and IsModifierTypeConverter--><!--
                         <s:SciChartSurface.ChartModifier>
                             <s:ModifierGroup>
                                 <s:CursorModifier AxisLabelTemplate="{StaticResource CursorAxisLabelTemplate}" 
@@ -482,7 +482,7 @@
                                 </s:FastLineRenderableSeries>
                             </s:SciChartSurface.RenderableSeries>
 
-                            <!--Create ChartModifiers, which are enabled or disabled from the ViewModel via the ChartModifier property and IsModifierTypeConverter-->
+                            --><!--Create ChartModifiers, which are enabled or disabled from the ViewModel via the ChartModifier property and IsModifierTypeConverter--><!--
                             <s:SciChartSurface.ChartModifier>
                                 <s:ModifierGroup>
                                     <s:XAxisDragModifier />
@@ -512,7 +512,7 @@
                                     <RowDefinition Height="Auto"/>
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0" Text="Graph tools palette" Foreground="White" Background="{StaticResource HeaderTextblockBackground}" FontSize="14" TextDecorations="Underline" FontWeight="DemiBold"/>
-                                <!--<TextBlock Grid.Row="0" Width="230" Text="Graph tools palette" Foreground="White" Background="Gray" HorizontalAlignment="Left"/>-->
+                                --><!--<TextBlock Grid.Row="0" Width="230" Text="Graph tools palette" Foreground="White" Background="Gray" HorizontalAlignment="Left"/>--><!--
                                 <Grid Grid.Row="1" HorizontalAlignment="Center">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="auto"/>
@@ -580,7 +580,7 @@
                                     <RowDefinition Height="auto"/>
                                 </Grid.RowDefinitions>
                                 <TextBlock Grid.Row="0" Text="Parameters" Foreground="White" Background="{StaticResource HeaderTextblockBackground}" FontSize="14" TextDecorations="Underline" FontWeight="DemiBold"/>
-                                <!--<TextBlock Grid.Row="0" Text="Parameters" Foreground="White" Background="Gray" Margin="0,0,-1,0"/>-->
+                                --><!--<TextBlock Grid.Row="0" Text="Parameters" Foreground="White" Background="Gray" Margin="0,0,-1,0"/>--><!--
                                 <Grid Grid.Row="2">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
@@ -648,7 +648,7 @@
                         </Border>
                     </Grid>
                 </Grid>
-            </TabItem>
+            </TabItem>-->
             <TabItem Header="Maintenance" TabIndex="9" DataContext="{Binding MaintenanceViewModel}" Background="Black" Foreground="White" >
                 <Grid>
                     <Grid.ColumnDefinitions>

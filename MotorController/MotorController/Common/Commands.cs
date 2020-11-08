@@ -119,7 +119,7 @@ namespace MotorController.Common
                 Data = new DataViewModel
                 {
                     CommandName = EnumHelper.GetNames(Enum.GetNames(typeof(eDeviceInfo))).ElementAt(i),
-                    CommandId = ((int)eDeviceInfo.ID).ToString(),//((int)EnumHelper.GetEnumValue<eDeviceInfo>(Enum.GetNames(typeof(eDeviceInfo)).ElementAt(0))).ToString(),
+                    CommandId = ((int)eDeviceInfo.ID).ToString(),
                     CommandSubId = ((int)EnumHelper.GetEnumValue<eDeviceInfo>(Enum.GetNames(typeof(eDeviceInfo)).ElementAt(i))).ToString(),
                     IsFloat = false,
                     FontSize = DataViewModel_FontSize,
@@ -130,19 +130,7 @@ namespace MotorController.Common
                 if(i < 3)
                     addData(typeof(DataViewModel), Data, "LPCommands List");
             }
-
-            //Data = new DataViewModel
-            //{
-            //    CommandName = "FW Rev",
-            //    CommandId = "62",
-            //    CommandSubId = "3",
-            //    CommandValue = "",
-            //    IsFloat = false,
-            //    FontSize = DataViewModel_FontSize,
-            //    ReadOnly = true
-            //};
-            //addData(typeof(DataViewModel), Data, "LPCommands List");
-
+            
             Enums.Add("Baudrate", EnumHelper.GetNames(Enum.GetNames(typeof(eBaudRate))).ToList());
 
             eData = new EnumViewModel
@@ -467,7 +455,7 @@ namespace MotorController.Common
 
             };
             addData(typeof(EnumViewModel), eData, "Control");
-            
+            addData(typeof(EnumViewModel), eData, "BPOpMode");
             var tmp2 = new List<string>
              {
                 "Brushed",
@@ -643,7 +631,7 @@ namespace MotorController.Common
                 IsFloat = true,
                 FontSize = DataViewModel_FontSize
             };
-            addData(typeof(DataViewModel), Data, "MotionCommand List");
+            addData(typeof(DataViewModel), Data, "TorqueControl");
 
             Data = new DataViewModel
             {
@@ -654,7 +642,7 @@ namespace MotorController.Common
                 IsFloat = false,
                 FontSize = DataViewModel_FontSize
             };
-            addData(typeof(DataViewModel), Data, "MotionCommand List");
+            addData(typeof(DataViewModel), Data, "SpeedControl");
 
             Data = new DataViewModel
             {
@@ -665,7 +653,7 @@ namespace MotorController.Common
                 IsFloat = false,
                 FontSize = DataViewModel_FontSize
             };
-            addData(typeof(DataViewModel), Data, "MotionCommand List");
+            addData(typeof(DataViewModel), Data, "SpeedControl");
 
             Data = new DataViewModel
             {
@@ -676,7 +664,7 @@ namespace MotorController.Common
                 IsFloat = false,
                 FontSize = DataViewModel_FontSize
             };
-            addData(typeof(DataViewModel), Data, "MotionCommand List");
+            addData(typeof(DataViewModel), Data, "PositionControl");
 
             Data = new DataViewModel
             {
@@ -688,8 +676,8 @@ namespace MotorController.Common
                 IsSelected = false,
                 FontSize = DataViewModel_FontSize
             };
-            addData(typeof(DataViewModel), Data, "MotionCommand List");
-
+            addData(typeof(DataViewModel), Data, "PositionControl");
+            
             Data = new DataViewModel
             {
                 CommandName = "Position Relative [C]",
@@ -699,7 +687,7 @@ namespace MotorController.Common
                 IsFloat = false,
                 FontSize = DataViewModel_FontSize
             };
-            addData(typeof(DataViewModel), Data, "MotionCommand List");
+            addData(typeof(DataViewModel), Data, "PositionControl");
 
             Data = new DataViewModel
             {
@@ -983,50 +971,7 @@ namespace MotorController.Common
         }
         public void GenerateLPCommands()
         {
-            #region Commands1
-            Data = new DataViewModel
-            {
-                CommandName = "SN",
-                CommandId = "62",
-                CommandSubId = "1",
-                CommandValue = "",
-                IsFloat = false
-            };
-            //addData(typeof(DataViewModel), Data, "LPCommands List");
-
-            //DataViewCommandsListLP.Add(new Tuple<int, int>(62, 1), data);
-            //if(!GenericCommandsList.ContainsKey(new Tuple<int, int>(Convert.ToInt16(Data.CommandId), Convert.ToInt16(Data.CommandSubId))))
-            //    GenericCommandsList.Add(new Tuple<int, int>(Convert.ToInt16(Data.CommandId), Convert.ToInt16(Data.CommandSubId)), Data);
-            //DataCommandsListbySubGroup["LPCommands List"].Add(data);
-
-            Data = new DataViewModel
-            {
-                CommandName = "HW Rev",
-                CommandId = "62",
-                CommandSubId = "2",
-                CommandValue = "",
-                IsFloat = false,
-            };
-            //addData(typeof(DataViewModel), Data, "LPCommands List");
-
-            //DataViewCommandsListLP.Add(new Tuple<int, int>(62, 2), data);
-            //if(!GenericCommandsList.ContainsKey(new Tuple<int, int>(Convert.ToInt16(Data.CommandId), Convert.ToInt16(Data.CommandSubId))))
-            //    GenericCommandsList.Add(new Tuple<int, int>(Convert.ToInt16(Data.CommandId), Convert.ToInt16(Data.CommandSubId)), Data);
-            //DataCommandsListbySubGroup["LPCommands List"].Add(data);
-
-            
-
-            //DataViewCommandsListLP.Add(new Tuple<int, int>(62, 3), data);
-            //DataViewCommandsList.Add(new Tuple<int, int>(62, 3), data);
-            //if(!GenericCommandsList.ContainsKey(new Tuple<int, int>(Convert.ToInt16(Data.CommandId), Convert.ToInt16(Data.CommandSubId))))
-            //    GenericCommandsList.Add(new Tuple<int, int>(Convert.ToInt16(Data.CommandId), Convert.ToInt16(Data.CommandSubId)), Data);
-            //if(!DataCommandsListbySubGroup.ContainsKey("LPCommands List"))
-            //    DataCommandsListbySubGroup.Add("LPCommands List", new ObservableCollection<object>());
-
-            //DataCommandsListbySubGroup["LPCommands List"].Add(Data);
-            #endregion Commands1
-
-            #region Command3
+           #region Command3
             Data = new DataViewModel
             {
                 CommandName = "Driver Status",
@@ -1171,26 +1116,6 @@ namespace MotorController.Common
                     IsFloat = true,
                 };
             }
-        }
-        private void UpperMainPannelList()
-        {
-            Data = new DataViewModel
-            {
-                CommandName = "CH1",
-                CommandId = "60",
-                CommandSubId = "1",
-                CommandValue = "",
-                IsFloat = false,
-            };
-
-            Data = new DataViewModel
-            {
-                CommandName = "CH2",
-                CommandId = "60",
-                CommandSubId = "2",
-                CommandValue = "",
-                IsFloat = false,
-            };
         }
         private void CalibrationCmd()
         {
@@ -1479,13 +1404,6 @@ namespace MotorController.Common
                     if(!GenericCommandsGroup.ContainsKey(destination_list))
                         GenericCommandsGroup.Add(destination_list, new ObservableCollection<object>());
                     GenericCommandsGroup[destination_list].Add((EnumViewModel)_data);
-                    break;
-                case "CalibrationButtonModel":
-                    //if(!GenericCommandsList.ContainsKey(new Tuple<int, int>(Convert.ToInt16(((CalibrationButtonModel)_data).CommandId), Convert.ToInt16(((CalibrationButtonModel)_data).CommandSubId))))
-                    //    GenericCommandsList.Add(new Tuple<int, int>(Convert.ToInt16(((CalibrationButtonModel)_data).CommandId), Convert.ToInt16(((CalibrationButtonModel)_data).CommandSubId)), (CalibrationButtonModel)_data);
-                    //if(!CalibartionCommandsListbySubGroup.ContainsKey(destination_list))
-                    //    CalibartionCommandsListbySubGroup.Add(destination_list, new ObservableCollection<object>());
-                    //CalibartionCommandsListbySubGroup[destination_list].Add((CalibrationButtonModel)_data);
                     break;
                 case "UC_ToggleSwitchViewModel":
                     if(!GenericCommandsList.ContainsKey(new Tuple<int, int>(Convert.ToInt16(((UC_ToggleSwitchViewModel)_data).CommandId), Convert.ToInt16(((UC_ToggleSwitchViewModel)_data).CommandSubId))))

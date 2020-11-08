@@ -104,7 +104,7 @@
         <SolidColorBrush x:Key="HeaderTextblockBackground" Color="Transparent" />
 
     </Window.Resources>
-    <Grid>
+    <Grid DataContext="{Binding BodeWindowDataContext}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="5"/>
             <ColumnDefinition Width="*"/>

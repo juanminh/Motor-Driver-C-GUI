@@ -229,6 +229,7 @@
     <Compile Include="Helpers\iniFile.cs" />
     <Compile Include="Helpers\RecLed.cs" />
     <Compile Include="Helpers\RoundBoolLed.cs" />
+    <Compile Include="Helpers\AxisMouseWheelModifier.cs" />
     <Compile Include="ViewModels\BodeViewModel.cs" />
     <Compile Include="ViewModels\BodeWindowViewModel.cs" />
     <Compile Include="ViewModels\BoolViewIndModel.cs" />

@@ -40,10 +40,10 @@ namespace MotorController.Models
 
         public string[] GroupToExecute(int tabIndex)
         {
-            string[] PanelElements = new string[] { "DriverStatus List", "Channel List", "MotionCommand List2", "MotionCommand List",
+            string[] PanelElements = new string[] { "DriverStatus List", "Channel List", "MotionCommand List2", "TorqueControl", "SpeedControl", "PositionControl",
                                                     "Profiler Mode", "S.G.List", "S.G.Type", "BP_ToggleSwitch",
                                                     "MotionStatus List", "Digital Input List", "Position counters List",
-                                                    "UpperMainPan List", "LPCommands List", "ChannelsList", "MotorControl" };
+                                                    "UpperMainPan List", "LPCommands List", "ChannelsList", "MotorControl", "BPOpMode" };
             string[] arr = new string[] { };
             if(DebugViewModel.GetInstance.EnRefresh)
             {
@@ -412,22 +412,22 @@ namespace MotorController.Models
                 }
             }
         }
-        string CalibrationGetStatus(string returnedValue)
-        {
-            switch(Convert.ToInt16(returnedValue))
-            {
-                case 0:
-                    return "Idle";
-                case 1:
-                    return "In Process";
-                case 2:
-                    return "Failure";
-                case 3:
-                    return "Success";
-                default:
-                    return "No Info(" + returnedValue + ")";
-            }
-        }
+        //string CalibrationGetStatus(string returnedValue)
+        //{
+        //    switch(Convert.ToInt16(returnedValue))
+        //    {
+        //        case 0:
+        //            return "Idle";
+        //        case 1:
+        //            return "In Process";
+        //        case 2:
+        //            return "Failure";
+        //        case 3:
+        //            return "Success";
+        //        default:
+        //            return "No Info(" + returnedValue + ")";
+        //    }
+        //}
         int CalibStatus(string returnedValue)
         {
             int StateTemp = 0;
@@ -595,7 +595,6 @@ namespace MotorController.Models
                                 if(!String.IsNullOrEmpty(sub_temp))
                                     temp += sub_temp;
                             }
-                            //OscilloscopeViewModel.GetInstance.YAxisUnits = temp;
                             break;
                     }
                 }

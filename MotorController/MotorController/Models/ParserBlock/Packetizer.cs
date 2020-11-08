@@ -97,8 +97,7 @@ namespace MotorController.Models.ParserBlock
                     }               //send to plot parser  
                     if(PlotBodePacketsList.Count > 0)
                     {
-                        //BodeViewModel.GetInstance.ParseBodePlot(PlotBodePacketsList);
-                        BodeWindowViewModel.GetInstance.ParseBodePlot(PlotBodePacketsList);
+                        BodeViewModel.GetInstance.ParseBodePlot(PlotBodePacketsList);
                         PlotBodePacketsList.Clear();
                     }
                     if(StandartPacketsListNew.Count > 0)
