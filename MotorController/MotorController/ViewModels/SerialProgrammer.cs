@@ -626,7 +626,7 @@ namespace MotorController.ViewModels
             equal = 0;
             timeout = 0;
             PortChat.GetInstance._packetsList.Clear();
-
+            Debug.WriteLine(DateTime.Now.ToString("hh.mm.ss.ffffff"));
             expectedResponse = new byte[] { (byte)(_checkSum & 0xFF), (byte)(_checkSum >> 8) };
             PortChat.Send(_header);
             while(wait && timeout < MAX_TIMEOUT)
@@ -655,6 +655,7 @@ namespace MotorController.ViewModels
             }
             else
                 EventRiser.Instance.RiseEevent(string.Format($"Erase sucess"));
+            Debug.WriteLine(DateTime.Now.ToString("hh.mm.ss.ffffff"));
             return true;
         }
         public bool program()

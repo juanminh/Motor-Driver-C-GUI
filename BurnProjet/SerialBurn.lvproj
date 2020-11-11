@@ -14,6 +14,7 @@
 			<Item Name="Motor Controller (64 bits).msi" Type="Document" URL="../../SuperButton MotorController/Setup x64/Release/Motor Controller (64 bits).msi"/>
 			<Item Name="setup.exe" Type="Document" URL="../../SuperButton MotorController/Setup x64/Release/setup.exe"/>
 		</Item>
+		<Item Name="InsertSN.vi" Type="VI" URL="../Functions/InsertSN.vi"/>
 		<Item Name="Programmer.vi" Type="VI" URL="../Programmer.vi"/>
 		<Item Name="SerialProgrammer.ini" Type="Document" URL="../data/SerialProgrammer.ini"/>
 		<Item Name="seriaporgrammer_X5P_icon.ico" Type="Document" URL="../data/seriaporgrammer_X5P_icon.ico"/>

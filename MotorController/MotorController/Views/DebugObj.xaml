@@ -6,7 +6,7 @@
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
       xmlns:Helpers="clr-namespace:MotorController.Helpers"
       mc:Ignorable="d" 
-      d:DesignHeight="30" d:DesignWidth="490">
+      d:DesignHeight="30" d:DesignWidth="470">
     <UserControl.Resources>
         <Style x:Key="ExampleToolbarButtonStyle"
            BasedOn="{StaticResource DefaultButtonStyle}"
@@ -25,25 +25,25 @@
         </Style>
     </UserControl.Resources>
     <!---->
-        <Border BorderBrush="White" BorderThickness="1" CornerRadius="4">
+        <Border BorderBrush="White" BorderThickness="1" CornerRadius="1">
 
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="0"/>
-            <ColumnDefinition Width="1"/>
+            <ColumnDefinition Width="0"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="1"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="1"/>
             <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="10"/>
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="10"/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <!-- new object view -->
-        <!-- Button Add/Remove -->
-        
+    <!-- Button Add/Remove -->
+
     <!--<Button Grid.Column="0" Command="{Binding AddCommand}" Style="{StaticResource ExampleToolbarButtonStyle}" Height="25" Width="25" BorderBrush="#FFF3F3F3" BorderThickness="0" Visibility="{Binding AddButtonVisibility}">
         <StackPanel Orientation="Horizontal">
             <Image Margin="0"
@@ -142,12 +142,23 @@
                               Foreground="White"
                               Content="Get">
         </Button>
-        <TextBox Grid.Column="1" Width="100"
+        <StackPanel Grid.Column="1" Orientation="Horizontal">
+            <TextBox Width="100"
                            Text="{Binding GetData, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                            Foreground="White" FontSize="12"
                            VerticalContentAlignment="Center"
                            IsEnabled="True"
-                           IsReadOnly="True"/>
+                           IsReadOnly="True">
+                <TextBox.ContextMenu>
+                    <ContextMenu 
+                          Name="cxm">
+                        <MenuItem 
+                            Header="Cut"
+                            Name="cxmItemCut"/>
+                    </ContextMenu>
+                </TextBox.ContextMenu>
+            </TextBox>
+        </StackPanel>
         <Separator Grid.Column="2" Width="10" Background="Transparent" Visibility="Hidden"/>
     </Grid>
 
