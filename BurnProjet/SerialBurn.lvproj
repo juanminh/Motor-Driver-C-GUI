@@ -10,11 +10,6 @@
 		<Property Name="server.vi.callsEnabled" Type="Bool">true</Property>
 		<Property Name="server.vi.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
-		<Item Name="MotorController" Type="Folder">
-			<Item Name="Motor Controller (64 bits).msi" Type="Document" URL="../../SuperButton MotorController/Setup x64/Release/Motor Controller (64 bits).msi"/>
-			<Item Name="setup.exe" Type="Document" URL="../../SuperButton MotorController/Setup x64/Release/setup.exe"/>
-		</Item>
-		<Item Name="InsertSN.vi" Type="VI" URL="../Functions/InsertSN.vi"/>
 		<Item Name="Programmer.vi" Type="VI" URL="../Programmer.vi"/>
 		<Item Name="SerialProgrammer.ini" Type="Document" URL="../data/SerialProgrammer.ini"/>
 		<Item Name="seriaporgrammer_X5P_icon.ico" Type="Document" URL="../data/seriaporgrammer_X5P_icon.ico"/>
@@ -65,6 +60,7 @@
 			<Item Name="ExpectedSumAndRxSum (SubVI).vi" Type="VI" URL="../Functions/ExpectedSumAndRxSum (SubVI).vi"/>
 			<Item Name="FrameCmdB.vi" Type="VI" URL="../Functions/FrameCmdB.vi"/>
 			<Item Name="Idx_calc.vi" Type="VI" URL="../Functions/Idx_calc.vi"/>
+			<Item Name="InsertSN.vi" Type="VI" URL="../Functions/InsertSN.vi"/>
 			<Item Name="Int_Float.vi" Type="VI" URL="../Functions/Int_Float.vi"/>
 			<Item Name="iterate func (SubVI).vi" Type="VI" URL="../Functions/iterate func (SubVI).vi"/>
 			<Item Name="LoadData (SubVI).vi" Type="VI" URL="../Functions/LoadData (SubVI).vi"/>
@@ -165,7 +161,7 @@
 				<Property Name="Source[0].File[0].tag" Type="Str">{5863E68F-1C0A-4D9F-B3CC-1ABE6A1EE560}</Property>
 				<Property Name="Source[0].File[1].dest" Type="Str">{46EA32B4-76C4-4A6F-AF30-010FF0A7BCF6}</Property>
 				<Property Name="Source[0].File[1].name" Type="Str">setup.exe</Property>
-				<Property Name="Source[0].File[1].tag" Type="Ref">/My Computer/MotorController/setup.exe</Property>
+				<Property Name="Source[0].File[1].tag" Type="Ref"></Property>
 				<Property Name="Source[0].FileCount" Type="Int">1</Property>
 				<Property Name="Source[0].name" Type="Str">Serial Programmer</Property>
 				<Property Name="Source[0].tag" Type="Ref">/My Computer/Build Specifications/Serial Programmer</Property>
@@ -187,7 +183,7 @@
 				<Property Name="Bld_localDestDirType" Type="Str">relativeToCommon</Property>
 				<Property Name="Bld_modifyLibraryFile" Type="Bool">true</Property>
 				<Property Name="Bld_previewCacheID" Type="Str">{4655D5B0-E7E0-4AA9-B222-089A3AE77F5C}</Property>
-				<Property Name="Bld_version.build" Type="Int">28</Property>
+				<Property Name="Bld_version.build" Type="Int">29</Property>
 				<Property Name="Bld_version.major" Type="Int">1</Property>
 				<Property Name="Destination[0].destName" Type="Str">Serial Programmer.exe</Property>
 				<Property Name="Destination[0].path" Type="Path">../SerialProgrammer/Serial Programmer.exe</Property>
@@ -195,11 +191,9 @@
 				<Property Name="Destination[0].type" Type="Str">App</Property>
 				<Property Name="Destination[1].destName" Type="Str">Support Directory</Property>
 				<Property Name="Destination[1].path" Type="Path">../SerialProgrammer/data</Property>
-				<Property Name="Destination[2].destName" Type="Str">MotoController</Property>
-				<Property Name="Destination[2].path" Type="Path">../SerialProgrammer/data/MotoController</Property>
-				<Property Name="DestinationCount" Type="Int">3</Property>
+				<Property Name="DestinationCount" Type="Int">2</Property>
 				<Property Name="Exe_iconItemID" Type="Ref">/My Computer/seriaporgrammer_X5P_icon.ico</Property>
-				<Property Name="Source[0].itemID" Type="Str">{0AEF7BF9-80C2-4189-A5B6-974DE27D2E7F}</Property>
+				<Property Name="Source[0].itemID" Type="Str">{CC62F43A-F2FB-49B4-B83A-B897090BE13A}</Property>
 				<Property Name="Source[0].type" Type="Str">Container</Property>
 				<Property Name="Source[1].destinationIndex" Type="Int">0</Property>
 				<Property Name="Source[1].itemID" Type="Ref">/My Computer/Programmer.vi</Property>
@@ -207,12 +201,8 @@
 				<Property Name="Source[1].type" Type="Str">VI</Property>
 				<Property Name="Source[2].destinationIndex" Type="Int">0</Property>
 				<Property Name="Source[2].itemID" Type="Ref">/My Computer/SerialProgrammer.ini</Property>
-				<Property Name="Source[3].Container.applyDestination" Type="Bool">true</Property>
-				<Property Name="Source[3].Container.depDestIndex" Type="Int">0</Property>
-				<Property Name="Source[3].destinationIndex" Type="Int">2</Property>
-				<Property Name="Source[3].itemID" Type="Ref">/My Computer/MotorController</Property>
-				<Property Name="Source[3].type" Type="Str">Container</Property>
-				<Property Name="SourceCount" Type="Int">4</Property>
+				<Property Name="Source[2].sourceInclusion" Type="Str">Include</Property>
+				<Property Name="SourceCount" Type="Int">3</Property>
 				<Property Name="TgtF_companyName" Type="Str">Engineer</Property>
 				<Property Name="TgtF_fileDescription" Type="Str">Serial Programmer</Property>
 				<Property Name="TgtF_internalName" Type="Str">Serial Programmer</Property>

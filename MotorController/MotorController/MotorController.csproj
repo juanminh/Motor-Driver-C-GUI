@@ -249,10 +249,14 @@
     <Compile Include="ViewModels\Operations.cs" />
     <Compile Include="ViewModels\PIDViewModel.cs" />
     <Compile Include="ViewModels\SerialProgrammer.cs" />
+    <Compile Include="ViewModels\UC_ProgrammerTextBoxViewModel.cs" />
     <Compile Include="ViewModels\UC_ToggleSwitchViewModel.cs" />
     <Compile Include="ViewModels\UC_ChannelViewModel.cs" />
     <Compile Include="ViewModels\UpDownControlModel.cs" />
     <Compile Include="ViewModels\WizardWindowViewModel.cs" />
+    <Compile Include="Views\UC_ProgrammerTextBox.xaml.cs">
+      <DependentUpon>UC_ProgrammerTextBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\UC_CalibrationWizard.xaml.cs">
       <DependentUpon>UC_CalibrationWizard.xaml</DependentUpon>
     </Compile>
@@ -330,6 +334,10 @@
     <Compile Include="Windows\Wizard.xaml.cs">
       <DependentUpon>Wizard.xaml</DependentUpon>
     </Compile>
+    <Page Include="Views\UC_ProgrammerTextBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\UC_CalibrationWizard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

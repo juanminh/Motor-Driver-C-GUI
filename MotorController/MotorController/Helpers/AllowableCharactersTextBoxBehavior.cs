@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interactivity;
 using System.Windows.Media;
+using System.Globalization;
 
 namespace MotorController.Helpers
 {
-    class AllowableCharactersTextBoxBehavior : Behavior<TextBox>
+    public class AllowableCharactersTextBoxBehavior : Behavior<TextBox>
     {
         protected override void OnAttached()
         {
@@ -26,44 +28,12 @@ namespace MotorController.Helpers
             e.Handled = !IsValid(e.Text, false);
         }
 
-        //void OnPreviewTextInput(object sender, System.Windows.Input.TextCompositionEventArgs e)
-        //{
-        //    var txt = sender as TextBox;
-        //    string Name = txt.DataContext.ToString();
-        //    string selection = txt.SelectedText;
-        //    if (txt.Background.ToString() == "#FFFF0000" || Name.Contains(".ViewModels.NumericTextboxModel") || Name.Contains(".ViewModels.DebugObjModel")) {
-        //        if (txt != null) e.Handled = !IsValid(e.Text, false, txt.Text, selection == "" ? false : true);
-        //    }
-        //    else
-        //    {
-        //        e.Handled = true;
-        //    }
-        //}
-
         protected override void OnDetaching()
         {
             base.OnDetaching();
             AssociatedObject.PreviewTextInput -= OnPreviewTextInput;
             DataObject.RemovePastingHandler(AssociatedObject, OnPaste);
         }
-        
-        //private void OnPaste(object sender, DataObjectPastingEventArgs e)
-        //{
-        //    var txt = sender as TextBox;
-        //    if (e.DataObject.GetDataPresent(DataFormats.Text))
-        //    {
-        //        var text = Convert.ToString(e.DataObject.GetData(DataFormats.Text));
-        //        string selection = txt.SelectedText;
-        //        if (txt != null && !IsValid(text, true, txt.Text, selection == "" ? false : true))
-        //        {
-        //            e.CancelCommand();
-        //        }
-        //    }
-        //    else
-        //    {
-        //        e.CancelCommand();
-        //    }
-        //}
 
         private void OnPaste(object sender, DataObjectPastingEventArgs e)
         {
@@ -81,50 +51,6 @@ namespace MotorController.Helpers
                 e.CancelCommand();
             }
         }
-
-
-        //private bool IsValid(string newText, bool paste, string currentvalue, bool TextSelected)
-        //{
-        //    if (newText != "\u001b")
-        //    {
-        //        int integ;
-        //        if (currentvalue == "" && newText == "-") // start a negative number
-        //            return true;
-        //        if (newText == "." && currentvalue != "" && currentvalue != "-" && !currentvalue.Contains('.') && !TextSelected) // float number - adding dot
-        //            return true;
-        //        if (newText == "-" && currentvalue != "" && !currentvalue.Contains('-')) // && TextSelected delete all selected text and start a negative number
-        //            return true;
-
-        //        if (currentvalue.Contains('.') && newText != "-") // verify the number is valid (not a char)
-        //        {
-        //            if (Int32.TryParse(newText, out integ))
-        //                return true;
-        //            return false;
-        //        }
-        //        if (currentvalue.Contains('-') && newText != "-") // verify the number is valid for negative value
-        //        {
-        //            if (newText != ".")
-        //            {
-        //                if (Int32.TryParse(newText, out integ))
-        //                    return true;
-        //                return false;
-        //            }
-        //            else if (TextSelected && newText != ".") return true;
-        //            else return false;
-        //        }
-        //        if (Int32.TryParse(newText, out integ))
-        //            return true;
-
-
-        //        return false;
-        //    }
-        //    else
-        //    {
-        //        currentvalue = "";
-        //        return false;
-        //    }
-        //}
-
         private bool IsValid(string newText, bool paste)
         {
             switch(newText)
@@ -134,7 +60,7 @@ namespace MotorController.Helpers
                         return false;
                     break;
                 case "-":
-                    if(_tb_call.SelectedText == _tb_call.Text)
+                    if(_tb_call.SelectedText == _tb_call.Text && Regex.IsMatch(newText, RegularExpression))
                         return true;
                         break;
             }

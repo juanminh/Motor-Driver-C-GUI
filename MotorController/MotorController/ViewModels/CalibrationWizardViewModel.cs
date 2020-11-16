@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MotorController.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,11 +41,8 @@ namespace MotorController.ViewModels
                 OnPropertyChanged("CalibTimeout");
             }
         }
-//#if DEBUG
-        //private bool _advanceMode_Calibration = true;
-//#else
-        private bool _advanceMode_Calibration = false;
-//#endif
+
+        private bool _advanceMode_Calibration = Consts._build == Consts.eBuild.DEBUG ? true :false;
         public bool AdvanceMode_Calibration {
             get { return _advanceMode_Calibration; }
             set

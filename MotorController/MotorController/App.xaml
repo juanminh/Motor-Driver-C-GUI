@@ -18,8 +18,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Styles/Dictionary1.xaml" />
                 <ResourceDictionary Source="Styles/ResourceDictionary1.xaml" />
-                
             </ResourceDictionary.MergedDictionaries>
+            
             <DataTemplate x:Key="OscilloscopeViewModel">
                 <views:OscilloscopeView></views:OscilloscopeView>
             </DataTemplate>
@@ -47,6 +47,7 @@
             <DataTemplate x:Key="UC_ChannelViewModel">
                 <views:UC_Channel></views:UC_Channel>
             </DataTemplate>
+
             <Style x:Key="RectangleStyle1" TargetType="{x:Type Rectangle}"/>
             <Style x:Key="CheckBoxStyle1" TargetType="{x:Type CheckBox}">
                 <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.WindowTextBrushKey}}"/>
@@ -498,7 +499,6 @@
                 <Setter Property="HorizontalAlignment" Value="Center" />
                 <Setter Property="FontSize" Value="12" />
             </Style>
-
             <SolidColorBrush x:Key="listItemBorderBrush" Color="#FF616161" />
             <Style x:Key="groupsListBoxItemStyle" TargetType="ListBoxItem">
                 <Setter Property="Padding" Value="3" />

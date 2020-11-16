@@ -22,7 +22,6 @@ namespace MotorController.Models.DriverBlock
         //TOdo move global members to base clase, and create there ctor (lesson interfase)
         //MEMBERS
         public event Rs232RxHandler RxtoParser;
-        //public event Rs232RxHandler TxtoParser;
         public event Rs232RxHandler Driver2Mainmodel;
 
         public event Rs232RxHandler Rx2Packetizer;
@@ -41,29 +40,24 @@ namespace MotorController.Models.DriverBlock
 
         #region Properties
 
-        public bool IsSynced
+        public bool IsSynced { get { return _isSynced; } set { _isSynced = value; }  }
+        #endregion
+        public delegate void DataRecived(byte[] dataBytes);
+        public static Rs232Interface GetInstance
         {
             get
             {
-                return _isSynced;
-            }
-            set
-            {
-                _isSynced = value;
+                lock(Synlock)
+                {
+                    if(_instance != null)
+                        return _instance;
+                    _instance = new Rs232Interface();
+                    return _instance;
+                }
             }
         }
-        #endregion
-        public delegate void DataRecived(byte[] dataBytes);
-        //Defining event based on the above delegate
-        //public event DataRecived DataRecivedEvent;
-
-        //Contsractor
-
-        public Rs232Interface()
-        {
-            //Create queue object and set queue size
-            GuiUpdateQueue stundartUpdateQueue = new GuiUpdateQueue();
-        }
+        public Rs232Interface() { }
+        #region Disconnect
         public override void Disconnect(int mode = 0)
         {
             RefreshManager.GetInstance.DisconnectedFlag = true;
@@ -156,7 +150,7 @@ namespace MotorController.Models.DriverBlock
             }
             LeftPanelViewModel.GetInstance.ConnectButtonEnable = true;
         }
-
+        #endregion Disconnect
         #region Auto_Connect
 
         //This method auto detects baud rate, and open connection
@@ -181,8 +175,7 @@ namespace MotorController.Models.DriverBlock
             if(_isSynced == false && LeftPanelViewModel.GetInstance.ConnectButtonContent == "Connect") //Driver is not synchronized
             {
                 //Gets aviable ports list and initates them
-                _comDevicesList =
-                    (SerialPort.GetPortNames()).Select(o => new ComDevice { Portname = o, Baudrate = 921600 }).ToList();
+                _comDevicesList = (SerialPort.GetPortNames()).Select(o => new ComDevice { Portname = o, Baudrate = 921600 }).ToList();
 
                 //Iterates though  the ports,Looks for apropriate Com Port ( where the driver connected)
                 if(Configuration.SelectedCom != null && Configuration.SelectedCom != "")//foreach (var comDevice in _comDevicesList)
@@ -202,10 +195,8 @@ namespace MotorController.Models.DriverBlock
 
                         ReadBufferSize = 8192
                     };
-                    ;
                     try
                     {
-                        //var Cleaner = "";
                         ComPort.Open(); //Try to open
 
                         if(ComPort.IsOpen)
@@ -346,20 +337,10 @@ namespace MotorController.Models.DriverBlock
 
         #endregion
         #region Send_Mechanism
-
-        //     public void SendData(byte[] packetToSend)
-        //     SendDataHendler(object sender, Parser2SendEventArgs parser2SendEventArgs)
-        //
-        //
-        //
-        //
-        //********************************************************
         public void SendDataHendler(object sender, Parser2SendEventArgs parser2SendEventArgs)
         {
             SendData(parser2SendEventArgs.BytesTosend, _comPort);
         }
-
-
         private void SendData(byte[] packetToSend, object comPort)
         {
             lock(Sendlock)
@@ -369,38 +350,32 @@ namespace MotorController.Models.DriverBlock
                 {
                     try
                     {
-                        //Debug.WriteLine(DateTime.Now + "." + DateTime.Now.Millisecond);
-                        //Thread.Sleep(5);
                         if(!serialPort.IsOpen)
                             return;
 
                         serialPort.Write(packetToSend, 0, packetToSend.Length); // Send through RS232 cable
-#if DEBUG
-                        if(packetToSend.Length == 11)
+                        if(Consts._build == Consts.eBuild.DEBUG)
                         {
-                            var cmdlIdLsb = packetToSend[2];
-                            var cmdIdlMsb = packetToSend[3] & 0x3F;
-                            var subIdLsb = (packetToSend[3] >> 6) & 0x03;
-                            var subIdMsb = packetToSend[4] & 0x07;
-                            var getSet = (packetToSend[4] >> 4) & 0x01;
-                            int commandId = Convert.ToInt16(cmdlIdLsb);
-                            commandId = commandId + Convert.ToInt16(cmdIdlMsb << 8);
-                            int commandSubId = Convert.ToInt16(subIdLsb);
-                            commandSubId = commandSubId + Convert.ToInt16(subIdMsb << 2);
-                            Int32 transit = packetToSend[8];
-                            transit <<= 8;
-                            transit |= packetToSend[7];
-                            transit <<= 8;
-                            transit |= packetToSend[6];
-                            transit <<= 8;
-                            transit |= packetToSend[5];
-
-                            //if(commandId == DebugOutput.GetInstance.ID && commandSubId == DebugOutput.GetInstance.subID && getSet == 0)
-                            //{
-                            //    Debug.WriteLine("SendData data: " + transit);
-                            //}
+                            if(packetToSend.Length == 11)
+                            {
+                                var cmdlIdLsb = packetToSend[2];
+                                var cmdIdlMsb = packetToSend[3] & 0x3F;
+                                var subIdLsb = (packetToSend[3] >> 6) & 0x03;
+                                var subIdMsb = packetToSend[4] & 0x07;
+                                var getSet = (packetToSend[4] >> 4) & 0x01;
+                                int commandId = Convert.ToInt16(cmdlIdLsb);
+                                commandId = commandId + Convert.ToInt16(cmdIdlMsb << 8);
+                                int commandSubId = Convert.ToInt16(subIdLsb);
+                                commandSubId = commandSubId + Convert.ToInt16(subIdMsb << 2);
+                                Int32 transit = packetToSend[8];
+                                transit <<= 8;
+                                transit |= packetToSend[7];
+                                transit <<= 8;
+                                transit |= packetToSend[6];
+                                transit <<= 8;
+                                transit |= packetToSend[5];
+                            }
                         }
-#endif
                         serialPort.DiscardOutBuffer();
                     }
                     catch
@@ -418,18 +393,6 @@ namespace MotorController.Models.DriverBlock
         #endregion
 
         #region Read_Mechanism
-
-
-        // public void ReadDataEventHandler(byte[] packetToSend)
-        //     
-        //
-        // read Data will read always two byte and send to parser 
-        // parcer will check preemble and know how mane data fields it should get
-        //
-        //
-        //
-        //********************************************************
-
         public void DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             //Create new parent Task
@@ -451,22 +414,6 @@ namespace MotorController.Models.DriverBlock
             }
         }
         #endregion
-
-        //STATIC METHODS  STATIC METHODS   STATIC METHODS   STATIC METHODS   STATIC METHODS   STATIC METHODS   STATIC METHODS   STATIC METHODS   STATIC METHODS   STATIC METHODS    
-
-        public static Rs232Interface GetInstance
-        {
-            get
-            {
-                lock(Synlock)
-                {
-                    if(_instance != null)
-                        return _instance;
-                    _instance = new Rs232Interface();
-                    return _instance;
-                }
-            }
-        }
     }
 }
 

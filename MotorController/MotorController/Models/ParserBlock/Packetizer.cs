@@ -85,6 +85,8 @@ namespace MotorController.Models.ParserBlock
                     length = e.DataChunk.Length;
                     data = e.DataChunk;
 
+                    //truncat_data(data);
+
                     for(int i = 0; i < length; i++)
                     {
                         FiilsPlotPackets(data[i]); //Plot packets
@@ -135,6 +137,60 @@ namespace MotorController.Models.ParserBlock
                 }
             }
         }
+        private void truncat_data(byte[] _data)
+        {
+            List<byte[]> _data_packet = new List<byte[]>();
+            List<byte[]> _plot_packet = new List<byte[]>();
+            List<byte[]> _bode_packet = new List<byte[]>();
+            List<byte> _data_list = _data.ToList();
+            byte _header_data_packet = 0x8B;
+            byte _header_plot_packet = 0xBB;
+            int _ind_temp = 0;
+            byte[] _array_data_temp;
+            for(int _ind = -1; _ind < _data_list.Count; _ind++)
+            {
+                _ind_temp = _data_list.FindIndex(_ind + 1, x => x == _header_data_packet);
+                if(_ind_temp >= 0)
+                {
+                    _ind = _ind_temp;
+                    _array_data_temp = _data_list.GetRange(_ind, 11).ToArray();
+                    var crclsb = _array_data_temp[9];
+                    var crcmsb = _array_data_temp[10];
+
+                    ushort crc = ParserRayonM1.CrcInputCalc(_array_data_temp.Take(9), 2);
+                    byte[] crcBytes = BitConverter.GetBytes(crc);
+
+                    if(crcBytes[0] == crclsb && crcBytes[1] == crcmsb)
+                        _data_packet.Add(_array_data_temp);
+                }
+                _ind_temp = _data_list.FindIndex(_ind + 1, x => x == _header_plot_packet);
+                if(_ind_temp >= 0)
+                {
+                    _ind = _ind_temp;
+                    _array_data_temp = _data_list.GetRange(_ind, 11).ToArray();
+                    var crclsb = _array_data_temp[9];
+                    var crcmsb = _array_data_temp[10];
+
+                    ushort crc = ParserRayonM1.CrcInputCalc(_array_data_temp.Take(9), 2);
+                    byte[] crcBytes = BitConverter.GetBytes(crc);
+
+                    if(crcBytes[0] == crclsb && crcBytes[1] == crcmsb)
+                        _plot_packet.Add(_array_data_temp);
+                }
+            }
+            /*
+            var crclsb = data[7];
+            var crcmsb = data[8];
+
+            ushort crc = ParserRayonM1.CrcInputCalc(data.Take(7), 0);
+            byte[] crcBytes = BitConverter.GetBytes(crc);
+
+            if(crcBytes[0] == crclsb && crcBytes[1] == crcmsb)
+            {
+
+            }
+            */
+        }
         private void FiilsStandartPacketsNew(byte ch)
         {
             switch(standpacketStateNew)
@@ -142,12 +198,14 @@ namespace MotorController.Models.ParserBlock
                 case (0):	//First magic
                     if(ch == 0x8b)
                     { standpacketStateNew++; }
+                    else
+                        standpacketIndexCounter = standpacketStateNew = 0;
                     break;
                 case (1)://Second magic
                     if(ch == 0x3c)
                     { standpacketStateNew++; }
                     else
-                        standpacketStateNew = 0;
+                        standpacketIndexCounter = standpacketStateNew = 0;
                     break;
                 case (2):
                 case (3):
@@ -164,6 +222,10 @@ namespace MotorController.Models.ParserBlock
                     readypacket[standpacketIndexCounter] = ch;
                     StandartPacketsListNew.Add(readypacket);
                     ParserRayonM1.GetInstanceofParser.ParseInputPacket(readypacket);
+                    if(readypacket[0] != 0x8b)
+                    {
+
+                    }
                     standpacketStateNew = standpacketIndexCounter = 0;
                     break;
                 default:
@@ -178,12 +240,14 @@ namespace MotorController.Models.ParserBlock
                 case (0):	//First magic
                     if(ch == 0x8b)
                     { _synchAproveState++; }
+                    else
+                        _synchAproveState = _synchAproveIndexCounter = 0;
                     break;
                 case (1)://Second magic
                     if(ch == 0x3c)
                     { _synchAproveState++; }
                     else
-                        _synchAproveState = 0;
+                        _synchAproveState = _synchAproveIndexCounter = 0;
                     break;
                 case (2):
                 case (3):
@@ -291,6 +355,8 @@ namespace MotorController.Models.ParserBlock
                         pack[plotpacketState] = ch;
                         plotpacketState++;
                     }
+                    else
+                        plotpacketState = 0;
                     break;
                 case (1):   //Second magic
                     if(ch == 0xcc)
@@ -386,6 +452,8 @@ namespace MotorController.Models.ParserBlock
                         bode_pack[plotbodepacketState] = ch;
                         plotbodepacketState++;
                     }
+                    else
+                        plotbodepacketState = 0;
                     break;
                 case (1):   //Second magic
                     if(ch == 0xfb)

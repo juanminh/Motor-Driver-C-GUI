@@ -259,13 +259,6 @@ namespace MotorController.Models.ParserBlock
             Debug.WriteLine("{0} {1}[{2}]={3} {4}.", IsSet ? "Set" : "Get", Id, SubId, Data2Send, IsFloat ? "F" : "I");
 #endif
 #endif
-
-            //TODO add try catch here
-            //if(Id == 81 && SubId == 1 && IsSet == true)
-            //{
-            //   Data2Send = (float)5.22;
-            //int i = 0;
-            //}
             byte[] temp;
             if(IsSet)
                 temp = new byte[11] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -273,9 +266,6 @@ namespace MotorController.Models.ParserBlock
                 temp = new byte[7] { 0, 0, 0, 0, 0, 0, 0 };
 
             char tempChar = (char)0;
-
-            //Task<ushort> crcTask = new Task<ushort>(()=>CrcInputCalc(temp.Take(9), 2));
-
 
             temp[0] = 0x49;                  //PreambleLSByte
             temp[1] = 0x5d;                   //PreambleMsbyte
@@ -596,6 +586,7 @@ namespace MotorController.Models.ParserBlock
                 }
                 return true;
             }
+            Debug.WriteLine("return false");
             return false;
         }
         public static ParserRayonM1 GetInstanceofParser

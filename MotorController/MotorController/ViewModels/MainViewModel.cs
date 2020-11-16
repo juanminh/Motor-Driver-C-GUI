@@ -31,9 +31,7 @@ namespace MotorController.ViewModels
             maxHeight = (float)Application.Current.MainWindow.ActualHeight - 101;
         }
 
-        //private WindowState _windowState = WindowState.Normal;
-
-        private WindowState _windowState = WindowState.Maximized;
+        private WindowState _windowState = Consts._build == Consts.eBuild.DEBUG ? WindowState.Normal : WindowState.Maximized;
 
         public WindowState WindowState
         {

@@ -80,7 +80,7 @@ namespace MotorController.Views
 
         public Timer _timer;
 
-        private ResamplingMode _resamplingMode;
+        //private ResamplingMode _resamplingMode;
 
         private int POintstoPlot = 33000; //5 sec min
 
@@ -599,13 +599,15 @@ namespace MotorController.Views
                 if(ChartData == null || ChartData1 == null)
                     return;
                 float maxval = 0, minval = 0;
-                _xVisibleRange = new DoubleRange(0, _duration * 1000);
+                
 
                 minval = ((float)ChartData.YMin > (float)ChartData1.YMin) ? (float)ChartData1.YMin : (float)ChartData.YMin;
                 maxval = ((float)ChartData.YMax > (float)ChartData1.YMax) ? (float)ChartData.YMax : (float)ChartData1.YMax;
 
                 minval *= (minval > 0 ? (float)0.5 : (float)1.1);
-
+                if(minval == maxval)
+                    return;
+                _xVisibleRange = new DoubleRange(0, _duration * 1000);
                 YLimit = new DoubleRange(minval, 1.1 * maxval);
                 _yzoom = OscilloscopeParameters.FullScale;
                 //XVisibleRange = XLimit;
@@ -651,18 +653,6 @@ namespace MotorController.Views
                 OnPropertyChanged("YVisibleRange");
             }
         }
-        //private string _yAxisUnits = "";
-        //public string YAxisUnits
-        //{
-        //    get { return _yAxisUnits; }
-        //    set
-        //    {
-        //        if(_yAxisUnits == value)
-        //            return;
-        //        _yAxisUnits = value;
-        //        OnPropertyChanged("YAxisUnits");
-        //    }
-        //}
         public ModifierType ChartModifier
         {
             get { return _chartModifier; }
@@ -693,7 +683,6 @@ namespace MotorController.Views
                         _chartRunning = false;
                         _timer = null;
                         Thread.Sleep(10);
-                        // ChartData = null;
                     }
                 }
             }
@@ -736,7 +725,7 @@ namespace MotorController.Views
         private int IntegerFactor = 1;
         float calcFactor(float dataSample, int ChNo)
         {
-            switch(/*plotType*/((UC_ChannelViewModel)Commands.GetInstance.GenericCommandsList[
+            switch(((UC_ChannelViewModel)Commands.GetInstance.GenericCommandsList[
                     new Tuple<int, int>(
                         ((int)((UC_ChannelViewModel)Commands.GetInstance.GenericCommandsGroup["ChannelsList"][ChNo - 1]).CommandId),
                         ((int)((UC_ChannelViewModel)Commands.GetInstance.GenericCommandsGroup["ChannelsList"][ChNo - 1]).CommandSubId))]).PlotType)
@@ -1261,7 +1250,7 @@ namespace MotorController.Views
                     }
                 }
             }
-            catch(Exception ex)
+            catch/*(Exception ex)*/
             {
                 //Debug.WriteLine("Excep _____ : " + ex.Message);
             }

@@ -31,13 +31,19 @@ namespace MotorController.Common
                                                                        {KEY_HISTORY_DIR,Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\MotorController\\SuperMotorController_Params"},
                                                                        {KEY_PARAMS_DIR, Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\MotorController\\SuperMotorControllerHistory"}
                                                                    };
-        public static string Version = "Ver. 1.3.18";
+        public static string Version = "Ver. 1.3.19";
         public enum eProject
         {
             REDLER = 0,
             STXI = 1
         };
-        public static eProject _project = eProject.REDLER;
+        public static eProject _project = eProject.STXI;
+        public enum eBuild
+        {
+            DEBUG = 0,
+            RELEASE = 1
+        };
+        public static eBuild _build = eBuild.DEBUG;
         #endregion
 
 

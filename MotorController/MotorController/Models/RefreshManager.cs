@@ -508,7 +508,7 @@ namespace MotorController.Models
             {
                 if(LeftPanelViewModel.GetInstance.StarterOperationFlag)
                 {
-                    //Debug.WriteLine("Starter: " + commandidentifier.Item1.ToString() + ' ' + commandidentifier.Item2.ToString());
+                    Debug.WriteLine("Starter: " + commandidentifier.Item1.ToString() + ' ' + commandidentifier.Item2.ToString());
 
                     switch(commandidentifier.Item1)
                     {
@@ -614,7 +614,7 @@ namespace MotorController.Models
                         {
                             if(DebugViewModel.GetInstance.CompareDebugObj(data1, Commands.GetInstance.GenericCommandsGroup["Debug List"][i] as DebugObjModel))
                             {
-                                ((DebugObjModel)Commands.GetInstance.GenericCommandsGroup["Debug List"].ElementAt(i)).GetData = newPropertyValue;
+                                ((DebugObjModel)Commands.GetInstance.GenericCommandsGroup["Debug List"].ElementAt(i)).ProgrammerTextBox_Get.TextStr = newPropertyValue;
                                 DebugViewModel.GetInstance.RxBuildOperation(ParserRayonM1.DebugData);
                                 DebugObjModel.DebugOperationPending = false;
                             }
@@ -623,7 +623,7 @@ namespace MotorController.Models
                 }
                 #endregion DebugTab
             }
-            catch(Exception error)
+            catch/*(Exception error)*/
             {
                 //Debug.WriteLine(error.Message + " - Op:" + commandidentifier.Item1.ToString() + "[" + commandidentifier.Item2.ToString() + "]");
             }

@@ -821,15 +821,17 @@
                     <!--(&#x3B2;)-->
                     <!--<TextBlock HorizontalAlignment="Left" TextWrapping="Wrap" Text="MOTOR" VerticalAlignment="Bottom" Width="70" FontWeight="Bold" FontSize="15" Foreground="White"/>-->
                 </Grid>
-                <StackPanel Grid.Row="1" Orientation="Horizontal" Height="100">
+                <StackPanel Grid.Row="1" Orientation="Horizontal" Height="70">
                     <StackPanel Orientation="Vertical" VerticalAlignment="Center">
-                        <TextBlock HorizontalAlignment="Center" Text="MOTOR" Foreground="White" FontSize="20" FontWeight="Bold"/>
+                        <TextBlock HorizontalAlignment="Center" Text="MOTOR" Foreground="White" FontSize="18" FontWeight="Bold"/>
                         <Grid Height="3"/>
-                        <TextBlock HorizontalAlignment="Center" Text="Controller" Foreground="White" FontSize="16"/>
-                        <Grid Height="25"/>
-                        <TextBlock HorizontalAlignment="Center" Text="{Binding Version}" Foreground="White" FontSize="14"/>
+                        <TextBlock HorizontalAlignment="Center" Text="Controller" Foreground="White" FontSize="14"/>
+                        <Grid Height="10"/>
+                        <TextBlock HorizontalAlignment="Center" Text="{Binding Version}" Foreground="White" FontSize="12"/>
                     </StackPanel>
-                    <Image Margin="0,0,0,0" HorizontalAlignment="Left" Source="{Binding Logo}" Width="90" Height="100"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="20,0,0,0">
+                        <Image Source="{Binding Logo}" Width="70"/>
+                    </StackPanel>
                 </StackPanel>
                 <Grid Grid.Row="2" Height="20">
                 </Grid>

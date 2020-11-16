@@ -46,27 +46,27 @@ namespace MotorController.ViewModels
                 _debugModel.Index = value; OnPropertyChanged("Index"); 
             }
         }
-        public string GetData
+
+        private UC_ProgrammerTextBoxViewModel _programmerTextBox_Set = new UC_ProgrammerTextBoxViewModel();
+        public UC_ProgrammerTextBoxViewModel ProgrammerTextBox_Set
         {
-            get
-            {
-                return _debugModel.GetData;
-            }
+            get { return _programmerTextBox_Set; }
             set
             {
-                _debugModel.GetData = value;
+                _programmerTextBox_Set = value;
                 OnPropertyChanged();
             }
         }
-        public string SetData
+        private UC_ProgrammerTextBoxViewModel _programmerTextBox_Get = new UC_ProgrammerTextBoxViewModel();
+        public UC_ProgrammerTextBoxViewModel ProgrammerTextBox_Get
         {
-            get { return _debugModel.SetData; }
-            set {
-                _debugModel.SetData = value;
+            get { return _programmerTextBox_Get; }
+            set
+            {
+                _programmerTextBox_Get = value;
                 OnPropertyChanged();
             }
         }
-
         public ActionCommand Get { get { return new ActionCommand(GetCmd); } }
         public ActionCommand Set { get { return new ActionCommand(SetCmd); } }
 
@@ -94,15 +94,15 @@ namespace MotorController.ViewModels
         }
         private void SetCmd()
         {
-            if(SetData != "" && ID != "" && Index != "")
+            if(ProgrammerTextBox_Set.TextStr != "" && ID != "" && Index != "")
             {
                 DebugOperationPending = true;
-                DebugViewModel.GetInstance.TxBuildOperation(SetData, Convert.ToInt16(ID), Convert.ToInt16(Index), true, !this.IntFloat);
+                DebugViewModel.GetInstance.TxBuildOperation(ProgrammerTextBox_Set.TextStr, Convert.ToInt16(ID), Convert.ToInt16(Index), true, !this.IntFloat);
                 try
                 {
                     var tmp = new PacketFields
                     {
-                        Data2Send = SetData,
+                        Data2Send = ProgrammerTextBox_Set.TextStr,
                         ID = Convert.ToInt16(ID),
                         SubID = Convert.ToInt16(Index),
                         IsSet = true,

@@ -194,83 +194,17 @@
                               ItemTemplate="{StaticResource UC_ChannelViewModel}"
                               VerticalAlignment="Stretch"
                               HorizontalAlignment="Stretch">
+                    <ItemsControl.ItemContainerStyle>
+                        <Style>
+                            <Setter Property="Control.Margin" Value="5,0,0,0"/>
+                        </Style>
+                    </ItemsControl.ItemContainerStyle>
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal"/>
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>
-                <!--<Border Grid.Column="5" BorderBrush="White" BorderThickness="1" Margin="10,0,0,0" Width="25" Height="22" CornerRadius="1,0,0,1">
-                    <TextBlock Height="22" Foreground="White" Text="CH1" Background="#82F7E31D" FontSize="12"/>
-                </Border>
-                <Border Grid.Column="6" MinWidth="100" Height="22" BorderBrush="White" BorderThickness="1" CornerRadius="0" Margin="-2,0,0,0">
-                    <ComboBox SelectedItem="{Binding SelectedCh1DataSource, Mode=OneWay}" 
-                              SelectedIndex="{Binding Ch1SelectedIndex}"
-            		          ItemsSource="{Binding Channel1SourceItems, Mode=TwoWay}" 
-                              Width="100"
-                              BorderBrush="#FFF9F9F9" 
-                              Background="#FFF0EEEE" 
-                              IsEnabled="{Binding ChComboEn}" 
-                              FontSize="12" >
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SelectionChanged">
-                                <i:InvokeCommandAction Command="{Binding SelectedItemChanged_Plot1}"  />
-                            </i:EventTrigger>
-                            <i:EventTrigger EventName="DropDownOpened">
-                                <i:InvokeCommandAction Command="{Binding ComboDropDownOpened}"  />
-                            </i:EventTrigger>
-                            <i:EventTrigger EventName="DropDownClosed">
-                                <i:InvokeCommandAction Command="{Binding ComboDropDownClosed}"  />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </ComboBox>
-                </Border>
-                <Border Grid.Column="7" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="26" Height="22" CornerRadius="0">
-                    <TextBlock Height="22" Foreground="White" Text="Gain" Background="#82F7E31D" FontSize="12"/>
-                </Border>
-                <Border Grid.Column="8" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="0,1,1,0">
-                    <TextBox Width="25" Text="{Binding Ch1Gain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="22" BorderThickness="0" >
-                        <i:Interaction.Behaviors>
-                            <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
-                        </i:Interaction.Behaviors>
-                    </TextBox>
-                </Border>-->
-                <!--<Border Grid.Column="9" BorderBrush="White" BorderThickness="1" Margin="5,0,0,0" Width="25" Height="22" CornerRadius="1,0,0,1">
-                    <TextBlock Height="22" Foreground="White" Background="#7F1810D4" Text="CH2" FontSize="12"/>
-                </Border>
-                <Border Grid.Column="10" MinWidth="100" Height="22" BorderBrush="White" BorderThickness="1" CornerRadius="0" Margin="-2,0,0,0">
-                    <ComboBox
-            		    SelectedItem="{Binding SelectedCh2DataSource, Mode=OneWay}" 
-                        SelectedIndex="{Binding Ch2SelectedIndex}"
-            		    ItemsSource="{Binding Channel2SourceItems, Mode=TwoWay}" 
-                        Width="100" 
-                        BorderBrush="#FFF9F9F9" 
-                        Background="#FFF0EEEE" 
-                        IsEnabled="{Binding ChComboEn}"
-                        FontSize="12">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="SelectionChanged">
-                                <i:InvokeCommandAction Command="{Binding SelectedItemChanged_Plot2}"  />
-                            </i:EventTrigger>
-                            <i:EventTrigger EventName="DropDownOpened">
-                                <i:InvokeCommandAction Command="{Binding ComboDropDownOpened}"  />
-                            </i:EventTrigger>
-                            <i:EventTrigger EventName="DropDownClosed">
-                                <i:InvokeCommandAction Command="{Binding ComboDropDownClosed}"  />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </ComboBox>
-                </Border>
-                <Border Grid.Column="11" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="26" Height="22" CornerRadius="0">
-                    <TextBlock Height="22" Foreground="White" Text="Gain" Background="#7F1810D4" FontSize="12"/>
-                </Border>
-                <Border Grid.Column="12" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="0,1,1,0">
-                    <TextBox Width="25" Text="{Binding Ch2Gain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="22" BorderThickness="0" >
-                        <i:Interaction.Behaviors>
-                            <models:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
-                        </i:Interaction.Behaviors>
-                    </TextBox>
-                </Border>-->
                 <Line Grid.Column="13" Margin="2,2" Stroke="#FFD6D5D5" Y2="16" VerticalAlignment="Center" Fill="#FFC1C1C1"/>
                 <ToggleButton Grid.Column="14" Style="{StaticResource ExampleToolbarToggleButtonStyle}" IsChecked="{Binding IsFreeze}" BorderThickness="0" 
                               BorderBrush="#FFF3F3F3" Margin="0,1" VerticalAlignment="Center" Height="24.0107">

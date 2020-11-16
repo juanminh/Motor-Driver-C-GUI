@@ -203,9 +203,9 @@ namespace MotorController.ViewModels
                     ID = udID.Data,
                     Index = udIndex.Data,
                     IntFloat = DebugIntFloat,
-                    GetData = "",
-                    SetData = "",
-                };
+                    ProgrammerTextBox_Get = new UC_ProgrammerTextBoxViewModel() { IsReadOnly = true },
+                    ProgrammerTextBox_Set = new UC_ProgrammerTextBoxViewModel() { IsReadOnly = false },
+                    };
                 Commands.GetInstance.addData(typeof(DebugObjModel), data, "Debug List");
             }
         }
@@ -226,8 +226,8 @@ namespace MotorController.ViewModels
                     ID = udID.Data,
                     Index = udIndex.Data,
                     IntFloat = DebugIntFloat,
-                    GetData = "",
-                    SetData = "",
+                    ProgrammerTextBox_Get = new UC_ProgrammerTextBoxViewModel() { IsReadOnly = true },
+                    ProgrammerTextBox_Set = new UC_ProgrammerTextBoxViewModel() { IsReadOnly = false },
                 };
 
                 for(int i = 0; i < Commands.GetInstance.GenericCommandsGroup["Debug List"].Count; i++)

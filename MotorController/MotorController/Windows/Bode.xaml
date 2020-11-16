@@ -18,13 +18,17 @@
         xmlns:local="clr-namespace:MotorController"
         xmlns:led="clr-namespace:MotorController.Views"
         xmlns:viewModels="clr-namespace:MotorController.ViewModels"
-        xmlns:models="clr-namespace:MotorController.Models">
+        xmlns:models="clr-namespace:MotorController.Models"
+        Name="BodeWindow">
     <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Loaded" >
+        <i:EventTrigger EventName="Loaded">
             <i:InvokeCommandAction Command="{Binding BodeWindowLoaded}" />
         </i:EventTrigger>
-        <i:EventTrigger EventName="Closing" >
+        <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding BodeWindowClosed}"/>
+        </i:EventTrigger>
+        <i:EventTrigger EventName="MouseDown">
+            <i:InvokeCommandAction Command="{Binding MouseDownEvent}" CommandParameter="{Binding ElementName=BodeWindow}"/>
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Window.Background>

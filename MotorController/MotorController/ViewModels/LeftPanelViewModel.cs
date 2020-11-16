@@ -206,7 +206,7 @@ namespace MotorController.ViewModels
                     IsFloat = false
                 });
                 Thread.Sleep(50);
-                //Debug.WriteLine("param i: " + i);
+                Debug.WriteLine("param i: " + i);
             }
             
             #endregion  Operations
@@ -240,9 +240,9 @@ namespace MotorController.ViewModels
             else
             {
                 EventRiser.Instance.RiseEevent(string.Format($"Failed reading params"));
+#if ReadAgaingParam                
                 EventRiser.Instance.RiseEevent(string.Format($"Reconnect again..."));
-
-#if ReadAgaingParam
+                
                 StarterCount = 0;
                 for(int i = 0; i < param.Length; i++)
                 {
@@ -263,6 +263,8 @@ namespace MotorController.ViewModels
                 else
                     EventRiser.Instance.RiseEevent(string.Format($"Failed reading params"));
 #endif
+                LeftPanelViewModel.GetInstance.ConnectButtonEnable = true;
+                return;
             }
 
 #if !DEBUG || RELEASE_MODE

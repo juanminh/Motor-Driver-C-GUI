@@ -5,19 +5,18 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
       xmlns:Helpers="clr-namespace:MotorController.Helpers"
+      xmlns:local="clr-namespace:MotorController.Views"
+      xmlns:vm="clr-namespace:MotorController.ViewModels"
       mc:Ignorable="d" 
       d:DesignHeight="30" d:DesignWidth="470">
     <UserControl.Resources>
-        <Style x:Key="ExampleToolbarButtonStyle"
-           BasedOn="{StaticResource DefaultButtonStyle}"
-           TargetType="Button">
+        <Style x:Key="ExampleToolbarButtonStyle" BasedOn="{StaticResource DefaultButtonStyle}" TargetType="Button">
             <Setter Property="Padding" Value="1" />
             <Setter Property="Margin" Value="2" />
             <Setter Property="Width" Value="110" />
             <Setter Property="MaxHeight" Value="28" />
         </Style>
-        <Style x:Key="TextBoxStyle"
-           TargetType="TextBox">
+        <Style x:Key="TextBoxStyle" TargetType="TextBox">
             <!--Background="{DynamicResource ControlBackgroundBrush}"
               BorderBrush="Black"-->
             <Setter Property="Background" Value="{DynamicResource ControlBackgroundBrush}" />
@@ -25,7 +24,7 @@
         </Style>
     </UserControl.Resources>
     <!---->
-        <Border BorderBrush="White" BorderThickness="1" CornerRadius="1">
+    <Border BorderBrush="White" BorderThickness="1" CornerRadius="1">
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -45,39 +44,39 @@
     <!-- Button Add/Remove -->
 
     <!--<Button Grid.Column="0" Command="{Binding AddCommand}" Style="{StaticResource ExampleToolbarButtonStyle}" Height="25" Width="25" BorderBrush="#FFF3F3F3" BorderThickness="0" Visibility="{Binding AddButtonVisibility}">
-        <StackPanel Orientation="Horizontal">
-            <Image Margin="0"
-        				Source="pack://application:,,,/Images/plusZoom.png"
-        				Stretch="Fill" Width="20" Height="20" />
-        </StackPanel>
-    </Button>
-    <Button Grid.Column="0" Command="{Binding RemoveCommand}" Height="25" Width="25" BorderBrush="White" BorderThickness="0">
-        <Button.Style>
-            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ExampleToolbarButtonStyle}">
-                <Setter Property="Visibility" Value="Hidden" />
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding AddButtonVisibility}" Value="Hidden">
-                        <Setter Property="Visibility" Value="Visible" />
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </Button.Style>
-        <StackPanel Orientation="Horizontal">
-            <Image Margin="0"
-            	   Source="pack://application:,,,/Images/minus3.png" 
-                   Width="20" Height="20" Stretch="Fill" />
-        </StackPanel>
-    </Button>-->
+                        <StackPanel Orientation="Horizontal">
+                            <Image Margin="0"
+        				                Source="pack://application:,,,/Images/plusZoom.png"
+        				                Stretch="Fill" Width="20" Height="20" />
+                        </StackPanel>
+                    </Button>
+                    <Button Grid.Column="0" Command="{Binding RemoveCommand}" Height="25" Width="25" BorderBrush="White" BorderThickness="0">
+                        <Button.Style>
+                            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource ExampleToolbarButtonStyle}">
+                                <Setter Property="Visibility" Value="Hidden" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding AddButtonVisibility}" Value="Hidden">
+                                        <Setter Property="Visibility" Value="Visible" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Margin="0"
+            	                    Source="pack://application:,,,/Images/minus3.png" 
+                                    Width="20" Height="20" Stretch="Fill" />
+                        </StackPanel>
+                    </Button>-->
     <!--end new object view -->
 
     <!--ID-->
 
     <TextBox  Grid.Column="2"  x:Name="ID"
-                            Width="50" 
-                           Text="{Binding ID}" 
-                           Foreground="White" FontSize="12"
-                           VerticalContentAlignment="Center" 
-              Template="{DynamicResource TextBoxTemplate}">
+                                            Width="50" 
+                                            Text="{Binding ID}" 
+                                            Foreground="White" FontSize="12"
+                                            VerticalContentAlignment="Center" 
+                                Template="{DynamicResource TextBoxTemplate}">
         <TextBox.Style>
             <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxStyle}">
                 <Setter Property="IsReadOnly" Value="False" />
@@ -95,10 +94,10 @@
     <!--Index-->
 
     <TextBox  Grid.Column="4" Width="50"
-                           Text="{Binding Index}" 
-                           Foreground="White" FontSize="12"
-                           VerticalContentAlignment="Center"
-                           Template="{DynamicResource TextBoxTemplate}">
+                                            Text="{Binding Index}" 
+                                            Foreground="White" FontSize="12"
+                                            VerticalContentAlignment="Center"
+                                            Template="{DynamicResource TextBoxTemplate}">
         <TextBox.Style>
             <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource TextBoxStyle}">
                 <Setter Property="IsReadOnly" Value="False" />
@@ -120,9 +119,9 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <CheckBox Grid.Column="0"     
-                    Style="{StaticResource CheckBoxStyle3}"
-                              VerticalAlignment="Center"
-                              IsChecked="{Binding IntFloat}">
+                                    Style="{StaticResource CheckBoxStyle3}"
+                                                VerticalAlignment="Center"
+                                                IsChecked="{Binding IntFloat}">
         </CheckBox>
         <Separator Grid.Column="1" Width="10" Background="Transparent" Visibility="Hidden"/>
     </Grid>
@@ -137,27 +136,28 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Button Grid.Column="0" Height="22" Width="30" 
-                              Template="{DynamicResource PressedButton}" 
-                              Command="{Binding Get}"
-                              Foreground="White"
-                              Content="Get">
+                                                Template="{DynamicResource PressedButton}" 
+                                                Command="{Binding Get}"
+                                                Foreground="White"
+                                                Content="Get">
         </Button>
         <StackPanel Grid.Column="1" Orientation="Horizontal">
-            <TextBox Width="100"
-                           Text="{Binding GetData, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
-                           Foreground="White" FontSize="12"
-                           VerticalContentAlignment="Center"
-                           IsEnabled="True"
-                           IsReadOnly="True">
-                <TextBox.ContextMenu>
-                    <ContextMenu 
-                          Name="cxm">
-                        <MenuItem 
-                            Header="Cut"
-                            Name="cxmItemCut"/>
-                    </ContextMenu>
-                </TextBox.ContextMenu>
-            </TextBox>
+            <local:UC_ProgrammerTextBox
+                TextStr="{Binding TextStr,UpdateSourceTrigger=PropertyChanged}"
+                IsReadOnly="{Binding IsReadOnly,UpdateSourceTrigger=PropertyChanged}"
+                Width="100"
+                Foreground="White" FontSize="12"
+                VerticalContentAlignment="Center"
+                Visibility="Visible"
+                DataContext="{Binding ProgrammerTextBox_Get, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            </local:UC_ProgrammerTextBox>
+            <!--<TextBox Width="100"
+                                            Text="{Binding GetData, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                            Foreground="White" FontSize="12"
+                                            VerticalContentAlignment="Center"
+                                            IsEnabled="True"
+                                            IsReadOnly="True">
+            </TextBox>-->
         </StackPanel>
         <Separator Grid.Column="2" Width="10" Background="Transparent" Visibility="Hidden"/>
     </Grid>
@@ -171,22 +171,40 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Button Grid.Column="0" Height="22" Width="30"
-                              Template="{DynamicResource PressedButton}" 
-                              Command="{Binding Set}"  
-                              BorderThickness="0.5" 
-                              Foreground="White"
-                              Content="Set">
+                                                Template="{DynamicResource PressedButton}" 
+                                                Command="{Binding Set}"  
+                                                BorderThickness="0.5" 
+                                                Foreground="White"
+                                                Content="Set">
         </Button>
-        <!-- Set data-->
-        <TextBox   Grid.Column="1" Width="100"
-                           Text="{Binding SetData,UpdateSourceTrigger=PropertyChanged}" 
-                           Foreground="White" FontSize="12"
-                           VerticalContentAlignment="Center">
-            <i:Interaction.Behaviors>
-                <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="20"/>
-            </i:Interaction.Behaviors>
-        </TextBox>
+        <!-- Set data -->
+        <local:UC_ProgrammerTextBox
+                TextStr="{Binding TextStr,UpdateSourceTrigger=PropertyChanged}"
+                IsReadOnly="{Binding IsReadOnly,UpdateSourceTrigger=PropertyChanged}"
+                Grid.Column="1" Width="100"
+                Foreground="White" FontSize="12"
+                VerticalContentAlignment="Center"
+                Visibility="Visible"
+                DataContext="{Binding ProgrammerTextBox_Set, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+        </local:UC_ProgrammerTextBox>
     </Grid>
     </Grid>
     </Border>
 </UserControl>
+
+
+<!--Foreground="White" FontSize="12"  DataContext="{Binding ProgrammerTextBox_Set}"
+                           VerticalContentAlignment="Center"
+                   Text="{Binding SetData,UpdateSourceTrigger=PropertyChanged}">
+            <TextBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Decimal" Style="{x:Null}" IsChecked="{Binding DecimalCheck}" IsCheckable="True"/>
+                    <MenuItem Header="Hexadecimal" Style="{x:Null}" IsChecked="{Binding HexadecimalCheck}" IsCheckable="True"/>
+                    <MenuItem Header="Cut" Command="ApplicationCommands.Cut" Style="{x:Null}"/>
+                    <MenuItem Header="Copy" Command="ApplicationCommands.Copy" Style="{x:Null}"/>
+                    <MenuItem Header="Paste" Command="ApplicationCommands.Paste" Style="{x:Null}"/>
+                </ContextMenu>
+            </TextBox.ContextMenu>
+            <i:Interaction.Behaviors>
+                <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="{Binding RegEx}" MaxLength="20"/>
+            </i:Interaction.Behaviors>-->
