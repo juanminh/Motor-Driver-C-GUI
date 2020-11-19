@@ -40,10 +40,10 @@ namespace MotorController.Models
 
         public string[] GroupToExecute(int tabIndex)
         {
-            string[] PanelElements = new string[] { "DriverStatus List", "Channel List", "MotionCommand List2", "TorqueControl", "SpeedControl", "PositionControl",
-                                                    "Profiler Mode", "S.G.List", "S.G.Type", "BP_ToggleSwitch",
+            string[] PanelElements = new string[] { "DriverStatus List", "TorqueControl", "SpeedControl", "PositionControl",
+                                                    "S.G.List", "S.G.Type", "BP_ToggleSwitch",
                                                     "MotionStatus List", "Digital Input List", "Position counters List",
-                                                    "UpperMainPan List", "LPCommands List", "ChannelsList", "MotorControl", "BPOpMode" };
+                                                    "LPCommands List", "ChannelsList", "MotorControl", "BPOpMode" };
             string[] arr = new string[] { };
             if(DebugViewModel.GetInstance.EnRefresh)
             {
@@ -51,6 +51,9 @@ namespace MotorController.Models
                 {
                     case (int)eTab.CONTROL:
                         arr = new string[] { "Control", "Motor", "Motion Limit", "CurrentLimit List" };
+                        break;
+                    case (int)eTab.MOTION:
+                        arr = new string[] { "SpeedProfiler", "StopMotion", "PositionProfiler", "ePositionProfiler" };
                         break;
                     case (int)eTab.FEED_BACKS:
                         arr = new string[] { "Hall", "FeedbackSync", "Feedback Sync", "Qep1", "Qep2", "SSI_Feedback", "Qep1Bis", "Qep2Bis" };
@@ -278,90 +281,6 @@ namespace MotorController.Models
                 }
             }
         }
-        //        public void StartRefresh_old()
-        //        {
-        //            if(Rs232Interface._comPort != null)
-        //            {
-        //                if(Rs232Interface._comPort.IsOpen)
-        //                {
-        //                    tab = Views.ParametarsWindow.ParametersWindowTabSelected;
-        //                    if(ParametarsWindow.WindowsOpen == false)
-        //                        tab = -1;
-        //#if REFRESH_MANAGER
-        //                Debug.WriteLine("StartRefresh: " + DateTime.Now.ToString("h:mm:ss.fff"));
-        //#endif
-        //                    if(tab != TempTab || DebugViewModel.updateList)
-        //                    {
-        //                        BuildList = new Dictionary<Tuple<int, int>, DataViewModel>();
-        //                        foreach(var list in BuildGroup)
-        //                        {
-        //                            if(GroupToExecute(tab).Contains(list.Key))
-        //                            {
-        //                                foreach(var sub_list in list.Value)
-        //                                {
-        //                                    var data = new DataViewModel
-        //                                    {
-        //                                        CommandName = ((DataViewModel)sub_list).CommandName,
-        //                                        CommandId = ((DataViewModel)sub_list).CommandId,
-        //                                        CommandSubId = ((DataViewModel)sub_list).CommandSubId,
-        //                                        CommandValue = ((DataViewModel)sub_list).CommandValue,
-        //                                        IsFloat = ((DataViewModel)sub_list).IsFloat,
-        //                                        IsSelected = ((DataViewModel)sub_list).IsSelected,
-        //                                    };
-        //                                    if(!BuildList.ContainsKey(new Tuple<int, int>(Int32.Parse(data.CommandId), Int32.Parse(data.CommandSubId))))
-        //                                    {
-        //                                        BuildList.Add(new Tuple<int, int>(Int32.Parse(((DataViewModel)sub_list).CommandId), Int32.Parse(((DataViewModel)sub_list).CommandSubId)), data);
-        //                                    }
-        //                                }
-        //                            }
-        //                        }
-        //                        TempTab = tab;
-        //                        if(DebugViewModel.updateList)
-        //                            DebugViewModel.updateList = false;
-        //#if REFRESH_MANAGER
-        //                    Debug.WriteLine(" --- Tab --- ");
-        //#endif
-        //                    }
-        //                    if(BuildList.Count == 0)
-        //                    {
-        //                        if(DebugViewModel.GetInstance.DebugRefresh)
-        //                            DebugViewModel.GetInstance.DebugRefresh = false;
-        //                        TempTab = -1;
-        //                        return;
-        //                    }
-
-        //                    if(_iteratorRefresh < 0)
-        //                        _iteratorRefresh = BuildList.Count - 1;
-
-        //                    int element = _iteratorRefresh--;
-        //                    if(element < BuildList.Count && element > -1)
-        //                    {
-        //                        if(!BuildList.ElementAt(element).Value.IsSelected)
-        //                        {
-        //                            Rs232Interface.GetInstance.SendToParser(new PacketFields
-        //                            {
-        //                                Data2Send = BuildList.ElementAt(element).Value.CommandValue,
-        //                                ID = Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId),
-        //                                SubID = Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId),
-        //                                IsSet = false,
-        //                                IsFloat = BuildList.ElementAt(element).Value.IsFloat
-        //                            });
-        //                            if(BuildList.Count > 0)
-        //                            {
-        //                                if(Commands.GetInstance.DataViewCommandsList.ContainsKey(
-        //                                    new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))))
-        //                                    Commands.GetInstance.DataViewCommandsList[
-        //                                        new Tuple<int, int>(Convert.ToInt16(BuildList.ElementAt(element).Value.CommandId), Convert.ToInt16(BuildList.ElementAt(element).Value.CommandSubId))].GetCount++;
-        //                            }
-        //                        }
-        //                    }
-
-        //#if REFRESH_MANAGER
-        //                Debug.WriteLine("EndRefresh: " + DateTime.Now.ToString("h:mm:ss.fff"));
-        //#endif
-        //                }
-        //            }
-        //        }
         public static int ConnectionCount = 0;
         public void VerifyConnection(object sender, EventArgs e)
         {
@@ -389,8 +308,7 @@ namespace MotorController.Models
                         IsFloat = false
                     });
                     ConnectionCount++;
-                    //if(ConnectionCount > 0)
-                    //Debug.WriteLine("Send: " + ConnectionCount + " " + DateTime.Now.ToString("h:mm:ss.fff"));
+
                     if(ConnectionCount > 5 && ConnectionCount < 7)
                     {
                         EventRiser.Instance.RiseEevent(string.Format($"No communication with Driver"));
@@ -412,22 +330,6 @@ namespace MotorController.Models
                 }
             }
         }
-        //string CalibrationGetStatus(string returnedValue)
-        //{
-        //    switch(Convert.ToInt16(returnedValue))
-        //    {
-        //        case 0:
-        //            return "Idle";
-        //        case 1:
-        //            return "In Process";
-        //        case 2:
-        //            return "Failure";
-        //        case 3:
-        //            return "Success";
-        //        default:
-        //            return "No Info(" + returnedValue + ")";
-        //    }
-        //}
         int CalibStatus(string returnedValue)
         {
             int StateTemp = 0;

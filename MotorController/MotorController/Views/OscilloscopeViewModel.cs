@@ -138,10 +138,6 @@ namespace MotorController.Views
             }
         }
         #endregion
-        ~OscilloscopeViewModel()
-        {
-
-        }
         #region Yzoom
         public double _yzoom = 0;
         public ActionCommand YPlus
@@ -194,7 +190,7 @@ namespace MotorController.Views
         {
             if(_timer != null)
             {
-                lock(_timer)
+                lock(/*_timer*/Synlock)
                 {
                     _duration *= 2;
                     POintstoPlot = (int)(OscilloscopeParameters.ChanelFreq * _duration);  //update resolution
@@ -221,7 +217,7 @@ namespace MotorController.Views
                 return;
             if(_timer != null)
             {
-                lock(_timer)
+                lock(/*_timer*/Synlock)
                 {
                     _duration /= 2;
                     POintstoPlot = (int)(OscilloscopeParameters.ChanelFreq * _duration);  //update resolution
@@ -521,7 +517,7 @@ namespace MotorController.Views
         public void StepRecalcMerge()
         {
             if(_timer != null)
-                lock(_timer)
+                lock(/*_timer*/Synlock)
                 {
                     OscilloscopeParameters.Step = OscilloscopeParameters.ChanTotalCounter > 0
                         ? OscilloscopeParameters.ChanTotalCounter * 1000 / OscilloscopeParameters.SingleChanelFreqC
@@ -676,7 +672,7 @@ namespace MotorController.Views
             {
                 if(_timer != null)
                 {
-                    lock(_timer)
+                    lock(/*_timer*/Synlock)
                     {
                         _timer.Stop();
                         _timer.Elapsed -= OnTick;
@@ -756,7 +752,7 @@ namespace MotorController.Views
                             ((int)((UC_ChannelViewModel)Commands.GetInstance.GenericCommandsGroup["ChannelsList"][1]).CommandSubId))]).Gain);
                 if(!IsFreeze)
                 {
-                    lock(_timer)
+                    lock(/*_timer*/Synlock)
                     {
                         State = 0;
                         if(step_temp != OscilloscopeParameters.Step)

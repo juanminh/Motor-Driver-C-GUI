@@ -109,7 +109,7 @@
                             <GradientStop Color="#33FFFFFF"/>
                         </LinearGradientBrush>
                     </Border.Background>
-                </Border>
+                </Border><!--FFF9F6F6 FFF2553F-->
                 <TextBlock Text="{Binding CommandName}" 
                        Foreground="#FFF9F6F6" 
                        HorizontalAlignment="Left"

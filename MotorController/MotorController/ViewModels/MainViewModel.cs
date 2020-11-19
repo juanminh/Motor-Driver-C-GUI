@@ -75,11 +75,6 @@ namespace MotorController.ViewModels
             Rs232Interface.GetInstance.Driver2Mainmodel += SincronizationPos;
         }
 
-        ~MainViewModel()
-        {
-            
-        }
-
         private void SincronizationPos(object sender, Rs232InterfaceEventArgs e)
         {
             leftPanelViewModel.ConnectButtonContent = e.ConnecteButtonLabel;

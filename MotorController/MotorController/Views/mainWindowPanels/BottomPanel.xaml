@@ -531,37 +531,38 @@
                         </Grid.ColumnDefinitions>
                         <ScrollViewer Grid.Column="0" MaxWidth="250" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
                             <StackPanel Orientation="Vertical">
+                                <TextBlock Text="Control" Foreground="White" Background="Transparent" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
+                                <ItemsControl 
+                                      ItemsSource="{Binding OpMode}" 
+                                      ItemTemplate="{StaticResource EnumViewModel}"/>
+                                <Grid Height="7"/>
                                 <TextBlock Text="Torque Control" Foreground="White" Background="Transparent" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
                                 <ItemsControl 
                                       ItemsSource="{Binding TorqueControl}" 
                                       ItemTemplate="{StaticResource DataViewModel}"/>
-                                <Grid Height="5"/>
-                                
-                                <TextBlock Text="Position Control" Foreground="White" Background="Transparent" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
-                                <ItemsControl 
-                                      ItemsSource="{Binding PositionControl}" 
-                                      ItemTemplate="{StaticResource DataViewModel}"/>
-                                <Grid Height="5"/>
-                                <TextBlock Text="Drive Control" Foreground="White" Background="Transparent" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
-                                <ItemsControl 
-                                      ItemsSource="{Binding OpMode}" 
-                                      ItemTemplate="{StaticResource EnumViewModel}"/>
-                            </StackPanel>
-                        </ScrollViewer>
-                        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" MaxWidth="250" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
-                            <StackPanel >
+                                <Grid Height="7"/>
                                 <TextBlock Text="Speed Control" Foreground="White" Background="Transparent" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
                                 <ItemsControl 
                                       ItemsSource="{Binding SpeedControl}" 
                                       ItemTemplate="{StaticResource DataViewModel}"/>                                
-                                <Grid Height="5"/>
-                                <TextBlock Text="Profiler" Foreground="White" Background="Transparent" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
-                                <ItemsControl   
-                                            ItemsSource="{Binding MotionCommandList2}" 
-                                            ItemTemplate="{StaticResource DataViewModel}">
+                            </StackPanel>
+                        </ScrollViewer>
+                        <ScrollViewer Grid.Column="1" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" MaxWidth="250" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                            <StackPanel >
+                                <TextBlock Text="Position Control" Foreground="White" Background="Transparent" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
+                                <ItemsControl 
+                                      ItemsSource="{Binding PositionControl}" 
+                                      ItemTemplate="{StaticResource DataViewModel}"/>
+                                <Grid Height="7"/>
+                                <TextBlock Grid.Row="4" Text="Operations" Foreground="White" Background="Transparent" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
+                                <ItemsControl Grid.Row="5" ItemsSource="{Binding ToggleOperationList}" ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}">
+                                    <ItemsControl.ItemContainerStyle>
+                                        <Style>
+                                            <Setter Property="Control.Width" Value="Auto"/>
+                                            <Setter Property="Control.Margin" Value="5"/>
+                                        </Style>
+                                    </ItemsControl.ItemContainerStyle>
                                 </ItemsControl>
-                                <ItemsControl ItemsSource="{Binding ProfilerModeList}" 
-                                            ItemTemplate="{StaticResource EnumViewModel}"/>
                             </StackPanel>
                         </ScrollViewer>
                         <ScrollViewer  Grid.Column="2" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto" MaxWidth="250" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
@@ -581,8 +582,6 @@
                                 <ItemsControl Grid.Row="2" 
                                                     ItemsSource="{Binding SGTypeList}" 
                                                     ItemTemplate="{StaticResource EnumViewModel}"/>
-                                <TextBlock Grid.Row="4" Text="Operations" Foreground="White" Background="Transparent" FontSize="12" TextDecorations="Underline" FontWeight="DemiBold"/>
-                                <ItemsControl Grid.Row="5" ItemsSource="{Binding ToggleOperationList}" ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}"/>
                             </Grid>
                         </ScrollViewer>
                     </Grid>

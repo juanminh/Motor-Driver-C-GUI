@@ -18,15 +18,16 @@ namespace MotorController.ViewModels
     enum eTab
     {
         CONTROL = 1,
-        FEED_BACKS = 2,
-        PID = 3,
-        FILTER = 4,
-        DEVICE = 5,
-        I_O = 6,
-        CALIBRATION = 7,
-        BODE = 8,
-        MAINTENANCE = 9,
-        DEBUG = 10
+        MOTION,
+        FEED_BACKS,
+        PID,
+        FILTER,
+        DEVICE,
+        I_O,
+        CALIBRATION,
+        BODE,
+        MAINTENANCE,
+        DEBUG
     };
     internal class ParametarsWindowViewModel : Window//,  ViewModelBase
     {
@@ -69,7 +70,34 @@ namespace MotorController.ViewModels
             //_bodeViewModel = BodeViewModel.GetInstance;
             _pidViewModel = PIDViewModel.GetInstance;
         }
-        ~ParametarsWindowViewModel() { }
+        public ObservableCollection<object> StopMotion
+        {
+            get
+            {
+                return Commands.GetInstance.GenericCommandsGroup["StopMotion"];
+            }
+        }
+        public ObservableCollection<object> SpeedProfiler
+        {
+            get
+            {
+                return Commands.GetInstance.GenericCommandsGroup["SpeedProfiler"];
+            }
+        }
+        public ObservableCollection<object> PositionProfiler
+        {
+            get
+            {
+                return Commands.GetInstance.GenericCommandsGroup["PositionProfiler"];
+            }
+        }
+        public ObservableCollection<object> ePositionProfiler
+        {
+            get
+            {
+                return Commands.GetInstance.GenericCommandsGroup["ePositionProfiler"];
+            }
+        }
         public ObservableCollection<object> ControlList
         {
             get

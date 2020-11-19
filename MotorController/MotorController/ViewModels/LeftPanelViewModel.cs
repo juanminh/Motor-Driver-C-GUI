@@ -797,7 +797,7 @@ namespace MotorController.ViewModels
                     {
                         if(_RefreshParamsTickTimer != null)
                         {
-                            lock(_RefreshParamsTickTimer)
+                            lock(/*_RefreshParamsTickTimer*/Synlock)
                             {
                                 _RefreshParamsTickTimer.Stop();
                                 _RefreshParamsTickTimer.Elapsed -= RefreshParams;
@@ -841,7 +841,7 @@ namespace MotorController.ViewModels
                     {
                         if(_VerifyConnectionTimer != null)
                         {
-                            lock(_VerifyConnectionTimer)
+                            lock(/*_VerifyConnectionTimer*/Synlock)
                             {
                                 _VerifyConnectionTimer.Stop();
                                 _VerifyConnectionTimer.Elapsed -= RefreshManager.GetInstance.VerifyConnection;
@@ -877,7 +877,7 @@ namespace MotorController.ViewModels
                     {
                         if(_BlinkLedsTimer != null)
                         {
-                            lock(_BlinkLedsTimer)
+                            lock(/*_BlinkLedsTimer*/Synlock)
                             {
                                 _BlinkLedsTimer.Stop();
                                 _BlinkLedsTimer.Elapsed -= BlinkLeds;
@@ -936,7 +936,7 @@ namespace MotorController.ViewModels
                     {
                         if(_StarterOperationTimer != null)
                         {
-                            lock(_StarterOperationTimer)
+                            lock(/*_StarterOperationTimer*/Synlock)
                             {
                                 _StarterOperationTimer.Stop();
                                 _StarterOperationTimer.Elapsed -= StarterOperationTicks;

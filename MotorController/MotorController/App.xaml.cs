@@ -145,7 +145,6 @@ namespace MotorController
 
             if(comboBox == null)
                 return;
-            //((EnumViewModel)comboBox).IsOpened = true;
 
             // fire SelectionChangedEvent if two value are the same
             if((string)comboBox.Name != "ComboboxCOM")

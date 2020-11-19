@@ -17,7 +17,7 @@ namespace MotorController.Models.DriverBlock
     internal delegate void Rs232RxHandler(object sender, Rs232InterfaceEventArgs e);
 
 
-    internal class Rs232Interface : ConnectionBase
+    internal class Rs232Interface : ConnectionBase, IDisposable
     {
         //TOdo move global members to base clase, and create there ctor (lesson interfase)
         //MEMBERS
@@ -40,7 +40,7 @@ namespace MotorController.Models.DriverBlock
 
         #region Properties
 
-        public bool IsSynced { get { return _isSynced; } set { _isSynced = value; }  }
+        public bool IsSynced { get { return _isSynced; } set { _isSynced = value; } }
         #endregion
         public delegate void DataRecived(byte[] dataBytes);
         public static Rs232Interface GetInstance
@@ -78,10 +78,8 @@ namespace MotorController.Models.DriverBlock
                             {
                                 _isSynced = false;
                                 Thread.Sleep(100);
-                                //DataViewModel temp = (DataViewModel)Commands.GetInstance.DataCommandsListbySubGroup["DeviceSynchCommand"][0];
                                 DataViewModel temp = (DataViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(64, 0)];
-                                Commands.AssemblePacket(out RxPacket, Int16.Parse(temp.CommandId), Int16.Parse(temp.CommandSubId), true, false, 0);
-                                RxtoParser(this, new Rs232InterfaceEventArgs(RxPacket));
+                                RxtoParser(this, new Rs232InterfaceEventArgs(new PacketFields { ID = Int16.Parse(temp.CommandId), SubID = Int16.Parse(temp.CommandSubId), IsSet = true, IsFloat = false, Data2Send= 0}));
 
                                 ParserRayonM1.mre.WaitOne(1000);
 
@@ -104,7 +102,6 @@ namespace MotorController.Models.DriverBlock
                                 }
                                 LeftPanelViewModel.GetInstance.ConnectTextBoxContent = "Not Connected";
 
-                                //LeftPanelViewModel.GetInstance.VerifyConnectionTicks(LeftPanelViewModel.STOP);
                                 EventRiser.Instance.RiseEevent(string.Format($"Disconnected"));
                             }
                             LeftPanelViewModel.busy = false;
@@ -122,7 +119,6 @@ namespace MotorController.Models.DriverBlock
                             LeftPanelViewModel.busy = false;
                         }
                         _comPort = null;
-                        //OscilloscopeViewModel.GetInstance.ChComboEn = false;
                     }
                     else
                     {
@@ -140,7 +136,6 @@ namespace MotorController.Models.DriverBlock
                         LeftPanelViewModel.busy = false;
 
                         _comPort = null;
-                        //OscilloscopeViewModel.GetInstance.ChComboEn = false;
                     }
                     break;
                 case 1:
@@ -149,6 +144,20 @@ namespace MotorController.Models.DriverBlock
                     break;
             }
             LeftPanelViewModel.GetInstance.ConnectButtonEnable = true;
+        }
+        public void Dispose()
+        {
+            if(_comPort.IsOpen)
+            {
+                //_comPort.Flush();
+                _comPort.Close();
+                _comPort = null;
+            }
+            if(ComPort.IsOpen)
+            {
+                ComPort.Close();
+                ComPort = null;
+            }
         }
         #endregion Disconnect
         #region Auto_Connect
@@ -195,129 +204,123 @@ namespace MotorController.Models.DriverBlock
 
                         ReadBufferSize = 8192
                     };
-                    try
                     {
-                        ComPort.Open(); //Try to open
-
-                        if(ComPort.IsOpen)
+                        try
                         {
-                            EventRiser.Instance.RiseEevent(string.Format($"Success"));
-                            EventRiser.Instance.RiseEevent(string.Format($"Autobaud process..."));
+                            ComPort.Open(); //Try to open
 
-                            foreach(var baudRate in BaudRates) //Iterate though baud rates
+                            if(ComPort.IsOpen)
                             {
+                                EventRiser.Instance.RiseEevent(string.Format($"Success"));
+                                EventRiser.Instance.RiseEevent(string.Format($"Autobaud process..."));
 
-                                if(_isSynced == false)  // Looking for Baudrate
+                                foreach(var baudRate in BaudRates) //Iterate though baud rates
                                 {
-                                    ComPort.BaudRate = baudRate;
 
-                                    ComPort.DataReceived -= DataReceived;
-                                    ComPort.DataReceived += DataReceived;
-
-                                    ParserRayonM1.GetInstanceofParser.Parser2Send -= SendDataHendler;
-                                    ParserRayonM1.GetInstanceofParser.Parser2Send += SendDataHendler;
-
-                                    _comPort = ComPort;
-
-                                    //Init synchronization packet, and rises event for parser
-                                    if(RxtoParser != null)
+                                    if(_isSynced == false)  // Looking for Baudrate
                                     {
-                                        _comPort.DiscardInBuffer();        //Reset internal rx buffer
-                                        //DataViewModel temp = (DataViewModel)Commands.GetInstance.DebugCommandsListbySubGroup["DeviceSynchCommand"][3]; // [0]: 64[0], [1]: 64[1], [2]: 1[0], [3]: 61[1]
-                                        EnumViewModel temp = (EnumViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(61, 1)];
-                                        Commands.AssemblePacket(out RxPacket, Int16.Parse(temp.CommandId), Int16.Parse(temp.CommandSubId), false, false, 0);
-                                        for(int i = 0; i < 3; i++)
+                                        ComPort.BaudRate = baudRate;
+
+                                        ComPort.DataReceived -= DataReceived;
+                                        ComPort.DataReceived += DataReceived;
+
+                                        ParserRayonM1.GetInstanceofParser.Parser2Send -= SendDataHendler;
+                                        ParserRayonM1.GetInstanceofParser.Parser2Send += SendDataHendler;
+
+                                        _comPort = ComPort;
+
+                                        //Init synchronization packet, and rises event for parser
+                                        if(RxtoParser != null)
                                         {
-                                            RxtoParser(this, new Rs232InterfaceEventArgs(RxPacket));
-                                            //Debug.WriteLine("Baudrate Send: " + _comPort.BaudRate.ToString());
-                                            Thread.Sleep(50);
-                                            if(_isSynced)
+                                            _comPort.DiscardInBuffer();        //Reset internal rx buffer
+                                            EnumViewModel temp = (EnumViewModel)Commands.GetInstance.GenericCommandsList[new Tuple<int, int>(61, 1)]; // Device -> Baudrate Command
+                                            for(int i = 0; i < 3; i++)
                                             {
-                                                break;
+                                                RxtoParser(this, new Rs232InterfaceEventArgs(new PacketFields { ID = Int16.Parse(temp.CommandId), SubID = Int16.Parse(temp.CommandSubId), IsSet = false, IsFloat = false, Data2Send = 0 }));
+                                                Thread.Sleep(50);
+                                                if(_isSynced)
+                                                    break;
                                             }
                                         }
                                     }
-                                    //Thread.Sleep(250);// while with timeout of 1 second
-                                    //Cleaner = ComPort.ReadExisting();
-                                }
-                                Thread.Sleep(100);// while with timeout of 1 second
-                                if(_isSynced) // Baudrate found
-                                {
-                                    if(Driver2Mainmodel != null)
+                                    Thread.Sleep(100);// while with timeout of 1 second
+                                    if(_isSynced) // Baudrate found
                                     {
-                                        Driver2Mainmodel(this, new Rs232InterfaceEventArgs("Disconnect"));
+                                        if(Driver2Mainmodel != null)
+                                        {
+                                            Driver2Mainmodel(this, new Rs232InterfaceEventArgs("Disconnect"));
+                                        }
+                                        else
+                                        {
+                                            throw new NullReferenceException("No Listeners on this event");
+                                        }
+                                        _comPort.DiscardInBuffer();        //Reset internal rx buffer
+                                        EventRiser.Instance.RiseEevent(string.Format($"Success"));
+                                        EventRiser.Instance.RiseEevent(string.Format($"Baudrate: {_comPort.BaudRate}"));
+                                        _baudRate = _comPort.BaudRate.ToString();
+                                        _comPortStr = Configuration.SelectedCom;
+                                        ComPort = new SerialPort();
+                                        LeftPanelViewModel.busy = false;
+                                        Thread.Sleep(250);
+                                        LeftPanelViewModel.GetInstance.StarterOperation(LeftPanelViewModel.STOP);
+                                        LeftPanelViewModel.GetInstance.StarterOperation(LeftPanelViewModel.START);
+                                        return;
+                                    }
+                                }
+                                EventRiser.Instance.RiseEevent(string.Format($"Failed"));
+#if TEST_LOADER_MODE
+                                EventRiser.Instance.RiseEevent(string.Format($"Testing loader mode"));
+                                // Autobaud A A A Echo operation detect
+                                ComPort.BaudRate = BaudRates[5];
+
+                                ComPort.DataReceived -= DataReceived;
+                                ComPort.DataReceived += DataReceived;
+
+                                AutoBaudEcho -= SendDataHendler;
+                                AutoBaudEcho += SendDataHendler;
+                                _comPort = ComPort;
+
+                                //Init synchronization packet, and rises event for parser
+
+                                byte[] A = new byte[1] { 65 };
+                                for(int i = 0; i < 5; i++)
+                                {
+                                    if(AutoBaudEcho != null)
+                                    {
+                                        AutoBaudEcho(this, new Parser2SendEventArgs(A));
+                                        Thread.Sleep(500);
                                     }
                                     else
-                                    {
-                                        throw new NullReferenceException("No Listeners on this event");
-                                    }
-                                    _comPort.DiscardInBuffer();        //Reset internal rx buffer
-                                    EventRiser.Instance.RiseEevent(string.Format($"Success"));
-                                    EventRiser.Instance.RiseEevent(string.Format($"Baudrate: {_comPort.BaudRate}"));
-                                    _baudRate = _comPort.BaudRate.ToString();
-                                    _comPortStr = Configuration.SelectedCom;
-                                    ComPort = new SerialPort();
-                                    LeftPanelViewModel.busy = false;
-                                    Thread.Sleep(250);
-                                    LeftPanelViewModel.GetInstance.StarterOperation(LeftPanelViewModel.STOP);
-                                    LeftPanelViewModel.GetInstance.StarterOperation(LeftPanelViewModel.START);
-                                    return;
+                                        break;
                                 }
-                            }
-                            EventRiser.Instance.RiseEevent(string.Format($"Failed"));
-#if TEST_LOADER_MODE
-                            EventRiser.Instance.RiseEevent(string.Format($"Testing loader mode"));
-                            // Autobaud A A A Echo operation detect
-                            ComPort.BaudRate = BaudRates[5];
-
-                            ComPort.DataReceived -= DataReceived;
-                            ComPort.DataReceived += DataReceived;
-
-                            AutoBaudEcho -= SendDataHendler;
-                            AutoBaudEcho += SendDataHendler;
-                            _comPort = ComPort;
-
-                            //Init synchronization packet, and rises event for parser
-
-                            byte[] A = new byte[1] { 65 };
-                            for(int i = 0; i < 5; i++)
-                            {
                                 if(AutoBaudEcho != null)
                                 {
-                                    AutoBaudEcho(this, new Parser2SendEventArgs(A));
-                                    Thread.Sleep(500);
+                                    EventRiser.Instance.RiseEevent(string.Format($"Failed to communicate with unit"));
                                 }
-                                else
-                                    break;
-                            }
-                            if(AutoBaudEcho != null)
-                            {
-                                EventRiser.Instance.RiseEevent(string.Format($"Failed to communicate with unit"));
-                            }
-                            Thread.Sleep(100);// while with timeout of 1 second
-                            //Cleaner = ComPort.ReadExisting();
+                                Thread.Sleep(100);// while with timeout of 1 second
 #endif
-                            _baudRate = _comPort.BaudRate.ToString();
-                            _comPortStr = Configuration.SelectedCom;
+                                _baudRate = _comPort.BaudRate.ToString();
+                                _comPortStr = Configuration.SelectedCom;
+                                ComPort.Close();
+                                LeftPanelViewModel.busy = false;
+                                LeftPanelViewModel.GetInstance.ConnectButtonEnable = true;
+                                return;
+                            }
+                            EventRiser.Instance.RiseEevent(string.Format($"Failed"));
                             ComPort.Close();
                             LeftPanelViewModel.busy = false;
                             LeftPanelViewModel.GetInstance.ConnectButtonEnable = true;
                             return;
                         }
-                        EventRiser.Instance.RiseEevent(string.Format($"Failed"));
-                        ComPort.Close();
-                        LeftPanelViewModel.busy = false;
-                        LeftPanelViewModel.GetInstance.ConnectButtonEnable = true;
-                        return;
-                    }
-                    catch(Exception)
-                    {
-                        EventRiser.Instance.RiseEevent(string.Format($"Failed"));
-                        ComPort.Close();
-                        ComPort.Dispose();
-                        LeftPanelViewModel.busy = false;
-                        LeftPanelViewModel.GetInstance.ConnectButtonEnable = true;
-                        return;
+                        catch(Exception)
+                        {
+                            EventRiser.Instance.RiseEevent(string.Format($"Failed"));
+                            ComPort.Close();
+                            ComPort.Dispose();
+                            LeftPanelViewModel.busy = false;
+                            LeftPanelViewModel.GetInstance.ConnectButtonEnable = true;
+                            return;
+                        }
                     }
                 }
                 else
@@ -354,28 +357,6 @@ namespace MotorController.Models.DriverBlock
                             return;
 
                         serialPort.Write(packetToSend, 0, packetToSend.Length); // Send through RS232 cable
-                        if(Consts._build == Consts.eBuild.DEBUG)
-                        {
-                            if(packetToSend.Length == 11)
-                            {
-                                var cmdlIdLsb = packetToSend[2];
-                                var cmdIdlMsb = packetToSend[3] & 0x3F;
-                                var subIdLsb = (packetToSend[3] >> 6) & 0x03;
-                                var subIdMsb = packetToSend[4] & 0x07;
-                                var getSet = (packetToSend[4] >> 4) & 0x01;
-                                int commandId = Convert.ToInt16(cmdlIdLsb);
-                                commandId = commandId + Convert.ToInt16(cmdIdlMsb << 8);
-                                int commandSubId = Convert.ToInt16(subIdLsb);
-                                commandSubId = commandSubId + Convert.ToInt16(subIdMsb << 2);
-                                Int32 transit = packetToSend[8];
-                                transit <<= 8;
-                                transit |= packetToSend[7];
-                                transit <<= 8;
-                                transit |= packetToSend[6];
-                                transit <<= 8;
-                                transit |= packetToSend[5];
-                            }
-                        }
                         serialPort.DiscardOutBuffer();
                     }
                     catch

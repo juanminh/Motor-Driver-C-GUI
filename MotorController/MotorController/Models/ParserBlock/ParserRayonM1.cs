@@ -142,7 +142,6 @@ namespace MotorController.Models.ParserBlock
             if(Rs232Interface.GetInstance.IsSynced == false)//TODO
             {
                 Rs232Interface.GetInstance.IsSynced = true;
-                //Rs232Interface.GetInstance.
             }
             else
             {
@@ -452,13 +451,16 @@ namespace MotorController.Models.ParserBlock
                 //else if(transit == 0 && commandId == 1 && commandSubId == 0)
                 //    Rs232Interface.GetInstance.IsSynced = true;
                 //else 
-                if(commandId == 61 && commandSubId == 1 && Rs232Interface._comPort.BaudRate == ConnectionBase.BaudRates[transit - 1])
-                    Rs232Interface.GetInstance.IsSynced = true;
-                else
-                    Rs232Interface.GetInstance.IsSynced = false;
+                try
+                {
+                    if(commandId == 61 && commandSubId == 1 && Rs232Interface._comPort.BaudRate == ConnectionBase.BaudRates[transit - 1])
+                        Rs232Interface.GetInstance.IsSynced = true;
+                    else
+                        Rs232Interface.GetInstance.IsSynced = false;
+                }
+                catch { }
                 //Debug.WriteLine("Receive: " + transit.ToString());
                 //Debug.WriteLine("Baudrate Receive: " + Rs232Interface._comPort.BaudRate.ToString());
-                
                 mre.Set();
             }
         }

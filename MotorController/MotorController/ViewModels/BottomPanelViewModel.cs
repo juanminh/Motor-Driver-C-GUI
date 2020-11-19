@@ -61,13 +61,7 @@ namespace MotorController.ViewModels
                 return Commands.GetInstance.GenericCommandsGroup["BPOpMode"];
             }
         }
-        public ObservableCollection<object> MotionCommandList2
-        {
-            get
-            {
-                return Commands.GetInstance.GenericCommandsGroup["MotionCommand List2"];
-            }
-        }
+
         public ObservableCollection<object> ToggleOperationList
         {
             get
@@ -111,13 +105,6 @@ namespace MotorController.ViewModels
             get
             {
                 return Commands.GetInstance.GenericCommandsGroup["Motor"];
-            }
-        }
-        public ObservableCollection<object> ProfilerModeList
-        {
-            get
-            {
-                return Commands.GetInstance.GenericCommandsGroup["Profiler Mode"];
             }
         }
         public ObservableCollection<object> SGTypeList

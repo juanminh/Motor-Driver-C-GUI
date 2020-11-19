@@ -138,7 +138,7 @@
             <TabControl.Background>
                 <ImageBrush ImageSource="pack://siteoforigin:,,,/Views/HomeBackground.jpg"/>
             </TabControl.Background>
-            <TabItem Name="Motor" Header="Control" TabIndex="1" Background="Black" Foreground="White">
+            <TabItem TabIndex="1" Header="Control" Foreground="White">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="5"/>
@@ -182,7 +182,45 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Feed Backs" TabIndex="2" Background="Black" Foreground="White" DataContext="{Binding FeedBackViewModel}" Height="22" VerticalAlignment="Top" >
+            <TabItem TabIndex="2" Header="Motion" Foreground="White">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="0.3*"/>
+                        <ColumnDefinition Width="0.03*"/>
+                        <ColumnDefinition Width="0.3*"/>
+                        <ColumnDefinition Width="0.03*"/>
+                        <ColumnDefinition Width="0.3*"/>
+                        <ColumnDefinition Width="0.03*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid Grid.Column="1">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="5"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Text="Speed Profiler" Foreground="White" Background="{StaticResource HeaderTextblockBackground}" FontSize="14" TextDecorations="Underline" FontWeight="DemiBold"/>
+                        <ItemsControl Grid.Row="1" ItemsSource="{Binding SpeedProfiler}" ItemTemplate="{StaticResource DataViewModel}"/>
+                        <TextBlock Grid.Row="4" Text="Stop Motion" Foreground="White" Background="{StaticResource HeaderTextblockBackground}" FontSize="14" TextDecorations="Underline" FontWeight="DemiBold"/>
+                        <ItemsControl Grid.Row="5" ItemsSource="{Binding StopMotion}" ItemTemplate="{StaticResource DataViewModel}"/>
+                    </Grid>
+                    <Grid Grid.Column="3">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Text="Position Profiler" Foreground="White" Background="{StaticResource HeaderTextblockBackground}" FontSize="14" TextDecorations="Underline" FontWeight="DemiBold"/>
+                        <ItemsControl Grid.Row="1" ItemsSource="{Binding PositionProfiler}" ItemTemplate="{StaticResource DataViewModel}"/>
+                        <ItemsControl Grid.Row="2" ItemsSource="{Binding ePositionProfiler}" ItemTemplate="{StaticResource EnumViewModel}"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+            <TabItem TabIndex="3" Header="Feed Backs" Foreground="White" DataContext="{Binding FeedBackViewModel}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="5"/>
@@ -238,7 +276,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="PID" TabIndex="3" Background="Black" Foreground="White" DataContext="{Binding PIDViewModel}">
+            <TabItem TabIndex="4" Header="PID" Background="Black" Foreground="White" DataContext="{Binding PIDViewModel}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="5"/>
@@ -278,7 +316,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Filter" TabIndex="4" Background="Black" Foreground="White" DataContext="{Binding FilterViewModel}">
+            <TabItem TabIndex="5" Header="Filter" Background="Black" Foreground="White" DataContext="{Binding FilterViewModel}">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="5"/>
@@ -297,7 +335,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Device" TabIndex="5" Background="Black" Foreground="White">
+            <TabItem TabIndex="6" Header="Device" Background="Black" Foreground="White">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="5"/>
@@ -316,7 +354,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="I/O" TabIndex="6" DataContext="{Binding IOViewModel}" Background="Black" Foreground="White" >
+            <TabItem TabIndex="7" Header="I/O" DataContext="{Binding IOViewModel}" Background="Black" Foreground="White" >
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="5"/>
@@ -333,7 +371,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Calibration" TabIndex="7" DataContext="{Binding CalibrationViewModel}" Foreground="White">
+            <TabItem TabIndex="8" Header="Calibration" DataContext="{Binding CalibrationViewModel}" Foreground="White">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="5"/>
@@ -374,282 +412,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <!--<TabItem Header="Bode" TabIndex="8" DataContext="{Binding BodeViewModel}" Background="Black" Foreground="White" >
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="5"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="5"/>
-                        <ColumnDefinition Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="1">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="0"/>
-                            <RowDefinition Height="0.5*"/>
-                            <RowDefinition Height="0.01*"/>
-                            <RowDefinition Height="0.5*"/>
-                        </Grid.RowDefinitions>
-                        --><!--http://support.scichart.com/index.php?/Knowledgebase/Article/View/17227/36/performance-tips-and-tricks-->
-
-                        <!----><!--
-                        <s:SciChartSurface 
-                            Name="Y1_Magnitude"
-                            Grid.Row="1"
-                            Width="550"
-                            Height="Auto"
-                           RenderPriority="Normal" 
-                           s:ThemeManager.Theme="Oscilloscope"
-                           ClipModifierSurface="True"
-                           XAxis="{Binding XAxis1, Mode=TwoWay}" 
-                            FontSize="8"
-                           MaxFrameRate="25">
-                            <s:SciChartSurface.RenderableSeries>
-                                <s:FastLineRenderableSeries DataSeries="{Binding ChartData}"
-                                            SeriesColor="Yellow"
-                                            AntiAliasing="False"
-                                            IsDigitalLine="False"
-                                            ResamplingMode="MinMax"
-                                            StrokeThickness="1"
-                                            Style="{StaticResource LineSeriesStyle}">
-                                    <s:FastLineRenderableSeries.PointMarker>
-                                        <s:EllipsePointMarker Width="5" Height="5" Fill="{Binding SeriesColor}"/>
-                                    </s:FastLineRenderableSeries.PointMarker>
-                                </s:FastLineRenderableSeries>
-                            </s:SciChartSurface.RenderableSeries>
-                            <s:SciChartSurface.YAxis>
-                                <s:NumericAxis                                               
-                               AxisTitle = "Magnitude (dB)"
-                               AxisAlignment="Left"
-                               DrawMajorBands="False"
-                               DrawMinorGridLines="False"
-                               DrawMinorTicks="False"
-                               DrawMajorTicks="False"
-                               StrokeThickness="1"
-                                    AnimatedVisibleRange="{Binding MagVisibleRange, Mode=TwoWay}">
-                                    <s:NumericAxis.GrowBy>
-                                        <s:DoubleRange Max="0.2" Min="0.2"/>
-                                    </s:NumericAxis.GrowBy>
-                                </s:NumericAxis>
-                            </s:SciChartSurface.YAxis>
-                            --><!--Create ChartModifiers, which are enabled or disabled from the ViewModel via the ChartModifier property and IsModifierTypeConverter--><!--
-                        <s:SciChartSurface.ChartModifier>
-                            <s:ModifierGroup>
-                                <s:CursorModifier AxisLabelTemplate="{StaticResource CursorAxisLabelTemplate}" 
-                                                      IsEnabled="{Binding ChartModifier, ConverterParameter=CrosshairsCursor, Converter={StaticResource IsModifierTypeConverter}, Mode=TwoWay}" />
-                                <s:RubberBandXyZoomModifier IsEnabled="True" IsXAxisOnly="False" ZoomExtentsY="False" IsAnimated="True"/>
-                                <s:ZoomExtentsModifier/>
-                                <s:XAxisDragModifier/>
-                                <s:YAxisDragModifier />
-                            </s:ModifierGroup>
-                        </s:SciChartSurface.ChartModifier>
-                        </s:SciChartSurface>
-                        <s:SciChartSurface 
-                           Name="Y2_Phase"
-                           Grid.Row="3"
-                           Width="550"
-                           Height="Auto"
-                           RenderPriority="Normal" 
-                           s:ThemeManager.Theme="Oscilloscope"
-                           ClipModifierSurface="True"
-                           XAxis="{Binding XAxis2, Mode=TwoWay}"
-                            MaxFrameRate="25">
-                            <s:SciChartSurface.YAxis>
-                                <s:NumericAxis 
-                                               AxisTitle = "Phase (Degree)"
-                               AxisAlignment="Left"
-                               DrawMajorBands="False"
-                               DrawMinorGridLines="False"
-                               DrawMinorTicks="False"
-                               DrawMajorTicks="False"
-                               StrokeThickness="1"
-                                    AnimatedVisibleRange="{Binding PhaseVisibleRange, Mode=TwoWay}">
-                                    <s:NumericAxis.GrowBy>
-                                        <s:DoubleRange Max="0.2" Min="0.2"/>
-                                    </s:NumericAxis.GrowBy>
-                                </s:NumericAxis>
-                            </s:SciChartSurface.YAxis>
-                            <s:SciChartSurface.RenderableSeries>
-                                <s:FastLineRenderableSeries DataSeries="{Binding ChartData1}"
-                                            SeriesColor="CornflowerBlue"
-                                            AntiAliasing="False"
-                                            IsDigitalLine="False"
-                                            ResamplingMode="MinMax"
-                                            StrokeThickness="1"
-                                            Style="{StaticResource LineSeriesStyle}">
-                                    <s:FastLineRenderableSeries.PointMarker>
-                                        <s:EllipsePointMarker Width="5" Height="5" Fill="{Binding SeriesColor}"/>
-                                    </s:FastLineRenderableSeries.PointMarker>
-                                </s:FastLineRenderableSeries>
-                            </s:SciChartSurface.RenderableSeries>
-
-                            --><!--Create ChartModifiers, which are enabled or disabled from the ViewModel via the ChartModifier property and IsModifierTypeConverter--><!--
-                            <s:SciChartSurface.ChartModifier>
-                                <s:ModifierGroup>
-                                    <s:XAxisDragModifier />
-                                    <s:YAxisDragModifier />
-                                    <s:CursorModifier AxisLabelTemplate="{StaticResource CursorAxisLabelTemplate}" 
-                                                      IsEnabled="{Binding ChartModifier, ConverterParameter=CrosshairsCursor, Converter={StaticResource IsModifierTypeConverter}, Mode=TwoWay}" />
-                                    <s:RubberBandXyZoomModifier IsEnabled="True" IsXAxisOnly="False" ZoomExtentsY="False" IsAnimated="True"/>
-                                    <s:ZoomExtentsModifier/>
-                                </s:ModifierGroup>
-                            </s:SciChartSurface.ChartModifier>
-                        </s:SciChartSurface>
-                    </Grid>
-                    <Grid Grid.Column="3">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="15"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="auto"/>
-                            <RowDefinition Height="5"/>
-                            <RowDefinition Height="auto"/>
-                        </Grid.RowDefinitions>
-                        <Border Grid.Row="0" BorderBrush="Gray" BorderThickness="0" CornerRadius="3" Width="230" HorizontalAlignment="Left">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Text="Graph tools palette" Foreground="White" Background="{StaticResource HeaderTextblockBackground}" FontSize="14" TextDecorations="Underline" FontWeight="DemiBold"/>
-                                --><!--<TextBlock Grid.Row="0" Width="230" Text="Graph tools palette" Foreground="White" Background="Gray" HorizontalAlignment="Left"/>--><!--
-                                <Grid Grid.Row="1" HorizontalAlignment="Center">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="1"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="1"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Button Grid.Column="1" Width="75"
-                                                  Command="{Binding SaveBodeToExcel}" 
-                                                  BorderThickness="0.5" 
-                                                  VerticalAlignment="Center" FontSize="12" Height="25">
-                                        <Button.Style>
-                                            <Style TargetType="Button" BasedOn="{StaticResource ExampleToolbarButtonStyle}">
-                                                <Setter Property="IsEnabled" Value="True" />
-                                                <Style.Triggers>
-                                                    <MultiDataTrigger>
-                                                        <MultiDataTrigger.Conditions>
-                                                            <Condition Binding="{Binding BodeStartStop}" Value="True" />
-                                                        </MultiDataTrigger.Conditions>
-                                                        <MultiDataTrigger.Setters>
-                                                            <Setter Property="IsEnabled" Value="False" />
-                                                        </MultiDataTrigger.Setters>
-                                                    </MultiDataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Button.Style>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Image Source="pack://application:,,,/Images/excel.png"/>
-                                            <TextBlock Margin="3" FontSize="12" Text="Save"></TextBlock>
-                                        </StackPanel>
-                                    </Button>
-                                    <Line Grid.Column="3" Margin="2,2" Stroke="#FFD6D5D5" Y2="16" VerticalAlignment="Center" Fill="#FFC1C1C1"/>
-                                    <Button Grid.Column="5" Width="70"  
-                                            Command="{Binding ResetZoomBode}" 
-                                            Style="{StaticResource ExampleToolbarButtonStyle}" 
-                                            VerticalAlignment="Center" BorderThickness="0.5" Height="25">
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                            <TextBlock Margin="0" Text="Reset Zoom" FontSize="12"/>
-                                        </StackPanel>
-                                    </Button>
-                                    <Button Grid.Column="6" Width="65"  
-                                            Command="{Binding AutoScaleBode}" 
-                                            Style="{StaticResource ExampleToolbarButtonStyle}" 
-                                            VerticalAlignment="Center" BorderThickness="0.5" Height="25">
-                                        <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                            <TextBlock Margin="0" Text="Auto Scale" FontSize="12"/>
-                                        </StackPanel>
-                                    </Button>
-                                </Grid>
-                            </Grid>
-                        </Border>
-                        <Border Grid.Row="2" BorderBrush="Gray" BorderThickness="0" CornerRadius="3" Width="230" HorizontalAlignment="Center">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="0"/>
-                                    <RowDefinition Height="28"/>
-                                    <RowDefinition Height="0"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="auto"/>
-                                    <RowDefinition Height="5"/>
-                                    <RowDefinition Height="auto"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Text="Parameters" Foreground="White" Background="{StaticResource HeaderTextblockBackground}" FontSize="14" TextDecorations="Underline" FontWeight="DemiBold"/>
-                                --><!--<TextBlock Grid.Row="0" Text="Parameters" Foreground="White" Background="Gray" Margin="0,0,-1,0"/>--><!--
-                                <Grid Grid.Row="2">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="5"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="5"/>
-                                    </Grid.ColumnDefinitions>
-                                    <ItemsControl Grid.Column="0" ItemsSource="{Binding BodeStart}" ItemTemplate="{StaticResource UC_ToggleSwitchViewModel}"/>
-                                    <Helpers:RoundBoolLed Grid.Column="2" Width="15" Height="15" VerticalAlignment="Stretch">
-                                        <Helpers:RoundBoolLed.Style>
-                                            <Style TargetType="Helpers:RoundBoolLed">
-                                                <Setter Property="CurrStatus" Value="0" />
-                                                <Style.Triggers>
-                                                    <MultiDataTrigger>
-                                                        <MultiDataTrigger.Conditions>
-                                                            <Condition Binding="{Binding BodeStartStop}" Value="True" />
-                                                        </MultiDataTrigger.Conditions>
-                                                        <MultiDataTrigger.Setters>
-                                                            <Setter Property="CurrStatus" Value="4" />
-                                                        </MultiDataTrigger.Setters>
-                                                    </MultiDataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Helpers:RoundBoolLed.Style>
-                                    </Helpers:RoundBoolLed>
-                                </Grid>
-                                <Grid Grid.Row="3"/>
-                                <Grid Grid.Row="4">
-                                    <ItemsControl ItemsSource="{Binding DataBodeList}" ItemTemplate="{StaticResource DataViewModel}" />
-                                </Grid>
-                                <Grid Grid.Row="5">
-                                    <ItemsControl ItemsSource="{Binding EnumBodeList}" ItemTemplate="{StaticResource EnumViewModel}" />
-                                </Grid>
-                                <Grid Grid.Row="6"/>
-                                <Grid Grid.Row="7" HorizontalAlignment="Center" Height="0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="5"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                        <ColumnDefinition Width="Auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Border Grid.Column="0" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="1">
-                                        <TextBlock Height="22" Foreground="White" Text="Mag. Gain" Background="#82F7E31D" FontSize="12"/>
-                                    </Border>
-                                    <Border Grid.Column="1" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="1">
-                                        <TextBox Width="25" Text="{Binding Ch1Gain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="22" BorderThickness="0" >
-                                            <i:Interaction.Behaviors>
-                                                <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
-                                            </i:Interaction.Behaviors>
-                                        </TextBox>
-                                    </Border>
-                                    <Border Grid.Column="3" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="1">
-                                        <TextBlock Height="22" Foreground="White" Text="Phase Gain" Background="#7F1810D4" FontSize="12"/>
-                                    </Border>
-                                    <Border Grid.Column="4" BorderBrush="White" BorderThickness="1" Margin="-1,0,0,0" Width="Auto" Height="22" CornerRadius="1">
-                                        <TextBox Width="25" Text="{Binding Ch2Gain, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Height="22" BorderThickness="0" >
-                                            <i:Interaction.Behaviors>
-                                                <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
-                                            </i:Interaction.Behaviors>
-                                        </TextBox>
-                                    </Border>
-                                </Grid>
-                            </Grid>
-                        </Border>
-                    </Grid>
-                </Grid>
-            </TabItem>-->
-            <TabItem Header="Maintenance" TabIndex="9" DataContext="{Binding MaintenanceViewModel}" Background="Black" Foreground="White" >
+            <TabItem TabIndex="9" Header="Maintenance" DataContext="{Binding MaintenanceViewModel}" Background="Black" Foreground="White" >
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="5"/>
@@ -782,355 +545,339 @@
                     </Grid>
                 </Grid>
             </TabItem>
-            <TabItem Header="Debug" TabIndex="10" DataContext="{Binding DebugViewModel}" Background="Black" Foreground="White" >
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="5"/>
-                        <ColumnDefinition Width="Auto"/>
-                        <ColumnDefinition Width="5"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="1">
+    <TabItem TabIndex="10" Header="Debug" DataContext="{Binding DebugViewModel}" Background="Black" Foreground="White" >
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="5"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="20"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0" Width="Auto" Height="Auto" BorderBrush="Gray" BorderThickness="1" CornerRadius="4,4,0,0">
+                    <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="20"/>
-                            <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <Border Grid.Row="0" Width="Auto" Height="Auto" BorderBrush="Gray" BorderThickness="1" CornerRadius="4,4,0,0">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Text="      ID         Index      Int/Float                     GetData                                 SetData                   " 
+                        <TextBlock Grid.Row="0" Text="      ID         Index      Int/Float                     GetData                                 SetData                   " 
                                            Foreground="White" Background="Gray" HorizontalAlignment="Stretch" Margin="0,0,-1,0"/>
-                            </Grid>
-                        </Border>
-                        <Border Grid.Row="1" Width="Auto" MaxHeight="194" BorderBrush="Gray" BorderThickness="1" CornerRadius="0,0,4,4">
-                            <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
-                                <Grid>
+                    </Grid>
+                </Border>
+                <Border Grid.Row="1" Width="Auto" MaxHeight="194" BorderBrush="Gray" BorderThickness="1" CornerRadius="0,0,4,4">
+                    <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="0"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <ItemsControl ItemsSource="{Binding DebugList}" ItemTemplate="{StaticResource DebugObjModel}"/>
+                            <!--<UserControl:DebugObj Grid.Row="1"></UserControl:DebugObj>-->
+                        </Grid>
+                    </ScrollViewer>
+                </Border>
+                <Grid Grid.Row="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0" Width="Auto" Height="40" BorderBrush="Gray" BorderThickness="1" CornerRadius="4" VerticalAlignment="Top">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Width="auto" Text="Internal Parameters" Foreground="White" Background="Gray" Margin="0,0,-1,0"/>
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="220"/>
+                                    <ColumnDefinition Width="auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Grid Grid.Column="0">
                                     <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="0"/>
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
-                                    <ItemsControl ItemsSource="{Binding DebugList}" ItemTemplate="{StaticResource DebugObjModel}"/>
-                                    <!--<UserControl:DebugObj Grid.Row="1"></UserControl:DebugObj>-->
+                                    <ItemsControl Grid.Row="0" ItemsSource="{Binding InternalParamList}" ItemTemplate="{StaticResource DataViewModel}"/>
                                 </Grid>
-                            </ScrollViewer>
-                        </Border>
-                        <Grid Grid.Row="3">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Border Grid.Column="0" Width="Auto" Height="40" BorderBrush="Gray" BorderThickness="1" CornerRadius="4" VerticalAlignment="Top">
-                                <Grid>
+                                <Grid Grid.Column="1">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
-                                    <TextBlock Grid.Row="0" Width="auto" Text="Internal Parameters" Foreground="White" Background="Gray" Margin="0,0,-1,0"/>
-                                    <Grid Grid.Row="1">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="220"/>
-                                            <ColumnDefinition Width="auto"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Grid Grid.Column="0">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                            </Grid.RowDefinitions>
-                                            <ItemsControl Grid.Row="0" ItemsSource="{Binding InternalParamList}" ItemTemplate="{StaticResource DataViewModel}"/>
-                                        </Grid>
-                                        <Grid Grid.Column="1">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                            </Grid.RowDefinitions>
-                                            <Button Grid.Row="0" Height="22" Width="30" Foreground="White" Template="{DynamicResource PressedButton}" 
+                                    <Button Grid.Row="0" Height="22" Width="30" Foreground="White" Template="{DynamicResource PressedButton}" 
                                             Content="Get" Command="{Binding GetCS}" 
                                             VerticalAlignment="Center" HorizontalAlignment="Right"/>
-                                        </Grid>
-                                    </Grid>
                                 </Grid>
-                            </Border>
-                            <Grid Grid.Column="1" Width="5"/>
-                            <Border Grid.Column="2" Width="Auto" Height="Auto" BorderBrush="Gray" BorderThickness="1" CornerRadius="4">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                        <RowDefinition Height="Auto"/>
-                                    </Grid.RowDefinitions>
-                                    <!--Tx: 0x49 5D 3C 40 10 F0 00 00 00 00 00   -->
-                                    <TextBlock Grid.Row="0" Width="235" Text="Transmitted &#38; Received messages" Foreground="White" Background="Gray" HorizontalAlignment="Left" Margin="0,0,-1,0"/>
-                                    <TextBox Grid.Row="1" Text="{Binding DebugTx, Mode=TwoWay}" Height="22" FontSize="12" IsReadOnly="True"/>
-                                    <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="47,0,0,0"/>
-                                    <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="66,0,0,0"/>
-                                    <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="83,0,0,0"/>
-                                    <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="100,0,0,0"/>
-                                    <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="115,0,0,0"/>
-                                    <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="131,0,0,0"/>
-                                    <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="147,0,0,0"/>
-                                    <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="163,0,0,0"/>
-                                    <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="179,0,0,0"/>
-                                    <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="196,0,0,0"/>
-                                    <Grid Grid.Row="2" Height="2"/>
-                                    <TextBox Grid.Row="3" Text="{Binding DebugRx, Mode=TwoWay}" Height="22" FontSize="12" IsReadOnly="True"/>
-                                    <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="47,0,0,0"/>
-                                    <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="66,0,0,0"/>
-                                    <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="83,0,0,0"/>
-                                    <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="100,0,0,0"/>
-                                    <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="115,0,0,0"/>
-                                    <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="131,0,0,0"/>
-                                    <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="147,0,0,0"/>
-                                    <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="163,0,0,0"/>
-                                    <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="179,0,0,0"/>
-                                    <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="196,0,0,0"/>
-                                    <TextBlock Grid.Row="4" Text= " Byte    b0   b1  b2  b3  b4 b5  b6  b7 b8  b9  b10" FontSize="10"/>
-                                    <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="47,0,0,0"/>
-                                    <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="66,0,0,0"/>
-                                    <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="83,0,0,0"/>
-                                    <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="100,0,0,0"/>
-                                    <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="115,0,0,0"/>
-                                    <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="131,0,0,0"/>
-                                    <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="147,0,0,0"/>
-                                    <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="163,0,0,0"/>
-                                    <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="179,0,0,0"/>
-                                    <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="196,0,0,0"/>
-                                </Grid>
-                            </Border>
+                            </Grid>
                         </Grid>
-                    </Grid>
-                    <Grid Grid.Column="3">
+                    </Border>
+                    <Grid Grid.Column="1" Width="5"/>
+                    <Border Grid.Column="2" Width="Auto" Height="Auto" BorderBrush="Gray" BorderThickness="1" CornerRadius="4">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <!--Tx: 0x49 5D 3C 40 10 F0 00 00 00 00 00   -->
+                            <TextBlock Grid.Row="0" Width="235" Text="Transmitted &#38; Received messages" Foreground="White" Background="Gray" HorizontalAlignment="Left" Margin="0,0,-1,0"/>
+                            <TextBox Grid.Row="1" Text="{Binding DebugTx, Mode=TwoWay}" Height="22" FontSize="12" IsReadOnly="True"/>
+                            <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="47,0,0,0"/>
+                            <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="66,0,0,0"/>
+                            <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="83,0,0,0"/>
+                            <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="100,0,0,0"/>
+                            <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="115,0,0,0"/>
+                            <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="131,0,0,0"/>
+                            <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="147,0,0,0"/>
+                            <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="163,0,0,0"/>
+                            <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="179,0,0,0"/>
+                            <Line Grid.Row="1" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="196,0,0,0"/>
+                            <Grid Grid.Row="2" Height="2"/>
+                            <TextBox Grid.Row="3" Text="{Binding DebugRx, Mode=TwoWay}" Height="22" FontSize="12" IsReadOnly="True"/>
+                            <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="47,0,0,0"/>
+                            <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="66,0,0,0"/>
+                            <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="83,0,0,0"/>
+                            <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="100,0,0,0"/>
+                            <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="115,0,0,0"/>
+                            <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="131,0,0,0"/>
+                            <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="147,0,0,0"/>
+                            <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="163,0,0,0"/>
+                            <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="179,0,0,0"/>
+                            <Line Grid.Row="3" X1="0" X2="0" Y1="2" Y2="20" Stroke="Green" StrokeThickness="1" Margin="196,0,0,0"/>
+                            <TextBlock Grid.Row="4" Text= " Byte    b0   b1  b2  b3  b4 b5  b6  b7 b8  b9  b10" FontSize="10"/>
+                            <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="47,0,0,0"/>
+                            <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="66,0,0,0"/>
+                            <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="83,0,0,0"/>
+                            <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="100,0,0,0"/>
+                            <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="115,0,0,0"/>
+                            <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="131,0,0,0"/>
+                            <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="147,0,0,0"/>
+                            <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="163,0,0,0"/>
+                            <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="179,0,0,0"/>
+                            <Line Grid.Row="4" X1="0" X2="0" Y1="2" Y2="12" Stroke="Green" StrokeThickness="1" Margin="196,0,0,0"/>
+                        </Grid>
+                    </Border>
+                </Grid>
+            </Grid>
+            <Grid Grid.Column="3">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="10"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0" BorderBrush="Gray" BorderThickness="1" CornerRadius="3" Width="110" HorizontalAlignment="Left">
+                    <Grid>
                         <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="10"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
-                            <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                             <RowDefinition Height="Auto"/>
                         </Grid.RowDefinitions>
-                        <Border Grid.Row="0" BorderBrush="Gray" BorderThickness="1" CornerRadius="3" Width="110" HorizontalAlignment="Left">
-                            <Grid>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                    <RowDefinition Height="Auto"/>
-                                </Grid.RowDefinitions>
-                                <TextBlock Grid.Row="0" Width="170" Text="  +/-      ID      Index" Foreground="White" Background="Gray" HorizontalAlignment="Left" Margin="0,0,-1,0"/>
-                                <Grid Grid.Row="1">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                        <ColumnDefinition Width="auto"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid Grid.Column="0">
-                                        <Button Command="{Binding addDebugOperation}" Style="{StaticResource ExampleToolbarButtonStyle}" 
+                        <TextBlock Grid.Row="0" Width="170" Text="  +/-      ID      Index" Foreground="White" Background="Gray" HorizontalAlignment="Left" Margin="0,0,-1,0"/>
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid Grid.Column="0">
+                                <Button Command="{Binding addDebugOperation}" Style="{StaticResource ExampleToolbarButtonStyle}" 
                                                 Height="15" Width="15" BorderBrush="White" 
                                                 BorderThickness="0.5"
                                                 Margin="0,0,15,0">
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image  Source="pack://application:,,,/Images/plusZoom.png" Width="10" Height="10" Stretch="Fill"/>
-                                            </StackPanel>
-                                        </Button>
-                                        <Button Command="{Binding removeDebugOperation}" Style="{StaticResource ExampleToolbarButtonStyle}" 
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image  Source="pack://application:,,,/Images/plusZoom.png" Width="10" Height="10" Stretch="Fill"/>
+                                    </StackPanel>
+                                </Button>
+                                <Button Command="{Binding removeDebugOperation}" Style="{StaticResource ExampleToolbarButtonStyle}" 
                                                 Height="15" Width="15" BorderBrush="White" 
                                                 BorderThickness="0.5"
                                                 Margin="15,0,0,0">
-                                            <StackPanel Orientation="Horizontal">
-                                                <Image Source="pack://application:,,,/Images/minus3.png" Stretch="Fill" Width="10" Height="13" />
-                                            </StackPanel>
-                                        </Button>
-                                    </Grid>
-                                    <UserControl:UpDownControl Grid.Column="1" DataContext="{Binding udID}" Width="40"/>
-                                    <UserControl:UpDownControl Grid.Column="2" DataContext="{Binding udIndex}" Width="40"/>
-                                    <!--<TextBox Grid.Column="1" Text="{Binding DebugID, Mode=TwoWay}" Width="40" Height="22" FontSize="12"/>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Image Source="pack://application:,,,/Images/minus3.png" Stretch="Fill" Width="10" Height="13" />
+                                    </StackPanel>
+                                </Button>
+                            </Grid>
+                            <UserControl:UpDownControl Grid.Column="1" DataContext="{Binding udID}" Width="40"/>
+                            <UserControl:UpDownControl Grid.Column="2" DataContext="{Binding udIndex}" Width="40"/>
+                            <!--<TextBox Grid.Column="1" Text="{Binding DebugID, Mode=TwoWay}" Width="40" Height="22" FontSize="12"/>
                                     <TextBox Grid.Column="2" Text="{Binding DebugIndex, Mode=TwoWay}" Width="40" Height="22" FontSize="12"/>-->
-                                    <!--<CheckBox Grid.Column="3"     
+                            <!--<CheckBox Grid.Column="3"     
                                                 Style="{StaticResource CheckBoxStyle3}"
                                                 VerticalAlignment="Center"
                                                 IsChecked="{Binding DebugIntFloat}"/>-->
-                                </Grid>
+                        </Grid>
 
-                            </Grid>
-                        </Border>
-                        <CheckBox Grid.Row="2" Content="Enable Refresh"
+                    </Grid>
+                </Border>
+                <CheckBox Grid.Row="2" Content="Enable Refresh"
                               IsChecked="{Binding EnRefresh, Mode=TwoWay}">
-                        </CheckBox>
-                        <CheckBox Grid.Row="3" Content="Debug Refresh"
+                </CheckBox>
+                <CheckBox Grid.Row="3" Content="Debug Refresh"
                               IsChecked="{Binding DebugRefresh, Mode=TwoWay}">
-                        </CheckBox>
-                        <CheckBox Grid.Row="4" Content="Enable Ping"
+                </CheckBox>
+                <CheckBox Grid.Row="4" Content="Enable Ping"
                               IsChecked="{Binding EnPing, Mode=TwoWay}">
-                        </CheckBox>
-                        <Grid Grid.Row="5">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <CheckBox Grid.Column="0" Content="Sim. ID[idx]:" x:Name="SimChecked"
+                </CheckBox>
+                <Grid Grid.Row="5">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <CheckBox Grid.Column="0" Content="Sim. ID[idx]:" x:Name="SimChecked"
                               IsChecked="{Binding Simulation, Mode=TwoWay}"></CheckBox>
-                            <UserControl:UpDownControl Grid.Column="1" DataContext="{Binding udIDSim}" Width="35"/>
-                            <UserControl:UpDownControl Grid.Column="2" DataContext="{Binding udIndexSim}" Width="35"/>
-                            <CheckBox Grid.Column="3" x:Name="SimIntFloat"
+                    <UserControl:UpDownControl Grid.Column="1" DataContext="{Binding udIDSim}" Width="35"/>
+                    <UserControl:UpDownControl Grid.Column="2" DataContext="{Binding udIndexSim}" Width="35"/>
+                    <CheckBox Grid.Column="3" x:Name="SimIntFloat"
                                                 VerticalAlignment="Center"
                                                 IsChecked="{Binding SimIntFloat}">
-                            </CheckBox>
-                            <TextBlock Grid.Column="4" Margin="-6,0,0,0">
-                                <TextBlock.Style>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="Text" Value="Int" />
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding ElementName=SimIntFloat, Path=IsChecked}" Value="True">
-                                                <Setter Property="Text" Value="Float" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                        </Grid>
-                        <Grid Grid.Row="6">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="Data" ></TextBlock>
-                            <TextBox Grid.Column="1" Width="55" Text="{Binding SimData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                <i:Interaction.Behaviors>
-                                    <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
-                                </i:Interaction.Behaviors>
-                            </TextBox>
-                            <TextBlock Grid.Column="2" Text="Count" ></TextBlock>
-                            <TextBox Grid.Column="3" Width="65" Text="{Binding SimCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding SimCountEn}">
-                                <i:Interaction.Behaviors>
-                                    <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9]$" MaxLength="10"/>
-                                </i:Interaction.Behaviors>
-                            </TextBox>
-                        </Grid>
-                        <Grid Grid.Row="7">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="Step" ></TextBlock>
-                            <TextBox Grid.Column="1" Width="35" Text="{Binding SimStep, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                <i:Interaction.Behaviors>
-                                    <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
-                                </i:Interaction.Behaviors>
-                            </TextBox>
-                            <TextBlock Grid.Column="2" Text="&#x394;t(ms)" ></TextBlock>
-                            <TextBox Grid.Column="3" Width="35" Text="{Binding SimDeltaT, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                                <i:Interaction.Behaviors>
-                                    <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9]$" MaxLength="10"/>
-                                </i:Interaction.Behaviors>
-                            </TextBox>
-                            <TextBlock Grid.Column="4" Text="iterator" ></TextBlock>
-                            <TextBox Grid.Column="5" IsReadOnly="True" TextWrapping="NoWrap" Width="35" Text="{Binding iterator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
-                        </Grid>
-                        <Button FontSize="10" Grid.Row="8"
+                    </CheckBox>
+                    <TextBlock Grid.Column="4" Margin="-6,0,0,0">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="Text" Value="Int" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=SimIntFloat, Path=IsChecked}" Value="True">
+                                        <Setter Property="Text" Value="Float" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                </Grid>
+                <Grid Grid.Row="6">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Data" ></TextBlock>
+                    <TextBox Grid.Column="1" Width="55" Text="{Binding SimData, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <i:Interaction.Behaviors>
+                            <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
+                        </i:Interaction.Behaviors>
+                    </TextBox>
+                    <TextBlock Grid.Column="2" Text="Count" ></TextBlock>
+                    <TextBox Grid.Column="3" Width="65" Text="{Binding SimCount, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsEnabled="{Binding SimCountEn}">
+                        <i:Interaction.Behaviors>
+                            <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9]$" MaxLength="10"/>
+                        </i:Interaction.Behaviors>
+                    </TextBox>
+                </Grid>
+                <Grid Grid.Row="7">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="Step" ></TextBlock>
+                    <TextBox Grid.Column="1" Width="35" Text="{Binding SimStep, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <i:Interaction.Behaviors>
+                            <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9.\-]+$" MaxLength="12"/>
+                        </i:Interaction.Behaviors>
+                    </TextBox>
+                    <TextBlock Grid.Column="2" Text="&#x394;t(ms)" ></TextBlock>
+                    <TextBox Grid.Column="3" Width="35" Text="{Binding SimDeltaT, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <i:Interaction.Behaviors>
+                            <Helpers:AllowableCharactersTextBoxBehavior RegularExpression="^[0-9]$" MaxLength="10"/>
+                        </i:Interaction.Behaviors>
+                    </TextBox>
+                    <TextBlock Grid.Column="4" Text="iterator" ></TextBlock>
+                    <TextBox Grid.Column="5" IsReadOnly="True" TextWrapping="NoWrap" Width="35" Text="{Binding iterator, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                </Grid>
+                <Button FontSize="10" Grid.Row="8"
                             Command="{Binding ClearDebugOp}" 
                             Style="{StaticResource ExampleToolbarButtonStyle}" 
                             VerticalAlignment="Top" HorizontalAlignment="Left" 
                             BorderThickness="0.5" 
                             Width="50" Height="15"
                             Grid.Column="0">
-                            <TextBlock Text="Clear All" VerticalAlignment="Center" Margin="0,-2,0,0"/>
-                        </Button>
-                        <Grid Grid.Row="9">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="5"/>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="5"/>
-                                <ColumnDefinition Width="Auto"/>
-                            </Grid.ColumnDefinitions>
-                            <Button FontSize="10" Grid.Column="0"
+                    <TextBlock Text="Clear All" VerticalAlignment="Center" Margin="0,-2,0,0"/>
+                </Button>
+                <Grid Grid.Row="9">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="5"/>
+                        <ColumnDefinition Width="Auto"/>
+                    </Grid.ColumnDefinitions>
+                    <Button FontSize="10" Grid.Column="0"
                             Command="{Binding ForceConnect}" 
                             Style="{StaticResource ExampleToolbarButtonStyle}" 
                             VerticalAlignment="Top" HorizontalAlignment="Left" 
                             BorderThickness="0.5" 
                             Width="80" Height="15"
                             IsEnabled="{Binding ForceConnectEnable, Mode=TwoWay}">
-                                <TextBlock Text="Force Connect" VerticalAlignment="Center" Margin="0,-2,0,0"/>
-                            </Button>
-                            <ComboBox   Grid.Column="2"
+                        <TextBlock Text="Force Connect" VerticalAlignment="Center" Margin="0,-2,0,0"/>
+                    </Button>
+                    <ComboBox   Grid.Column="2"
             	                        ItemsSource="{Binding FlashBaudrateList}"
             	                        SelectedValue="{Binding FlashBaudRate, Mode=TwoWay}"
                                         Height="18" 
                                         Width="70"
                                         FontSize="11">
-                            </ComboBox>
-                            <Button FontSize="10" Grid.Column="4"
+                    </ComboBox>
+                    <Button FontSize="10" Grid.Column="4"
                             Command="{Binding Disconnect}"
                             VerticalAlignment="Top" HorizontalAlignment="Left" 
                             BorderThickness="0.5" 
                             Width="60" Height="15">
-                                <Button.Style>
-                                    <Style TargetType="Button" BasedOn="{StaticResource ExampleToolbarButtonStyle}">
-                                        <Style.Triggers>
-                                            <MultiDataTrigger>
-                                                <MultiDataTrigger.Conditions>
-                                                    <Condition Binding="{Binding ForceConnectEnable}" Value="False"/>
-                                                </MultiDataTrigger.Conditions>
-                                                <MultiDataTrigger.Setters>
-                                                    <Setter Property="IsEnabled" Value="True"/>
-                                                </MultiDataTrigger.Setters>
-                                            </MultiDataTrigger>
-                                            <MultiDataTrigger>
-                                                <MultiDataTrigger.Conditions>
-                                                    <Condition Binding="{Binding ForceConnectEnable}" Value="True"/>
-                                                </MultiDataTrigger.Conditions>
-                                                <MultiDataTrigger.Setters>
-                                                    <Setter Property="IsEnabled" Value="False"/>
-                                                </MultiDataTrigger.Setters>
-                                            </MultiDataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Button.Style>
-                                <TextBlock Text="Disconnect" VerticalAlignment="Center" Margin="0,-2,0,0"/>
-                            </Button>
-                        </Grid>
-                    </Grid>
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource ExampleToolbarButtonStyle}">
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding ForceConnectEnable}" Value="False"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <MultiDataTrigger.Setters>
+                                            <Setter Property="IsEnabled" Value="True"/>
+                                        </MultiDataTrigger.Setters>
+                                    </MultiDataTrigger>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding ForceConnectEnable}" Value="True"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <MultiDataTrigger.Setters>
+                                            <Setter Property="IsEnabled" Value="False"/>
+                                        </MultiDataTrigger.Setters>
+                                    </MultiDataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                        <TextBlock Text="Disconnect" VerticalAlignment="Center" Margin="0,-2,0,0"/>
+                    </Button>
                 </Grid>
-            </TabItem>
-            <TabItem Header="Motion" TabIndex="11" DataContext="{Binding MotionViewModel}" Background="Black" Foreground="White" Margin="-1,0,1,0" Visibility="Hidden">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="300"/>
-                        <ColumnDefinition Width="160"/>
-                    </Grid.ColumnDefinitions>
-                    <Grid Grid.Column="0">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <GroupBox Grid.Row="0" Header="Current Limit" >
-                            <ItemsControl ItemsSource="{Binding CurrentLimitList}" ItemTemplate="{StaticResource DataViewModel}" />
-                        </GroupBox>
-                    </Grid>
-                </Grid>
-            </TabItem>
-        </TabControl>
+            </Grid>
+        </Grid>
+    </TabItem>
+    </TabControl>
     </Grid>
 </Window>
 

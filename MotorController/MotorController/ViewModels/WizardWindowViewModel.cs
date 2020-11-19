@@ -137,7 +137,6 @@ namespace MotorController.ViewModels
             }
             //Start = new RelayCommand(StartButton);
         }
-        ~WizardWindowViewModel() { }
         #region Motor_Parameter
         private int _motorType = 1;
         public int MotorType
@@ -922,7 +921,7 @@ namespace MotorController.ViewModels
         }
         #endregion Calibration
         #region AdvancedConfiguration
-        private bool _calibrationAdvancedMode = false;
+        private bool _calibrationAdvancedMode = Consts._build == Consts.eBuild.DEBUG ? true : false;
         public bool CalibrationAdvancedMode
         {
             get { return _calibrationAdvancedMode; }
@@ -1224,7 +1223,7 @@ namespace MotorController.ViewModels
                     {
                         if(GetInstance._calibrationGetStatus != null)
                         {
-                            lock(GetInstance._calibrationGetStatus)
+                            lock(/*GetInstance._calibrationGetStatus*/Synlock)
                             {
                                 GetInstance._calibrationGetStatus.Stop();
                                 //GetInstance._calibrationGetStatus.Elapsed -= GetInstance.sendPreStartOperation;

@@ -586,7 +586,7 @@ namespace MotorController.ViewModels
                     {
                         if(_SimulationTimer != null)
                         {
-                            lock(_SimulationTimer)
+                            lock(/*_SimulationTimer*/Synlock)
                             {
                                 _SimulationTimer.Stop();
                                 _SimulationTimer.Elapsed -= SimulationFunc;

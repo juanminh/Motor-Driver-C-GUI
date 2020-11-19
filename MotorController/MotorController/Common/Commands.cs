@@ -8,6 +8,8 @@ using System.Linq;
 using MotorController.Helpers;
 using Abt.Controls.SciChart;
 using System.Collections;
+using System.ComponentModel;
+using System.Reflection;
 
 namespace MotorController.Common
 {
@@ -31,6 +33,75 @@ namespace MotorController.Common
         _460800 = 7,
         _921600 = 8
     };
+
+    enum ePIDCurrent
+    {
+        ID = 81,
+        Kp = 1,
+        Ki = 2
+    };
+    enum ePIDSpeed
+    {
+        ID = 82,
+        Kp = 1,
+        Ki = 2,
+        Kc = 3,
+        Kd = 4,
+        Kp_range = 5,
+        Range = 6
+    };
+    enum ePIDPosition
+    {
+        ID = 83,
+        Kp = 1,
+        Ki = 2,
+        Kc = 3,
+        Kd = 4,
+        Kp_range = 5,
+        Range = 6
+    };
+    enum eFilter
+    {
+        ID = 101,
+        [Description("Number of sections")]
+        Numberofsections = 1,
+        [Description("Section 0 a[0]")]
+        section0a0 = 2,
+        [Description("Section 0 a[1]")]
+        section0a1 = 3,
+        [Description("Section 0 a[2]")]
+        section0a2 = 4,
+        [Description("Section 0 b[0]")]
+        section0b0 = 5,
+        [Description("Section 0 b[1]")]
+        section0b1 = 6,
+        [Description("Section 0 b[2]")]
+        section0b2 = 7
+    };
+
+    enum eSpeedProfiler
+    {
+        ID = 57,
+        Mode = 0,
+        Max_Speed = 1,
+        Min_Speed = 2,
+        Max_Acceleration = 3,
+        Max_Deceleration = 4,
+        Stop_Deceleration = 5,
+        Jerk_Max = 6,
+        Jerk_Div = 7
+    };
+
+    enum eStopMotion
+    {
+        ID = 56,
+        Break_Contorl = 0,
+        Break_Speed = 1,
+        Speed_Time = 2,
+        Break_On_Time = 3,
+        Break_Off_Time = 4,
+        Timoute = 5
+    };
     class Commands
     {
         int DataViewModel_FontSize = 12;
@@ -43,12 +114,14 @@ namespace MotorController.Common
             GenericCommandsList.Clear();
             Enums.Clear();
             ErrorList.Clear();
+
             BuildAllCommandsGroup();
         }
         public void BuildAllCommandsGroup()
         {
             GenerateLPCommands();
             GenerateBPCommands();
+            GenerateControlCommands();
             GenerateMotionCommands();
             GenerateMotionTabCommands();
             GenerateFeedBakcCommands();
@@ -65,21 +138,13 @@ namespace MotorController.Common
 
             GenerateToggleSwitchCommands();
         }
-        static public void AssemblePacket(out PacketFields rxPacket, Int16 id, Int16 subId, bool isSet, bool isFloat, object data2Send)
-        {
-            rxPacket.ID = id;
-            rxPacket.IsFloat = isFloat;
-            rxPacket.IsSet = isSet;
-            rxPacket.SubID = subId;
-            rxPacket.Data2Send = data2Send;
-        }
 
         #region Init_Dictionary
         public Dictionary<Tuple<int, int>, object> GenericCommandsList = new Dictionary<Tuple<int, int>, object>();
         public Dictionary<string, ObservableCollection<object>> GenericCommandsGroup = new Dictionary<string, ObservableCollection<object>>();
-        
+
         public Dictionary<string, List<string>> Enums = new Dictionary<string, List<string>>();
-        
+
         public Dictionary<int, string> ErrorList = new Dictionary<int, string>();
 
         #endregion Init_Dictionary
@@ -126,11 +191,11 @@ namespace MotorController.Common
                     ReadOnly = true
                 };
                 addData(typeof(DataViewModel), Data, "DeviceSerial");
-                
+
                 if(i < 3)
                     addData(typeof(DataViewModel), Data, "LPCommands List");
             }
-            
+
             Enums.Add("Baudrate", EnumHelper.GetNames(Enum.GetNames(typeof(eBaudRate))).ToList());
 
             eData = new EnumViewModel
@@ -142,9 +207,8 @@ namespace MotorController.Common
                 CommandValue = ((int)EnumHelper.GetEnumValue<eBaudRate>(Enum.GetNames(typeof(eBaudRate)).ElementAt(0))).ToString(),//first enum in list
             };
             addData(typeof(EnumViewModel), eData, "BaudrateList");
-            
-            #region Synch Command cmdID 64 cmdSubID 0
-            
+
+            #region Synch_Command
             Data = new DataViewModel
             {
                 CommandId = "64",
@@ -154,7 +218,7 @@ namespace MotorController.Common
                 CommandValue = "0"
             };
             addData(typeof(DataViewModel), Data, "DeviceSynchCommand");
-           
+
             Data = new DataViewModel
             {
                 CommandId = "64",
@@ -164,98 +228,191 @@ namespace MotorController.Common
                 CommandValue = "0"
             };
             addData(typeof(DataViewModel), Data, "DeviceSynchCommand");
-            
+            #endregion
+        }
+        private void GenerateMotionCommands()
+        {
+            #region PositionProfiler
             Data = new DataViewModel
             {
-                CommandId = "61",
-                CommandSubId = "1",
-                CommandName = "AutoBaud_Baudrate",
-                IsFloat = false,
-                CommandValue = "0"
+                CommandName = "Accelaration [C/S^2]",
+                CommandId = "54",
+                CommandSubId = "3",
+                CommandValue = "",
+                IsFloat = false
             };
-            addData(typeof(DataViewModel), Data, "DeviceSynchCommand");
-            #endregion
+            addData(typeof(DataViewModel), Data, "PositionProfiler");
+
+            Data = new DataViewModel
+            {
+                CommandName = "PTP Speed [C/S]",
+                CommandId = "54",
+                CommandSubId = "2",
+                CommandValue = "",
+                IsFloat = false
+            };
+            addData(typeof(DataViewModel), Data, "PositionProfiler");
+
+            Data = new DataViewModel
+            {
+                CommandName = "Max Tracking Err [C]",
+                CommandId = "54",
+                CommandSubId = "6",
+                CommandValue = "",
+                IsFloat = false
+            };
+            addData(typeof(DataViewModel), Data, "PositionProfiler");
+
+            var ProfilerModeEnum = new List<string>
+              {
+                  "PID",
+                  "Trapezoid"
+              };
+            Enums.Add("Profiler Mode", ProfilerModeEnum);
+
+            eData = new EnumViewModel
+            {
+                CommandName = "Profiler Mode",
+                CommandId = "54",
+                CommandSubId = "1",
+                CommandList = Enums["Profiler Mode"],
+                CommandValue = "1"//first enum in list
+            };
+            addData(typeof(EnumViewModel), eData, "ePositionProfiler");
+            #endregion PositionProfiler
+            #region SpeedProfiler
+            Type _enum_type = typeof(eSpeedProfiler);
+            
+            for(int i = 0; i < Enum.GetNames(_enum_type).Length - 1; i++)
+            {
+                Data = new DataViewModel
+                {
+                    CommandName = EnumHelper.GetNames(Enum.GetNames(_enum_type)).ElementAt(i),
+                    CommandId = ((int)eSpeedProfiler.ID).ToString(),
+                    CommandSubId = ((int)EnumHelper.GetEnumValue<eSpeedProfiler>(Enum.GetNames(_enum_type).ElementAt(i))).ToString(),
+                    CommandValue = "",
+                    IsFloat = false
+                };
+                addData(typeof(DataViewModel), Data, "SpeedProfiler");
+            }
+            #endregion SpeedProfiler
+            #region StopMotion
+            _enum_type = typeof(eStopMotion);
+            for(int i = 0; i < Enum.GetNames(_enum_type).Length - 1; i++)
+            {
+                Data = new DataViewModel
+                {
+                    CommandName = EnumHelper.GetNames(Enum.GetNames(_enum_type)).ElementAt(i),
+                    CommandId = ((int)eStopMotion.ID).ToString(),
+                    CommandSubId = ((int)EnumHelper.GetEnumValue<eStopMotion>(Enum.GetNames(_enum_type).ElementAt(i))).ToString(),
+                    CommandValue = "",
+                    IsFloat = i > 1 ? true : false
+                };
+                addData(typeof(DataViewModel), Data, "StopMotion");
+            }
+            #endregion StopMotion
         }
         private void GeneratePidCommands()
         {
-            var names = new[]
-            {
-                "Kp", "Ki", "Kc", "Kd", "kp range", "Range"
-            };
-            string[] index = new[]
-            {
-                "1", "2", "3", "4", "5", "6"
-            };
-
-            for(int i = 0; i < names.Length; i++)
+            for(int i = 0; i < Enum.GetNames(typeof(ePIDSpeed)).Length - 1; i++)
             {
                 Data = new DataViewModel
                 {
-                    CommandName = names[i],
-                    CommandId = "82",
-                    CommandSubId = index[i],
+                    CommandName = EnumHelper.GetNames(Enum.GetNames(typeof(ePIDSpeed))).ElementAt(i),
+                    CommandId = ((int)ePIDSpeed.ID).ToString(),
+                    CommandSubId = ((int)EnumHelper.GetEnumValue<ePIDSpeed>(Enum.GetNames(typeof(ePIDSpeed)).ElementAt(i))).ToString(),
                     CommandValue = "",
-                    IsFloat = names[i] == "Range" ? false : true
+                    IsFloat = EnumHelper.GetNames(Enum.GetNames(typeof(ePIDSpeed))).ElementAt(i) == "Range" ? false : true
                 };
                 addData(typeof(DataViewModel), Data, "PIDSpeed");
-                
+
                 Data = new DataViewModel
                 {
-                    CommandName = names[i],
-                    CommandId = "83",
-                    CommandSubId = index[i],
+                    CommandName = EnumHelper.GetNames(Enum.GetNames(typeof(ePIDPosition))).ElementAt(i),
+                    CommandId = ((int)ePIDPosition.ID).ToString(),
+                    CommandSubId = ((int)EnumHelper.GetEnumValue<ePIDPosition>(Enum.GetNames(typeof(ePIDPosition)).ElementAt(i))).ToString(),
                     CommandValue = "",
-                    IsFloat = names[i] == "Range" ? false : true
+                    IsFloat = EnumHelper.GetNames(Enum.GetNames(typeof(ePIDPosition))).ElementAt(i) == "Range" ? false : true
                 };
                 addData(typeof(DataViewModel), Data, "PIDPosition");
             }
 
-            names = new[]
-            {
-                "Kp", "Ki"
-            };
-
-            for(int i = 0; i < names.Length; i++)
+            for(int i = 0; i < Enum.GetNames(typeof(ePIDCurrent)).Length - 1; i++)
             {
                 Data = new DataViewModel
                 {
-                    CommandName = names[i],
-                    CommandId = "81",
-                    CommandSubId = (i + 1).ToString(CultureInfo.InvariantCulture),
+                    CommandName = EnumHelper.GetNames(Enum.GetNames(typeof(ePIDCurrent))).ElementAt(i),
+                    CommandId = ((int)ePIDCurrent.ID).ToString(),
+                    CommandSubId = ((int)EnumHelper.GetEnumValue<ePIDCurrent>(Enum.GetNames(typeof(ePIDCurrent)).ElementAt(i))).ToString(),
                     CommandValue = "",
                     IsFloat = true
                 };
                 addData(typeof(DataViewModel), Data, "PIDCurrent");
             }
+
+            ToggleSwitchData = new UC_ToggleSwitchViewModel
+            {
+                Label = "Close Loop",
+                CommandId = 81,
+                CommandSubId = 10,
+                CheckedBackground_final = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2a5ed5")),
+                CheckedText = "ON",
+                UnCheckedText = "OFF"
+            };
+            addData(typeof(UC_ToggleSwitchViewModel), ToggleSwitchData, "PID_current_loop");
+
+            ToggleSwitchData = new UC_ToggleSwitchViewModel
+            {
+                Label = "Close Loop",
+                CommandId = 82,
+                CommandSubId = 10,
+                CheckedBackground_final = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2a5ed5")),
+                CheckedText = "ON",
+                UnCheckedText = "OFF"
+            };
+            addData(typeof(UC_ToggleSwitchViewModel), ToggleSwitchData, "PID_speed_loop");
+
+            ToggleSwitchData = new UC_ToggleSwitchViewModel
+            {
+                Label = "Close Loop",
+                CommandId = 83,
+                CommandSubId = 10,
+                CheckedBackground_final = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2a5ed5")),
+                CheckedText = "ON",
+                UnCheckedText = "OFF"
+            };
+            addData(typeof(UC_ToggleSwitchViewModel), ToggleSwitchData, "PID_position_loop");
         }
         private void GenerateFilterCommands()
         {
-            var names = new[]
+            for(int i = 0; i < Enum.GetNames(typeof(eFilter)).Length - 1; i++)
             {
-                "Number of sections", "section 0 a[0]", "section 0 a[1]", "section 0 a[2]",
-                "section 0 b[0]", "section 0 b[1]", "section 0 b[2]"
-            };
+                String _name = EnumHelper.GetNames(Enum.GetNames(typeof(eFilter))).ElementAt(i);    // Get Name
+                MemberInfo property = typeof(eFilter).GetRuntimeField(_name);     //Find Field
+                _name = property.CustomAttributes.ToArray()[0].ConstructorArguments[0].Value.ToString();   //Find Display Attribute
 
-            for(int i = 0; i < names.Length; i++)
-            {
                 Data = new DataViewModel
                 {
-                    CommandName = names[i],
-                    CommandId = "101",
-                    CommandSubId = (i + 1).ToString(CultureInfo.InvariantCulture),
+                    CommandName = _name,
+                    CommandId = ((int)eFilter.ID).ToString(),
+                    CommandSubId = ((int)EnumHelper.GetEnumValue<eFilter>(Enum.GetNames(typeof(eFilter)).ElementAt(i))).ToString(),
                     CommandValue = "",
                     IsFloat = i == 0 ? false : true
                 };
                 addData(typeof(DataViewModel), Data, "FilterList");
             }
-            Data = new DataViewModel
+
+            ToggleSwitchData = new UC_ToggleSwitchViewModel
             {
-                CommandName = "Enable",
-                CommandId = "101",
-                CommandSubId = (0).ToString(CultureInfo.InvariantCulture),
-                CommandValue = "",
-                IsFloat = false
+                Label = "Enable",
+                CommandId = 101,
+                CommandSubId = 0,
+                CheckedBackground_final = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2a5ed5")),
+                CheckedText = "ON",
+                UnCheckedText = "OFF"
             };
+            addData(typeof(UC_ToggleSwitchViewModel), ToggleSwitchData, "Filter_Enable");
+
         }
         private void GenerateFeedBakcCommands()
         {
@@ -313,7 +470,7 @@ namespace MotorController.Common
                 IsFloat = false
             };
             addData(typeof(DataViewModel), Data, "Hall");
-            
+
             #endregion Hall
             #region  FeedbackSyncList
             Data = new DataViewModel
@@ -325,7 +482,7 @@ namespace MotorController.Common
                 IsFloat = true
             };
             addData(typeof(DataViewModel), Data, "FeedbackSync");
-            
+
             Data = new DataViewModel
             {
                 CommandName = "Encoder-Hall Sync [C]",
@@ -335,7 +492,7 @@ namespace MotorController.Common
                 IsFloat = true
             };
             addData(typeof(DataViewModel), Data, "FeedbackSync");
-            
+
             #endregion
             #region SSI
 
@@ -421,7 +578,7 @@ namespace MotorController.Common
                 CommandValue = "1",//first enum in list
             };
             addData(typeof(EnumViewModel), eData, "Qep1Bis");
-            
+
             eData = new EnumViewModel
             {
                 CommandName = "Index Reset",
@@ -431,14 +588,14 @@ namespace MotorController.Common
                 CommandValue = "1",//first enum in list
             };
             addData(typeof(EnumViewModel), eData, "Qep2Bis");
-            
+
             #endregion  Qep1Qep2
         }
-        public void GenerateMotionCommands()
+        public void GenerateControlCommands()
         {
             var tmp1 = new List<string>
               {
-                  "Current Control",
+                  "Torque Control",
                   "Speed Control",
                   "Position Control"
               };
@@ -677,7 +834,7 @@ namespace MotorController.Common
                 FontSize = DataViewModel_FontSize
             };
             addData(typeof(DataViewModel), Data, "PositionControl");
-            
+
             Data = new DataViewModel
             {
                 CommandName = "Position Relative [C]",
@@ -689,59 +846,8 @@ namespace MotorController.Common
             };
             addData(typeof(DataViewModel), Data, "PositionControl");
 
-            Data = new DataViewModel
-            {
-                CommandName = "Accelaration [C/S^2]",
-                CommandId = "54",
-                CommandSubId = "3",
-                CommandValue = "",
-                IsFloat = false,
-                FontSize = DataViewModel_FontSize
-            };
-            addData(typeof(DataViewModel), Data, "MotionCommand List2");
-            
-            Data = new DataViewModel
-            {
-                CommandName = "PTP Speed [C/S]",
-                CommandId = "54",
-                CommandSubId = "2",
-                CommandValue = "",
-                IsFloat = false,
-                FontSize = DataViewModel_FontSize
-            };
-            addData(typeof(DataViewModel), Data, "MotionCommand List2");
-
-            Data = new DataViewModel
-            {
-                CommandName = "Max Tracking Err [C]",
-                CommandId = "54",
-                CommandSubId = "6",
-                CommandValue = "",
-                IsFloat = false,
-                FontSize = DataViewModel_FontSize
-            };
-            addData(typeof(DataViewModel), Data, "MotionCommand List2");
-
             #endregion Commands1
-            #region Commands2
-            var ProfilerModeEnum = new List<string>
-              {
-                  "PID",
-                  "Trapezoid"
-              };
-            Enums.Add("Profiler Mode", ProfilerModeEnum);
 
-            eData = new EnumViewModel
-            {
-                CommandName = "Profiler Mode",
-                CommandId = "54",
-                CommandSubId = "1",
-                CommandList = Enums["Profiler Mode"],
-                CommandValue = "1",//first enum in list
-                FontSize = DataViewModel_FontSize - 1
-            };
-            addData(typeof(EnumViewModel), eData, "Profiler Mode");
-            #endregion Commands2
             #region Commands3
             var SignalgeneratorTypeEnum = new List<string>
               {
@@ -759,10 +865,10 @@ namespace MotorController.Common
                 CommandSubId = "1",
                 CommandList = Enums["S.G.Type"],
                 CommandValue = "1",//first enum in list start at 0
-                FontSize = DataViewModel_FontSize - 1
+                FontSize = DataViewModel_FontSize
             };
             addData(typeof(EnumViewModel), eData, "S.G.Type");
-            
+
             #endregion Commands3
             #region Commands4
 
@@ -898,7 +1004,7 @@ namespace MotorController.Common
                 FontSize = DataViewModel_FontSize
             };
             addData(typeof(DataViewModel), Data, "MotionStatus List");
-            
+
             #endregion Status_1
             #region Status2
 
@@ -971,7 +1077,7 @@ namespace MotorController.Common
         }
         public void GenerateLPCommands()
         {
-           #region Command3
+            #region Command3
             Data = new DataViewModel
             {
                 CommandName = "Driver Status",
@@ -982,7 +1088,7 @@ namespace MotorController.Common
                 ReadOnly = true
             };
             addData(typeof(DataViewModel), Data, "DriverStatus List");
-            
+
             #endregion Command3
         }
         private void GenerateMotionTabCommands()
@@ -1235,9 +1341,9 @@ namespace MotorController.Common
                 UnCheckedText = "OFF"
             };
             addData(typeof(UC_ToggleSwitchViewModel), ToggleSwitchData, "MotorControl");
-            
+
             #endregion Operation
-            
+
             #region Feedback_Sync
             ToggleSwitchData = new UC_ToggleSwitchViewModel
             {
@@ -1251,57 +1357,11 @@ namespace MotorController.Common
             addData(typeof(UC_ToggleSwitchViewModel), ToggleSwitchData, "Feedback Sync");
             #endregion Feedback_Sync
 
-            #region PID
-            ToggleSwitchData = new UC_ToggleSwitchViewModel
-            {
-                Label = "Close Loop",
-                CommandId = 82,
-                CommandSubId = 10,
-                CheckedBackground_final = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2a5ed5")),
-                CheckedText = "ON",
-                UnCheckedText = "OFF"
-            };
-            addData(typeof(UC_ToggleSwitchViewModel), ToggleSwitchData, "PID_speed_loop");
-            
-            ToggleSwitchData = new UC_ToggleSwitchViewModel
-            {
-                Label = "Close Loop",
-                CommandId = 81,
-                CommandSubId = 10,
-                CheckedBackground_final = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2a5ed5")),
-                CheckedText = "ON",
-                UnCheckedText = "OFF"
-            };
-            addData(typeof(UC_ToggleSwitchViewModel), ToggleSwitchData, "PID_current_loop");
-            
-            ToggleSwitchData = new UC_ToggleSwitchViewModel
-            {
-                Label = "Close Loop",
-                CommandId = 83,
-                CommandSubId = 10,
-                CheckedBackground_final = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2a5ed5")),
-                CheckedText = "ON",
-                UnCheckedText = "OFF"
-            };
-            addData(typeof(UC_ToggleSwitchViewModel), ToggleSwitchData, "PID_position_loop");
-            
-            #endregion PID
 
-            #region Filter
-            ToggleSwitchData = new UC_ToggleSwitchViewModel
-            {
-                Label = "Enable",
-                CommandId = 101,
-                CommandSubId = 0,
-                CheckedBackground_final = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#2a5ed5")),
-                CheckedText = "ON",
-                UnCheckedText = "OFF"
-            };
-            addData(typeof(UC_ToggleSwitchViewModel), ToggleSwitchData, "Filter_Enable");
-            
-            #endregion Filter
+
+
             #region Bode
-            
+
             ToggleSwitchData = new UC_ToggleSwitchViewModel
             {
                 Label = "Bode Operation",
@@ -1316,7 +1376,7 @@ namespace MotorController.Common
 
             #region MaintenanceOperation
             string[] name = { "Save Parameters To Driver", "Load Manufacturer defaults", "Reset", "Protected Params" };
-                            //"Protected Params          "
+            //"Protected Params          "
             short[] subID = { 0, 1, 9, 10 };
 
             for(int i = 0; i < name.Length; i++)
@@ -1331,7 +1391,7 @@ namespace MotorController.Common
                     UnCheckedText = "OFF"
                 };
                 addData(typeof(UC_ToggleSwitchViewModel), ToggleSwitchData, "MaintenanceOperation");
-                if(i < 2)
+                if(i == 0 || i == 2)
                     addData(typeof(UC_ToggleSwitchViewModel), ToggleSwitchData, "WizardOperation");
             }
             #endregion MaintenanceOperation
@@ -1472,7 +1532,7 @@ namespace MotorController.Common
                         ((UC_ToggleSwitchViewModel)GenericCommandsList.ElementAt(i).Value).IsChecked = false;
                         break;
                     case "EnumViewModel":
-                            ((EnumViewModel)GenericCommandsList.ElementAt(i).Value).SelectedItem = ((EnumViewModel)GenericCommandsList.ElementAt(i).Value).CommandList[0];
+                        ((EnumViewModel)GenericCommandsList.ElementAt(i).Value).SelectedItem = ((EnumViewModel)GenericCommandsList.ElementAt(i).Value).CommandList[0];
                         break;
                     case "BoolViewIndModel":
                         ((BoolViewIndModel)GenericCommandsList.ElementAt(i).Value).CommandValue = 0;

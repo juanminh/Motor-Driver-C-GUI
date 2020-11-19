@@ -849,7 +849,7 @@ namespace MotorController.ViewModels
         #endregion SerialProgrammerFunctions
     }
 
-    public class PortChat
+    public class PortChat : IDisposable
     {
         private int _index = 0;
         private int _packetIndexCounter = 0;
@@ -904,6 +904,15 @@ namespace MotorController.ViewModels
             _serialPort.Close();
             _serialPort.Dispose();
         }
+        public void Dispose()
+        {
+            if(_serialPort.IsOpen)
+            {
+                //_comPort.Flush();
+                _serialPort.Close();
+                _serialPort = null;
+            }
+        }
         public static void Send(byte[] packetToSend)
         {
             //for(int i = 0; i < packetToSend.Length; i++)
@@ -923,7 +932,7 @@ namespace MotorController.ViewModels
                     {
                         if(_receive != null)
                         {
-                            lock(_receive)
+                            lock(/*_receive*/Synlock)
                             {
                                 _receive.Stop();
                                 _receive.Elapsed -= Read;
